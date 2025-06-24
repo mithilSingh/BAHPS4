@@ -1,0 +1,51 @@
+Handling tool output
+
+Tools will frequently print text to the standard output during their execution, including warnings, progress updates and other notifications. Sometimes, when users run many tools in complex workflows and in batch mode, these output messages can be undesirable. Most tools will have their outputs suppressed by setting theverbosemode toFalseas follows:
+
+Alternatively, it may be helpful to capture the text output of a tool for custom processing. This is achieved by specifying a customcallbackfunction to the tool's convenience function:
+
+Every convienience function takes an optional callback as the last parameter. The default callback simply prints tool outputs to the standard output without any additional processing. The default callback itself can be overridden, instead of having to set callbacks in convienience functions individually:
+
+Callback functions can serve as a means of cancelling operations:
+
+
+--- CODE BLOCK ---
+wbt.set_verbose_mode(False)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+# This callback function suppresses printing progress updates,
+# which always use the '%' character. The callback function
+# approach is flexible and allows for any level of complex
+# interaction with tool outputs.
+def my_callback(value):
+    if not "%" in value:
+        print(value)
+
+wbt.slope('DEM.tif', 'slope_raster.tif', callback=my_callback)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.set_default_callback(my_callback)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+def my_callback(value):
+    if user_selected_cancel_btn: # Assumes a 'Cancel' button on a GUI
+        print('Cancelling operation...')
+        wbt.cancel_op = True
+    else:
+        print(value)
+
+wbt.breach_depressions('DEM.tif', 'DEM_breached.tif', callback=my_callback)
+
+------------------

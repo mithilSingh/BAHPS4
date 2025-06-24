@@ -1,0 +1,11 @@
+Whitebox Runner
+
+There is an application file (executable) contained within theWhiteboxToolsWBT directory called 'whitebox_runner'. This application is intended to provide a very basic user-interface, known as theWhitebox Runneror simplyWbRunner, for running the tools contained within theWhiteboxToolslibrary. The user-interface is cross-platform and has been compiled for Windows, Linux, and macOS.
+
+
+
+To launch the runner application, you should simply need to double-click the executable file. The application has a dark-mode theme (seen above) as well as a light-mode theme (seen below). Like WhiteboxTools itself, WbRunner is developed using pure Rust code and is a native application. It is therefore very performant, especially when compared with the previous version of the Runner, which was a Python interface application.
+
+
+
+Even if you typically use other Whitebox front-ends, WbRunner can be useful at times. For example, unlike many of the other front-end applications, the WbRunner is always up-to-date with your current version of the WhiteboxTools back-end. You may always access the latest tools in Whitebox using the WbRunner. It is also the preferred way to install theWhitebox Toolset Extension. Furthermore, because WbRunner is developed in-house at Whitebox Geospatial Inc., unlike many of the other Whitebox front-ends, the tools interface with the front-end exactly as they are intended to without having to compromise for limitations on front-end design. For example, tools output directly to an output window embedded in the tool's dialog. Progress bars update as the tool is running. The help button links to the appropriate tool documentation in the user manual and the cancel button works as expected (except for plugin tools, which cannot be directly cancelled).

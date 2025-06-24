@@ -1,0 +1,177 @@
+Using thewhitebox_tools.pyscript
+
+Interacting withWhiteboxToolsfrom Python scripts is easy. To begin, each script must start by importing theWhiteboxToolsclass, contained with thewhitebox_tools.pyscript; a newWhiteboxToolsobject can then be created:
+
+Depending on the relative location of theWhiteboxToolsdirectory and the script file that you are importing to, the import statement may need to be altered slightly. In the above script, it is assumed that the folder containing theWhiteboxToolsfiles (including thewhitebox_toolsPython script) is namedWBT(Line 1) and that the calling script that is importing WhiteboxTools is located in the parent directory ofWBT. SeeAn Example WhiteboxTools Python Projectfor more details on project set-up. The use ofwbtto designate the WhiteboxTools object variable in the above script (Line 3) is just the convention used in this manual and other project resources. In fact, any variable name can be used for this purpose.
+
+TheWhiteboxToolsclass expects to find theWhiteboxToolsexecutable file (whitebox_tools.exeon Windows andwhitebox_toolson other platforms) within the same directory (WBT) as thewhitebox_tools.pyscript. If the binary file is located in a separate directory, you will need to set the executable directory as follows:
+
+Individual tools can be called using the convenience methods provided in theWhiteboxToolsclass:
+
+Each tool has a cooresponding convenience method. The listing of tools in this manual includes information about each tool's Python convienience method, including default parameter values. Parameters with default values may be optionally left off of function calls. In addition to the convenience methods, tools can be called using therun_tool()method, specifying the tool name and a list of tool arguments.
+
+Each of the tool-specific convenience methods collect their parameters into a properly formated list and then ultimately call therun_tools()method. Notice that while internallywhitebox_tools.exeuses CamelCase (e.g. MeanFilter) to denote tool names, the Python interface ofwhitebox_tools.pyuses snake_case (e.g. mean_filter), according to Python style conventions. The only exceptions are tools with names that clash with Python keywords (e.g.And(),Not(), andOr()).
+
+The return value can be used to check for errors during operation:
+
+If your data files tend to be burried deeply in layers of sub-directories, specifying complete file names as input parameters can be tedius. In this case, the best option is setting the working directory before calling tools:
+
+An advanced text editor, such as VS Code or Atom, can provide hints and autocompletion for available tool convenience methods and their parameters, including default values (Figure 1).
+
+
+
+Sometimes it can be useful to print a complete list of available tools:
+
+Thelist_tools()method also takes an optional keywords list to search for tools:
+
+To retrieve more detailed information for a specific tool, use thetool_help()method:
+
+tool_help()prints tool details including a description, tool parameters (and their flags), and example usage at the command line prompt. The above statement prints this report:
+
+A note on default parameter values
+
+Each tool contains one or more parameters with default values. These will always be listed after any input parameters that do not have default values. You do not need to specify a parameter with a default value if you accept the default. That is, unless you intend to specify an input value different from the default, you may leave these parameters off of the function call. However, be mindful of the fact that Python assigns values to parameters based on order, unless parameter names are specified.
+
+Consider the Hillshade tool as an example. The User Manual gives the following function definition for the tool:
+
+Thedemandoutputparameters do not have default values and must be specified every time you call this function. Each of the remaining parameters have default values and can, optionally, be left off of calls to thehillshadefunction. As an example, say I want to accept the default values for all the parameters exceptaltitude. I would then need to use the named-parameter form of the function call:
+
+If I hadn't specified the parameter name foraltitude, Python would have assumed that the value 20.0 should be assigned to the third parameter,azimuth.
+
+
+--- CODE BLOCK ---
+from WBT.whitebox_tools import WhiteboxTools
+
+wbt = WhiteboxTools()
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.set_whitebox_dir('/local/path/to/whitebox/binary/')
+
+------------------
+
+
+
+--- CODE BLOCK ---
+# This line performs a 5 x 5 mean filter on 'inFile.tif':
+wbt.mean_filter('/file/path/inFile.tif', '/file/path/outFile.tif', 5, 5)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+source = "source.tif"
+cost = "cost.tif"
+out_accum = "accum.tif"
+out_backlink = "backlink.tif"
+args = []
+args.append("--source='{}'".format(source))
+args.append("--cost='{}'".format(cost))
+args.append("--out_accum='{}'".format(out_accum))
+args.append("--out_backlink='{}'".format(out_backlink))
+self.run_tool('cost_distance', args)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+if wbt.ruggedness_index('/path/DEM.tif', '/path/ruggedness.tif') != 0:
+    # Non-zero returns indicate an error.
+    print('ERROR running ruggedness_index')
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from whitebox_tools import WhiteboxTools
+
+wbt = WhiteboxTools()
+wbt.set_working_dir("/path/to/data/") # Sets the working directory
+
+# Setting the following to True enables tools to output DEFLATE compressed GeoTIFFs.
+# You only need to do this once, if you wish all tools to compress their raster
+# outputs.
+wbt.set_compress_rasters(True) 
+
+# Because the working directory has been set, file arguments can be
+# specified simply using file names, without paths.
+wbt.d_inf_flow_accumulation("DEM.tif", "output.tif", log=True)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+print(wbt.list_tools()) # List all tools in WhiteboxTools
+
+------------------
+
+
+
+--- CODE BLOCK ---
+# Lists tools with 'lidar' or 'LAS' in tool name or description.
+print(wbt.list_tools(['lidar', 'LAS']))
+
+------------------
+
+
+
+--- CODE BLOCK ---
+print(wbt.tool_help("elev_percentile"))
+
+------------------
+
+
+
+--- CODE BLOCK ---
+
+ElevPercentile
+Description:
+Calculates the elevation percentile raster from a DEM.
+Toolbox: Geomorphometric Analysis
+Parameters:
+
+Flag               Description
+-----------------  -----------
+-i, --input, --dem Input raster DEM file.
+-o, --output       Output raster file.
+--filterx          Size of the filter kernel in the x-direction.
+--filtery          Size of the filter kernel in the y-direction.
+--sig_digits       Number of significant digits.
+
+Example usage:
+>>./whitebox_tools -r=ElevPercentile -v --wd="/path/to/data/" --dem=DEM.tif
+>>-o=output.tif --filterx=25
+
+
+
+------------------
+
+
+
+--- CODE BLOCK ---
+hillshade(
+dem,
+output,
+azimuth=315.0,
+altitude=30.0,
+zfactor=1.0,
+callback=default_callback)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.hillshade(
+"DEM.tif",
+"hillshade.tif",
+altitude=20.0)
+
+------------------

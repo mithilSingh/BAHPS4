@@ -1,0 +1,1445 @@
+Coordinate Operations¶
+
+CoordinateOperation¶
+
+Added in version 2.2.0.
+
+Coordinate operation for CRS.
+
+The name of the method(projection) with authority information.
+
+str
+
+The method (projection) name.
+
+str
+
+The method authority name.
+
+str
+
+The method code.
+
+str
+
+If 1, a coordinate operation can be instantiated as a PROJ pipeline.
+This also checks that referenced grids are available.
+
+int
+
+If 1, the coordinate operation has a “ballpark” transformation,
+that is a very approximate one, due to lack of more accurate transformations.
+
+int
+
+The accuracy (in metre) of a coordinate operation.
+
+float
+
+returns: The area of use object with associated attributes.
+:rtype: AreaOfUse
+
+Create a CoordinateOperation from an authority code.
+
+auth_name(str) – Name of the authority.code(strorint) – The code used by the authority.use_proj_alternative_grid_names(bool,default=False) – Use the PROJ alternative grid names.
+
+auth_name(str) – Name of the authority.
+
+auth_name(str) – Name of the authority.
+
+code(strorint) – The code used by the authority.
+
+code(strorint) – The code used by the authority.
+
+use_proj_alternative_grid_names(bool,default=False) – Use the PROJ alternative grid names.
+
+use_proj_alternative_grid_names(bool,default=False) – Use the PROJ alternative grid names.
+
+CoordinateOperation
+
+Create a CoordinateOperation from an EPSG code.
+
+code(strorint) – The code used by EPSG.use_proj_alternative_grid_names(bool,default=False) – Use the PROJ alternative grid names.
+
+code(strorint) – The code used by EPSG.
+
+code(strorint) – The code used by EPSG.
+
+use_proj_alternative_grid_names(bool,default=False) – Use the PROJ alternative grid names.
+
+use_proj_alternative_grid_names(bool,default=False) – Use the PROJ alternative grid names.
+
+CoordinateOperation
+
+Create CoordinateOperation from a JSON string.
+
+Added in version 2.4.0.
+
+coordinate_operation_json_str(str) – CoordinateOperation JSON string.
+
+CoordinateOperation
+
+Create CoordinateOperation from a JSON dictionary.
+
+Added in version 2.4.0.
+
+coordinate_operation_dict(str) – CoordinateOperation dictionary.
+
+CoordinateOperation
+
+Added in version 2.5.0.
+
+Create a Coordinate Operation from a name.
+
+Examples
+
+UTM zone 14N
+
+UTM zone 14N
+
+UTM zone 14N
+
+coordinate_operation_name(str) – Coordinate Operation name.auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.coordinate_operation_type(CoordinateOperationType,optional) – The coordinate operation type to create. Default ispyproj.crs.enums.CoordinateOperationType.CONVERSION
+
+coordinate_operation_name(str) – Coordinate Operation name.
+
+coordinate_operation_name(str) – Coordinate Operation name.
+
+auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+coordinate_operation_type(CoordinateOperationType,optional) – The coordinate operation type to create. Default ispyproj.crs.enums.CoordinateOperationType.CONVERSION
+
+coordinate_operation_type(CoordinateOperationType,optional) – The coordinate operation type to create. Default ispyproj.crs.enums.CoordinateOperationType.CONVERSION
+
+CoordinateOperation
+
+Create a CoordinateOperation from a string.
+
+Example
+
+urn:ogc:def:coordinateOperation:EPSG::1671UTM zone 14N+proj=utm +zone=14
+
+urn:ogc:def:coordinateOperation:EPSG::1671
+
+urn:ogc:def:coordinateOperation:EPSG::1671
+
+UTM zone 14N
+
+UTM zone 14N
+
++proj=utm +zone=14
+
++proj=utm +zone=14
+
+coordinate_operation_string(str) – Coordinate operation string.
+
+CoordinateOperation
+
+Added in version 2.5.0.
+
+PROJ JSON stringPROJ JSON dictWKT stringAn authority stringAn EPSG integer codeAn iterable of (“auth_name”, “auth_code”)An object with ato_jsonmethod.
+
+PROJ JSON string
+
+PROJ JSON string
+
+PROJ JSON dict
+
+PROJ JSON dict
+
+WKT string
+
+WKT string
+
+An authority string
+
+An authority string
+
+An EPSG integer code
+
+An EPSG integer code
+
+An iterable of (“auth_name”, “auth_code”)
+
+An iterable of (“auth_name”, “auth_code”)
+
+An object with ato_jsonmethod.
+
+An object with ato_jsonmethod.
+
+user_input(str,dict,int,Iterable[str,str]) – Input to create cls.
+
+cls
+
+returns: The coordinate operation grids.
+:rtype: list[Grid]
+
+Compares projection objects to see if they are exactly the same.
+
+Added in version 2.4.0.
+
+The operations in a concatenated operation.
+
+tuple[CoordinateOperation]
+
+returns: The coordinate operation parameters.
+:rtype: list[Param]
+
+Added in version 2.4.0.
+
+Remarks about object.
+
+str
+
+Added in version 2.4.0.
+
+Scope of object.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON dictionary.
+
+dict
+
+Convert the projection to a PROJ string.
+
+Added in version 3.1.0:pretty
+
+version(pyproj.enums.ProjVersion,default=pyproj.enums.ProjVersion.PROJ_5) – The version of the PROJ string output.pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+version(pyproj.enums.ProjVersion,default=pyproj.enums.ProjVersion.PROJ_5) – The version of the PROJ string output.
+
+version(pyproj.enums.ProjVersion,default=pyproj.enums.ProjVersion.PROJ_5) – The version of the PROJ string output.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+The PROJ string.
+
+str
+
+Convert the projection to a WKT string.
+
+WKT2_2015WKT2_2015_SIMPLIFIEDWKT2_2019WKT2_2019_SIMPLIFIEDWKT1_GDALWKT1_ESRI
+
+WKT2_2015
+
+WKT2_2015
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2019
+
+WKT2_2019
+
+WKT2_2019_SIMPLIFIED
+
+WKT2_2019_SIMPLIFIED
+
+WKT1_GDAL
+
+WKT1_GDAL
+
+WKT1_ESRI
+
+WKT1_ESRI
+
+Added in version 3.6.0:output_axis_rule
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.pretty(bool,default=False) – If True, it will set the output to be a multiline string.output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+str
+
+returns: A list of 3 or 7 towgs84 values if they exist.
+:rtype: list[float]
+
+Param¶
+
+Added in version 2.2.0.
+
+Coordinate operation parameter.
+
+The name of the parameter.
+
+str
+
+The authority name of the parameter (i.e. EPSG).
+
+str
+
+The code of the parameter (i.e. 9807).
+
+str
+
+The value of the parameter.
+
+stror double
+
+The factor to convert to meters.
+
+double
+
+The name of the unit.
+
+str
+
+The authority name of the unit (i.e. EPSG).
+
+str
+
+The code of the unit (i.e. 9807).
+
+str
+
+The category of the unit (“unknown”, “none”, “linear”,
+“angular”, “scale”, “time” or “parametric”).
+
+str
+
+Grid¶
+
+Added in version 2.2.0.
+
+Coordinate operation grid.
+
+The short name of the grid.
+
+str
+
+The full name of the grid.
+
+str
+
+The package name where the grid might be found.
+
+str
+
+The grid URL or the package URL where the grid might be found.
+
+str
+
+If 1,urlcan be downloaded directly.
+
+int
+
+If 1, the grid is released with an open license.
+
+int
+
+If 1, the grid is available at runtime.
+
+int
+
+AlbersEqualAreaConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Albers Equal Area Conversion.
+
+PROJ docs
+
+latitude_first_parallel(float) – First standard parallel (lat_1).latitude_second_parallel(float) – Second standard parallel (lat_2).latitude_false_origin(float,default=0.0) – Latitude of projection center (lat_0).longitude_false_origin(float,default=0.0) – Longitude of projection center (lon_0).easting_false_origin(float,default=0.0) – False easting (x_0).northing_false_origin(float,default=0.0) – False northing (y_0).
+
+latitude_first_parallel(float) – First standard parallel (lat_1).
+
+latitude_first_parallel(float) – First standard parallel (lat_1).
+
+latitude_second_parallel(float) – Second standard parallel (lat_2).
+
+latitude_second_parallel(float) – Second standard parallel (lat_2).
+
+latitude_false_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+latitude_false_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+longitude_false_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_false_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+easting_false_origin(float,default=0.0) – False easting (x_0).
+
+easting_false_origin(float,default=0.0) – False easting (x_0).
+
+northing_false_origin(float,default=0.0) – False northing (y_0).
+
+northing_false_origin(float,default=0.0) – False northing (y_0).
+
+AzimuthalEquidistantConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0:AzumuthalEquidistantConversion
+
+Added in version 3.2.0:AzimuthalEquidistantConversion
+
+Class for constructing the Modified Azimuthal Equidistant conversion.
+
+PROJ docs
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+EquidistantCylindricalConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Equidistant Cylintrical (Plate Carrée) conversion.
+
+PROJ docs
+
+latitude_first_parallel(float,default=0.0) – Latitude of 1st standard parallel (lat_ts).latitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+latitude_first_parallel(float,default=0.0) – Latitude of 1st standard parallel (lat_ts).
+
+latitude_first_parallel(float,default=0.0) – Latitude of 1st standard parallel (lat_ts).
+
+latitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+latitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+GeostationarySatelliteConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Geostationary Satellite conversion.
+
+PROJ docs
+
+sweep_angle_axis(str) – Sweep angle axis of the viewing instrument. Valid options are “X” and “Y”.satellite_height(float) – Satellite height.latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+sweep_angle_axis(str) – Sweep angle axis of the viewing instrument. Valid options are “X” and “Y”.
+
+sweep_angle_axis(str) – Sweep angle axis of the viewing instrument. Valid options are “X” and “Y”.
+
+satellite_height(float) – Satellite height.
+
+satellite_height(float) – Satellite height.
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+LambertAzimuthalEqualAreaConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0:LambertAzumuthalEqualAreaConversion
+
+Added in version 3.2.0:LambertAzimuthalEqualAreaConversion
+
+Class for constructing the Lambert Azimuthal Equal Area conversion.
+
+PROJ docs
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+LambertConformalConic1SPConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Lambert Conformal Conic 1SP conversion.
+
+PROJ docs
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k_0).
+
+scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k_0).
+
+LambertConformalConic2SPConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Lambert Conformal Conic 2SP conversion.
+
+PROJ docs
+
+latitude_first_parallel(float) – Latitude of 1st standard parallel (lat_1).latitude_second_parallel(float) – Latitude of 2nd standard parallel (lat_2).latitude_false_origin(float,default=0.0) – Latitude of projection center (lat_0).longitude_false_origin(float,default=0.0) – Longitude of projection center (lon_0).easting_false_origin(float,default=0.0) – False easting (x_0).northing_false_origin(float,default=0.0) – False northing (y_0).
+
+latitude_first_parallel(float) – Latitude of 1st standard parallel (lat_1).
+
+latitude_first_parallel(float) – Latitude of 1st standard parallel (lat_1).
+
+latitude_second_parallel(float) – Latitude of 2nd standard parallel (lat_2).
+
+latitude_second_parallel(float) – Latitude of 2nd standard parallel (lat_2).
+
+latitude_false_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+latitude_false_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+longitude_false_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_false_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+easting_false_origin(float,default=0.0) – False easting (x_0).
+
+easting_false_origin(float,default=0.0) – False easting (x_0).
+
+northing_false_origin(float,default=0.0) – False northing (y_0).
+
+northing_false_origin(float,default=0.0) – False northing (y_0).
+
+LambertCylindricalEqualAreaConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Lambert Cylindrical Equal Area conversion.
+
+PROJ docs
+
+latitude_first_parallel(float,default=0.0) – Latitude of 1st standard parallel (lat_ts).longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+latitude_first_parallel(float,default=0.0) – Latitude of 1st standard parallel (lat_ts).
+
+latitude_first_parallel(float,default=0.0) – Latitude of 1st standard parallel (lat_ts).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+Added in version 2.5.0.
+
+Class for constructing the Lambert Cylindrical Equal Area conversion.
+
+This version uses the scale factor and differs from the official version.
+
+The scale factor will be converted to the Latitude of 1st standard parallel (lat_ts)
+when exporting to WKT in PROJ>=7.0.0. Previous version will export it as a
+PROJ-based coordinate operation in the WKT.
+
+PROJ docs
+
+
+
+
+
+__new__
+
+MercatorAConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Mercator (variant A) conversion.
+
+PROJ docs
+
+latitude_natural_origin(float,default=0.0) – Latitude of natural origin (lat_0). Must be 0 bythis conversion’s
+definition.longitude_natural_origin(float,default=0.0) – Longitude of natural origin (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k or k_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of natural origin (lat_0). Must be 0 bythis conversion’s
+definition.
+
+latitude_natural_origin(float,default=0.0) – Latitude of natural origin (lat_0). Must be 0 bythis conversion’s
+definition.
+
+longitude_natural_origin(float,default=0.0) – Longitude of natural origin (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of natural origin (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k or k_0).
+
+scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k or k_0).
+
+MercatorBConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Mercator (variant B) conversion.
+
+PROJ docs
+
+latitude_first_parallel(float,default=0.0) – Latitude of 1st standard parallel (lat_ts).longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+latitude_first_parallel(float,default=0.0) – Latitude of 1st standard parallel (lat_ts).
+
+latitude_first_parallel(float,default=0.0) – Latitude of 1st standard parallel (lat_ts).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+HotineObliqueMercatorBConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Added in version 3.7.0:azimuth_projection_centre, scale_factor_projection_centre
+
+Class for constructing the Hotine Oblique Mercator (variant B) conversion.
+
+PROJ docs
+
+latitude_projection_centre(float) – Latitude of projection centre (lat_0).longitude_projection_centre(float) – Longitude of projection centre (lonc).azimuth_projection_centre(float) – Azimuth of initial line (alpha).angle_from_rectified_to_skew_grid(float) – Angle from Rectified to Skew Grid (gamma).scale_factor_projection_centre(float,default=1.0) – Scale factor on initial line (k or k_0).easting_projection_centre(float,default=0.0) – Easting at projection centre (x_0).northing_projection_centre(float,default=0.0) – Northing at projection centre (y_0).azimuth_initial_line(float) – Deprecated alias for azimuth_projection_centre,scale_factor_on_initial_line(float) – Deprecated alias for scale_factor_projection_centre.
+
+latitude_projection_centre(float) – Latitude of projection centre (lat_0).
+
+latitude_projection_centre(float) – Latitude of projection centre (lat_0).
+
+longitude_projection_centre(float) – Longitude of projection centre (lonc).
+
+longitude_projection_centre(float) – Longitude of projection centre (lonc).
+
+azimuth_projection_centre(float) – Azimuth of initial line (alpha).
+
+azimuth_projection_centre(float) – Azimuth of initial line (alpha).
+
+angle_from_rectified_to_skew_grid(float) – Angle from Rectified to Skew Grid (gamma).
+
+angle_from_rectified_to_skew_grid(float) – Angle from Rectified to Skew Grid (gamma).
+
+scale_factor_projection_centre(float,default=1.0) – Scale factor on initial line (k or k_0).
+
+scale_factor_projection_centre(float,default=1.0) – Scale factor on initial line (k or k_0).
+
+easting_projection_centre(float,default=0.0) – Easting at projection centre (x_0).
+
+easting_projection_centre(float,default=0.0) – Easting at projection centre (x_0).
+
+northing_projection_centre(float,default=0.0) – Northing at projection centre (y_0).
+
+northing_projection_centre(float,default=0.0) – Northing at projection centre (y_0).
+
+azimuth_initial_line(float) – Deprecated alias for azimuth_projection_centre,
+
+azimuth_initial_line(float) – Deprecated alias for azimuth_projection_centre,
+
+scale_factor_on_initial_line(float) – Deprecated alias for scale_factor_projection_centre.
+
+scale_factor_on_initial_line(float) – Deprecated alias for scale_factor_projection_centre.
+
+OrthographicConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Orthographic conversion.
+
+PROJ docs
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+PlateCarreeConversion¶
+
+alias ofEquidistantCylindricalConversion
+
+PolarStereographicAConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Polar Stereographic A conversion.
+
+PROJ docs
+
+latitude_natural_origin(float) – Latitude of natural origin (lat_0). Either +90 or -90.longitude_natural_origin(float,default=0.0) – Longitude of natural origin (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).scale_factor_natural_origin(float,default=0.0) – Scale factor at natural origin (k or k_0).
+
+latitude_natural_origin(float) – Latitude of natural origin (lat_0). Either +90 or -90.
+
+latitude_natural_origin(float) – Latitude of natural origin (lat_0). Either +90 or -90.
+
+longitude_natural_origin(float,default=0.0) – Longitude of natural origin (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of natural origin (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+scale_factor_natural_origin(float,default=0.0) – Scale factor at natural origin (k or k_0).
+
+scale_factor_natural_origin(float,default=0.0) – Scale factor at natural origin (k or k_0).
+
+PolarStereographicBConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Polar Stereographic B conversion.
+
+PROJ docs
+
+latitude_standard_parallel(float,default=0.0) – Latitude of standard parallel (lat_ts).longitude_origin(float,default=0.0) – Longitude of origin (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+latitude_standard_parallel(float,default=0.0) – Latitude of standard parallel (lat_ts).
+
+latitude_standard_parallel(float,default=0.0) – Latitude of standard parallel (lat_ts).
+
+longitude_origin(float,default=0.0) – Longitude of origin (lon_0).
+
+longitude_origin(float,default=0.0) – Longitude of origin (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+SinusoidalConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Sinusoidal conversion.
+
+PROJ docs
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+StereographicConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Stereographic conversion.
+
+PROJ docs
+
+latitude_natural_origin(float,default=0.0) – Latitude of natural origin (lat_0).longitude_natural_origin(float,default=0.0) – Longitude of natural origin (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k or k_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of natural origin (lat_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of natural origin (lat_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of natural origin (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of natural origin (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k or k_0).
+
+scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k or k_0).
+
+UTMConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the UTM conversion.
+
+PROJ docs
+
+zone(int) – UTM Zone between 1-60.hemisphere(str,default="N") – Either N for North or S for South.
+
+zone(int) – UTM Zone between 1-60.
+
+zone(int) – UTM Zone between 1-60.
+
+hemisphere(str,default="N") – Either N for North or S for South.
+
+hemisphere(str,default="N") – Either N for North or S for South.
+
+TransverseMercatorConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Transverse Mercator conversion.
+
+PROJ docs
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k or k_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+latitude_natural_origin(float,default=0.0) – Latitude of projection center (lat_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+longitude_natural_origin(float,default=0.0) – Longitude of projection center (lon_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k or k_0).
+
+scale_factor_natural_origin(float,default=1.0) – Scale factor at natural origin (k or k_0).
+
+VerticalPerspectiveConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Vertical Perspective conversion.
+
+PROJ docs
+
+viewpoint_height(float) – Viewpoint height (h).latitude_topocentric_origin(float,default=0.0) – Latitude of topocentric origin (lat_0).longitude_topocentric_origin(float,default=0.0) – Longitude of topocentric origin (lon_0).ellipsoidal_height_topocentric_origin(float,default=0.0) – Ellipsoidal height of topocentric origin.false_easting(float,default=0.0) – False easting (x_0).false_northing(float,default=0.0) – False northing (y_0).
+
+viewpoint_height(float) – Viewpoint height (h).
+
+viewpoint_height(float) – Viewpoint height (h).
+
+latitude_topocentric_origin(float,default=0.0) – Latitude of topocentric origin (lat_0).
+
+latitude_topocentric_origin(float,default=0.0) – Latitude of topocentric origin (lat_0).
+
+longitude_topocentric_origin(float,default=0.0) – Longitude of topocentric origin (lon_0).
+
+longitude_topocentric_origin(float,default=0.0) – Longitude of topocentric origin (lon_0).
+
+ellipsoidal_height_topocentric_origin(float,default=0.0) – Ellipsoidal height of topocentric origin.
+
+ellipsoidal_height_topocentric_origin(float,default=0.0) – Ellipsoidal height of topocentric origin.
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_easting(float,default=0.0) – False easting (x_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+false_northing(float,default=0.0) – False northing (y_0).
+
+RotatedLatitudeLongitudeConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the Rotated Latitude Longitude conversion.
+
+PROJ docs
+
+o_lat_p(float) – Latitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS.o_lon_p(float) – Longitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS.lon_0(float,default=0.0) – Longitude of projection center.
+
+o_lat_p(float) – Latitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS.
+
+o_lat_p(float) – Latitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS.
+
+o_lon_p(float) – Longitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS.
+
+o_lon_p(float) – Longitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS.
+
+lon_0(float,default=0.0) – Longitude of projection center.
+
+lon_0(float,default=0.0) – Longitude of projection center.
+
+PoleRotationNetCDFCFConversion¶
+
+Bases:CoordinateOperation
+
+Added in version 3.3.0.
+
+Class for constructing the Pole rotation (netCDF CF convention) conversion.
+
+http://cfconventions.org/cf-conventions/cf-conventions.html#_rotated_pole
+
+PROJ docs
+
+grid_north_pole_latitude(float) – Latitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS (o_lat_p)grid_north_pole_longitude(float) – Longitude of projection center (lon_0 - 180).north_pole_grid_longitude(float,default=0.0) – Longitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS (o_lon_p).
+
+grid_north_pole_latitude(float) – Latitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS (o_lat_p)
+
+grid_north_pole_latitude(float) – Latitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS (o_lat_p)
+
+grid_north_pole_longitude(float) – Longitude of projection center (lon_0 - 180).
+
+grid_north_pole_longitude(float) – Longitude of projection center (lon_0 - 180).
+
+north_pole_grid_longitude(float,default=0.0) – Longitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS (o_lon_p).
+
+north_pole_grid_longitude(float,default=0.0) – Longitude of the North pole of the unrotated source CRS,
+expressed in the rotated geographic CRS (o_lon_p).
+
+ToWGS84Transformation¶
+
+Bases:CoordinateOperation
+
+Added in version 2.5.0.
+
+Class for constructing the ToWGS84 Transformation.
+
+source_crs(Any) – Input to create the Source CRS.x_axis_translation(float,default=0.0) – X-axis translation.y_axis_translation(float,default=0.0) – Y-axis translation.z_axis_translation(float,default=0.0) – Z-axis translation.x_axis_rotation(float,default=0.0) – X-axis rotation.y_axis_rotation(float,default=0.0) – Y-axis rotation.z_axis_rotation(float,default=0.0) – Z-axis rotation.scale_difference(float,default=0.0) – Scale difference.
+
+source_crs(Any) – Input to create the Source CRS.
+
+source_crs(Any) – Input to create the Source CRS.
+
+x_axis_translation(float,default=0.0) – X-axis translation.
+
+x_axis_translation(float,default=0.0) – X-axis translation.
+
+y_axis_translation(float,default=0.0) – Y-axis translation.
+
+y_axis_translation(float,default=0.0) – Y-axis translation.
+
+z_axis_translation(float,default=0.0) – Z-axis translation.
+
+z_axis_translation(float,default=0.0) – Z-axis translation.
+
+x_axis_rotation(float,default=0.0) – X-axis rotation.
+
+x_axis_rotation(float,default=0.0) – X-axis rotation.
+
+y_axis_rotation(float,default=0.0) – Y-axis rotation.
+
+y_axis_rotation(float,default=0.0) – Y-axis rotation.
+
+z_axis_rotation(float,default=0.0) – Z-axis rotation.
+
+z_axis_rotation(float,default=0.0) – Z-axis rotation.
+
+scale_difference(float,default=0.0) – Scale difference.
+
+scale_difference(float,default=0.0) – Scale difference.
+
+Coordinate OperationsCoordinateOperationCoordinateOperationCoordinateOperation.nameCoordinateOperation.method_nameCoordinateOperation.method_auth_nameCoordinateOperation.method_codeCoordinateOperation.is_instantiableCoordinateOperation.has_ballpark_transformationCoordinateOperation.accuracyCoordinateOperation.area_of_useCoordinateOperation.from_authority()CoordinateOperation.from_epsg()CoordinateOperation.from_json()CoordinateOperation.from_json_dict()CoordinateOperation.from_name()CoordinateOperation.from_string()CoordinateOperation.from_user_input()CoordinateOperation.gridsCoordinateOperation.is_exact_same()CoordinateOperation.operationsCoordinateOperation.paramsCoordinateOperation.remarksCoordinateOperation.scopeCoordinateOperation.to_json()CoordinateOperation.to_json_dict()CoordinateOperation.to_proj4()CoordinateOperation.to_wkt()CoordinateOperation.towgs84ParamParamParam.nameParam.auth_nameParam.codeParam.valueParam.unit_conversion_factorParam.unit_nameParam.unit_auth_nameParam.unit_codeParam.unit_categoryGridGridGrid.short_nameGrid.full_nameGrid.package_nameGrid.urlGrid.direct_downloadGrid.open_licenseGrid.availableAlbersEqualAreaConversionAlbersEqualAreaConversionAlbersEqualAreaConversion.__new__()AzimuthalEquidistantConversionAzimuthalEquidistantConversionAzimuthalEquidistantConversion.__new__()EquidistantCylindricalConversionEquidistantCylindricalConversionEquidistantCylindricalConversion.__new__()GeostationarySatelliteConversionGeostationarySatelliteConversionGeostationarySatelliteConversion.__new__()LambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversion.__new__()LambertConformalConic1SPConversionLambertConformalConic1SPConversionLambertConformalConic1SPConversion.__new__()LambertConformalConic2SPConversionLambertConformalConic2SPConversionLambertConformalConic2SPConversion.__new__()LambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversion.__new__()LambertCylindricalEqualAreaScaleConversionMercatorAConversionMercatorAConversionMercatorAConversion.__new__()MercatorBConversionMercatorBConversionMercatorBConversion.__new__()HotineObliqueMercatorBConversionHotineObliqueMercatorBConversionHotineObliqueMercatorBConversion.__new__()OrthographicConversionOrthographicConversionOrthographicConversion.__new__()PlateCarreeConversionPlateCarreeConversionPolarStereographicAConversionPolarStereographicAConversionPolarStereographicAConversion.__new__()PolarStereographicBConversionPolarStereographicBConversionPolarStereographicBConversion.__new__()SinusoidalConversionSinusoidalConversionSinusoidalConversion.__new__()StereographicConversionStereographicConversionStereographicConversion.__new__()UTMConversionUTMConversionUTMConversion.__new__()TransverseMercatorConversionTransverseMercatorConversionTransverseMercatorConversion.__new__()VerticalPerspectiveConversionVerticalPerspectiveConversionVerticalPerspectiveConversion.__new__()RotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversion.__new__()PoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversion.__new__()ToWGS84TransformationToWGS84TransformationToWGS84Transformation.__new__()
+
+Coordinate OperationsCoordinateOperationCoordinateOperationCoordinateOperation.nameCoordinateOperation.method_nameCoordinateOperation.method_auth_nameCoordinateOperation.method_codeCoordinateOperation.is_instantiableCoordinateOperation.has_ballpark_transformationCoordinateOperation.accuracyCoordinateOperation.area_of_useCoordinateOperation.from_authority()CoordinateOperation.from_epsg()CoordinateOperation.from_json()CoordinateOperation.from_json_dict()CoordinateOperation.from_name()CoordinateOperation.from_string()CoordinateOperation.from_user_input()CoordinateOperation.gridsCoordinateOperation.is_exact_same()CoordinateOperation.operationsCoordinateOperation.paramsCoordinateOperation.remarksCoordinateOperation.scopeCoordinateOperation.to_json()CoordinateOperation.to_json_dict()CoordinateOperation.to_proj4()CoordinateOperation.to_wkt()CoordinateOperation.towgs84ParamParamParam.nameParam.auth_nameParam.codeParam.valueParam.unit_conversion_factorParam.unit_nameParam.unit_auth_nameParam.unit_codeParam.unit_categoryGridGridGrid.short_nameGrid.full_nameGrid.package_nameGrid.urlGrid.direct_downloadGrid.open_licenseGrid.availableAlbersEqualAreaConversionAlbersEqualAreaConversionAlbersEqualAreaConversion.__new__()AzimuthalEquidistantConversionAzimuthalEquidistantConversionAzimuthalEquidistantConversion.__new__()EquidistantCylindricalConversionEquidistantCylindricalConversionEquidistantCylindricalConversion.__new__()GeostationarySatelliteConversionGeostationarySatelliteConversionGeostationarySatelliteConversion.__new__()LambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversion.__new__()LambertConformalConic1SPConversionLambertConformalConic1SPConversionLambertConformalConic1SPConversion.__new__()LambertConformalConic2SPConversionLambertConformalConic2SPConversionLambertConformalConic2SPConversion.__new__()LambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversion.__new__()LambertCylindricalEqualAreaScaleConversionMercatorAConversionMercatorAConversionMercatorAConversion.__new__()MercatorBConversionMercatorBConversionMercatorBConversion.__new__()HotineObliqueMercatorBConversionHotineObliqueMercatorBConversionHotineObliqueMercatorBConversion.__new__()OrthographicConversionOrthographicConversionOrthographicConversion.__new__()PlateCarreeConversionPlateCarreeConversionPolarStereographicAConversionPolarStereographicAConversionPolarStereographicAConversion.__new__()PolarStereographicBConversionPolarStereographicBConversionPolarStereographicBConversion.__new__()SinusoidalConversionSinusoidalConversionSinusoidalConversion.__new__()StereographicConversionStereographicConversionStereographicConversion.__new__()UTMConversionUTMConversionUTMConversion.__new__()TransverseMercatorConversionTransverseMercatorConversionTransverseMercatorConversion.__new__()VerticalPerspectiveConversionVerticalPerspectiveConversionVerticalPerspectiveConversion.__new__()RotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversion.__new__()PoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversion.__new__()ToWGS84TransformationToWGS84TransformationToWGS84Transformation.__new__()
+
+CoordinateOperationCoordinateOperationCoordinateOperation.nameCoordinateOperation.method_nameCoordinateOperation.method_auth_nameCoordinateOperation.method_codeCoordinateOperation.is_instantiableCoordinateOperation.has_ballpark_transformationCoordinateOperation.accuracyCoordinateOperation.area_of_useCoordinateOperation.from_authority()CoordinateOperation.from_epsg()CoordinateOperation.from_json()CoordinateOperation.from_json_dict()CoordinateOperation.from_name()CoordinateOperation.from_string()CoordinateOperation.from_user_input()CoordinateOperation.gridsCoordinateOperation.is_exact_same()CoordinateOperation.operationsCoordinateOperation.paramsCoordinateOperation.remarksCoordinateOperation.scopeCoordinateOperation.to_json()CoordinateOperation.to_json_dict()CoordinateOperation.to_proj4()CoordinateOperation.to_wkt()CoordinateOperation.towgs84ParamParamParam.nameParam.auth_nameParam.codeParam.valueParam.unit_conversion_factorParam.unit_nameParam.unit_auth_nameParam.unit_codeParam.unit_categoryGridGridGrid.short_nameGrid.full_nameGrid.package_nameGrid.urlGrid.direct_downloadGrid.open_licenseGrid.availableAlbersEqualAreaConversionAlbersEqualAreaConversionAlbersEqualAreaConversion.__new__()AzimuthalEquidistantConversionAzimuthalEquidistantConversionAzimuthalEquidistantConversion.__new__()EquidistantCylindricalConversionEquidistantCylindricalConversionEquidistantCylindricalConversion.__new__()GeostationarySatelliteConversionGeostationarySatelliteConversionGeostationarySatelliteConversion.__new__()LambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversion.__new__()LambertConformalConic1SPConversionLambertConformalConic1SPConversionLambertConformalConic1SPConversion.__new__()LambertConformalConic2SPConversionLambertConformalConic2SPConversionLambertConformalConic2SPConversion.__new__()LambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversion.__new__()LambertCylindricalEqualAreaScaleConversionMercatorAConversionMercatorAConversionMercatorAConversion.__new__()MercatorBConversionMercatorBConversionMercatorBConversion.__new__()HotineObliqueMercatorBConversionHotineObliqueMercatorBConversionHotineObliqueMercatorBConversion.__new__()OrthographicConversionOrthographicConversionOrthographicConversion.__new__()PlateCarreeConversionPlateCarreeConversionPolarStereographicAConversionPolarStereographicAConversionPolarStereographicAConversion.__new__()PolarStereographicBConversionPolarStereographicBConversionPolarStereographicBConversion.__new__()SinusoidalConversionSinusoidalConversionSinusoidalConversion.__new__()StereographicConversionStereographicConversionStereographicConversion.__new__()UTMConversionUTMConversionUTMConversion.__new__()TransverseMercatorConversionTransverseMercatorConversionTransverseMercatorConversion.__new__()VerticalPerspectiveConversionVerticalPerspectiveConversionVerticalPerspectiveConversion.__new__()RotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversion.__new__()PoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversion.__new__()ToWGS84TransformationToWGS84TransformationToWGS84Transformation.__new__()
+
+CoordinateOperationCoordinateOperationCoordinateOperation.nameCoordinateOperation.method_nameCoordinateOperation.method_auth_nameCoordinateOperation.method_codeCoordinateOperation.is_instantiableCoordinateOperation.has_ballpark_transformationCoordinateOperation.accuracyCoordinateOperation.area_of_useCoordinateOperation.from_authority()CoordinateOperation.from_epsg()CoordinateOperation.from_json()CoordinateOperation.from_json_dict()CoordinateOperation.from_name()CoordinateOperation.from_string()CoordinateOperation.from_user_input()CoordinateOperation.gridsCoordinateOperation.is_exact_same()CoordinateOperation.operationsCoordinateOperation.paramsCoordinateOperation.remarksCoordinateOperation.scopeCoordinateOperation.to_json()CoordinateOperation.to_json_dict()CoordinateOperation.to_proj4()CoordinateOperation.to_wkt()CoordinateOperation.towgs84
+
+CoordinateOperationCoordinateOperation.nameCoordinateOperation.method_nameCoordinateOperation.method_auth_nameCoordinateOperation.method_codeCoordinateOperation.is_instantiableCoordinateOperation.has_ballpark_transformationCoordinateOperation.accuracyCoordinateOperation.area_of_useCoordinateOperation.from_authority()CoordinateOperation.from_epsg()CoordinateOperation.from_json()CoordinateOperation.from_json_dict()CoordinateOperation.from_name()CoordinateOperation.from_string()CoordinateOperation.from_user_input()CoordinateOperation.gridsCoordinateOperation.is_exact_same()CoordinateOperation.operationsCoordinateOperation.paramsCoordinateOperation.remarksCoordinateOperation.scopeCoordinateOperation.to_json()CoordinateOperation.to_json_dict()CoordinateOperation.to_proj4()CoordinateOperation.to_wkt()CoordinateOperation.towgs84
+
+CoordinateOperationCoordinateOperation.nameCoordinateOperation.method_nameCoordinateOperation.method_auth_nameCoordinateOperation.method_codeCoordinateOperation.is_instantiableCoordinateOperation.has_ballpark_transformationCoordinateOperation.accuracyCoordinateOperation.area_of_useCoordinateOperation.from_authority()CoordinateOperation.from_epsg()CoordinateOperation.from_json()CoordinateOperation.from_json_dict()CoordinateOperation.from_name()CoordinateOperation.from_string()CoordinateOperation.from_user_input()CoordinateOperation.gridsCoordinateOperation.is_exact_same()CoordinateOperation.operationsCoordinateOperation.paramsCoordinateOperation.remarksCoordinateOperation.scopeCoordinateOperation.to_json()CoordinateOperation.to_json_dict()CoordinateOperation.to_proj4()CoordinateOperation.to_wkt()CoordinateOperation.towgs84
+
+CoordinateOperation.nameCoordinateOperation.method_nameCoordinateOperation.method_auth_nameCoordinateOperation.method_codeCoordinateOperation.is_instantiableCoordinateOperation.has_ballpark_transformationCoordinateOperation.accuracyCoordinateOperation.area_of_useCoordinateOperation.from_authority()CoordinateOperation.from_epsg()CoordinateOperation.from_json()CoordinateOperation.from_json_dict()CoordinateOperation.from_name()CoordinateOperation.from_string()CoordinateOperation.from_user_input()CoordinateOperation.gridsCoordinateOperation.is_exact_same()CoordinateOperation.operationsCoordinateOperation.paramsCoordinateOperation.remarksCoordinateOperation.scopeCoordinateOperation.to_json()CoordinateOperation.to_json_dict()CoordinateOperation.to_proj4()CoordinateOperation.to_wkt()CoordinateOperation.towgs84
+
+CoordinateOperation.name
+
+CoordinateOperation.method_name
+
+CoordinateOperation.method_auth_name
+
+CoordinateOperation.method_code
+
+CoordinateOperation.is_instantiable
+
+CoordinateOperation.has_ballpark_transformation
+
+CoordinateOperation.accuracy
+
+CoordinateOperation.area_of_use
+
+CoordinateOperation.from_authority()
+
+CoordinateOperation.from_epsg()
+
+CoordinateOperation.from_json()
+
+CoordinateOperation.from_json_dict()
+
+CoordinateOperation.from_name()
+
+CoordinateOperation.from_string()
+
+CoordinateOperation.from_user_input()
+
+CoordinateOperation.grids
+
+CoordinateOperation.is_exact_same()
+
+CoordinateOperation.operations
+
+CoordinateOperation.params
+
+CoordinateOperation.remarks
+
+CoordinateOperation.scope
+
+CoordinateOperation.to_json()
+
+CoordinateOperation.to_json_dict()
+
+CoordinateOperation.to_proj4()
+
+CoordinateOperation.to_wkt()
+
+CoordinateOperation.towgs84
+
+ParamParamParam.nameParam.auth_nameParam.codeParam.valueParam.unit_conversion_factorParam.unit_nameParam.unit_auth_nameParam.unit_codeParam.unit_category
+
+ParamParam.nameParam.auth_nameParam.codeParam.valueParam.unit_conversion_factorParam.unit_nameParam.unit_auth_nameParam.unit_codeParam.unit_category
+
+ParamParam.nameParam.auth_nameParam.codeParam.valueParam.unit_conversion_factorParam.unit_nameParam.unit_auth_nameParam.unit_codeParam.unit_category
+
+Param.nameParam.auth_nameParam.codeParam.valueParam.unit_conversion_factorParam.unit_nameParam.unit_auth_nameParam.unit_codeParam.unit_category
+
+Param.name
+
+Param.auth_name
+
+Param.code
+
+Param.value
+
+Param.unit_conversion_factor
+
+Param.unit_name
+
+Param.unit_auth_name
+
+Param.unit_code
+
+Param.unit_category
+
+GridGridGrid.short_nameGrid.full_nameGrid.package_nameGrid.urlGrid.direct_downloadGrid.open_licenseGrid.available
+
+GridGrid.short_nameGrid.full_nameGrid.package_nameGrid.urlGrid.direct_downloadGrid.open_licenseGrid.available
+
+GridGrid.short_nameGrid.full_nameGrid.package_nameGrid.urlGrid.direct_downloadGrid.open_licenseGrid.available
+
+Grid.short_nameGrid.full_nameGrid.package_nameGrid.urlGrid.direct_downloadGrid.open_licenseGrid.available
+
+Grid.short_name
+
+Grid.full_name
+
+Grid.package_name
+
+Grid.url
+
+Grid.direct_download
+
+Grid.open_license
+
+Grid.available
+
+AlbersEqualAreaConversionAlbersEqualAreaConversionAlbersEqualAreaConversion.__new__()
+
+AlbersEqualAreaConversionAlbersEqualAreaConversion.__new__()
+
+AlbersEqualAreaConversionAlbersEqualAreaConversion.__new__()
+
+AlbersEqualAreaConversion.__new__()
+
+AlbersEqualAreaConversion.__new__()
+
+AzimuthalEquidistantConversionAzimuthalEquidistantConversionAzimuthalEquidistantConversion.__new__()
+
+AzimuthalEquidistantConversionAzimuthalEquidistantConversion.__new__()
+
+AzimuthalEquidistantConversionAzimuthalEquidistantConversion.__new__()
+
+AzimuthalEquidistantConversion.__new__()
+
+AzimuthalEquidistantConversion.__new__()
+
+EquidistantCylindricalConversionEquidistantCylindricalConversionEquidistantCylindricalConversion.__new__()
+
+EquidistantCylindricalConversionEquidistantCylindricalConversion.__new__()
+
+EquidistantCylindricalConversionEquidistantCylindricalConversion.__new__()
+
+EquidistantCylindricalConversion.__new__()
+
+EquidistantCylindricalConversion.__new__()
+
+GeostationarySatelliteConversionGeostationarySatelliteConversionGeostationarySatelliteConversion.__new__()
+
+GeostationarySatelliteConversionGeostationarySatelliteConversion.__new__()
+
+GeostationarySatelliteConversionGeostationarySatelliteConversion.__new__()
+
+GeostationarySatelliteConversion.__new__()
+
+GeostationarySatelliteConversion.__new__()
+
+LambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversion.__new__()
+
+LambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversion.__new__()
+
+LambertAzimuthalEqualAreaConversionLambertAzimuthalEqualAreaConversion.__new__()
+
+LambertAzimuthalEqualAreaConversion.__new__()
+
+LambertAzimuthalEqualAreaConversion.__new__()
+
+LambertConformalConic1SPConversionLambertConformalConic1SPConversionLambertConformalConic1SPConversion.__new__()
+
+LambertConformalConic1SPConversionLambertConformalConic1SPConversion.__new__()
+
+LambertConformalConic1SPConversionLambertConformalConic1SPConversion.__new__()
+
+LambertConformalConic1SPConversion.__new__()
+
+LambertConformalConic1SPConversion.__new__()
+
+LambertConformalConic2SPConversionLambertConformalConic2SPConversionLambertConformalConic2SPConversion.__new__()
+
+LambertConformalConic2SPConversionLambertConformalConic2SPConversion.__new__()
+
+LambertConformalConic2SPConversionLambertConformalConic2SPConversion.__new__()
+
+LambertConformalConic2SPConversion.__new__()
+
+LambertConformalConic2SPConversion.__new__()
+
+LambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversion.__new__()LambertCylindricalEqualAreaScaleConversion
+
+LambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversion.__new__()LambertCylindricalEqualAreaScaleConversion
+
+LambertCylindricalEqualAreaConversionLambertCylindricalEqualAreaConversion.__new__()
+
+LambertCylindricalEqualAreaConversion.__new__()
+
+LambertCylindricalEqualAreaConversion.__new__()
+
+LambertCylindricalEqualAreaScaleConversion
+
+MercatorAConversionMercatorAConversionMercatorAConversion.__new__()
+
+MercatorAConversionMercatorAConversion.__new__()
+
+MercatorAConversionMercatorAConversion.__new__()
+
+MercatorAConversion.__new__()
+
+MercatorAConversion.__new__()
+
+MercatorBConversionMercatorBConversionMercatorBConversion.__new__()
+
+MercatorBConversionMercatorBConversion.__new__()
+
+MercatorBConversionMercatorBConversion.__new__()
+
+MercatorBConversion.__new__()
+
+MercatorBConversion.__new__()
+
+HotineObliqueMercatorBConversionHotineObliqueMercatorBConversionHotineObliqueMercatorBConversion.__new__()
+
+HotineObliqueMercatorBConversionHotineObliqueMercatorBConversion.__new__()
+
+HotineObliqueMercatorBConversionHotineObliqueMercatorBConversion.__new__()
+
+HotineObliqueMercatorBConversion.__new__()
+
+HotineObliqueMercatorBConversion.__new__()
+
+OrthographicConversionOrthographicConversionOrthographicConversion.__new__()
+
+OrthographicConversionOrthographicConversion.__new__()
+
+OrthographicConversionOrthographicConversion.__new__()
+
+OrthographicConversion.__new__()
+
+OrthographicConversion.__new__()
+
+PlateCarreeConversionPlateCarreeConversion
+
+PlateCarreeConversion
+
+PlateCarreeConversion
+
+PolarStereographicAConversionPolarStereographicAConversionPolarStereographicAConversion.__new__()
+
+PolarStereographicAConversionPolarStereographicAConversion.__new__()
+
+PolarStereographicAConversionPolarStereographicAConversion.__new__()
+
+PolarStereographicAConversion.__new__()
+
+PolarStereographicAConversion.__new__()
+
+PolarStereographicBConversionPolarStereographicBConversionPolarStereographicBConversion.__new__()
+
+PolarStereographicBConversionPolarStereographicBConversion.__new__()
+
+PolarStereographicBConversionPolarStereographicBConversion.__new__()
+
+PolarStereographicBConversion.__new__()
+
+PolarStereographicBConversion.__new__()
+
+SinusoidalConversionSinusoidalConversionSinusoidalConversion.__new__()
+
+SinusoidalConversionSinusoidalConversion.__new__()
+
+SinusoidalConversionSinusoidalConversion.__new__()
+
+SinusoidalConversion.__new__()
+
+SinusoidalConversion.__new__()
+
+StereographicConversionStereographicConversionStereographicConversion.__new__()
+
+StereographicConversionStereographicConversion.__new__()
+
+StereographicConversionStereographicConversion.__new__()
+
+StereographicConversion.__new__()
+
+StereographicConversion.__new__()
+
+UTMConversionUTMConversionUTMConversion.__new__()
+
+UTMConversionUTMConversion.__new__()
+
+UTMConversionUTMConversion.__new__()
+
+UTMConversion.__new__()
+
+UTMConversion.__new__()
+
+TransverseMercatorConversionTransverseMercatorConversionTransverseMercatorConversion.__new__()
+
+TransverseMercatorConversionTransverseMercatorConversion.__new__()
+
+TransverseMercatorConversionTransverseMercatorConversion.__new__()
+
+TransverseMercatorConversion.__new__()
+
+TransverseMercatorConversion.__new__()
+
+VerticalPerspectiveConversionVerticalPerspectiveConversionVerticalPerspectiveConversion.__new__()
+
+VerticalPerspectiveConversionVerticalPerspectiveConversion.__new__()
+
+VerticalPerspectiveConversionVerticalPerspectiveConversion.__new__()
+
+VerticalPerspectiveConversion.__new__()
+
+VerticalPerspectiveConversion.__new__()
+
+RotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversion.__new__()
+
+RotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversion.__new__()
+
+RotatedLatitudeLongitudeConversionRotatedLatitudeLongitudeConversion.__new__()
+
+RotatedLatitudeLongitudeConversion.__new__()
+
+RotatedLatitudeLongitudeConversion.__new__()
+
+PoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversion.__new__()
+
+PoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversion.__new__()
+
+PoleRotationNetCDFCFConversionPoleRotationNetCDFCFConversion.__new__()
+
+PoleRotationNetCDFCFConversion.__new__()
+
+PoleRotationNetCDFCFConversion.__new__()
+
+ToWGS84TransformationToWGS84TransformationToWGS84Transformation.__new__()
+
+ToWGS84TransformationToWGS84Transformation.__new__()
+
+ToWGS84TransformationToWGS84Transformation.__new__()
+
+ToWGS84Transformation.__new__()
+
+ToWGS84Transformation.__new__()

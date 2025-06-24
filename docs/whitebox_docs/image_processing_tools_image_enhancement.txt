@@ -1,0 +1,884 @@
+Image Processing Tools → Image Enhancement
+
+BalanceContrastEnhancementCorrectVignettingDirectDecorrelationStretchGammaCorrectionGaussianContrastStretchHistogramEqualizationHistogramMatchingHistogramMatchingTwoImagesMinMaxContrastStretchPanchromaticSharpeningPercentageContrastStretchPiecewiseContrastStretchSigmoidalContrastStretchStandardDeviationContrastStretch
+
+BalanceContrastEnhancement
+
+CorrectVignetting
+
+DirectDecorrelationStretch
+
+GammaCorrection
+
+GaussianContrastStretch
+
+HistogramEqualization
+
+HistogramMatching
+
+HistogramMatchingTwoImages
+
+MinMaxContrastStretch
+
+PanchromaticSharpening
+
+PercentageContrastStretch
+
+PiecewiseContrastStretch
+
+SigmoidalContrastStretch
+
+StandardDeviationContrastStretch
+
+
+
+BalanceContrastEnhancement
+
+This tool can be used to reduce colour bias in a colour composite image based on the
+technique described by Liu (1991). Colour bias is a common phenomena with colour images
+derived from multispectral imagery, whereby a higher average brightness value in one
+band results in over-representation of that band in the colour composite. The tool
+essentially applies a parabolic stretch to each of the three bands in a user specified
+RGB colour composite, forcing the histograms of each band to have the same minimum,
+maximum, and average values while maintaining their overall histogram shape. For greater
+detail on the operation of the tool, please see Liu (1991). Aside from the names of the
+input and output colour composite images, the user must also set the value of E, the
+desired output band mean, where 20 < E < 235.
+
+Reference:
+
+Liu, J.G. (1991) Balance contrast enhancement technique and its application in image
+colour composition.International Journal of Remote Sensing, 12:10.
+
+See Also:DirectDecorrelationStretch,HistogramMatching,HistogramMatchingTwoImages,HistogramEqualization,GaussianContrastStretch
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 19/07/2017
+
+Last Modified: 30/01/2020
+
+
+
+CorrectVignetting
+
+This tool can be used to reduce vignetting within an image. Vignetting refers to the
+reduction of image brightness away from the image centre (i.e. the principal point).
+Vignetting is a radiometric distortion resulting from lens characteristics. The
+algorithm calculates the brightness value in the output image (BVout) as:
+
+BVout = BVin / [cos^n(arctan(d / f))]
+
+Where d is the photo-distance from the principal point in millimetres, f is the focal
+length of the camera, in millimeters, and n is a user-specified parameter. Pixel
+distances are converted to photo-distances (in millimetres) using the specified
+image width, i.e. distance between left and right edges (mm). For many cameras, 4.0
+is an appropriate value of the n parameter. A second pass of the image is used to
+rescale the output image so that it possesses the same minimum and maximum values as
+the input image.
+
+If an RGB image is input, the analysis will be performed on the intensity component
+of the HSI transform.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 24/04/2018
+
+Last Modified: 22/10/2019
+
+
+
+DirectDecorrelationStretch
+
+The Direct Decorrelation Stretch (DDS) is a simple type of saturation stretch. The stretch is
+applied to a colour composite image and is used to improve the saturation, or colourfulness,
+of the image. The DDS operates by reducing the achromatic (grey) component of a pixel's colour
+by a scale factor (k), such that the red (r), green (g), and blue (b) components of the output
+colour are defined as:
+
+rk= r -kmin(r, g, b)
+
+gk= g -kmin(r, g, b)
+
+bk= b -kmin(r, g, b)
+
+The achromatic factor (k) can range between 0 (no effect) and 1 (full saturation stretch),
+although typical values range from 0.3 to 0.7. A linear stretch is used afterwards to adjust
+overall image brightness. Liu and Moore (1996) recommend applying a colour balance stretch,
+such asBalanceContrastEnhancementbefore using the DDS.
+
+Reference:
+
+Liu, J.G., and Moore, J. (1996) Direct decorrelation stretch technique for RGB colour composition.
+International Journal of Remote Sensing, 17:5, 1005-1018.
+
+See Also:CreateColourComposite,BalanceContrastEnhancement
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 21/07/2017
+
+Last Modified: 30/01/2020
+
+
+
+GammaCorrection
+
+This tool performs a gamma colour correction transform on an input image (--input), such that each
+input pixel value (zin) is mapped to the corresponding output value (zout) as:
+
+zout= zingamma
+
+The user must specify the value of thegammaparameter. The input image may be of either a greyscale or RGB colour
+composite data type.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 13/07/2017
+
+Last Modified: 22/10/2019
+
+
+
+GaussianContrastStretch
+
+This tool performs a Gaussian stretch on a raster image. The observed histogram of the input image is fitted
+to a Gaussian histogram, i.e. normal distribution. A histogram matching technique is used to map the values from
+the input image onto the output Gaussian distribution. The user must the number of tones (--num_tones) used in the
+output image.
+
+This tool is related to the more generalHistogramMatchingtool, which can be used to fit any frequency distribution
+to an input image, and other contrast enhancement tools such asHistogramEqualization,MinMaxContrastStretch,PercentageContrastStretch,SigmoidalContrastStretch, andStandardDeviationContrastStretch.
+
+See Also:PiecewiseContrastStretch,HistogramEqualization,MinMaxContrastStretch,PercentageContrastStretch,SigmoidalContrastStretch,StandardDeviationContrastStretch,HistogramMatching
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 21/05/2018
+
+Last Modified: 22/10/2019
+
+
+
+HistogramEqualization
+
+This tool alters the cumulative distribution function (CDF) of a raster image to match,
+as closely as possible, the CDF of a uniform distribution. Histogram equalization works
+by first calculating the histogram of the input image. This input histogram is then
+converted into a CDF. Each grid cell value in the input image is then mapped to the
+corresponding value in the uniform distribution's CDF that has an equivalent (or as close
+as possible) cumulative probability value. Histogram equalization provides a very effective
+means of performing image contrast adjustment in an efficient manner with little need for
+human input.
+
+The user must specify the name of the input image to perform histogram equalization on.
+The user must also specify the number of tones, corresponding to the number
+of histogram bins used in the analysis.
+
+HistogramEqualizationis related to theHistogramMatchingTwoImagestool (used when an image's
+CDF is to be matched to a reference CDF derived from a reference image). Similarly,HistogramMatching,
+andGaussianContrastStretchare similarly related tools frequently used for image contrast
+adjustment, where the reference CDFs are uniform and Gaussian (normal) respectively.
+
+Notes:
+
+The algorithm can introduces gaps in the histograms (steps in the CDF). This is to be expected because
+the histogram is being distorted. This is more prevalent for integer-level images.Histogram equalization is not appropriate for images containing categorical (class) data.
+
+The algorithm can introduces gaps in the histograms (steps in the CDF). This is to be expected because
+the histogram is being distorted. This is more prevalent for integer-level images.
+
+Histogram equalization is not appropriate for images containing categorical (class) data.
+
+See Also:PiecewiseContrastStretch,HistogramMatching,HistogramMatchingTwoImages,GaussianContrastStretch
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/08/2017
+
+Last Modified: 30/01/2020
+
+
+
+HistogramMatching
+
+This tool alters the cumulative distribution function (CDF) of a raster image to match,
+as closely as possible, the CDF of a reference histogram. Histogram matching works by
+first calculating the histogram of the input image. This input histogram and reference
+histograms are each then converted into CDFs. Each grid cell value in the input image
+is then mapped to the corresponding value in the reference CDF that has an equivalent
+(or as close as possible) cumulative probability value. Histogram matching provides
+the most flexible means of performing image contrast adjustment.
+
+The reference histogram must be specified to the tool in the form of a text file (.txt),
+provided using the--histo_fileflag. This file must contain two columns (delimited by
+a tab, space, comma, colon, or semicolon) where the first column contains the x value
+(i.e. the values that will be assigned to the grid cells in the output image) and the second
+column contains the frequency or probability. Note that 1) the file must not contain a
+header row, 2) each x value/frequency pair must be on a separate row, and 3) the
+frequency/probability must not be cumulative (i.e. the file must contain the histogram and
+not the CDF). The CDF will be computed for the reference histogram automatically by the tool.
+It is possible to create this type of histogram using the wide range of distribution tools
+available in most spreadsheet programs (e.g. Excel or LibreOffice's Calc program). You must
+save the file as a text-only (ASCII) file.
+
+HistogramMatchingis related to theHistogramMatchingTwoImagestool, which can be used
+when a reference CDF can be derived from a reference image.HistogramEqualizationandGaussianContrastStretchare similarly related tools frequently used for image contrast
+adjustment, where the reference CDFs are uniform and Gaussian (normal) respectively.
+
+Notes:
+
+The algorithm can introduces gaps in the histograms (steps in the CDF). This is to be expected
+because the histogram is being distorted. This is more prevalent for integer-level images.Histogram matching is not appropriate for images containing categorical (class) data.This tool is not intended for images containing RGB data. If this is the case, the colour
+channels should be split using theSplitColourCompositetool.
+
+The algorithm can introduces gaps in the histograms (steps in the CDF). This is to be expected
+because the histogram is being distorted. This is more prevalent for integer-level images.
+
+Histogram matching is not appropriate for images containing categorical (class) data.
+
+This tool is not intended for images containing RGB data. If this is the case, the colour
+channels should be split using theSplitColourCompositetool.
+
+See Also:HistogramMatchingTwoImages,HistogramEqualization,GaussianContrastStretch,SplitColourComposite
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 14/09/2017
+
+Last Modified: 13/10/2018
+
+
+
+HistogramMatchingTwoImages
+
+This tool alters the cumulative distribution function (CDF) of a raster image to match, as closely
+as possible, the CDF of a reference image. Histogram matching works by first calculating the
+histograms of the input image (i.e. the image to be adjusted) and the reference image. These
+histograms are then converted into CDFs. Each grid cell value in the input image is then mapped
+to the corresponding value in the reference CDF that has the an equivalent (or as close as
+possible) cumulative probability value. A common application of this is to match the images from
+two sensors with slightly different responses, or images from the same sensor, but the sensor's
+response is known to change over time.The size of the two images (rows and columns) do not need
+to be the same, nor do they need to be geographically overlapping.
+
+HistogramMatchingTwoImagesis related to theHistogramMatchingtool, which can be used
+when a reference CDF is used directly rather than deriving it from a reference image.HistogramEqualizationandGaussianContrastStretchare similarly related tools, where the
+reference CDFs are uniform and Gaussian (normal) respectively.
+
+The algorithm may introduces gaps in the histograms (steps in the CDF). This is to be expected
+because the histograms are being distorted. This is more prevalent for integer-level images.
+Histogram matching is not appropriate for images containing categorical (class) data. It is also
+not intended for images containing RGB data, in which case, the colour channels should be split
+using theSplitColourCompositetool.
+
+See Also:HistogramMatching,HistogramEqualization,GaussianContrastStretch,SplitColourComposite
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 31/08/2017
+
+Last Modified: 13/10/2018
+
+
+
+MinMaxContrastStretch
+
+This tool performs a minimum-maximum contrast stretch on a raster image. This operation maps each grid cell
+value in the input raster image (z) onto a new scale that ranges from the user-specified lower-tail clip
+value (min_val) to the upper-tail clip value (max_val), with the specified number of tonal values
+(num_tones), such that:
+
+zout= ((zin– min_val)/(max_val – min_val)) x num_tones
+
+where zoutis the output value. Notice that any values in the input image that are less thanmin_valare assigned a value ofmin_valin the output image. Similarly, any input values greater thanmax_valare assigned a value ofmax_valin the output image.
+
+This is a type of linear contrast stretch with saturation at the tails of the frequency distribution. This is
+the same kind of stretch that is used to display raster type data on the fly in many GIS software packages,
+such that the lower and upper tail values are set using the minimum and maximum display values and the number
+of tonal values is determined by the number of palette entries.
+
+See Also:PiecewiseContrastStretch,GaussianContrastStretch,HistogramEqualization,PercentageContrastStretch,SigmoidalContrastStretch,StandardDeviationContrastStretch
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 13/07/2017
+
+Last Modified: 30/01/2020
+
+
+
+PanchromaticSharpening
+
+Panchromatic sharpening, or simply pan-sharpening, refers to a range of techniques that can be used to merge
+finer spatial resolution panchromatic images with coarser spatial resolution multi-spectral images. The
+multi-spectral data provides colour information while the panchromatic image provides improved spatial information.
+This procedure is sometimes called image fusion. Jensen (2015) describes panchromatic sharpening in detail.
+
+Whitebox provides two common methods for panchromatic sharpening including the Brovey transformation and the
+Intensity-Hue-Saturation (IHS) methods. Both of these techniques provide the best results when the range of
+wavelengths detected by the panchromatic image overlap significantly with the wavelength range covered by the
+three multi-spectral bands that are used. When this is not the case, the resulting colour composite will likely
+have colour properties that are dissimilar to the colour composite generated by the original multispectral images.
+For Landsat ETM+ data, the panchromatic band is sensitive to EMR in the range of 0.52-0.90 micrometres. This
+corresponds closely to the green (band 2), red (band 3), and near-infrared (band 4).
+
+Reference:
+
+Jensen, J. R. (2015). Introductory Digital Image Processing: A Remote Sensing Perspective.
+
+See Also:CreateColourComposite
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/07/2017
+
+Last Modified: 11/02/2019
+
+
+
+PercentageContrastStretch
+
+This tool performs a percentage contrast stretch on a raster image. This operation maps each grid cell value
+in the input raster image (zin) onto a new scale that ranges from a lower-tail clip value (min_val)
+to the upper-tail clip value (max_val), with the user-specified number of tonal values (num_tones), such that:
+
+zout= ((zin– min_val)/(max_val – min_val)) x num_tones
+
+where zoutis the output value. The values ofmin_valandmax_valare determined from the frequency
+distribution and the user-specified tail clip value (--clip). For example, if a value of 1% is specified, the tool
+will determine the values in the input image for which 1% of the grid cells have a lower valuemin_valand 1% of
+the grid cells have a higher valuemax_val. The user must also specify which tails (upper, lower, or both) to clip
+(--tail).
+
+This is a type of linear contrast stretch with saturation at the tails of the frequency distribution. This is
+the same kind of stretch that is used to display raster type data on the fly in many GIS software packages,
+such that the lower and upper tail values are set using the minimum and maximum display values and the number
+of tonal values is determined by the number of palette entries.
+
+See Also:PiecewiseContrastStretch,GaussianContrastStretch,HistogramEqualization,MinMaxContrastStretch,SigmoidalContrastStretch,StandardDeviationContrastStretch
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 13/07/2017
+
+Last Modified: 30/01/2020
+
+
+
+PiecewiseContrastStretch
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool can be used to perform a piecewise contrast stretch on an input image (--input). The input image
+can be either a single-band image or a colour composite, in which case the contrast stretch will be
+performed on the intensity values of the hue-saturation-intensity (HSI) transform of the colour image.
+The user must also specify the name of the output image (--output) and the break-points that define the
+piecewise function used to transfer brightness values from the input to the output image. The break-point
+values are specified as a string parameter (--function), with each break-point taking the form of
+(input value, output proportion); (input value, output proportion); (input value, output proportion), etc.
+Piecewise functions can have as many break-points as desired, and each break-point should be separated by
+a semicolon (;). The input values are specifies as brightness values in the same units as the input image
+(unless it is an input colour composite, in which case the intensity values range from 0 to 1). The output
+function must be specified as a proportion (from 0 to 1) of the output value range, which is specified by
+the number of output greytones (--greytones). Thegreytonesparameter is ignored if the input image
+is a colour composite.  Note that there is no need to specify the initial break-point to the piecewise
+function, as (input min value; 0.0) will be inserted automatically. Similarly, an upper bound of the piecewise
+function of (input max value; 1.0) will also be inserted automatically.
+
+Generally you want to set breakpoints by examining the image histogram. Typically it is desirable to map
+large unpopulated ranges of input brightness values in the input image onto relatively narrow ranges
+of the output brightness values (i.e. a shallow sloped segment of the piecewise function), and areas of the
+histogram that are well populated with pixels in the input image with a larger range of brightness
+values in the output image (i.e. a steeper slope segment). This will have the effect of reducing the number
+of tones used to display the under-populated tails of the distribution and spreading out the well-populated
+regions of the histogram, thereby improving the overall contrast and the visual interpretability of the
+output image. The flexibility of the piecewise contrast stretch can often provide a very suitable means of
+significantly improving image quality.
+
+See Also:RasterHistogram,GaussianContrastStretch,MinMaxContrastStretch,StandardDeviationContrastStretch
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 17/02/2022
+
+Last Modified: 17/02/2022
+
+
+
+SigmoidalContrastStretch
+
+This tool performs a sigmoidal stretch on a raster image. This is a transformation where the input image value for a
+grid cell (zin) is transformed to an output value zout such that:
+
+zout= (1.0 / (1.0 + exp(gain(cutoff- z))) -a) /bxnum_tones
+
+where,
+
+z = (zin-MIN) /RANGE,
+
+a= 1.0 / (1.0 + exp(gainxcutoff)),
+
+b= 1.0 / (1.0 + exp(gainx (cutoff- 1.0))) - 1.0 / (1.0 + exp(gainxcutoff)),
+
+MINandRANGEare the minimum value and data range in the input image respectively andgainandcutoffare
+user specified parameters (--gain,--cutoff).
+
+Like all ofWhiteboxTools's contrast enhancement tools, this operation will work on either greyscale or RGB input
+images.
+
+See Also:PiecewiseContrastStretch,GaussianContrastStretch,HistogramEqualization,MinMaxContrastStretch,PercentageContrastStretch,StandardDeviationContrastStretch
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 13/07/2017
+
+Last Modified: 30/01/2020
+
+
+
+StandardDeviationContrastStretch
+
+This tool performs a standard deviation contrast stretch on a raster image. This operation maps each grid cell value
+in the input raster image (zin) onto a new scale that ranges from a lower-tail clip value (min_val)
+to the upper-tail clip value (max_val), with the user-specified number of tonal values (num_tones), such that:
+
+zout= ((zin– min_val)/(max_val – min_val)) x num_tones
+
+where zoutis the output value. The values ofmin_valandmax_valare determined based on the image
+mean and standard deviation. Specifically, the user must specify the number of standard deviations (--clipor--stdev) to be used in determining the min and max clip values. The tool will then calculate the input image mean
+and standard deviation and estimate the clip values from these statistics.
+
+This is the same kind of stretch that is used to display raster type data on the fly in many GIS software packages.
+
+See Also:PiecewiseContrastStretch,GaussianContrastStretch,HistogramEqualization,MinMaxContrastStretch,PercentageContrastStretch,SigmoidalContrastStretch
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 13/07/2017
+
+Last Modified: 30/01/2020
+
+
+--- CODE BLOCK ---
+wbt.balance_contrast_enhancement(
+    i, 
+    output, 
+    band_mean=100.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=BalanceContrastEnhancement -v ^
+--wd="/path/to/data/" --input=image.tif -o=output.tif ^
+--band_mean=120 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.correct_vignetting(
+    i, 
+    pp, 
+    output, 
+    focal_length=304.8, 
+    image_width=228.6, 
+    n=4.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CorrectVignetting -v ^
+--wd="/path/to/data/" -i=input.tif --pp=princ_pt.shp ^
+-o=output.tif --focal_length=304.8 --image_width=228.6 ^
+-n=4.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.direct_decorrelation_stretch(
+    i, 
+    output, 
+    k=0.5, 
+    clip=1.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=DirectDecorrelationStretch -v ^
+--wd="/path/to/data/" --input=image.tif -o=output.tif -k=0.4 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.gamma_correction(
+    i, 
+    output, 
+    gamma=0.5, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=GammaCorrection -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif --gamma=0.5 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.gaussian_contrast_stretch(
+    i, 
+    output, 
+    num_tones=256, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=GaussianContrastStretch -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif ^
+--num_tones=1024 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.histogram_equalization(
+    i, 
+    output, 
+    num_tones=256, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=HistogramEqualization -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif ^
+--num_tones=1024 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.histogram_matching(
+    i, 
+    histo_file, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=HistogramMatching -v ^
+--wd="/path/to/data/" -i=input1.tif --histo_file=histo.txt ^
+-o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.histogram_matching_two_images(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=HistogramMatchingTwoImages -v ^
+--wd="/path/to/data/" --i1=input1.tif --i2=input2.tif ^
+-o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.min_max_contrast_stretch(
+    i, 
+    output, 
+    min_val, 
+    max_val, 
+    num_tones=256, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MinMaxContrastStretch -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif ^
+--min_val=45.0 --max_val=200.0 --num_tones=1024 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.panchromatic_sharpening(
+    pan, 
+    output, 
+    red=None, 
+    green=None, 
+    blue=None, 
+    composite=None, 
+    method="brovey", 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PanchromaticSharpening -v ^
+--wd="/path/to/data/" --red=red.tif --green=green.tif ^
+--blue=blue.tif --pan=pan.tif --output=pan_sharp.tif ^
+--method='brovey'
+>>./whitebox_tools -r=PanchromaticSharpening ^
+-v --wd="/path/to/data/" --composite=image.tif --pan=pan.tif ^
+--output=pan_sharp.tif --method='ihs' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.percentage_contrast_stretch(
+    i, 
+    output, 
+    clip=1.0, 
+    tail="both", 
+    num_tones=256, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PercentageContrastStretch -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif --clip=2.0 ^
+--tail='both' --num_tones=1024 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.piecewise_contrast_stretch(
+    i, 
+    output, 
+    function="", 
+    greytones=1024, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=PiecewiseContrastStretch -i=input.tif ^
+-o=output.tif --function="x += 5000.0" --greytones=255 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.sigmoidal_contrast_stretch(
+    i, 
+    output, 
+    cutoff=0.0, 
+    gain=1.0, 
+    num_tones=256, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=SigmoidalContrastStretch -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif --cutoff=0.1 ^
+--gain=2.0 --num_tones=1024 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.standard_deviation_contrast_stretch(
+    i, 
+    output, 
+    stdev=2.0, 
+    num_tones=256, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=StandardDeviationContrastStretch -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif --stdev=2.0 ^
+--num_tones=1024 
+
+------------------

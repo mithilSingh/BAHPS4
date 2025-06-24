@@ -1,0 +1,959 @@
+Datum¶
+
+Note
+
+PROJ >= 7.0.0 will have better support for aliases for datum names.
+Until then, you will need to use the full name of the datum. There is support
+currently for the old PROJ names for datums such as WGS84 and NAD83.
+
+Datum¶
+
+Added in version 2.2.0.
+
+Datum for CRS. If it is a compound CRS it is the horizontal datum.
+
+The name of the datum.
+
+str
+
+returns: The ellipsoid object with associated attributes.
+:rtype: Ellipsoid
+
+Create a Datum from an authority code.
+
+auth_name(str) – Name of the authority.code(strorint) – The code used by the authority.
+
+auth_name(str) – Name of the authority.
+
+auth_name(str) – Name of the authority.
+
+code(strorint) – The code used by the authority.
+
+code(strorint) – The code used by the authority.
+
+Datum
+
+Create a Datum from an EPSG code.
+
+code(strorint) – The code used by EPSG.
+
+Datum
+
+Added in version 2.4.0.
+
+Create Datum from a JSON string.
+
+datum_json_str(str) – Datum JSON string.
+
+Datum
+
+Added in version 2.4.0.
+
+Create Datum from a JSON dictionary.
+
+datum_dict(str) – Datum dictionary.
+
+Datum
+
+Added in version 2.5.0.
+
+Create a Datum from a name.
+
+Examples
+
+WGS 84World Geodetic System 1984
+
+WGS 84
+
+WGS 84
+
+World Geodetic System 1984
+
+World Geodetic System 1984
+
+datum_name(str) – Datum name.auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.datum_type(DatumType,optional) – The datum type to create. If it is None, it uses any datum type.
+
+datum_name(str) – Datum name.
+
+datum_name(str) – Datum name.
+
+auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+datum_type(DatumType,optional) – The datum type to create. If it is None, it uses any datum type.
+
+datum_type(DatumType,optional) – The datum type to create. If it is None, it uses any datum type.
+
+Datum
+
+Create a Datum from a string.
+
+Examples
+
+urn:ogc:def:datum:EPSG::6326DATUM[“World Geodetic System 1984”,
+ELLIPSOID[“WGS 84”,6378137,298.257223563,
+LENGTHUNIT[“metre”,1]],
+ID[“EPSG”,6326]]World Geodetic System 1984
+
+urn:ogc:def:datum:EPSG::6326
+
+urn:ogc:def:datum:EPSG::6326
+
+DATUM[“World Geodetic System 1984”,
+ELLIPSOID[“WGS 84”,6378137,298.257223563,
+LENGTHUNIT[“metre”,1]],
+ID[“EPSG”,6326]]
+
+DATUM[“World Geodetic System 1984”,
+ELLIPSOID[“WGS 84”,6378137,298.257223563,
+LENGTHUNIT[“metre”,1]],
+ID[“EPSG”,6326]]
+
+World Geodetic System 1984
+
+World Geodetic System 1984
+
+datum_string(str) – Datum string.
+
+Datum
+
+Added in version 2.5.0.
+
+PROJ JSON stringPROJ JSON dictWKT stringAn authority stringAn EPSG integer codeAn iterable of (“auth_name”, “auth_code”)An object with ato_jsonmethod.
+
+PROJ JSON string
+
+PROJ JSON string
+
+PROJ JSON dict
+
+PROJ JSON dict
+
+WKT string
+
+WKT string
+
+An authority string
+
+An authority string
+
+An EPSG integer code
+
+An EPSG integer code
+
+An iterable of (“auth_name”, “auth_code”)
+
+An iterable of (“auth_name”, “auth_code”)
+
+An object with ato_jsonmethod.
+
+An object with ato_jsonmethod.
+
+user_input(str,dict,int,Iterable[str,str]) – Input to create cls.
+
+cls
+
+Compares projection objects to see if they are exactly the same.
+
+returns: The CRS prime meridian object with associated attributes.
+:rtype: PrimeMeridian
+
+Added in version 2.4.0.
+
+Remarks about object.
+
+str
+
+Added in version 2.4.0.
+
+Scope of object.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON dictionary.
+
+dict
+
+Convert the projection to a WKT string.
+
+WKT2_2015WKT2_2015_SIMPLIFIEDWKT2_2019WKT2_2019_SIMPLIFIEDWKT1_GDALWKT1_ESRI
+
+WKT2_2015
+
+WKT2_2015
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2019
+
+WKT2_2019
+
+WKT2_2019_SIMPLIFIED
+
+WKT2_2019_SIMPLIFIED
+
+WKT1_GDAL
+
+WKT1_GDAL
+
+WKT1_ESRI
+
+WKT1_ESRI
+
+Added in version 3.6.0:output_axis_rule
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.pretty(bool,default=False) – If True, it will set the output to be a multiline string.output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+str
+
+CustomDatum¶
+
+Bases:Datum
+
+Added in version 2.5.0.
+
+Class to build a datum based on an ellipsoid and prime meridian.
+
+name(str,default="undefined") – Name of the datum.ellipsoid(Any,default="WGS 84") – Anything accepted bypyproj.crs.Ellipsoid.from_user_input()or apyproj.crs.datum.CustomEllipsoid.prime_meridian(Any,default="Greenwich") – Anything accepted bypyproj.crs.PrimeMeridian.from_user_input().
+
+name(str,default="undefined") – Name of the datum.
+
+name(str,default="undefined") – Name of the datum.
+
+ellipsoid(Any,default="WGS 84") – Anything accepted bypyproj.crs.Ellipsoid.from_user_input()or apyproj.crs.datum.CustomEllipsoid.
+
+ellipsoid(Any,default="WGS 84") – Anything accepted bypyproj.crs.Ellipsoid.from_user_input()or apyproj.crs.datum.CustomEllipsoid.
+
+prime_meridian(Any,default="Greenwich") – Anything accepted bypyproj.crs.PrimeMeridian.from_user_input().
+
+prime_meridian(Any,default="Greenwich") – Anything accepted bypyproj.crs.PrimeMeridian.from_user_input().
+
+Ellipsoid¶
+
+Added in version 2.0.0.
+
+Ellipsoid for CRS
+
+The name of the ellipsoid.
+
+str
+
+1 if True, 0 if False
+
+int
+
+The semi major axis in meters of the ellipsoid.
+
+float
+
+The semi minor axis in meters of the ellipsoid.
+
+float
+
+The inverse flattening of the ellipsoid.
+
+float
+
+Added in version 2.2.0.
+
+Create an Ellipsoid from an authority code.
+
+auth_name(str) – Name of the authority.code(strorint) – The code used by the authority.
+
+auth_name(str) – Name of the authority.
+
+auth_name(str) – Name of the authority.
+
+code(strorint) – The code used by the authority.
+
+code(strorint) – The code used by the authority.
+
+Ellipsoid
+
+Added in version 2.2.0.
+
+Create an Ellipsoid from an EPSG code.
+
+code(strorint) – The code used by the EPSG.
+
+Ellipsoid
+
+Added in version 2.4.0.
+
+Create Ellipsoid from a JSON string.
+
+ellipsoid_json_str(str) – Ellipsoid JSON string.
+
+Ellipsoid
+
+Added in version 2.4.0.
+
+Create Ellipsoid from a JSON dictionary.
+
+ellipsoid_dict(str) – Ellipsoid dictionary.
+
+Ellipsoid
+
+Added in version 2.5.0.
+
+Create a Ellipsoid from a name.
+
+Examples
+
+WGS 84
+
+WGS 84
+
+WGS 84
+
+ellipsoid_name(str) – Ellipsoid name.auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+ellipsoid_name(str) – Ellipsoid name.
+
+ellipsoid_name(str) – Ellipsoid name.
+
+auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+Ellipsoid
+
+Added in version 2.2.0.
+
+Create an Ellipsoid from a string.
+
+Examples
+
+urn:ogc:def:ellipsoid:EPSG::7001ELLIPSOID[“Airy 1830”,6377563.396,299.3249646,
+LENGTHUNIT[“metre”,1],
+ID[“EPSG”,7001]]WGS 84
+
+urn:ogc:def:ellipsoid:EPSG::7001
+
+urn:ogc:def:ellipsoid:EPSG::7001
+
+ELLIPSOID[“Airy 1830”,6377563.396,299.3249646,
+LENGTHUNIT[“metre”,1],
+ID[“EPSG”,7001]]
+
+ELLIPSOID[“Airy 1830”,6377563.396,299.3249646,
+LENGTHUNIT[“metre”,1],
+ID[“EPSG”,7001]]
+
+WGS 84
+
+WGS 84
+
+ellipsoid_string(str) – Ellipsoid string.
+
+Ellipsoid
+
+Added in version 2.5.0.
+
+PROJ JSON stringPROJ JSON dictWKT stringAn authority stringAn EPSG integer codeAn iterable of (“auth_name”, “auth_code”)An object with ato_jsonmethod.
+
+PROJ JSON string
+
+PROJ JSON string
+
+PROJ JSON dict
+
+PROJ JSON dict
+
+WKT string
+
+WKT string
+
+An authority string
+
+An authority string
+
+An EPSG integer code
+
+An EPSG integer code
+
+An iterable of (“auth_name”, “auth_code”)
+
+An iterable of (“auth_name”, “auth_code”)
+
+An object with ato_jsonmethod.
+
+An object with ato_jsonmethod.
+
+user_input(str,dict,int,Iterable[str,str]) – Input to create cls.
+
+cls
+
+Compares projection objects to see if they are exactly the same.
+
+Added in version 2.4.0.
+
+Remarks about object.
+
+str
+
+Added in version 2.4.0.
+
+Scope of object.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON dictionary.
+
+dict
+
+Convert the projection to a WKT string.
+
+WKT2_2015WKT2_2015_SIMPLIFIEDWKT2_2019WKT2_2019_SIMPLIFIEDWKT1_GDALWKT1_ESRI
+
+WKT2_2015
+
+WKT2_2015
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2019
+
+WKT2_2019
+
+WKT2_2019_SIMPLIFIED
+
+WKT2_2019_SIMPLIFIED
+
+WKT1_GDAL
+
+WKT1_GDAL
+
+WKT1_ESRI
+
+WKT1_ESRI
+
+Added in version 3.6.0:output_axis_rule
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.pretty(bool,default=False) – If True, it will set the output to be a multiline string.output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+str
+
+CustomEllipsoid¶
+
+Bases:Ellipsoid
+
+Added in version 2.5.0.
+
+Class to build a custom ellipsoid.
+
+name(str,default="undefined") – Name of the ellipsoid.semi_major_axis(float,optional) – The semi major axis in meters. Required if missing radius.inverse_flattening(float,optional) – The inverse flattening in meters.
+Required if missing semi_minor_axis and radius.semi_minor_axis(float,optional) – The semi minor axis in meters.
+Required if missing inverse_flattening and radius.radius(float,optional) – The radius in meters. Can only be used alone.
+Cannot be mixed with other parameters.
+
+name(str,default="undefined") – Name of the ellipsoid.
+
+name(str,default="undefined") – Name of the ellipsoid.
+
+semi_major_axis(float,optional) – The semi major axis in meters. Required if missing radius.
+
+semi_major_axis(float,optional) – The semi major axis in meters. Required if missing radius.
+
+inverse_flattening(float,optional) – The inverse flattening in meters.
+Required if missing semi_minor_axis and radius.
+
+inverse_flattening(float,optional) – The inverse flattening in meters.
+Required if missing semi_minor_axis and radius.
+
+semi_minor_axis(float,optional) – The semi minor axis in meters.
+Required if missing inverse_flattening and radius.
+
+semi_minor_axis(float,optional) – The semi minor axis in meters.
+Required if missing inverse_flattening and radius.
+
+radius(float,optional) – The radius in meters. Can only be used alone.
+Cannot be mixed with other parameters.
+
+radius(float,optional) – The radius in meters. Can only be used alone.
+Cannot be mixed with other parameters.
+
+PrimeMeridian¶
+
+Added in version 2.0.0.
+
+Prime Meridian for CRS
+
+The name of the prime meridian.
+
+str
+
+The unit name for the prime meridian.
+
+str
+
+Added in version 2.2.0.
+
+Create a PrimeMeridian from an authority code.
+
+auth_name(str) – Name of the authority.code(strorint) – The code used by the authority.
+
+auth_name(str) – Name of the authority.
+
+auth_name(str) – Name of the authority.
+
+code(strorint) – The code used by the authority.
+
+code(strorint) – The code used by the authority.
+
+PrimeMeridian
+
+Added in version 2.2.0.
+
+Create a PrimeMeridian from an EPSG code.
+
+code(strorint) – The code used by EPSG.
+
+PrimeMeridian
+
+Added in version 2.4.0.
+
+Create PrimeMeridian from a JSON string.
+
+prime_meridian_json_str(str) – PrimeMeridian JSON string.
+
+PrimeMeridian
+
+Added in version 2.4.0.
+
+Create PrimeMeridian from a JSON dictionary.
+
+prime_meridian_dict(str) – PrimeMeridian dictionary.
+
+PrimeMeridian
+
+Added in version 2.5.0.
+
+Create a Prime Meridian from a name.
+
+Examples
+
+Greenwich
+
+Greenwich
+
+Greenwich
+
+prime_meridian_name(str) – Prime Meridian name.auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+prime_meridian_name(str) – Prime Meridian name.
+
+prime_meridian_name(str) – Prime Meridian name.
+
+auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+auth_name(str,optional) – The authority name to refine search (e.g. ‘EPSG’).
+If None, will search all authorities.
+
+PrimeMeridian
+
+Added in version 2.2.0.
+
+Create an PrimeMeridian from a string.
+
+Examples
+
+urn:ogc:def:meridian:EPSG::8901PRIMEM[“Greenwich”,0,
+ANGLEUNIT[“degree”,0.0174532925199433],
+ID[“EPSG”,8901]]Greenwich
+
+urn:ogc:def:meridian:EPSG::8901
+
+urn:ogc:def:meridian:EPSG::8901
+
+PRIMEM[“Greenwich”,0,
+ANGLEUNIT[“degree”,0.0174532925199433],
+ID[“EPSG”,8901]]
+
+PRIMEM[“Greenwich”,0,
+ANGLEUNIT[“degree”,0.0174532925199433],
+ID[“EPSG”,8901]]
+
+Greenwich
+
+Greenwich
+
+prime_meridian_string(str) – prime meridian string.
+
+PrimeMeridian
+
+Added in version 2.5.0.
+
+PROJ JSON stringPROJ JSON dictWKT stringAn authority stringAn EPSG integer codeAn iterable of (“auth_name”, “auth_code”)An object with ato_jsonmethod.
+
+PROJ JSON string
+
+PROJ JSON string
+
+PROJ JSON dict
+
+PROJ JSON dict
+
+WKT string
+
+WKT string
+
+An authority string
+
+An authority string
+
+An EPSG integer code
+
+An EPSG integer code
+
+An iterable of (“auth_name”, “auth_code”)
+
+An iterable of (“auth_name”, “auth_code”)
+
+An object with ato_jsonmethod.
+
+An object with ato_jsonmethod.
+
+user_input(str,dict,int,Iterable[str,str]) – Input to create cls.
+
+cls
+
+Compares projection objects to see if they are exactly the same.
+
+Added in version 2.4.0.
+
+Remarks about object.
+
+str
+
+Added in version 2.4.0.
+
+Scope of object.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON dictionary.
+
+dict
+
+Convert the projection to a WKT string.
+
+WKT2_2015WKT2_2015_SIMPLIFIEDWKT2_2019WKT2_2019_SIMPLIFIEDWKT1_GDALWKT1_ESRI
+
+WKT2_2015
+
+WKT2_2015
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2019
+
+WKT2_2019
+
+WKT2_2019_SIMPLIFIED
+
+WKT2_2019_SIMPLIFIED
+
+WKT1_GDAL
+
+WKT1_GDAL
+
+WKT1_ESRI
+
+WKT1_ESRI
+
+Added in version 3.6.0:output_axis_rule
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.pretty(bool,default=False) – If True, it will set the output to be a multiline string.output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+str
+
+CustomPrimeMeridian¶
+
+Bases:PrimeMeridian
+
+Added in version 2.5.0.
+
+Class to build a prime meridian based on a longitude.
+
+longitude(float) – Longitude of prime meridian.name(str,optional) – Name of the prime meridian.
+
+longitude(float) – Longitude of prime meridian.
+
+longitude(float) – Longitude of prime meridian.
+
+name(str,optional) – Name of the prime meridian.
+
+name(str,optional) – Name of the prime meridian.
+
+DatumDatumDatumDatum.nameDatum.ellipsoidDatum.from_authority()Datum.from_epsg()Datum.from_json()Datum.from_json_dict()Datum.from_name()Datum.from_string()Datum.from_user_input()Datum.is_exact_same()Datum.prime_meridianDatum.remarksDatum.scopeDatum.to_json()Datum.to_json_dict()Datum.to_wkt()CustomDatumCustomDatumCustomDatum.__new__()EllipsoidEllipsoidEllipsoid.nameEllipsoid.is_semi_minor_computedEllipsoid.semi_major_metreEllipsoid.semi_minor_metreEllipsoid.inverse_flatteningEllipsoid.from_authority()Ellipsoid.from_epsg()Ellipsoid.from_json()Ellipsoid.from_json_dict()Ellipsoid.from_name()Ellipsoid.from_string()Ellipsoid.from_user_input()Ellipsoid.is_exact_same()Ellipsoid.remarksEllipsoid.scopeEllipsoid.to_json()Ellipsoid.to_json_dict()Ellipsoid.to_wkt()CustomEllipsoidCustomEllipsoidCustomEllipsoid.__new__()PrimeMeridianPrimeMeridianPrimeMeridian.namePrimeMeridian.unit_namePrimeMeridian.from_authority()PrimeMeridian.from_epsg()PrimeMeridian.from_json()PrimeMeridian.from_json_dict()PrimeMeridian.from_name()PrimeMeridian.from_string()PrimeMeridian.from_user_input()PrimeMeridian.is_exact_same()PrimeMeridian.remarksPrimeMeridian.scopePrimeMeridian.to_json()PrimeMeridian.to_json_dict()PrimeMeridian.to_wkt()CustomPrimeMeridianCustomPrimeMeridianCustomPrimeMeridian.__new__()
+
+DatumDatumDatumDatum.nameDatum.ellipsoidDatum.from_authority()Datum.from_epsg()Datum.from_json()Datum.from_json_dict()Datum.from_name()Datum.from_string()Datum.from_user_input()Datum.is_exact_same()Datum.prime_meridianDatum.remarksDatum.scopeDatum.to_json()Datum.to_json_dict()Datum.to_wkt()CustomDatumCustomDatumCustomDatum.__new__()EllipsoidEllipsoidEllipsoid.nameEllipsoid.is_semi_minor_computedEllipsoid.semi_major_metreEllipsoid.semi_minor_metreEllipsoid.inverse_flatteningEllipsoid.from_authority()Ellipsoid.from_epsg()Ellipsoid.from_json()Ellipsoid.from_json_dict()Ellipsoid.from_name()Ellipsoid.from_string()Ellipsoid.from_user_input()Ellipsoid.is_exact_same()Ellipsoid.remarksEllipsoid.scopeEllipsoid.to_json()Ellipsoid.to_json_dict()Ellipsoid.to_wkt()CustomEllipsoidCustomEllipsoidCustomEllipsoid.__new__()PrimeMeridianPrimeMeridianPrimeMeridian.namePrimeMeridian.unit_namePrimeMeridian.from_authority()PrimeMeridian.from_epsg()PrimeMeridian.from_json()PrimeMeridian.from_json_dict()PrimeMeridian.from_name()PrimeMeridian.from_string()PrimeMeridian.from_user_input()PrimeMeridian.is_exact_same()PrimeMeridian.remarksPrimeMeridian.scopePrimeMeridian.to_json()PrimeMeridian.to_json_dict()PrimeMeridian.to_wkt()CustomPrimeMeridianCustomPrimeMeridianCustomPrimeMeridian.__new__()
+
+DatumDatumDatum.nameDatum.ellipsoidDatum.from_authority()Datum.from_epsg()Datum.from_json()Datum.from_json_dict()Datum.from_name()Datum.from_string()Datum.from_user_input()Datum.is_exact_same()Datum.prime_meridianDatum.remarksDatum.scopeDatum.to_json()Datum.to_json_dict()Datum.to_wkt()CustomDatumCustomDatumCustomDatum.__new__()EllipsoidEllipsoidEllipsoid.nameEllipsoid.is_semi_minor_computedEllipsoid.semi_major_metreEllipsoid.semi_minor_metreEllipsoid.inverse_flatteningEllipsoid.from_authority()Ellipsoid.from_epsg()Ellipsoid.from_json()Ellipsoid.from_json_dict()Ellipsoid.from_name()Ellipsoid.from_string()Ellipsoid.from_user_input()Ellipsoid.is_exact_same()Ellipsoid.remarksEllipsoid.scopeEllipsoid.to_json()Ellipsoid.to_json_dict()Ellipsoid.to_wkt()CustomEllipsoidCustomEllipsoidCustomEllipsoid.__new__()PrimeMeridianPrimeMeridianPrimeMeridian.namePrimeMeridian.unit_namePrimeMeridian.from_authority()PrimeMeridian.from_epsg()PrimeMeridian.from_json()PrimeMeridian.from_json_dict()PrimeMeridian.from_name()PrimeMeridian.from_string()PrimeMeridian.from_user_input()PrimeMeridian.is_exact_same()PrimeMeridian.remarksPrimeMeridian.scopePrimeMeridian.to_json()PrimeMeridian.to_json_dict()PrimeMeridian.to_wkt()CustomPrimeMeridianCustomPrimeMeridianCustomPrimeMeridian.__new__()
+
+DatumDatumDatum.nameDatum.ellipsoidDatum.from_authority()Datum.from_epsg()Datum.from_json()Datum.from_json_dict()Datum.from_name()Datum.from_string()Datum.from_user_input()Datum.is_exact_same()Datum.prime_meridianDatum.remarksDatum.scopeDatum.to_json()Datum.to_json_dict()Datum.to_wkt()
+
+DatumDatum.nameDatum.ellipsoidDatum.from_authority()Datum.from_epsg()Datum.from_json()Datum.from_json_dict()Datum.from_name()Datum.from_string()Datum.from_user_input()Datum.is_exact_same()Datum.prime_meridianDatum.remarksDatum.scopeDatum.to_json()Datum.to_json_dict()Datum.to_wkt()
+
+DatumDatum.nameDatum.ellipsoidDatum.from_authority()Datum.from_epsg()Datum.from_json()Datum.from_json_dict()Datum.from_name()Datum.from_string()Datum.from_user_input()Datum.is_exact_same()Datum.prime_meridianDatum.remarksDatum.scopeDatum.to_json()Datum.to_json_dict()Datum.to_wkt()
+
+Datum.nameDatum.ellipsoidDatum.from_authority()Datum.from_epsg()Datum.from_json()Datum.from_json_dict()Datum.from_name()Datum.from_string()Datum.from_user_input()Datum.is_exact_same()Datum.prime_meridianDatum.remarksDatum.scopeDatum.to_json()Datum.to_json_dict()Datum.to_wkt()
+
+Datum.name
+
+Datum.ellipsoid
+
+Datum.from_authority()
+
+Datum.from_epsg()
+
+Datum.from_json()
+
+Datum.from_json_dict()
+
+Datum.from_name()
+
+Datum.from_string()
+
+Datum.from_user_input()
+
+Datum.is_exact_same()
+
+Datum.prime_meridian
+
+Datum.remarks
+
+Datum.scope
+
+Datum.to_json()
+
+Datum.to_json_dict()
+
+Datum.to_wkt()
+
+CustomDatumCustomDatumCustomDatum.__new__()
+
+CustomDatumCustomDatum.__new__()
+
+CustomDatumCustomDatum.__new__()
+
+CustomDatum.__new__()
+
+CustomDatum.__new__()
+
+EllipsoidEllipsoidEllipsoid.nameEllipsoid.is_semi_minor_computedEllipsoid.semi_major_metreEllipsoid.semi_minor_metreEllipsoid.inverse_flatteningEllipsoid.from_authority()Ellipsoid.from_epsg()Ellipsoid.from_json()Ellipsoid.from_json_dict()Ellipsoid.from_name()Ellipsoid.from_string()Ellipsoid.from_user_input()Ellipsoid.is_exact_same()Ellipsoid.remarksEllipsoid.scopeEllipsoid.to_json()Ellipsoid.to_json_dict()Ellipsoid.to_wkt()
+
+EllipsoidEllipsoid.nameEllipsoid.is_semi_minor_computedEllipsoid.semi_major_metreEllipsoid.semi_minor_metreEllipsoid.inverse_flatteningEllipsoid.from_authority()Ellipsoid.from_epsg()Ellipsoid.from_json()Ellipsoid.from_json_dict()Ellipsoid.from_name()Ellipsoid.from_string()Ellipsoid.from_user_input()Ellipsoid.is_exact_same()Ellipsoid.remarksEllipsoid.scopeEllipsoid.to_json()Ellipsoid.to_json_dict()Ellipsoid.to_wkt()
+
+EllipsoidEllipsoid.nameEllipsoid.is_semi_minor_computedEllipsoid.semi_major_metreEllipsoid.semi_minor_metreEllipsoid.inverse_flatteningEllipsoid.from_authority()Ellipsoid.from_epsg()Ellipsoid.from_json()Ellipsoid.from_json_dict()Ellipsoid.from_name()Ellipsoid.from_string()Ellipsoid.from_user_input()Ellipsoid.is_exact_same()Ellipsoid.remarksEllipsoid.scopeEllipsoid.to_json()Ellipsoid.to_json_dict()Ellipsoid.to_wkt()
+
+Ellipsoid.nameEllipsoid.is_semi_minor_computedEllipsoid.semi_major_metreEllipsoid.semi_minor_metreEllipsoid.inverse_flatteningEllipsoid.from_authority()Ellipsoid.from_epsg()Ellipsoid.from_json()Ellipsoid.from_json_dict()Ellipsoid.from_name()Ellipsoid.from_string()Ellipsoid.from_user_input()Ellipsoid.is_exact_same()Ellipsoid.remarksEllipsoid.scopeEllipsoid.to_json()Ellipsoid.to_json_dict()Ellipsoid.to_wkt()
+
+Ellipsoid.name
+
+Ellipsoid.is_semi_minor_computed
+
+Ellipsoid.semi_major_metre
+
+Ellipsoid.semi_minor_metre
+
+Ellipsoid.inverse_flattening
+
+Ellipsoid.from_authority()
+
+Ellipsoid.from_epsg()
+
+Ellipsoid.from_json()
+
+Ellipsoid.from_json_dict()
+
+Ellipsoid.from_name()
+
+Ellipsoid.from_string()
+
+Ellipsoid.from_user_input()
+
+Ellipsoid.is_exact_same()
+
+Ellipsoid.remarks
+
+Ellipsoid.scope
+
+Ellipsoid.to_json()
+
+Ellipsoid.to_json_dict()
+
+Ellipsoid.to_wkt()
+
+CustomEllipsoidCustomEllipsoidCustomEllipsoid.__new__()
+
+CustomEllipsoidCustomEllipsoid.__new__()
+
+CustomEllipsoidCustomEllipsoid.__new__()
+
+CustomEllipsoid.__new__()
+
+CustomEllipsoid.__new__()
+
+PrimeMeridianPrimeMeridianPrimeMeridian.namePrimeMeridian.unit_namePrimeMeridian.from_authority()PrimeMeridian.from_epsg()PrimeMeridian.from_json()PrimeMeridian.from_json_dict()PrimeMeridian.from_name()PrimeMeridian.from_string()PrimeMeridian.from_user_input()PrimeMeridian.is_exact_same()PrimeMeridian.remarksPrimeMeridian.scopePrimeMeridian.to_json()PrimeMeridian.to_json_dict()PrimeMeridian.to_wkt()
+
+PrimeMeridianPrimeMeridian.namePrimeMeridian.unit_namePrimeMeridian.from_authority()PrimeMeridian.from_epsg()PrimeMeridian.from_json()PrimeMeridian.from_json_dict()PrimeMeridian.from_name()PrimeMeridian.from_string()PrimeMeridian.from_user_input()PrimeMeridian.is_exact_same()PrimeMeridian.remarksPrimeMeridian.scopePrimeMeridian.to_json()PrimeMeridian.to_json_dict()PrimeMeridian.to_wkt()
+
+PrimeMeridianPrimeMeridian.namePrimeMeridian.unit_namePrimeMeridian.from_authority()PrimeMeridian.from_epsg()PrimeMeridian.from_json()PrimeMeridian.from_json_dict()PrimeMeridian.from_name()PrimeMeridian.from_string()PrimeMeridian.from_user_input()PrimeMeridian.is_exact_same()PrimeMeridian.remarksPrimeMeridian.scopePrimeMeridian.to_json()PrimeMeridian.to_json_dict()PrimeMeridian.to_wkt()
+
+PrimeMeridian.namePrimeMeridian.unit_namePrimeMeridian.from_authority()PrimeMeridian.from_epsg()PrimeMeridian.from_json()PrimeMeridian.from_json_dict()PrimeMeridian.from_name()PrimeMeridian.from_string()PrimeMeridian.from_user_input()PrimeMeridian.is_exact_same()PrimeMeridian.remarksPrimeMeridian.scopePrimeMeridian.to_json()PrimeMeridian.to_json_dict()PrimeMeridian.to_wkt()
+
+PrimeMeridian.name
+
+PrimeMeridian.unit_name
+
+PrimeMeridian.from_authority()
+
+PrimeMeridian.from_epsg()
+
+PrimeMeridian.from_json()
+
+PrimeMeridian.from_json_dict()
+
+PrimeMeridian.from_name()
+
+PrimeMeridian.from_string()
+
+PrimeMeridian.from_user_input()
+
+PrimeMeridian.is_exact_same()
+
+PrimeMeridian.remarks
+
+PrimeMeridian.scope
+
+PrimeMeridian.to_json()
+
+PrimeMeridian.to_json_dict()
+
+PrimeMeridian.to_wkt()
+
+CustomPrimeMeridianCustomPrimeMeridianCustomPrimeMeridian.__new__()
+
+CustomPrimeMeridianCustomPrimeMeridian.__new__()
+
+CustomPrimeMeridianCustomPrimeMeridian.__new__()
+
+CustomPrimeMeridian.__new__()
+
+CustomPrimeMeridian.__new__()

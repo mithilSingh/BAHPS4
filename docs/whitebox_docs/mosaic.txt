@@ -1,0 +1,71 @@
+How can I mosaic hundreds of rasters?
+
+Sometimes you find that you need to mosaic many individual raster tiles into a single larger raster image. You can use WhiteboxTools'Mosaictool to join multiple rasters together; however, this operation can become extremely challenging if you have many hundreds of large raster tiles. The following script shows how you can use WhiteboxTools' Python interface to mosaic many rasters using intermediate mosaicing steps, which are then merged in a final step. Each intermediate mosaic raster is cleaned up at the end. The script assumes that the initial raster tiles are contained in a single directory (source_data_dir) and that the output mosaics will be contained in a seperate directory (raster_data_dir). Please modify these as needed.
+
+
+--- CODE BLOCK ---
+# This script is affiliated with the WhiteboxTools Geospatial analysis library 
+# Authors: Anthony Francioni, Carys Owens, and John Lindsay
+# Created: 01/07/2020
+# Last Modified: 17/08/2020
+# License: MIT
+
+
+######################################################################################
+# This script creates an image mosaic from one or more input image files using the   #
+# Mosaic tool from Whitebox tools. This tool uses one of three user-defined          #
+# resampling methods (--method) including, nearest neighbour ("nn"), bilinear        #
+# interpolation ("bilinear"), and cubic convolution ("cc").                          #
+#                                                                                    #
+# The order of the input source image files is important. Grid cells in the output   #
+# image will be assigned the corresponding value determined from the last image      #
+# found in the list to possess an overlapping coordinate.                            #
+#                                                                                    #
+# Note that when the --inputs parameter is left unspecified, the tool will use all   #
+# of the raster files of supported data formats located in the working directory.    #
+#                                                                                    #
+# This is the preferred mosaicing tool to use when appending multiple images with    #
+# little to no overlapping areas, e.g. tiled data. When images have significant      #
+# overlap areas, users are advised to use the MosaicWithFeathering tool instead.     #
+######################################################################################
+
+# Library import statements
+import os
+from WBT.whitebox_tools import WhiteboxTools # Module call to WhiteboxTools. For more information see https://jblindsay.github.io/wbt_book/python_scripting/using_whitebox_tools.html)
+
+
+def main():
+    #########################
+    # Set up Whitebox tools #
+    #########################
+    wbt = WhiteboxTools()
+    wbt.set_verbose_mode(True) # Sets verbose mode. If verbose mode is False, tools will not print output messages as they run
+    wbt.set_compress_rasters(True) # Compressed TIF file format based on the DEFALTE algorithm
+    
+    ##########################
+    # Set up tool parameters #
+    ##########################
+    input_directory = "C:\\Path\\to\\input\\files\\" # Input directory; change to match user environment
+    output_directory = "C:\\Path\\to\\output\\directory\\" # Output directory; change to match yours
+    
+    if os.path.isdir(output_directory) != True: # Creates output dir if it does not already exist 
+        os.mkdir(output_directory)      
+    
+    ################
+    # Run the tool #
+    ################
+    wbt.set_working_dir(input_directory) # Set the working dir: This should be teh location of the input files #
+    outfile = os.path.join(output_directory,"NAME_OF_FILE.tif") # Create the output file by joining the output directory path with the name of file
+    # Calls mosaic tool with nearest neighbour as the resampling method ("nn")
+    if wbt.mosaic(
+        output=outfile, 
+        method = "nn"
+    ) != 0:
+        # Non-zero returns indicate an error.
+        print('ERROR running mosaic')
+    
+    print("Complete!")
+
+main()
+
+------------------

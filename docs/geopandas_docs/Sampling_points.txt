@@ -1,0 +1,280 @@
+Note
+
+Sampling Points#
+
+Learn how to sample random points using GeoPandas.
+
+The example below shows you how to sample random locations from shapes in GeoPandas GeoDataFrames.
+
+Import Packages#
+
+To begin with, we need to import packages we’ll use:
+
+For this example, we will use the New York Borough example data (nybb) provided by geodatasets.
+
+To see what this looks like, visualize the data:
+
+Sampling random points#
+
+To sample points from within a GeoDataFrame, use thesample_points()method. To specify the sample sizes, provide an explicit number of points to sample. For example, we can sample 200 points randomly from each feature:
+
+This functionality also works for line geometries. For example, let’s look only at the boundary of Manhattan Island:
+
+Sampling randomly from along this boundary can use the samesample_points()method:
+
+Keep in mind that sampled points are returned as a single multi-part geometry, and that the distances over the line segments are calculatedalongthe line.
+
+If you want to separate out the individual sampled points, use the.explode()method on the dataframe:
+
+Variable number of points#
+
+You can also sample different number of points from different geometries if you pass an array specifying the size of the sample per geometry.
+
+Sampling from more complicated point pattern processes#
+
+Finally, thesample_points()method can use different sampling processes than those described above, so long as they are implemented in thepointpatspackage for spatial point pattern analysis. For example, a “cluster-poisson” process is a spatially-random cluster process where the “seeds” of clusters are chosen randomly, and then points around these clusters are distributed according again randomly.
+
+To see what this looks like, consider the following, where ten points will be distributed around five seeds within each of the boroughs in New York City:
+
+
+--- CODE BLOCK ---
+[1]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import geopandas
+import geodatasets
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[2]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+nybb = geopandas.read_file(geodatasets.get_path("nybb"))
+# simplify geometry to save space when rendering many interactive maps
+nybb.geometry = nybb.simplify(200)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[3]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+nybb.explore()
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[3]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[4]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+n200_sampled_points = nybb.sample_points(200)
+m = nybb.explore()
+n200_sampled_points.explore(m=m, color='red')
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[4]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[5]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+manhattan_parts = nybb.iloc[[3]].explode(ignore_index=True)
+manhattan_island = manhattan_parts.iloc[[30]]
+manhattan_island.boundary.explore()
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[5]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[6]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+manhattan_border_points = manhattan_island.boundary.sample_points(200)
+m = manhattan_island.explore()
+manhattan_border_points.explore(m=m, color='red')
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[6]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[7]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+manhattan_border_points
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[7]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+
+30    MULTIPOINT ((979004.748 196317.194), (979224.5...
+Name: sampled_points, dtype: geometry
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[8]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+manhattan_border_points.explode(ignore_index=True).head()
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[8]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+
+0    POINT (979004.748 196317.194)
+1    POINT (979224.518 197432.863)
+2    POINT (979275.164 198224.409)
+3    POINT (979386.968 199083.736)
+4    POINT (979469.012 199109.644)
+Name: sampled_points, dtype: geometry
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[9]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+variable_size = nybb.sample_points([10, 50, 100, 200, 500])
+m = nybb.explore()
+variable_size.explore(m=m, color='red')
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[9]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[10]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+sample_t = nybb.sample_points(method='cluster_poisson', size=50, n_seeds=5, cluster_radius=7500)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[11]:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+m = nybb.explore()
+sample_t.explore(m=m, color='red')
+
+------------------
+
+
+
+--- CODE BLOCK ---
+[11]:
+
+------------------

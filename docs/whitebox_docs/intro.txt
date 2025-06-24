@@ -1,0 +1,49 @@
+Introduction
+
+WhiteboxToolsis an advanced geospatial data analysis platform created by Prof.John Lindsayat theUniversity of Guelph'sGeomorphometry and Hydrogeomatics Research Group(GHRG). The project began in January 2017 and quickly evolved in terms of its analytical capabilities. The WhiteboxToolshomepagecontains more project information about the platform and the softwaredownload site.
+
+Project Highlights
+
+Contains more than 480 tools for processing various types of geospatial data.Many tools operate in parallel, taking full advantage of your multi-core processor.Written in the safe and cross-platform systems programming language Rust and compiled to highly efficient native code.Small stand-alone application with no external dependencies, making installation as easy as downloading the 8Mb zip file and decompressing it.Simple yet powerful Python scripting interface that allows users to develop custom scripted workflows.Embed WhiteboxToolsfunctions into hetergenous scripting environments along with ArcPy, GDAL, and other geoprocessing libraries.Serves as an analytical back-end for other GIS and remote sensing software (e.g. theQGIS Whitebox for Processingplugin).PermissiveMIT open-source licenseallows for ready integration with other software.Transparent software philosopy allows for easy source code inspection and rapid innovation and development.Powerfulextensionproducts are available to further enhance WhiteboxTools' capabilites in areas such as DEM processing, LiDAR data analysis, remote sensing, spatial hydrology, and crop yield data analysis.
+
+Contains more than 480 tools for processing various types of geospatial data.
+
+Many tools operate in parallel, taking full advantage of your multi-core processor.
+
+Written in the safe and cross-platform systems programming language Rust and compiled to highly efficient native code.
+
+Small stand-alone application with no external dependencies, making installation as easy as downloading the 8Mb zip file and decompressing it.
+
+Simple yet powerful Python scripting interface that allows users to develop custom scripted workflows.
+
+Embed WhiteboxToolsfunctions into hetergenous scripting environments along with ArcPy, GDAL, and other geoprocessing libraries.
+
+Serves as an analytical back-end for other GIS and remote sensing software (e.g. theQGIS Whitebox for Processingplugin).
+
+PermissiveMIT open-source licenseallows for ready integration with other software.
+
+Transparent software philosopy allows for easy source code inspection and rapid innovation and development.
+
+Powerfulextensionproducts are available to further enhance WhiteboxTools' capabilites in areas such as DEM processing, LiDAR data analysis, remote sensing, spatial hydrology, and crop yield data analysis.
+
+What can WhiteboxTools do?
+
+WhiteboxToolscan be used to perform common geographical information systems (GIS) analysis operations, such as cost-distance analysis, distance buffering, and raster reclassification. Remote sensing and image processing tasks include image enhancement (e.g. panchromatic sharpening, contrast adjustments), image mosaicking, numerous filtering operations, simple classification (k-means clustering), and common image transformations.WhiteboxToolsalso contains advanced tooling for spatial hydrological analysis (e.g. flow-accumulation, watershed delineation, stream network analysis, sink removal), geomorphometric analysis (e.g. common terrain indices such as slope, curvatures, wetness index, hillshading; hypsometric analysis; multi-scale topographic position analysis), and LiDAR data processing. LiDAR point clouds can be interrogated (LidarInfo, LidarHistogram), segmented, tiled and joined, analyzed for outliers, interpolated to rasters (DEMs, intensity images), and ground-points can be classified or filtered.
+
+TheWhiteboxTools Extensionsextend the platform's capabilities even further.
+
+WhiteboxToolsis not a cartographic or spatial data visualization package; instead it is meant to serve as an analytical backend for other data visualization software, mainly GIS (e.g. Whitebox GAT andQGIS).
+
+WhiteboxTools vs. Whitebox Geospatial Analysis Tools (GAT)
+
+AlthoughWhiteboxToolswas first developed with to serve as a source of plugin tools for theWhitebox Geospatial Analysis Tools(GAT) open-source GIS project, the tools contained in the library are stand-alone and can run outside of the largerWhitebox GATproject. SeeInteracting WithWhiteboxToolsFrom the Command Promptfor further details. There have been a large number of requests to callWhitebox GATtools and functionality from outside of theWhitebox GATuser-interface (e.g. from Python automation scripts).WhiteboxToolsis intended to meet these usage requirements. For example, aWhiteboxToolsplug-in for QGISis available.
+
+In this manual,WhiteboxToolsrefers to the standalone geospatial analysis library, a collection of tools contained within a compiled binary executable command-line program and the associated Python scripts that are distributed alongside the binary file (e.g.whitebox_tools.pyandwb_runner.py).Whitebox Geospatial Analysis ToolsandWhitebox GATrefer to the GIS software, which includes a user-interface (front-end), point-and-click tool interfaces, and cartographic data visualization capabilities. Importantly,WhiteboxToolsandWhitebox GATare related but separate projects.
+
+Why is it namedWhiteboxTools?
+
+The project nameWhiteboxToolsclearly takes it inspiration from the related project Whitebox GAT. However, the nameWhiteboxis intended to convey opposition to a 'black box' system, one for which only the inputs and outputs may be observed and the internal workings may not be scrutinized.WhiteboxToolsis inspired by the concept ofopen-access software, the tenants of which were described by Lindsay (2014)1. Open-accesssoftware can be viewed as a complementary extension to the traditional open-sourcesoftware (OSS) model of development. The concept of open access has been previously defined in the context of publishing scholarly literature in a way that removes financial, legal, and technical access barriers to knowledge transfer. Lindsay (2014) argued that the stated goals of reducing barriers associated with knowledge transfer applies equally to the software used in research. Open-access software is distinct from other OSS in that it has an explicitly stated design goal of reducing barriers to the transfer of knowledge to the user community. Direct insight into the workings of algorithm design and implementation allows for educational opportunities and increases the potential for rapid innovation, experimentation with algorithms, and community-directed development. This is particularly important in geomatics because many geospatial algorithms are complex and are strongly affected by implementation details. Also, there are often multiple competing algorithms for accomplishing the same task and the choice of one method over another can greatly impact the outcome of a workflow.
+
+All OSS allow users the opportunity to download the source code and inspect the software’s internal workings. However, traditional OSS often does not lend itself to end-user source code inspection. Open-access software, by comparison, isdesigned from the project's inception in a way that reduces the barriers that typically discourage end-users from examining the algorithm and implementation details associated with specific software artifacts. WhiteboxTools attempts to address some of the barriers to knowledge transfer by allowing users to view the source code associated with each tool directly (e.g.--viewcode=ExtendVectorLines). This functionality removes the need to download separate, and often large, project source code files and eliminates the requisite familiarity with the project to identify the code sections related to the operation of the tool of interest. Theviewcodeflag is the embodiment of a design philosophy that is intended to empower the user community. Each tool included in the library has been written in a way to isolate the major functionality within a single file, thereby easing the task of interpreting the code (traditional coding style would split complex code among numerous files). This design goal is also why the developers have chosen to exclude external libraries commonly found in other similarly software (e.g. GDAL), thereby simplifying the installation process and code interpretation. This approach has the potential to encourage further community involvement and experimentation with geospatial analysis techniques.
+
+Lindsay, JB. 2014.The Whitebox Geospatial Analysis Tools project and open-access GIS. Proceedings of the GIS Research UK 22nd Annual Conference, The University of Glasgow, 16-18 April, DOI: 10.13140/RG.2.1.1010.8962.

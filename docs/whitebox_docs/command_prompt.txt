@@ -1,0 +1,21 @@
+Command-Line Interface
+
+WhiteboxToolsis a command-line program and can be run either by calling it from a terminal application with appropriate commands and arguments, or, more conveniently, by calling it from ascript. The following commands are recognized by theWhiteboxToolslibrary:
+
+Generally, the Unix convention is that single-letter arguments (options) use a single hyphen (e.g. -h) while word-arguments (longer, more descriptive argument names) use double hyphens (e.g. --help). The same rule is used for passing arguments to tools as well. Use the--toolhelpargument to print information about a specific tool (e.g. --toolhelp=Clump).
+
+Tool names can be specified either using the snake_case or CamelCase convention (e.g.lidar_infoorLidarInfo).
+
+The following is an example of calling theWhiteboxToolsbinary executable file directly from the command prompt:
+
+Notice the quotation marks (single or double) used around directories and filenames, and string tool arguments in general. After the--runflag, used to call a tool, a series of tool-specific
+flags are provided to indicate the values of various input parameters. Note
+that the order of these flags is unimportant. Use the '-v' flag (run in verbose mode) to force the tool to print output to the command prompt. Please note that the whitebox_tools executable file must have permission to be executed; on some systems, this may require setting special permissions. Also, the above example uses the forward slash character (/), the directory path separator used on unix based systems. On Windows, users should use the back slash character (\) instead. Also, it is sometimes necessary to break (^) commands across multiple lines, as above, in order to better fit with the documents format. Actual command prompts (>>) should be contained to a single line.
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools --wd='/Users/johnlindsay/Documents/data/' ^
+--run=DevFromMeanElev --input='DEM clipped.tif' ^
+--output='DEV raster.tif' -v
+
+------------------

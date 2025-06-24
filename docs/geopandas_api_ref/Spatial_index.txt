@@ -1,0 +1,46 @@
+Spatial index#
+
+GeoPandas will use the STRtree implementation provided by the Shapely
+(shapely.STRtree)
+
+GeoSeries.sindexcreates a spatial index, which can use the methods and
+properties documented below.
+
+See the User Guide pageSpatial indexingfor more.
+
+Constructor#
+
+GeoSeries.sindex
+
+Generate the spatial index
+
+Spatial index object#
+
+The spatial index object returned fromGeoSeries.sindexhas the following
+methods:
+
+intersection(coordinates)
+
+Compatibility wrapper for rtree.index.Index.intersection, usequeryinstead.
+
+is_empty
+
+Check if the spatial index is empty
+
+nearest(geometry[, return_all, ...])
+
+Return the nearest geometry in the tree for each input geometry ingeometry.
+
+query(geometry[, predicate, sort, distance, ...])
+
+Return all combinations of each input geometry and tree geometries where the bounding box of each input geometry intersects the bounding box of a tree geometry.
+
+size
+
+Size of the spatial index
+
+valid_query_predicates
+
+Returns valid predicates for the spatial index.
+
+The spatial index offers the full capability ofshapely.STRtree.

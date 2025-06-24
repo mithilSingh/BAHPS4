@@ -1,0 +1,17 @@
+Coordinate operations#
+
+count_coordinates(geometry)
+
+Count the number of coordinate pairs in a geometry array.
+
+get_coordinates(geometry[, include_z, ...])
+
+Get coordinates from a geometry array as an array of floats.
+
+set_coordinates(geometry, coordinates)
+
+Adapts the coordinates of a geometry array in-place.
+
+transform(geometry, transformation[, ...])
+
+Apply a function to the coordinates of a geometry.

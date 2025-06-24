@@ -1,0 +1,10 @@
+.venv/
+*.tif
+*.shp
+*.geojson
+*/cache
+*/__pycache__
+*.env
+
+**/.env
+*/.env

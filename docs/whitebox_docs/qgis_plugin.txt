@@ -1,0 +1,13 @@
+QGIS Plugin
+
+IMPORTANTThe WhiteboxTools for QGIS plugin is considered to be legacy code since the release of the next-generationWhitebox Workflows for QGIS. Users should prefer the Whitebox Workflows for QGIS plugin instead, which shares the same functionality with significant improvements in operation (e.g., inline help documentation, sample data, etc.).
+
+WhiteboxToolsfunctionality can be accessed conveniently through the popular open-source geospatial softwareQGIS. Historically, the QGIS WhiteboxTools plugin was developed byAlexander Bruy.
+
+Please note, as of February 2022, Alex Bruy, the original developer of the QGIS WhiteboxTools plugin, is no longer distributing any of his numerous QGIS open-source plugins, in protest of the war in Ukraine. As such, we are currently developing the WhiteboxTools plugin for QGIS in-house at Whitebox Geospatial Inc.
+
+The Whitebox for QGIS plugin works QGIS v3 but cannot be installed on the earlier v2 series. Theminimum QGIS version supported by the plugins is currently 3.18.0. If you are using an older version of QGIS, you will need to update before the following procedure for installation will work.
+
+Installation of the Plugin
+
+For detailed instructions on how to install and configure the Whitebox plugin for QGIS, please watchthis short video. Note that installing the Whitebox plugin does not automatically install the open-source WhiteboxTools back-end, nor any of the commercial extension products. You will need to visit theWhitebox Geospatial homepageand download the WhiteboxTools binary executable before installing the QGIS plugin. The Whitebox Toolset Extension (WTE)can also be downloadedfrom the site, although avalid licenseis required to run the extension.

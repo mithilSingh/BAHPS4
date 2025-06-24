@@ -1,0 +1,3 @@
+UsingWhiteboxTools
+
+Users interact with theWhiteboxToolsplatform either from acommand prompt(i.e. terminal), through thePython,Rlanguage, orNiminterfaces, or from one of the availablegraphical user interfaces (GUI)applications.

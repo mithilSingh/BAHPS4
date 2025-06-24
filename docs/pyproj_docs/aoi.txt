@@ -1,0 +1,140 @@
+Area of Interest¶
+
+pyproj.aoi.AreaOfInterest¶
+
+Note
+
+The backwards compatible import ispyproj.transformer.AreaOfInterest
+
+Added in version 2.3.0.
+
+This is the area of interest for:
+
+TransformationsQuerying for CRS data.
+
+Transformations
+
+Transformations
+
+Querying for CRS data.
+
+Querying for CRS data.
+
+The east bound in degrees of the area of interest.
+
+The north bound in degrees of the area of interest.
+
+The south bound in degrees of the area of interest.
+
+The west bound in degrees of the area of interest.
+
+pyproj.aoi.AreaOfUse¶
+
+Added in version 2.0.0.
+
+Area of Use for CRS, CoordinateOperation, or a Transformer.
+
+The bounds of the area of use.
+
+west, south, east, and north bounds.
+
+tuple[float,float,float,float]
+
+East bound of area of use.
+
+Name of area of use.
+
+North bound of area of use.
+
+South bound of area of use.
+
+West bound of area of use.
+
+pyproj.aoi.BBox¶
+
+Bounding box to check if data intersects/contains other
+bounding boxes.
+
+Added in version 3.0.0.
+
+other(Union["BBox",AreaOfUse]) – The other BBox to use to check.
+
+True if this BBox contains the other bbox.
+
+bool
+
+East bound of bounding box.
+
+other(BBox) – The other BBox to use to check.
+
+True if this BBox intersects the other bbox.
+
+bool
+
+North bound of bounding box.
+
+South bound of bounding box.
+
+West bound of bounding box.
+
+Area of Interestpyproj.aoi.AreaOfInterestAreaOfInterestAreaOfInterest.east_lon_degreeAreaOfInterest.north_lat_degreeAreaOfInterest.south_lat_degreeAreaOfInterest.west_lon_degreepyproj.aoi.AreaOfUseAreaOfUseAreaOfUse.boundsAreaOfUse.eastAreaOfUse.nameAreaOfUse.northAreaOfUse.southAreaOfUse.westpyproj.aoi.BBoxBBoxBBox.contains()BBox.eastBBox.intersects()BBox.northBBox.southBBox.west
+
+Area of Interestpyproj.aoi.AreaOfInterestAreaOfInterestAreaOfInterest.east_lon_degreeAreaOfInterest.north_lat_degreeAreaOfInterest.south_lat_degreeAreaOfInterest.west_lon_degreepyproj.aoi.AreaOfUseAreaOfUseAreaOfUse.boundsAreaOfUse.eastAreaOfUse.nameAreaOfUse.northAreaOfUse.southAreaOfUse.westpyproj.aoi.BBoxBBoxBBox.contains()BBox.eastBBox.intersects()BBox.northBBox.southBBox.west
+
+pyproj.aoi.AreaOfInterestAreaOfInterestAreaOfInterest.east_lon_degreeAreaOfInterest.north_lat_degreeAreaOfInterest.south_lat_degreeAreaOfInterest.west_lon_degreepyproj.aoi.AreaOfUseAreaOfUseAreaOfUse.boundsAreaOfUse.eastAreaOfUse.nameAreaOfUse.northAreaOfUse.southAreaOfUse.westpyproj.aoi.BBoxBBoxBBox.contains()BBox.eastBBox.intersects()BBox.northBBox.southBBox.west
+
+pyproj.aoi.AreaOfInterestAreaOfInterestAreaOfInterest.east_lon_degreeAreaOfInterest.north_lat_degreeAreaOfInterest.south_lat_degreeAreaOfInterest.west_lon_degree
+
+AreaOfInterestAreaOfInterest.east_lon_degreeAreaOfInterest.north_lat_degreeAreaOfInterest.south_lat_degreeAreaOfInterest.west_lon_degree
+
+AreaOfInterestAreaOfInterest.east_lon_degreeAreaOfInterest.north_lat_degreeAreaOfInterest.south_lat_degreeAreaOfInterest.west_lon_degree
+
+AreaOfInterest.east_lon_degreeAreaOfInterest.north_lat_degreeAreaOfInterest.south_lat_degreeAreaOfInterest.west_lon_degree
+
+AreaOfInterest.east_lon_degree
+
+AreaOfInterest.north_lat_degree
+
+AreaOfInterest.south_lat_degree
+
+AreaOfInterest.west_lon_degree
+
+pyproj.aoi.AreaOfUseAreaOfUseAreaOfUse.boundsAreaOfUse.eastAreaOfUse.nameAreaOfUse.northAreaOfUse.southAreaOfUse.west
+
+AreaOfUseAreaOfUse.boundsAreaOfUse.eastAreaOfUse.nameAreaOfUse.northAreaOfUse.southAreaOfUse.west
+
+AreaOfUseAreaOfUse.boundsAreaOfUse.eastAreaOfUse.nameAreaOfUse.northAreaOfUse.southAreaOfUse.west
+
+AreaOfUse.boundsAreaOfUse.eastAreaOfUse.nameAreaOfUse.northAreaOfUse.southAreaOfUse.west
+
+AreaOfUse.bounds
+
+AreaOfUse.east
+
+AreaOfUse.name
+
+AreaOfUse.north
+
+AreaOfUse.south
+
+AreaOfUse.west
+
+pyproj.aoi.BBoxBBoxBBox.contains()BBox.eastBBox.intersects()BBox.northBBox.southBBox.west
+
+BBoxBBox.contains()BBox.eastBBox.intersects()BBox.northBBox.southBBox.west
+
+BBoxBBox.contains()BBox.eastBBox.intersects()BBox.northBBox.southBBox.west
+
+BBox.contains()BBox.eastBBox.intersects()BBox.northBBox.southBBox.west
+
+BBox.contains()
+
+BBox.east
+
+BBox.intersects()
+
+BBox.north
+
+BBox.south
+
+BBox.west

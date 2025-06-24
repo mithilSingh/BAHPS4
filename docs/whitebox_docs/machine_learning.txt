@@ -1,0 +1,1290 @@
+Machine Learning
+
+DbscanKMeansClusteringKnnClassificationKnnRegressionLogisticRegressionModifiedKMeansClusteringRandomForestClassificationRandomForestClassificationFitRandomForestClassificationPredictRandomForestRegressionRandomForestRegressionFitRandomForestRegressionPredictSvmClassificationSvmRegression
+
+Dbscan
+
+KMeansClustering
+
+KnnClassification
+
+KnnRegression
+
+LogisticRegression
+
+ModifiedKMeansClustering
+
+RandomForestClassification
+
+RandomForestClassificationFit
+
+RandomForestClassificationPredict
+
+RandomForestRegression
+
+RandomForestRegressionFit
+
+RandomForestRegressionPredict
+
+SvmClassification
+
+SvmRegression
+
+
+
+Dbscan
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs an unsupervisedDBSCANclustering operation, based
+on a series of input rasters (--inputs). Each grid cell defines a stack of feature values (one value for
+each input raster), which serves as a point within the multi-dimensional feature space. The DBSCAN
+algorithm identifies clusters in feature space by identifying regions of high density (core points)
+and the set of points connected to these high-density areas. Points in feature space that are not
+connected to high-density regions are labeled by the DBSCAN algorithm as 'noise' and the associated
+grid cell in the output raster (--output) is assigned the nodata value. Areas of high density (i.e. core
+points) are defined as those points for which the number of neighbouring points within a search distance
+(--search_dist) is greater than some user-defined minimum threshold (--min_points).
+
+The main advantages of the DBSCAN algorithm over other clustering methods, such ask-means
+(KMeansClustering), is that 1) you do not need to specify the number of clustersa priori, and 2)
+that the method does not make assumptions about the shape of the cluster (spherical in thek-means
+method). However, DBSCAN does assume that the density of every cluster in the data is approximately
+equal, which may not be a valid assumption. DBSCAN may also produce unsatisfactory results if there is
+significant overlap among clusters, as it will aggregate the clusters. Finding search distance and
+minimum core-point density thresholds that apply globally to the entire data set may be very challenging
+or impossible for certain applications.
+
+The DBSCAN algorithm is based on the calculation of distances in multi-dimensional space. Feature scaling is
+essential to the application of DBSCAN clustering, especially when the ranges of the features are different, for
+example, if they are measured in different units. Without scaling, features with larger ranges will have
+greater influence in computing the distances between points. The tool offers three options for feature-scaling (--scaling),
+including 'None', 'Normalize', and 'Standardize'. Normalization simply rescales each of the features onto
+a 0-1 range. This is a good option for most applications, but it is highly sensitive to outliers because
+it is determined by the range of the minimum and maximum values. Standardization
+rescales predictors using their means and standard deviations, transforming the data into z-scores. This
+is a better option than normalization when you know that the data contain outlier values; however, it does
+does assume that the feature data are somewhat normally distributed, or are at least symmetrical in
+distribution.
+
+One should keep the impact of feature scaling in mind when setting the--search_distparameter. For
+example, if applying normalization, the entire range of values for each dimension of feature space will
+be bound within the 0-1 range, meaning that the search distance should be smaller than 1.0, and likely
+significantly smaller. If standardization is used instead, features space is technically infinite,
+although the vast majority of the data are likely to be contained within the range -2.5 to 2.5.
+
+Because the DBSCAN algorithm calculates distances in feature-space, like many other related algorithms,
+it suffers from thecurse of dimensionality.
+Distances become less meaningful in high-dimensional space because the vastness of these spaces means
+that distances between points are less significant (more similar). As such, if the predictor list includes
+insignificant or highly correlated variables, it is advisable to exclude these features during the model-building
+phase, or to use a dimension reduction technique such asPrincipalComponentAnalysisto transform the
+features into a smaller set of uncorrelated predictors.
+
+Memory Usage:
+
+The peak memory usage of this tool is approximately 8 bytes per grid cell × # predictors.
+
+See Also:KMeansClustering,ModifiedKMeansClustering,PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 26/12/2021
+
+Last Modified: 01/01/2022
+
+
+
+KMeansClustering
+
+This tool can be used to perform a k-means clustering operation on two or more input
+images (--inputs), typically several bands of multi-spectral satellite imagery. The
+tool creates two outputs, including the classified image (--outputand a classification
+HTML report (--out_html). The user must specify the number of class (--classes), which should be
+knowna priori, and the strategy for initializing class clusters (--initialize). The initialization
+strategies include "diagonal" (clusters are initially located randomly along the multi-dimensional diagonal
+of spectral space) and "random" (clusters are initially located randomly throughout spectral space).
+The algorithm will continue updating cluster center locations with each iteration of the process until
+either the user-specified maximum number of iterations (--max_iterations) is reached, or until a
+stability criteria (--class_change) is achieved. The stability criteria is the percent of the total
+number of pixels in the image that are changed among the class values between consecutive iterations.
+Lastly, the user must specify the minimum allowable number of pixels in a cluster (--min_class_size).
+
+Note, each of the input images must have the same number of rows and columns and the same spatial extent
+because the analysis is performed on a pixel-by-pixel basis.NoDatavalues in any of the input images
+will result in the removal of the corresponding pixel from the analysis.
+
+See Also:ModifiedKMeansClustering
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/12/2017
+
+Last Modified: 24/02/2019
+
+
+
+KnnClassification
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs a supervisedk-nearest neighbour (k-NN) classificationusing multiple predictor rasters (--inputs), or features, and training data (--training). It can be used to model
+the spatial distribution of class data, such as land-cover type, soil class, or vegetation type.
+The training data take
+the form of an input vector Shapefile containing a set of points or polygons, for which the known
+class information is contained within a field (--field) of the attribute table. Each grid cell defines
+a stack of feature values (one value for each input raster), which serves as a point within the
+multi-dimensional feature space. The algorithm works by identifying a user-defined number (k,-k) of
+feature-space neighbours from the training set for each grid cell. The class that is then assigned to
+the grid cell in the output raster (--output) is then determined as the most common class among the
+set of neighbours. Note that theKnnRegressiontool can be used to apply thek-NN method to the modelling
+of continuous data.
+
+The user has the option to clip the training set data (--clip). When this option is selected, each training
+pixel for which the estimated class value, based on thek-NN procedure, is not equal to the known class
+value, is removed from the training set before proceeding with labelling all grid cells. This has the
+effect of removing outlier points within the training set and often improves the overall classification
+accuracy.
+
+The tool splits the training data into two sets, one for training the classifier and one for testing
+the classification. These test data are used to calculate the overall accuracy and Cohen's kappa
+index of agreement, as well as to estimate the variable importance. The--test_proportionparameter
+is used to set the proportion of the input training data used in model testing. For example, if--test_proportion = 0.2, 20% of the training data will be set aside for testing, and this subset
+will be selected randomly. As a result of this random selection of test data, the tool behaves stochastically,
+and will result in a different model each time it is run.
+
+Note that the output image parameter (--output) is optional. When unspecified, the tool will simply
+report the model accuracy statistics and variable importance, allowing the user to experiment with different parameter
+settings and input predictor raster combinations to optimize the model before applying it to classify
+the whole image data set.
+
+Like all supervised classification methods, this technique relies heavily on proper selection of training
+data. Training sites are exemplar areas/points of known and representative class value (e.g. land cover
+type). The algorithm determines the feature signatures of the pixels within each training area. In
+selecting training sites, care should be taken to ensure that they cover the full range of variability
+within each class. Otherwise the classification accuracy will be impacted. If possible, multiple
+training sites should be selected for each class. It is also advisable to avoid areas near the edges of
+class objects (e.g. land-cover patches), where mixed pixels may impact the purity of training site values.
+
+After selecting training sites, the feature value distributions of each class type can be assessed using
+theEvaluateTrainingSitestool. In particular, the distribution of class values should ideally be
+non-overlapping in at least one feature dimension.
+
+Thek-NN algorithm is based on the calculation of distances in multi-dimensional space. Feature scaling is
+essential to the application ofk-NN modelling, especially when the ranges of the features are different, for
+example, if they are measured in different units. Without scaling, features with larger ranges will have
+greater influence in computing the distances between points. The tool offers three options for feature-scaling (--scaling),
+including 'None', 'Normalize', and 'Standardize'. Normalization simply rescales each of the features onto
+a 0-1 range. This is a good option for most applications, but it is highly sensitive to outliers because
+it is determined by the range of the minimum and maximum values. Standardization
+rescales predictors using their means and standard deviations, transforming the data into z-scores. This
+is a better option than normalization when you know that the data contain outlier values; however, it does
+does assume that the feature data are somewhat normally distributed, or are at least symmetrical in
+distribution.
+
+Because thek-NN algorithm calculates distances in feature-space, like many other related algorithms,
+it suffers from thecurse of dimensionality.
+Distances become less meaningful in high-dimensional space because the vastness of these spaces means
+that distances between points are less significant (more similar). As such, if the predictor list includes
+insignificant or highly correlated variables, it is advisable to exclude these features during the model-building
+phase, or to use a dimension reduction technique such asPrincipalComponentAnalysisto transform the
+features into a smaller set of uncorrelated predictors.
+
+For a video tutorial on how to use theKnnClassificationtool, seethis YouTube video.
+
+Memory Usage:
+
+The peak memory usage of this tool is approximately 8 bytes per grid cell × # predictors.
+
+See Also:KnnRegression,RandomForestClassification,SvmClassification,ParallelepipedClassification,EvaluateTrainingSites
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 14/12/2021
+
+Last Modified: 30/12/2021
+
+
+
+KnnRegression
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs a supervisedk-nearest neighbour (k-NN) regression analysisusing multiple predictor rasters (--inputs), or features, and training data (--training). It can be used to model
+the spatial distribution of continuous data, such as soil properties (e.g. percent sand/silt/clay).
+The training data take the form of an input vector Shapefile containing a set of points, for which the known
+outcome information is contained within a field (--field) of the attribute table. Each grid cell defines
+a stack of feature values (one value for each input raster), which serves as a point within the
+multi-dimensional feature space. The algorithm works by identifying a user-defined number (k,-k) of
+feature-space neighbours from the training set for each grid cell. The value that is then assigned to
+the grid cell in the output raster (--output) is then determined as the mean of the outcome variable
+among the set of neighbours. The user may optionally choose to weight neighbour outcome values in
+the averaging calculation, with weights determined by the inverse distance function (--weight). Note
+that theKnnClassificationtool can be used to apply thek-NN method to the modelling of categorical
+data.
+
+The tool splits the training data into two sets, one for training the model and one for testing
+the prediction. These test data are used to calculate the regression accuracy statistics, as
+well as to estimate the variable importance. The--test_proportionparameter
+is used to set the proportion of the input training data used in model testing. For example, if--test_proportion = 0.2, 20% of the training data will be set aside for testing, and this subset
+will be selected randomly. As a result of this random selection of test data, the tool behaves stochastically,
+and will result in a different model each time it is run.
+
+Note that the output image parameter (--output) is optional. When unspecified, the tool will simply
+report the model accuracy statistics and variable importance, allowing the user to experiment with different parameter
+settings and input predictor raster combinations to optimize the model before applying it to model the
+outcome variable across the whole region defined by image data set.
+
+Thek-NN algorithm is based on the calculation of distances in multi-dimensional space. Feature scaling is
+essential to the application ofk-NN modelling, especially when the ranges of the features are different, for
+example, if they are measured in different units. Without scaling, features with larger ranges will have
+greater influence in computing the distances between points. The tool offers three options for feature-scaling (--scaling),
+including 'None', 'Normalize', and 'Standardize'. Normalization simply rescales each of the features onto
+a 0-1 range. This is a good option for most applications, but it is highly sensitive to outliers because
+it is determined by the range of the minimum and maximum values. Standardization
+rescales predictors using their means and standard deviations, transforming the data into z-scores. This
+is a better option than normalization when you know that the data contain outlier values; however, it does
+does assume that the feature data are somewhat normally distributed, or are at least symmetrical in
+distribution.
+
+Because thek-NN algorithm calculates distances in feature-space, like many other related algorithms,
+it suffers from thecurse of dimensionality.
+Distances become less meaningful in high-dimensional space because the vastness of these spaces means
+that distances between points are less significant (more similar). As such, if the predictor list includes
+insignificant or highly correlated variables, it is advisable to exclude these features during the model-building
+phase, or to use a dimension reduction technique such asPrincipalComponentAnalysisto transform the
+features into a smaller set of uncorrelated predictors.
+
+Memory Usage:
+
+The peak memory usage of this tool is approximately 8 bytes per grid cell × # predictors.
+
+See Also:KnnClassification,RandomForestRegression,SvmRegression,PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 14/12/2021
+
+Last Modified: 21/01/2022
+
+
+
+LogisticRegression
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs alogistic regression analysisusing multiple predictor rasters (--inputs), or features, and training data (--training). Logistic
+regression is a type of linear statistical classifier that in its basic form uses a logistic function to
+model a binary outcome variable, although the implementation used by this tool can handle multi-class
+dependent variables. This tool can be used to model the spatial distribution of class data, such as
+land-cover type, soil class, or vegetation type.
+
+The training data take the form of an input vector Shapefile containing a set of points or polygons, for
+which the known class information is contained within a field (--field) of the attribute table. Each
+grid cell defines a stack of feature values (one value for each input raster), which serves as a point within the
+multi-dimensional feature space.
+
+The tool splits the training data into two sets, one for training the model and one for testing
+the prediction. These test data are used to calculate the classification accuracy stats, as
+well as to estimate the variable importance. The--test_proportionparameter
+is used to set the proportion of the input training data used in model testing. For example, if--test_proportion = 0.2, 20% of the training data will be set aside for testing, and this subset
+will be selected randomly. As a result of this random selection of test data, the tool behaves
+stochastically, and will result in a different model each time it is run.
+
+Note that the output image parameter (--output) is optional. When unspecified, the tool will simply
+report the model accuracy statistics and variable importance, allowing the user to experiment with different parameter
+settings and input predictor raster combinations to optimize the model before applying it to model the
+outcome variable across the whole region defined by image data set.
+
+The user may opt for feature scaling, which can be important when the ranges of the features are different, for
+example, if they are measured in different units. Without scaling, features with larger ranges will have
+greater influence in computing the distances between points. The tool offers three options for feature-scaling (--scaling),
+including 'None', 'Normalize', and 'Standardize'. Normalization simply rescales each of the features onto
+a 0-1 range. This is a good option for most applications, but it is highly sensitive to outliers because
+it is determined by the range of the minimum and maximum values. Standardization
+rescales predictors using their means and standard deviations, transforming the data into z-scores. This
+is a better option than normalization when you know that the data contain outlier values; however, it does
+does assume that the feature data are somewhat normally distributed, or are at least symmetrical in
+distribution.
+
+Because the logistic regression calculates distances in feature-space, like many other related algorithms,
+it suffers from thecurse of dimensionality.
+Distances become less meaningful in high-dimensional space because the vastness of these spaces means
+that distances between points are less significant (more similar). As such, if the predictor list includes
+insignificant or highly correlated variables, it is advisable to exclude these features during the model-building
+phase, or to use a dimension reduction technique such asPrincipalComponentAnalysisto transform the
+features into a smaller set of uncorrelated predictors.
+
+Memory Usage:
+
+The peak memory usage of this tool is approximately 8 bytes per grid cell × # predictors.
+
+See Also:SvmClassification,RandomForestClassification,KnnClassification,PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 02/01/2022
+
+Last Modified: 02/01/2022
+
+
+
+ModifiedKMeansClustering
+
+This modified k-means algorithm is similar to that described by Mather and Koch (2011).
+The main difference between the traditional k-means and this technique is that the user
+does not need to specify the desired number of classes/clusters prior to running the
+tool. Instead, the algorithm initializes with a very liberal overestimate of the number
+of classes and then merges classes that have cluster centres that are separated by less
+than a user-defined threshold. The main difference between this algorithm and the ISODATA
+technique is that clusters can not be broken apart into two smaller clusters.
+
+Reference:
+
+Mather, P. M., & Koch, M. (2011). Computer processing of remotely-sensed images: an
+introduction. John Wiley & Sons.
+
+See Also:KMeansClustering
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 30/12/2017
+
+Last Modified: 24/02/2019
+
+
+
+RandomForestClassification
+
+Performs a supervised random forest classification using training site polygons/points and predictor rasters.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Unknown
+
+Created: Unknown
+
+Last Modified: Unknown
+
+
+
+RandomForestClassificationFit
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool builds a supervisedrandom forest (RF) classificationmodel using multiple predictor rasters (--inputs), or features, and training data (--training). This tool is
+intended to be paired with theRandomForestClassificationPredictiontool, where users first build the model
+by fitting and random forest to training data (RandomForestClassificationFit) and subsequently use the output
+model (--model) to predict a spatial distribution (RandomForestClassificationPredict). The model created by theRandomForestClassificationFittool is saved to a generic binary formatted file with a *.dat extension, which then
+serves as the input to theRandomForestClassificationPredicttool. These two tools are used to model
+the spatial distribution of class data, such as land-cover type, soil class, or vegetation type.
+The training data take the form of an input vector Shapefile containing a set of points or polygons, for
+which the known class information is contained within a field (--field) of the attribute table. Each
+grid cell defines a stack of feature values (one value for each input raster), which serves as a point
+within the multi-dimensional feature space.
+
+Note: it is very important that the order of feature rasters is the same for both fitting the model
+and using the model for prediction. It is possible to use a model fitted to one data set to
+make preditions for another data set, however, the set of feature reasters specified to the
+prediction tool must be input in the same sequence used for building the model. For example, one may
+train a RF classifer on one set of multi-spectral satellite imagery and then apply that model to classify
+a different imagery scene, but the image band sequence must be the same for the Fit/Predict tools otherwise
+inaccurate predictions will result.
+
+Random forest is an ensemble learning method that works by
+creating a large number (--n_trees) of decision trees and using a majority vote to determine estimated
+class values. Individual trees are created using a random sub-set of predictors. This ensemble approach
+overcomes the tendency of individual decision trees to overfit the training data. As such, the RF method
+is a widely and successfully applied machine-learning method in many domains. Note that theRandomForestRegressionFittool (paired withRandomForestRegressionPredict) can be used to apply the RF method to the modelling of continuous data.
+
+The user must specify the splitting criteria (--split_criterion) used in training the decision trees.
+Options for this parameter include 'Gini', 'Entropy', and 'ClassificationError'. The model can also
+be adjusted based on each of the number of trees (--n_trees), the minimum number of samples required to
+be at a leaf node (--min_samples_leaf), and the minimum number of samples required to split an internal
+node (--min_samples_split) parameters.
+
+The tool splits the training data into two sets, one for training the classifier and one for testing
+the model. These test data are used to calculate the overall accuracy and Cohen's kappa
+index of agreement, as well as to estimate the variable importance. The--test_proportionparameter
+is used to set the proportion of the input training data used in model testing. For example, if--test_proportion = 0.2, 20% of the training data will be set aside for testing, and this subset
+will be selected randomly. As a result of this random selection of test data, and the random selection of
+features used in decision tree creation, the tool is inherently stochastic, and will result in a
+different model each time it is run.
+
+Like all supervised classification methods, this technique relies heavily on proper selection of training
+data. Training sites are exemplar areas/points of known and representative class value (e.g. land cover
+type). The training data input file (--training) can consist of either vector points or polygons, for
+whcih the attribute table contains one field with the known class value. The algorithm determines the
+feature signatures of the pixels within each training area/point. In
+selecting training sites, care should be taken to ensure that they cover the full range of variability
+within each class. Otherwise the classification accuracy will be impacted. If possible, multiple
+training sites should be selected for each class. It is also advisable to avoid areas near the edges of
+class objects (e.g. land-cover patches), where mixed pixels may impact the purity of training site values.
+
+After selecting training sites, the feature value distributions of each class type can be assessed using
+theEvaluateTrainingSitestool. In particular, the distribution of class values should ideally be
+non-overlapping in at least one feature dimension.
+
+RF, like decision trees, does not require feature scaling. That is, unlike thek-NN algorithm and other
+methods that are based on the calculation of distances in multi-dimensional space, there is no need to
+rescale the predictors onto a common scale prior to RF analysis. Because individual trees do not use
+the full set of predictors, RF is also more robust against thecurse of dimensionalitythan many other machine learning methods. Nonetheless, there is still debate about whether or not it
+is advisable to use a large number of predictors with RF analysis and it may be better to exclude
+predictors that are highly correlated with others, or that do not contribute significantly to the model
+during the model-building phase. A dimension reduction technique such asPrincipalComponentAnalysiscan be used to transform the features into a smaller set of uncorrelated predictors.
+
+Memory Usage: Depending on the size and number of input feature rasters, this tool may require substantial
+memory to run. Peak memory usage will be at least 8 × # grid cells × # of features.
+
+See Also:RandomForestClassificationPredict,RandomForestRegressionFit,RandomForestRegressionPredict,KnnClassification,SvmClassification,ParallelepipedClassification,EvaluateTrainingSites,PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 15/05/2023
+
+Last Modified: 15/05/2023
+
+
+
+RandomForestClassificationPredict
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool applies a pre-builtrandom forest (RF) classificationmodel trained using multiple predictor rasters (--inputs), or features, and training data (--training) to predict
+a spatial distribution. This tool is
+intended to be paired with theRandomForestClassificationFittool, where users first build the model
+by fitting and random forest to training data (RandomForestClassificationFit) and subsequently use the output
+model (--model) to predict a spatial distribution (RandomForestClassificationPredict). The model created by theRandomForestClassificationFittool is saved to a generic binary formatted file with a *.dat extension, which then
+serves as the input to theRandomForestClassificationPredicttool. These two tools are used to model
+the spatial distribution of class data, such as land-cover type, soil class, or vegetation type.
+The training data take the form of an input vector Shapefile containing a set of points or polygons, for
+which the known class information is contained within a field (--field) of the attribute table. Each
+grid cell defines a stack of feature values (one value for each input raster), which serves as a point
+within the multi-dimensional feature space.
+
+Note: it is very important that the order of feature rasters is the same for both fitting the model
+and using the model for prediction. It is possible to use a model fitted to one data set to
+make preditions for another data set, however, the set of feature reasters specified to the
+prediction tool must be input in the same sequence used for building the model. For example, one may
+train a RF classifer on one set of multi-spectral satellite imagery and then apply that model to classify
+a different imagery scene, but the image band sequence must be the same for the Fit/Predict tools otherwise
+inaccurate predictions will result.
+
+Random forest is an ensemble learning method that works by
+creating a large number (--n_trees) of decision trees and using a majority vote to determine estimated
+class values. Individual trees are created using a random sub-set of predictors. This ensemble approach
+overcomes the tendency of individual decision trees to overfit the training data. As such, the RF method
+is a widely and successfully applied machine-learning method in many domains. Note that theRandomForestRegressionFittool (paired withRandomForestRegressionPredict) can be used to apply the RF method to the modelling of continuous data.
+
+The user must specify the splitting criteria (--split_criterion) used in training the decision trees.
+Options for this parameter include 'Gini', 'Entropy', and 'ClassificationError'. The model can also
+be adjusted based on each of the number of trees (--n_trees), the minimum number of samples required to
+be at a leaf node (--min_samples_leaf), and the minimum number of samples required to split an internal
+node (--min_samples_split) parameters.
+
+The tool splits the training data into two sets, one for training the classifier and one for testing
+the model. These test data are used to calculate the overall accuracy and Cohen's kappa
+index of agreement, as well as to estimate the variable importance. The--test_proportionparameter
+is used to set the proportion of the input training data used in model testing. For example, if--test_proportion = 0.2, 20% of the training data will be set aside for testing, and this subset
+will be selected randomly. As a result of this random selection of test data, and the random selection of
+features used in decision tree creation, the tool is inherently stochastic, and will result in a
+different model each time it is run.
+
+Like all supervised classification methods, this technique relies heavily on proper selection of training
+data. Training sites are exemplar areas/points of known and representative class value (e.g. land cover
+type). The training data input file (--training) can consist of either vector points or polygons, for
+whcih the attribute table contains one field with the known class value. The algorithm determines the
+feature signatures of the pixels within each training area/point. In
+selecting training sites, care should be taken to ensure that they cover the full range of variability
+within each class. Otherwise the classification accuracy will be impacted. If possible, multiple
+training sites should be selected for each class. It is also advisable to avoid areas near the edges of
+class objects (e.g. land-cover patches), where mixed pixels may impact the purity of training site values.
+
+After selecting training sites, the feature value distributions of each class type can be assessed using
+theEvaluateTrainingSitestool. In particular, the distribution of class values should ideally be
+non-overlapping in at least one feature dimension.
+
+RF, like decision trees, does not require feature scaling. That is, unlike thek-NN algorithm and other
+methods that are based on the calculation of distances in multi-dimensional space, there is no need to
+rescale the predictors onto a common scale prior to RF analysis. Because individual trees do not use
+the full set of predictors, RF is also more robust against thecurse of dimensionalitythan many other machine learning methods. Nonetheless, there is still debate about whether or not it
+is advisable to use a large number of predictors with RF analysis and it may be better to exclude
+predictors that are highly correlated with others, or that do not contribute significantly to the model
+during the model-building phase. A dimension reduction technique such asPrincipalComponentAnalysiscan be used to transform the features into a smaller set of uncorrelated predictors.
+
+Memory Usage: Depending on the size and number of input feature rasters, this tool may require substantial
+memory to run. Peak memory usage will be at least 8 × # grid cells × # of features.
+
+See Also:RandomForestClassificationFit,RandomForestRegressionFit,RandomForestRegressionPredict,KnnClassification,SvmClassification,ParallelepipedClassification,EvaluateTrainingSites,PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 15/05/2023
+
+Last Modified: 15/05/2023
+
+
+
+RandomForestRegression
+
+Performs a random forest regression analysis using training site data and predictor rasters.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Unknown
+
+Created: Unknown
+
+Last Modified: Unknown
+
+
+
+RandomForestRegressionFit
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs a supervisedrandom forest (RF) regression analysisusing multiple predictor rasters (--inputs), or features, and training data (--training). This tool is
+intended to be paired with theRandomForestRegressionPredicttool, where users first build the model
+by fitting and random forest to training data (RandomForestRegressionFit) and subsequently use the output
+model (--model) to predict a spatial distribution (RandomForestRegressionPredict). The model created by theRandomForestRegressionFittool is saved to a generic binary formatted file with a *.dat extension, which then
+serves as the input to theRandomForestRegressionPredicttool. These two tools can be used to model
+the spatial distribution of continuous data, such as soil properties (e.g. percent sand/silt/clay).
+The training data take the form of an input vector Shapefile containing a set of points, for
+which the known outcome information is contained within a field (--field) of the attribute table. Each
+grid cell defines a stack of feature values (one value for each input raster), which serves as a point
+within the multi-dimensional feature space.
+
+Note: it is very important that the order of feature rasters is the same for both fitting the model
+and using the model for prediction. It is possible to use a model fitted to one data set to
+make preditions for another data set, however, the set of feature reasters specified to the
+prediction tool must be input in the same sequence used for building the model. For example, one may
+train a RF regressor on one set of land-surface parameters and then apply that model to predict the spatial
+distribution of a soil property on a land-surface parameter stack derived for a different landscape, but the
+image band sequence must be the same for the Fit/Predict tools otherwise inaccurate predictions will result.
+
+Random forest is an ensemble learning method that works by
+creating a large number (--n_trees) of decision trees and using an averaging of each tree to determine estimated
+outcome values. Individual trees are created using a random sub-set of predictors. This ensemble approach
+overcomes the tendency of individual decision trees to overfit the training data. As such, the RF method
+is a widely and successfully applied machine-learning method in many domains. Note that theRandomForestClassificationtool can be used to apply the RF method to the modelling of categorical (class) data.
+
+Users must specify the number of trees (--n_trees), the minimum number of samples required to
+be at a leaf node (--min_samples_leaf), and the minimum number of samples required to split an internal
+node (--min_samples_split) parameters, which determine the characteristics of the resulting model.
+
+The tool splits the training data into two sets, one for training the model and one for testing
+the prediction. These test data are used to calculate the regression accuracy statistics, as
+well as to estimate the variable importance. The--test_proportionparameter
+is used to set the proportion of the input training data used in model testing. For example, if--test_proportion = 0.2, 20% of the training data will be set aside for testing, and this subset
+will be selected randomly. As a result of this random selection of test data, as well as the
+randomness involved in establishing the individual decision trees, the tool in inherently stochastic,
+and will result in a different model each time it is run.
+
+RF, like decision trees, does not require feature scaling. That is, unlike thek-NN algorithm and other
+methods that are based on the calculation of distances in multi-dimensional space, there is no need to
+rescale the predictors onto a common scale prior to RF analysis. Because individual trees do not use
+the full set of predictors, RF is also more robust against thecurse of dimensionalitythan many other machine learning methods. Nonetheless, there is still debate about whether or not it
+is advisable to use a large number of predictors with RF analysis and it may be better to exclude
+predictors that are highly correlated with others, or that do not contribute significantly to the model
+during the model-building phase. A dimension reduction technique such asPrincipalComponentAnalysiscan be used to transform the features into a smaller set of uncorrelated predictors.
+
+For a video tutorial on how to use theRandomForestRegressiontool, seethis YouTube video.
+
+Memory Usage: Depending on the size and number of input feature rasters, this tool may require substantial
+memory to run. Peak memory usage will be at least 8 × # grid cells × # of features.
+
+See Also:RandomForestRegressionPredict,RandomForestClassificationFit,RandomForestClassificationPredict,KnnRegression,SvmRegression,PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 15/05/2023
+
+Last Modified: 15/05/2023
+
+
+
+RandomForestRegressionPredict
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs a  pre-builtrandom forest (RF) regression analysisusing multiple predictor rasters (--inputs), or features, and training data (--training), to predict a continuous
+spatial distribution. This tool is
+intended to be paired with theRandomForestRegressionFittool, where users first build the model
+by fitting and random forest to training data (RandomForestRegressionFit) and subsequently use the output
+model (--model) to predict a spatial distribution (RandomForestRegressionPredict). The model created by theRandomForestRegressionFittool is saved to a generic binary formatted file with a *.dat extension, which then
+serves as the input to theRandomForestRegressionPredicttool. These two tools can be used to model
+the spatial distribution of continuous data, such as soil properties (e.g. percent sand/silt/clay).
+The training data take the form of an input vector Shapefile containing a set of points, for
+which the known outcome information is contained within a field (--field) of the attribute table. Each
+grid cell defines a stack of feature values (one value for each input raster), which serves as a point
+within the multi-dimensional feature space.
+
+Note: it is very important that the order of feature rasters is the same for both fitting the model
+and using the model for prediction. It is possible to use a model fitted to one data set to
+make preditions for another data set, however, the set of feature reasters specified to the
+prediction tool must be input in the same sequence used for building the model. For example, one may
+train a RF regressor on one set of land-surface parameters and then apply that model to predict the spatial
+distribution of a soil property on a land-surface parameter stack derived for a different landscape, but the
+image band sequence must be the same for the Fit/Predict tools otherwise inaccurate predictions will result.
+
+Random forest is an ensemble learning method that works by
+creating a large number (--n_trees) of decision trees and using an averaging of each tree to determine estimated
+outcome values. Individual trees are created using a random sub-set of predictors. This ensemble approach
+overcomes the tendency of individual decision trees to overfit the training data. As such, the RF method
+is a widely and successfully applied machine-learning method in many domains. Note that theRandomForestClassificationtool can be used to apply the RF method to the modelling of categorical (class) data.
+
+Users must specify the number of trees (--n_trees), the minimum number of samples required to
+be at a leaf node (--min_samples_leaf), and the minimum number of samples required to split an internal
+node (--min_samples_split) parameters, which determine the characteristics of the resulting model.
+
+The tool splits the training data into two sets, one for training the model and one for testing
+the prediction. These test data are used to calculate the regression accuracy statistics, as
+well as to estimate the variable importance. The--test_proportionparameter
+is used to set the proportion of the input training data used in model testing. For example, if--test_proportion = 0.2, 20% of the training data will be set aside for testing, and this subset
+will be selected randomly. As a result of this random selection of test data, as well as the
+randomness involved in establishing the individual decision trees, the tool in inherently stochastic,
+and will result in a different model each time it is run.
+
+RF, like decision trees, does not require feature scaling. That is, unlike thek-NN algorithm and other
+methods that are based on the calculation of distances in multi-dimensional space, there is no need to
+rescale the predictors onto a common scale prior to RF analysis. Because individual trees do not use
+the full set of predictors, RF is also more robust against thecurse of dimensionalitythan many other machine learning methods. Nonetheless, there is still debate about whether or not it
+is advisable to use a large number of predictors with RF analysis and it may be better to exclude
+predictors that are highly correlated with others, or that do not contribute significantly to the model
+during the model-building phase. A dimension reduction technique such asPrincipalComponentAnalysiscan be used to transform the features into a smaller set of uncorrelated predictors.
+
+For a video tutorial on how to use theRandomForestRegressiontool, seethis YouTube video.
+
+Memory Usage: Depending on the size and number of input feature rasters, this tool may require substantial
+memory to run. Peak memory usage will be at least 8 × # grid cells × # of features.
+
+See Also:RandomForestRegressionFit,RandomForestClassificationFit,RandomForestClassificationPredict,KnnRegression,SvmRegression,PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 15/05/2023
+
+Last Modified: 15/05/2023
+
+
+
+SvmClassification
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs asupport vector machine (SVM) binary classificationusing multiple predictor rasters (--inputs), or features, and training data (--training). SVMs
+are a common class of supervised learning algorithms widely applied in many problem domains. This
+tool can be used to model the spatial distribution of class data, such as land-cover type, soil class, or vegetation type.
+The training data take the form of an input vector Shapefile containing a set of points or polygons, for which the known
+class information is contained within a field (--field) of the attribute table. Each grid cell defines
+a stack of feature values (one value for each input raster), which serves as a point within the
+multi-dimensional feature space. Note that theSvmRegressiontool can be used to apply the SVM method
+to the modelling of continuous data.
+
+The user must specify the values of three parameters used in the development of the model, thecparameters (-c), gamma (--gamma), and the tolerance (--tolerance). Thec-value is the
+regularization parameter used in model optimization. The gamma parameter defines the radial basis function
+(Gaussian) kernel parameter. The tolerance parameter controls the stopping condition used during model
+optimization.
+
+The tool splits the training data into two sets, one for training the classifier and one for testing
+the classification. These test data are used to calculate the overall accuracy and Matthew correlation
+coefficient (MCC). The--test_proportionparameter
+is used to set the proportion of the input training data used in model testing. For example, if--test_proportion = 0.2, 20% of the training data will be set aside for testing, and this subset
+will be selected randomly. As a result of this random selection of test data, the tool behaves stochastically,
+and will result in a different model each time it is run.
+
+Note that the output image parameter (--output) is optional. When unspecified, the tool will simply
+report the model accuracy statistics, allowing the user to experiment with different parameter
+settings and input predictor raster combinations to optimize the model before applying it to classify
+the whole image data set.
+
+Like all supervised classification methods, this technique relies heavily on proper selection of training
+data. Training sites are exemplar areas/points of known and representative class value (e.g. land cover
+type). The algorithm determines the feature signatures of the pixels within each training area. In
+selecting training sites, care should be taken to ensure that they cover the full range of variability
+within each class. Otherwise the classification accuracy will be impacted. If possible, multiple
+training sites should be selected for each class. It is also advisable to avoid areas near the edges of
+class objects (e.g. land-cover patches), where mixed pixels may impact the purity of training site values.
+
+After selecting training sites, the feature value distributions of each class type can be assessed using
+theEvaluateTrainingSitestool. In particular, the distribution of class values should ideally be
+non-overlapping in at least one feature dimension.
+
+The SVM algorithm is based on the calculation of distances in multi-dimensional space. Feature scaling is
+essential to the application of SVM-based modelling, especially when the ranges of the features are different, for
+example, if they are measured in different units. Without scaling, features with larger ranges will have
+greater influence in computing the distances between points. The tool offers three options for feature-scaling (--scaling),
+including 'None', 'Normalize', and 'Standardize'. Normalization simply rescales each of the features onto
+a 0-1 range. This is a good option for most applications, but it is highly sensitive to outliers because
+it is determined by the range of the minimum and maximum values. Standardization
+rescales predictors using their means and standard deviations, transforming the data into z-scores. This
+is a better option than normalization when you know that the data contain outlier values; however, it does
+does assume that the feature data are somewhat normally distributed, or are at least symmetrical in
+distribution.
+
+Because the SVM algorithm calculates distances in feature-space, like many other related algorithms,
+it suffers from thecurse of dimensionality.
+Distances become less meaningful in high-dimensional space because the vastness of these spaces means
+that distances between points are less significant (more similar). As such, if the predictor list includes
+insignificant or highly correlated variables, it is advisable to exclude these features during the model-building
+phase, or to use a dimension reduction technique such asPrincipalComponentAnalysisto transform the
+features into a smaller set of uncorrelated predictors.
+
+Memory Usage:
+
+The peak memory usage of this tool is approximately 8 bytes per grid cell × # predictors.
+
+See Also:RandomForestClassification,KnnClassification,ParallelepipedClassification,EvaluateTrainingSites,PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 02/01/2022
+
+Last Modified: 02/01/2022
+
+
+
+SvmRegression
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs a supervisedsupport vector machine (SVM) regression analysisusing multiple predictor rasters (--inputs), or features, and training data (--training). SVMs
+are a common class of supervised learning algorithms widely applied in many problem domains. This tool can
+be used to model the spatial distribution of continuous data, such as soil properties (e.g. percent
+sand/silt/clay). The training data take the form of an input vector Shapefile containing a set of points
+for which the known outcome data is contained within a field (--field) of the attribute table.
+Each grid cell defines a stack of feature values (one value for each input raster), which serves as a
+point within the multi-dimensional feature space. Note that theSvmClassificationtool can be used to
+apply the SVM method to the modelling of categorical data.
+
+The user must specify thec-value (-c), the regularization parameter used in model optimization,
+the epsilon-value (--eps), used in the development of the epsilon-SVM regression model, and the
+gamma-value (--gamma), which is used in defining the radial basis function (Gaussian) kernel parameter.
+
+The tool splits the training data into two sets, one for training the model and one for testing
+the prediction. These test data are used to calculate the regression accuracy statistics, as
+well as to estimate the variable importance. The--test_proportionparameter
+is used to set the proportion of the input training data used in model testing. For example, if--test_proportion = 0.2, 20% of the training data will be set aside for testing, and this subset
+will be selected randomly. As a result of this random selection of test data, the tool behaves
+stochastically, and will result in a different model each time it is run.
+
+Note that the output image parameter (--output) is optional. When unspecified, the tool will simply
+report the model accuracy statistics and variable importance, allowing the user to experiment with different parameter
+settings and input predictor raster combinations to optimize the model before applying it to model the
+outcome variable across the whole region defined by image data set.
+
+The SVM algorithm is based on the calculation of distances in multi-dimensional space. Feature scaling is
+essential to the application of SVM modelling, especially when the ranges of the features are different, for
+example, if they are measured in different units. Without scaling, features with larger ranges will have
+greater influence in computing the distances between points. The tool offers three options for feature-scaling (--scaling),
+including 'None', 'Normalize', and 'Standardize'. Normalization simply rescales each of the features onto
+a 0-1 range. This is a good option for most applications, but it is highly sensitive to outliers because
+it is determined by the range of the minimum and maximum values. Standardization
+rescales predictors using their means and standard deviations, transforming the data into z-scores. This
+is a better option than normalization when you know that the data contain outlier values; however, it does
+does assume that the feature data are somewhat normally distributed, or are at least symmetrical in
+distribution.
+
+Because the SVM algorithm calculates distances in feature-space, like many other related algorithms,
+it suffers from thecurse of dimensionality.
+Distances become less meaningful in high-dimensional space because the vastness of these spaces means
+that distances between points are less significant (more similar). As such, if the predictor list includes
+insignificant or highly correlated variables, it is advisable to exclude these features during the model-building
+phase, or to use a dimension reduction technique such asPrincipalComponentAnalysisto transform the
+features into a smaller set of uncorrelated predictors.
+
+Memory Usage:
+
+The peak memory usage of this tool is approximately 8 bytes per grid cell × # predictors.
+
+See Also:SvmClassification,RandomForestRegression,KnnRegression,PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 31/12/2021
+
+Last Modified: 21/01/2022
+
+
+--- CODE BLOCK ---
+wbt.dbscan(
+    inputs, 
+    output, 
+    scaling="Normalize", 
+    search_dist=0.01, 
+    min_points=5, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=Dbscan ^
+-i='band1.tif; band2.tif; band3.tif; band4.tif' ^
+--scaling='Normalize' -o=clustered.tif --search_dist=0.01 ^
+--min_points=10 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.k_means_clustering(
+    inputs, 
+    output, 
+    classes, 
+    out_html=None, 
+    max_iterations=10, 
+    class_change=2.0, 
+    initialize="diagonal", 
+    min_class_size=10, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=KMeansClustering -v ^
+--wd='/path/to/data/' -i='image1.tif;image2.tif;image3.tif' ^
+-o=output.tif --out_html=report.html --classes=15 ^
+--max_iterations=25 --class_change=1.5 --initialize='random' ^
+--min_class_size=500 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.knn_classification(
+    inputs, 
+    training, 
+    field, 
+    test_proportion=0.2, 
+    output=None, 
+    scaling="Normalize", 
+    k=5, 
+    clip=True, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=KnnClassification ^
+-i='band1.tif; band2.tif; band3.tif; band4.tif' ^
+-p=training_sites.shp -f='LAND_COVER' -o=classified.tif -k=8 ^
+--clip --test_proportion=0.1 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.knn_regression(
+    inputs, 
+    training, 
+    field, 
+    scaling="Normalize", 
+    output=None, 
+    k=5, 
+    weight=True, 
+    test_proportion=0.2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=KnnRegression ^
+-i='band1.tif; band2.tif; band3.tif; band4.tif' ^
+-p=training_sites.shp -f='PCT_SAND' -o=PercentSand.tif -k=8 ^
+--weight --test_proportion=0.1 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.logistic_regression(
+    inputs, 
+    training, 
+    field, 
+    scaling="Normalize", 
+    output=None, 
+    test_proportion=0.2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=LogisticRegression ^
+-i='band1.tif; band2.tif; band3.tif; band4.tif' ^
+-p=training_sites.shp -f='SANDY' -o=classified.tif ^
+--test_proportion=0.1 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.modified_k_means_clustering(
+    inputs, 
+    output, 
+    out_html=None, 
+    start_clusters=1000, 
+    merge_dist=None, 
+    max_iterations=10, 
+    class_change=2.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ModifiedKMeansClustering -v ^
+--wd='/path/to/data/' -i='image1.tif;image2.tif;image3.tif' ^
+-o=output.tif --out_html=report.html --start_clusters=100 ^
+--merge_dist=30.0 --max_iterations=25 --class_change=1.5 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.random_forest_classification(
+    inputs, 
+    training, 
+    field, 
+    output=None, 
+    split_criterion="Gini", 
+    n_trees=500, 
+    min_samples_leaf=1, 
+    min_samples_split=2, 
+    test_proportion=0.2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=RandomForestClassification ^
+-i='band1.tif; band2.tif; band3.tif; band4.tif' ^
+-p=training_sites.shp -f='LAND_COVER' -o=classified.tif ^
+--n_trees=100 --test_proportion=0.1 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.random_forest_classification_fit(
+    inputs, 
+    training, 
+    field, 
+    output, 
+    split_criterion="Gini", 
+    n_trees=100, 
+    min_samples_leaf=1, 
+    min_samples_split=2, 
+    test_proportion=0.2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=RandomForestClassificationFit ^
+-i='band1.tif; band2.tif; band3.tif; band4.tif' ^
+-p=training_sites.shp -f='LAND_COVER' -o=landcover.tif ^
+--n_trees=100 --test_proportion=0.1 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.random_forest_classification_predict(
+    inputs, 
+    model, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=RandomForestClassificationPredict ^
+-i='band1.tif; band2.tif; band3.tif; band4.tif' ^
+-t=training_sites.shp -f='LAND_COVER' -o=landcover.dat 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.random_forest_regression(
+    inputs, 
+    training, 
+    field, 
+    output=None, 
+    n_trees=100, 
+    min_samples_leaf=1, 
+    min_samples_split=2, 
+    test_proportion=0.2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=RandomForestRegression ^
+-i='dem.tif; slope.tif; DEVmax.tif; tan_curv.tif' ^
+-t=field_sites.shp -f='PCT_SAND' -o=PercentSand.tif ^
+--n_trees=100 --test_proportion=0.1 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.random_forest_regression_fit(
+    inputs, 
+    training, 
+    field, 
+    output, 
+    n_trees=100, 
+    min_samples_leaf=1, 
+    min_samples_split=2, 
+    test_proportion=0.2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=RandomForestRegressionFit ^
+-i='dem.tif; slope.tif; DEVmax.tif; tan_curv.tif' ^
+-t=field_sites.shp -f='PCT_SAND' -o=PercentSand.dat ^
+--n_trees=100 --test_proportion=0.1 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.random_forest_regression_predict(
+    inputs, 
+    model, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=RandomForestRegressionFit ^
+-i='dem.tif; slope.tif; DEVmax.tif; tan_curv.tif' ^
+--model=PercentSand.dat -o=PercentSand.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.svm_classification(
+    inputs, 
+    training, 
+    field, 
+    scaling="Normalize", 
+    output=None, 
+    c=200.0, 
+    gamma=50.0, 
+    tolerance=0.1, 
+    test_proportion=0.2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=SvmClassification ^
+-i='band1.tif; band2.tif; band3.tif; band4.tif' ^
+--scaling='Normalize' -p=training_sites.shp -f='LAND_COVER' ^
+-o=classified.tif --gamma=20.0 --tolerance=0.01 --c_pos=5000.0 ^
+--c_neg=500.0 --test_proportion=0.1 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.svm_regression(
+    inputs, 
+    training, 
+    field, 
+    scaling="Normalize", 
+    output=None, 
+    c=50.0, 
+    eps=10.0, 
+    gamma=0.5, 
+    test_proportion=0.2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=SvmRegression ^
+-i='band1.tif; band2.tif; band3.tif; band4.tif' ^
+--scaling='Normalize' -p=training_sites.shp -f='SAND_PCT' ^
+-o=PercentSand.tif -c=50.0 --eps=2.0 --gamma=20.0 ^
+--test_proportion=0.1 
+
+------------------

@@ -1,0 +1,25 @@
+Exceptions¶
+
+Exceptions for pyproj
+
+Raised when a CRS error occurs.
+
+Raised when a the data directory was not found.
+
+Raised when a Geod error occurs.
+
+Raised when a Proj error occurs.
+
+ExceptionsCRSErrorDataDirErrorGeodErrorProjError
+
+ExceptionsCRSErrorDataDirErrorGeodErrorProjError
+
+CRSErrorDataDirErrorGeodErrorProjError
+
+CRSError
+
+DataDirError
+
+GeodError
+
+ProjError

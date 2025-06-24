@@ -1,0 +1,352 @@
+Database¶
+
+Methods that query the PROJ database for information.
+
+pyproj.database.get_units_map¶
+
+Note
+
+The backwards compatible import ispyproj.get_units_map
+
+Added in version 2.2.0.
+
+Added in version 3.0.0:query PROJ database.
+
+Get the units available in the PROJ database.
+
+See:proj_get_units_from_database()
+
+auth_name(str,optional) – The authority name to filter by (e.g. EPSG, PROJ). Default is all.category(str,optional) – Category of the unit: one of “linear”, “linear_per_time”, “angular”,
+“angular_per_time”, “scale”, “scale_per_time” or “time”. Default is all.allow_deprecated(bool,default=False) – Whether or not to allow deprecated units.
+
+auth_name(str,optional) – The authority name to filter by (e.g. EPSG, PROJ). Default is all.
+
+auth_name(str,optional) – The authority name to filter by (e.g. EPSG, PROJ). Default is all.
+
+category(str,optional) – Category of the unit: one of “linear”, “linear_per_time”, “angular”,
+“angular_per_time”, “scale”, “scale_per_time” or “time”. Default is all.
+
+category(str,optional) – Category of the unit: one of “linear”, “linear_per_time”, “angular”,
+“angular_per_time”, “scale”, “scale_per_time” or “time”. Default is all.
+
+allow_deprecated(bool,default=False) – Whether or not to allow deprecated units.
+
+allow_deprecated(bool,default=False) – Whether or not to allow deprecated units.
+
+dict[str,Unit]
+
+Added in version 3.0.0.
+
+auth_name(str) – Authority name.code(str) – Object code.name(str) – Object name. For example “metre”, “US survey foot”, etc.category(str) – Category of the unit: one of “linear”, “linear_per_time”, “angular”,
+“angular_per_time”, “scale”, “scale_per_time” or “time”.conv_factor(float) – Conversion factor to apply to transform from that unit to the
+corresponding SI unit (metre for “linear”, radian for “angular”, etc.).
+It might be 0 in some cases to indicate no known conversion factor.proj_short_name(str,optional) – PROJ short name, like “m”, “ft”, “us-ft”, etc… Might be None.deprecated(bool) – Whether the object is deprecated.
+
+auth_name(str) – Authority name.
+
+auth_name(str) – Authority name.
+
+code(str) – Object code.
+
+code(str) – Object code.
+
+name(str) – Object name. For example “metre”, “US survey foot”, etc.
+
+name(str) – Object name. For example “metre”, “US survey foot”, etc.
+
+category(str) – Category of the unit: one of “linear”, “linear_per_time”, “angular”,
+“angular_per_time”, “scale”, “scale_per_time” or “time”.
+
+category(str) – Category of the unit: one of “linear”, “linear_per_time”, “angular”,
+“angular_per_time”, “scale”, “scale_per_time” or “time”.
+
+conv_factor(float) – Conversion factor to apply to transform from that unit to the
+corresponding SI unit (metre for “linear”, radian for “angular”, etc.).
+It might be 0 in some cases to indicate no known conversion factor.
+
+conv_factor(float) – Conversion factor to apply to transform from that unit to the
+corresponding SI unit (metre for “linear”, radian for “angular”, etc.).
+It might be 0 in some cases to indicate no known conversion factor.
+
+proj_short_name(str,optional) – PROJ short name, like “m”, “ft”, “us-ft”, etc… Might be None.
+
+proj_short_name(str,optional) – PROJ short name, like “m”, “ft”, “us-ft”, etc… Might be None.
+
+deprecated(bool) – Whether the object is deprecated.
+
+deprecated(bool) – Whether the object is deprecated.
+
+pyproj.database.get_authorities¶
+
+Note
+
+The backwards compatible import ispyproj.get_authorities
+
+Added in version 2.4.0.
+
+See:proj_get_authorities_from_database()
+
+Authorities in PROJ database.
+
+list[str]
+
+pyproj.database.get_codes¶
+
+Note
+
+The backwards compatible import ispyproj.get_codes
+
+Added in version 2.4.0.
+
+See:proj_get_codes_from_database()
+
+auth_name(str) – The name of the authority.pj_type(pyproj.enums.PJType) – The type of object to get the authorities.allow_deprecated(bool,default=False) – Allow a deprecated code in the return.
+
+auth_name(str) – The name of the authority.
+
+auth_name(str) – The name of the authority.
+
+pj_type(pyproj.enums.PJType) – The type of object to get the authorities.
+
+pj_type(pyproj.enums.PJType) – The type of object to get the authorities.
+
+allow_deprecated(bool,default=False) – Allow a deprecated code in the return.
+
+allow_deprecated(bool,default=False) – Allow a deprecated code in the return.
+
+Codes associated with authorities in PROJ database.
+
+list[str]
+
+pyproj.database.query_crs_info¶
+
+Added in version 3.0.0.
+
+Query for CRS information from the PROJ database.
+
+See:proj_get_crs_info_list_from_database()
+
+auth_name(str,optional) – The name of the authority. Default is all authorities.pj_types(pyproj.enums.PJType|list[pyproj.enums.PJType|None,optional) – The type(s) of CRS to get the information (i.e. the types with CRS in the name).
+If None is provided, it will use all of types (i.e. PJType.CRS).area_of_interest(AreaOfInterest,optional) – Filter returned CRS by the area of interest. Default method is intersection.contains(bool,default=False) – Only works if the area of interest is passed in.
+If True, then only CRS whose area of use entirely contains the specified
+bounding box will be returned. If False, then only CRS whose area of use
+intersects the specified bounding box will be returned.allow_deprecated(bool,default=False) – Allow a deprecated code in the return.
+
+auth_name(str,optional) – The name of the authority. Default is all authorities.
+
+auth_name(str,optional) – The name of the authority. Default is all authorities.
+
+pj_types(pyproj.enums.PJType|list[pyproj.enums.PJType|None,optional) – The type(s) of CRS to get the information (i.e. the types with CRS in the name).
+If None is provided, it will use all of types (i.e. PJType.CRS).
+
+pj_types(pyproj.enums.PJType|list[pyproj.enums.PJType|None,optional) – The type(s) of CRS to get the information (i.e. the types with CRS in the name).
+If None is provided, it will use all of types (i.e. PJType.CRS).
+
+area_of_interest(AreaOfInterest,optional) – Filter returned CRS by the area of interest. Default method is intersection.
+
+area_of_interest(AreaOfInterest,optional) – Filter returned CRS by the area of interest. Default method is intersection.
+
+contains(bool,default=False) – Only works if the area of interest is passed in.
+If True, then only CRS whose area of use entirely contains the specified
+bounding box will be returned. If False, then only CRS whose area of use
+intersects the specified bounding box will be returned.
+
+contains(bool,default=False) – Only works if the area of interest is passed in.
+If True, then only CRS whose area of use entirely contains the specified
+bounding box will be returned. If False, then only CRS whose area of use
+intersects the specified bounding box will be returned.
+
+allow_deprecated(bool,default=False) – Allow a deprecated code in the return.
+
+allow_deprecated(bool,default=False) – Allow a deprecated code in the return.
+
+CRS information from the PROJ database.
+
+list[CRSInfo]
+
+Added in version 3.0.0.
+
+CRS Information
+
+auth_name(str) – Authority name.code(str) – Object code.name(str) – Object name.type(PJType) – The type of CRSdeprecated(bool) – Whether the object is deprecated.area_of_use(AreaOfUse|None) – The area of use for the CRS if valid.projection_method_name(str|None) – Name of the projection method for a projected CRS.
+
+auth_name(str) – Authority name.
+
+auth_name(str) – Authority name.
+
+code(str) – Object code.
+
+code(str) – Object code.
+
+name(str) – Object name.
+
+name(str) – Object name.
+
+type(PJType) – The type of CRS
+
+type(PJType) – The type of CRS
+
+deprecated(bool) – Whether the object is deprecated.
+
+deprecated(bool) – Whether the object is deprecated.
+
+area_of_use(AreaOfUse|None) – The area of use for the CRS if valid.
+
+area_of_use(AreaOfUse|None) – The area of use for the CRS if valid.
+
+projection_method_name(str|None) – Name of the projection method for a projected CRS.
+
+projection_method_name(str|None) – Name of the projection method for a projected CRS.
+
+pyproj.database.query_utm_crs_info¶
+
+Added in version 3.0.0.
+
+Query for EPSG UTM CRS information from the PROJ database.
+
+See:proj_get_crs_info_list_from_database()
+
+datum_name(str,optional) – The name of the datum in the CRS name (‘NAD27’, ‘NAD83’, ‘WGS 84’, …).area_of_interest(AreaOfInterest,optional) – Filter returned CRS by the area of interest. Default method is intersection.contains(bool,default=False) – Only works if the area of interest is passed in.
+If True, then only CRS whose area of use entirely contains the specified
+bounding box will be returned. If False, then only CRS whose area of use
+intersects the specified bounding box will be returned.
+
+datum_name(str,optional) – The name of the datum in the CRS name (‘NAD27’, ‘NAD83’, ‘WGS 84’, …).
+
+datum_name(str,optional) – The name of the datum in the CRS name (‘NAD27’, ‘NAD83’, ‘WGS 84’, …).
+
+area_of_interest(AreaOfInterest,optional) – Filter returned CRS by the area of interest. Default method is intersection.
+
+area_of_interest(AreaOfInterest,optional) – Filter returned CRS by the area of interest. Default method is intersection.
+
+contains(bool,default=False) – Only works if the area of interest is passed in.
+If True, then only CRS whose area of use entirely contains the specified
+bounding box will be returned. If False, then only CRS whose area of use
+intersects the specified bounding box will be returned.
+
+contains(bool,default=False) – Only works if the area of interest is passed in.
+If True, then only CRS whose area of use entirely contains the specified
+bounding box will be returned. If False, then only CRS whose area of use
+intersects the specified bounding box will be returned.
+
+UTM CRS information from the PROJ database.
+
+list[CRSInfo]
+
+pyproj.database.get_database_metadata¶
+
+Return metadata from the database.
+
+See:proj_context_get_database_metadata()
+
+Available keys:
+
+DATABASE.LAYOUT.VERSION.MAJORDATABASE.LAYOUT.VERSION.MINOREPSG.VERSIONEPSG.DATEESRI.VERSIONESRI.DATEIGNF.SOURCEIGNF.VERSIONIGNF.DATENKG.SOURCENKG.VERSIONNKG.DATEPROJ.VERSIONPROJ_DATA.VERSION : PROJ-data version most compatible with this database.
+
+DATABASE.LAYOUT.VERSION.MAJOR
+
+DATABASE.LAYOUT.VERSION.MAJOR
+
+DATABASE.LAYOUT.VERSION.MINOR
+
+DATABASE.LAYOUT.VERSION.MINOR
+
+EPSG.VERSION
+
+EPSG.VERSION
+
+EPSG.DATE
+
+EPSG.DATE
+
+ESRI.VERSION
+
+ESRI.VERSION
+
+ESRI.DATE
+
+ESRI.DATE
+
+IGNF.SOURCE
+
+IGNF.SOURCE
+
+IGNF.VERSION
+
+IGNF.VERSION
+
+IGNF.DATE
+
+IGNF.DATE
+
+NKG.SOURCE
+
+NKG.SOURCE
+
+NKG.VERSION
+
+NKG.VERSION
+
+NKG.DATE
+
+NKG.DATE
+
+PROJ.VERSION
+
+PROJ.VERSION
+
+PROJ_DATA.VERSION : PROJ-data version most compatible with this database.
+
+PROJ_DATA.VERSION : PROJ-data version most compatible with this database.
+
+key(str) – The name of the metadata item to get data for.
+
+The metatada information if available.
+
+str| None
+
+Databasepyproj.database.get_units_mapget_units_map()Unitpyproj.database.get_authoritiesget_authorities()pyproj.database.get_codesget_codes()pyproj.database.query_crs_infoquery_crs_info()CRSInfopyproj.database.query_utm_crs_infoquery_utm_crs_info()pyproj.database.get_database_metadataget_database_metadata()
+
+Databasepyproj.database.get_units_mapget_units_map()Unitpyproj.database.get_authoritiesget_authorities()pyproj.database.get_codesget_codes()pyproj.database.query_crs_infoquery_crs_info()CRSInfopyproj.database.query_utm_crs_infoquery_utm_crs_info()pyproj.database.get_database_metadataget_database_metadata()
+
+pyproj.database.get_units_mapget_units_map()Unitpyproj.database.get_authoritiesget_authorities()pyproj.database.get_codesget_codes()pyproj.database.query_crs_infoquery_crs_info()CRSInfopyproj.database.query_utm_crs_infoquery_utm_crs_info()pyproj.database.get_database_metadataget_database_metadata()
+
+pyproj.database.get_units_mapget_units_map()Unit
+
+get_units_map()Unit
+
+get_units_map()
+
+Unit
+
+pyproj.database.get_authoritiesget_authorities()
+
+get_authorities()
+
+get_authorities()
+
+pyproj.database.get_codesget_codes()
+
+get_codes()
+
+get_codes()
+
+pyproj.database.query_crs_infoquery_crs_info()CRSInfo
+
+query_crs_info()CRSInfo
+
+query_crs_info()
+
+CRSInfo
+
+pyproj.database.query_utm_crs_infoquery_utm_crs_info()
+
+query_utm_crs_info()
+
+query_utm_crs_info()
+
+pyproj.database.get_database_metadataget_database_metadata()
+
+get_database_metadata()
+
+get_database_metadata()

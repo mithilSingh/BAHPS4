@@ -1,0 +1,339 @@
+Coordinate Systems¶
+
+CoordinateSystem¶
+
+Added in version 2.2.0.
+
+Coordinate System for CRS
+
+The name of the coordinate system.
+
+str
+
+returns: The Axis list for the coordinate system.
+:rtype: list[Axis]
+
+Added in version 2.5.0.
+
+Create Coordinate System from a JSON string.
+
+coordinate_system_json_str(str) – Coordinate System JSON string.
+
+CoordinateSystem
+
+Added in version 2.5.0.
+
+Create Coordinate System from a JSON dictionary.
+
+coordinate_system_dict(str) – Coordinate System dictionary.
+
+CoordinateSystem
+
+Added in version 2.5.0.
+
+Note
+
+Only works with PROJ JSON.
+
+Create a Coordinate System from a string.
+
+coordinate_system_string(str) – Coordinate System string.
+
+CoordinateSystem
+
+Added in version 2.5.0.
+
+PROJ JSON stringPROJ JSON dictWKT stringAn authority stringAn EPSG integer codeAn iterable of (“auth_name”, “auth_code”)An object with ato_jsonmethod.
+
+PROJ JSON string
+
+PROJ JSON string
+
+PROJ JSON dict
+
+PROJ JSON dict
+
+WKT string
+
+WKT string
+
+An authority string
+
+An authority string
+
+An EPSG integer code
+
+An EPSG integer code
+
+An iterable of (“auth_name”, “auth_code”)
+
+An iterable of (“auth_name”, “auth_code”)
+
+An object with ato_jsonmethod.
+
+An object with ato_jsonmethod.
+
+user_input(str,dict,int,Iterable[str,str]) – Input to create cls.
+
+cls
+
+Compares projection objects to see if they are exactly the same.
+
+Added in version 2.4.0.
+
+Remarks about object.
+
+str
+
+Added in version 2.4.0.
+
+Scope of object.
+
+str
+
+Added in version 3.0.0.
+
+This converts apyproj.crs.CoordinateSystemaxis
+to a list of Climate and Forecast (CF) Version 1.8 dicts.
+
+rotated_pole(bool,default=False) – If True, the geographic coordinates are on a rotated pole grid.
+This corresponds to the rotated_latitude_longitude grid_mapping_name.
+
+CF-1.8 version of the CoordinateSystem.
+
+list[dict]
+
+Added in version 2.4.0.
+
+Convert the object to a JSON string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON dictionary.
+
+dict
+
+Convert the projection to a WKT string.
+
+WKT2_2015WKT2_2015_SIMPLIFIEDWKT2_2019WKT2_2019_SIMPLIFIEDWKT1_GDALWKT1_ESRI
+
+WKT2_2015
+
+WKT2_2015
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2019
+
+WKT2_2019
+
+WKT2_2019_SIMPLIFIED
+
+WKT2_2019_SIMPLIFIED
+
+WKT1_GDAL
+
+WKT1_GDAL
+
+WKT1_ESRI
+
+WKT1_ESRI
+
+Added in version 3.6.0:output_axis_rule
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.pretty(bool,default=False) – If True, it will set the output to be a multiline string.output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+version(pyproj.enums.WktVersion,default=pyproj.enums.WktVersion.WKT2_2019) – The version of the WKT output.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+str
+
+Axis¶
+
+Added in version 2.0.0.
+
+Coordinate System Axis
+
+str
+
+str
+
+str
+
+float
+
+str
+
+str
+
+str
+
+Ellipsoidal2DCS¶
+
+Bases:CoordinateSystem
+
+Added in version 2.5.0.
+
+This generates an Ellipsoidal 2D Coordinate System
+
+axis(pyproj.crs.enums.Ellipsoidal2DCSAxisor str, optional) – This is the axis order of the coordinate system. Default ispyproj.crs.enums.Ellipsoidal2DCSAxis.LONGITUDE_LATITUDE.
+
+Ellipsoidal3DCS¶
+
+Bases:CoordinateSystem
+
+Added in version 2.5.0.
+
+This generates an Ellipsoidal 3D Coordinate System
+
+axis(pyproj.crs.enums.Ellipsoidal3DCSAxisor str, optional) – This is the axis order of the coordinate system. Default ispyproj.crs.enums.Ellipsoidal3DCSAxis.LONGITUDE_LATITUDE_HEIGHT.
+
+Cartesian2DCS¶
+
+Bases:CoordinateSystem
+
+Added in version 2.5.0.
+
+This generates an Cartesian 2D Coordinate System
+
+axis(pyproj.crs.enums.Cartesian2DCSAxisor str, optional) – This is the axis order of the coordinate system.
+Default ispyproj.crs.enums.Cartesian2DCSAxis.EASTING_NORTHING.
+
+VerticalCS¶
+
+Bases:CoordinateSystem
+
+Added in version 2.5.0.
+
+This generates an Vertical Coordinate System
+
+axis(pyproj.crs.enums.VerticalCSAxisor str, optional) – This is the axis direction of the coordinate system.
+Default ispyproj.crs.enums.VerticalCSAxis.GRAVITY_HEIGHT.
+
+Coordinate SystemsCoordinateSystemCoordinateSystemCoordinateSystem.nameCoordinateSystem.axis_listCoordinateSystem.from_json()CoordinateSystem.from_json_dict()CoordinateSystem.from_string()CoordinateSystem.from_user_input()CoordinateSystem.is_exact_same()CoordinateSystem.remarksCoordinateSystem.scopeCoordinateSystem.to_cf()CoordinateSystem.to_json()CoordinateSystem.to_json_dict()CoordinateSystem.to_wkt()AxisAxisAxis.nameAxis.abbrevAxis.directionAxis.unit_conversion_factorAxis.unit_nameAxis.unit_auth_codeAxis.unit_codeEllipsoidal2DCSEllipsoidal2DCSEllipsoidal2DCS.__new__()Ellipsoidal3DCSEllipsoidal3DCSEllipsoidal3DCS.__new__()Cartesian2DCSCartesian2DCSCartesian2DCS.__new__()VerticalCSVerticalCSVerticalCS.__new__()
+
+Coordinate SystemsCoordinateSystemCoordinateSystemCoordinateSystem.nameCoordinateSystem.axis_listCoordinateSystem.from_json()CoordinateSystem.from_json_dict()CoordinateSystem.from_string()CoordinateSystem.from_user_input()CoordinateSystem.is_exact_same()CoordinateSystem.remarksCoordinateSystem.scopeCoordinateSystem.to_cf()CoordinateSystem.to_json()CoordinateSystem.to_json_dict()CoordinateSystem.to_wkt()AxisAxisAxis.nameAxis.abbrevAxis.directionAxis.unit_conversion_factorAxis.unit_nameAxis.unit_auth_codeAxis.unit_codeEllipsoidal2DCSEllipsoidal2DCSEllipsoidal2DCS.__new__()Ellipsoidal3DCSEllipsoidal3DCSEllipsoidal3DCS.__new__()Cartesian2DCSCartesian2DCSCartesian2DCS.__new__()VerticalCSVerticalCSVerticalCS.__new__()
+
+CoordinateSystemCoordinateSystemCoordinateSystem.nameCoordinateSystem.axis_listCoordinateSystem.from_json()CoordinateSystem.from_json_dict()CoordinateSystem.from_string()CoordinateSystem.from_user_input()CoordinateSystem.is_exact_same()CoordinateSystem.remarksCoordinateSystem.scopeCoordinateSystem.to_cf()CoordinateSystem.to_json()CoordinateSystem.to_json_dict()CoordinateSystem.to_wkt()AxisAxisAxis.nameAxis.abbrevAxis.directionAxis.unit_conversion_factorAxis.unit_nameAxis.unit_auth_codeAxis.unit_codeEllipsoidal2DCSEllipsoidal2DCSEllipsoidal2DCS.__new__()Ellipsoidal3DCSEllipsoidal3DCSEllipsoidal3DCS.__new__()Cartesian2DCSCartesian2DCSCartesian2DCS.__new__()VerticalCSVerticalCSVerticalCS.__new__()
+
+CoordinateSystemCoordinateSystemCoordinateSystem.nameCoordinateSystem.axis_listCoordinateSystem.from_json()CoordinateSystem.from_json_dict()CoordinateSystem.from_string()CoordinateSystem.from_user_input()CoordinateSystem.is_exact_same()CoordinateSystem.remarksCoordinateSystem.scopeCoordinateSystem.to_cf()CoordinateSystem.to_json()CoordinateSystem.to_json_dict()CoordinateSystem.to_wkt()
+
+CoordinateSystemCoordinateSystem.nameCoordinateSystem.axis_listCoordinateSystem.from_json()CoordinateSystem.from_json_dict()CoordinateSystem.from_string()CoordinateSystem.from_user_input()CoordinateSystem.is_exact_same()CoordinateSystem.remarksCoordinateSystem.scopeCoordinateSystem.to_cf()CoordinateSystem.to_json()CoordinateSystem.to_json_dict()CoordinateSystem.to_wkt()
+
+CoordinateSystemCoordinateSystem.nameCoordinateSystem.axis_listCoordinateSystem.from_json()CoordinateSystem.from_json_dict()CoordinateSystem.from_string()CoordinateSystem.from_user_input()CoordinateSystem.is_exact_same()CoordinateSystem.remarksCoordinateSystem.scopeCoordinateSystem.to_cf()CoordinateSystem.to_json()CoordinateSystem.to_json_dict()CoordinateSystem.to_wkt()
+
+CoordinateSystem.nameCoordinateSystem.axis_listCoordinateSystem.from_json()CoordinateSystem.from_json_dict()CoordinateSystem.from_string()CoordinateSystem.from_user_input()CoordinateSystem.is_exact_same()CoordinateSystem.remarksCoordinateSystem.scopeCoordinateSystem.to_cf()CoordinateSystem.to_json()CoordinateSystem.to_json_dict()CoordinateSystem.to_wkt()
+
+CoordinateSystem.name
+
+CoordinateSystem.axis_list
+
+CoordinateSystem.from_json()
+
+CoordinateSystem.from_json_dict()
+
+CoordinateSystem.from_string()
+
+CoordinateSystem.from_user_input()
+
+CoordinateSystem.is_exact_same()
+
+CoordinateSystem.remarks
+
+CoordinateSystem.scope
+
+CoordinateSystem.to_cf()
+
+CoordinateSystem.to_json()
+
+CoordinateSystem.to_json_dict()
+
+CoordinateSystem.to_wkt()
+
+AxisAxisAxis.nameAxis.abbrevAxis.directionAxis.unit_conversion_factorAxis.unit_nameAxis.unit_auth_codeAxis.unit_code
+
+AxisAxis.nameAxis.abbrevAxis.directionAxis.unit_conversion_factorAxis.unit_nameAxis.unit_auth_codeAxis.unit_code
+
+AxisAxis.nameAxis.abbrevAxis.directionAxis.unit_conversion_factorAxis.unit_nameAxis.unit_auth_codeAxis.unit_code
+
+Axis.nameAxis.abbrevAxis.directionAxis.unit_conversion_factorAxis.unit_nameAxis.unit_auth_codeAxis.unit_code
+
+Axis.name
+
+Axis.abbrev
+
+Axis.direction
+
+Axis.unit_conversion_factor
+
+Axis.unit_name
+
+Axis.unit_auth_code
+
+Axis.unit_code
+
+Ellipsoidal2DCSEllipsoidal2DCSEllipsoidal2DCS.__new__()
+
+Ellipsoidal2DCSEllipsoidal2DCS.__new__()
+
+Ellipsoidal2DCSEllipsoidal2DCS.__new__()
+
+Ellipsoidal2DCS.__new__()
+
+Ellipsoidal2DCS.__new__()
+
+Ellipsoidal3DCSEllipsoidal3DCSEllipsoidal3DCS.__new__()
+
+Ellipsoidal3DCSEllipsoidal3DCS.__new__()
+
+Ellipsoidal3DCSEllipsoidal3DCS.__new__()
+
+Ellipsoidal3DCS.__new__()
+
+Ellipsoidal3DCS.__new__()
+
+Cartesian2DCSCartesian2DCSCartesian2DCS.__new__()
+
+Cartesian2DCSCartesian2DCS.__new__()
+
+Cartesian2DCSCartesian2DCS.__new__()
+
+Cartesian2DCS.__new__()
+
+Cartesian2DCS.__new__()
+
+VerticalCSVerticalCSVerticalCS.__new__()
+
+VerticalCSVerticalCS.__new__()
+
+VerticalCSVerticalCS.__new__()
+
+VerticalCS.__new__()
+
+VerticalCS.__new__()

@@ -1,0 +1,97 @@
+Geometry properties#
+
+GeometryType(*values)
+
+The enumeration of GEOS geometry types.
+
+force_2d(geometry, **kwargs)
+
+Force the dimensionality of a geometry to 2D.
+
+force_3d(geometry[, z])
+
+Force the dimensionality of a geometry to 3D.
+
+get_coordinate_dimension(geometry, **kwargs)
+
+Return the dimensionality of the coordinates in a geometry (2, 3 or 4).
+
+get_dimensions(geometry, **kwargs)
+
+Return the inherent dimensionality of a geometry.
+
+get_exterior_ring(geometry, **kwargs)
+
+Return the exterior ring of a polygon.
+
+get_geometry(geometry, index, **kwargs)
+
+Return the nth geometry from a collection of geometries.
+
+get_interior_ring(geometry, index, **kwargs)
+
+Return the nth interior ring of a polygon.
+
+get_m(point, **kwargs)
+
+Return the m-coordinate of a point.
+
+get_num_coordinates(geometry, **kwargs)
+
+Return the total number of coordinates in a geometry.
+
+get_num_geometries(geometry, **kwargs)
+
+Return number of geometries in a collection.
+
+get_num_interior_rings(geometry, **kwargs)
+
+Return number of internal rings in a polygon.
+
+get_num_points(geometry, **kwargs)
+
+Return the number of points in a linestring or linearring.
+
+get_parts(geometry[, return_index])
+
+Get parts of each GeometryCollection or Multi* geometry object.
+
+get_point(geometry, index, **kwargs)
+
+Return the nth point of a linestring or linearring.
+
+get_precision(geometry, **kwargs)
+
+Get the precision of a geometry.
+
+get_rings(geometry[, return_index])
+
+Get rings of Polygon geometry object.
+
+get_srid(geometry, **kwargs)
+
+Return the SRID of a geometry.
+
+get_type_id(geometry, **kwargs)
+
+Return the type ID of a geometry.
+
+get_x(point, **kwargs)
+
+Return the x-coordinate of a point.
+
+get_y(point, **kwargs)
+
+Return the y-coordinate of a point.
+
+get_z(point, **kwargs)
+
+Return the z-coordinate of a point.
+
+set_precision(geometry, grid_size[, mode])
+
+Return geometry with the precision set to a precision grid size.
+
+set_srid(geometry, srid, **kwargs)
+
+Return a geometry with its SRID set.

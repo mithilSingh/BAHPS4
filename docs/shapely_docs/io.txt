@@ -1,0 +1,33 @@
+Input/Output#
+
+from_geojson(geometry[, on_invalid])
+
+Create geometries from GeoJSON representations (strings).
+
+from_ragged_array(geometry_type, coords[, ...])
+
+Create geometries from a contiguous array of coordinates and offset arrays.
+
+from_wkb(geometry[, on_invalid])
+
+Create geometries from the Well-Known Binary (WKB) representation.
+
+from_wkt(geometry[, on_invalid])
+
+Create geometries from the Well-Known Text (WKT) representation.
+
+to_geojson(geometry[, indent])
+
+Convert to the GeoJSON representation of a Geometry.
+
+to_ragged_array(geometries[, include_z, ...])
+
+Convert geometries to a ragged array representation.
+
+to_wkb(geometry[, hex, output_dimension, ...])
+
+Convert to the Well-Known Binary (WKB) representation of a Geometry.
+
+to_wkt(geometry[, rounding_precision, trim, ...])
+
+Convert to the Well-Known Text (WKT) representation of a Geometry.

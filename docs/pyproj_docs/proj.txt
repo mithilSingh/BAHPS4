@@ -1,0 +1,1222 @@
+Proj¶
+
+pyproj.Projis functionally equivalent to theprojcommand line tool in PROJ.
+
+The PROJ docs say:
+
+pyproj.Proj¶
+
+Bases:Transformer
+
+Performs cartographic transformations. Converts from
+longitude, latitude to native map projection x,y coordinates and
+vice versa using PROJ (https://proj.org).
+
+The string form of the user input used to create the Proj.
+
+str
+
+The CRS object associated with the Proj.
+
+pyproj.crs.CRS
+
+Calling a Proj class instance with the arguments lon, lat will
+convert lon/lat (in degrees) to x/y native map projection
+coordinates (in meters).
+
+Inputs should be doubles (they will be cast to doubles if they
+are not, causing a slight performance hit).
+
+Works with numpy and regular python array objects, python
+sequences and scalars, but is fastest for array objects.
+
+Accepted numeric scalar or array:
+
+intfloatnumpy.floatingnumpy.integerlisttuplearray.arraynumpy.ndarrayxarray.DataArraypandas.Series
+
+int
+
+int
+
+float
+
+float
+
+numpy.floating
+
+numpy.floating
+
+numpy.integer
+
+numpy.integer
+
+list
+
+list
+
+tuple
+
+tuple
+
+array.array
+
+array.array
+
+numpy.ndarray
+
+numpy.ndarray
+
+xarray.DataArray
+
+xarray.DataArray
+
+pandas.Series
+
+pandas.Series
+
+longitude(scalarorarray) – Input longitude coordinate(s).latitude(scalarorarray) – Input latitude coordinate(s).inverse(bool,default=False) – If inverse is True the inverse transformation from x/y to
+lon/lat is performed.radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+This does not work with pyproj 2 and is ignored. It will be enabled again
+in pyproj 3.errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.
+
+longitude(scalarorarray) – Input longitude coordinate(s).
+
+longitude(scalarorarray) – Input longitude coordinate(s).
+
+latitude(scalarorarray) – Input latitude coordinate(s).
+
+latitude(scalarorarray) – Input latitude coordinate(s).
+
+inverse(bool,default=False) – If inverse is True the inverse transformation from x/y to
+lon/lat is performed.
+
+inverse(bool,default=False) – If inverse is True the inverse transformation from x/y to
+lon/lat is performed.
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+This does not work with pyproj 2 and is ignored. It will be enabled again
+in pyproj 3.
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+This does not work with pyproj 2 and is ignored. It will be enabled again
+in pyproj 3.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.
+
+The transformed coordinates.
+
+tuple[Any, Any]
+
+A Proj class instance is initialized with proj map projection
+control parameter key/value pairs. The key/value pairs can
+either be passed in a dictionary, or as keyword arguments,
+or as a PROJ string (compatible with the proj command). SeeProjectionsfor examples of
+key/value pairs defining different map projections.
+
+projparams(int,str,dict,pyproj.CRS) – A PROJ or WKT string, PROJ dict, EPSG integer, or a pyproj.CRS instance.preserve_units(bool) – If false, will ensure +units=m.**kwargs– PROJ projection parameters.
+
+projparams(int,str,dict,pyproj.CRS) – A PROJ or WKT string, PROJ dict, EPSG integer, or a pyproj.CRS instance.
+
+projparams(int,str,dict,pyproj.CRS) – A PROJ or WKT string, PROJ dict, EPSG integer, or a pyproj.CRS instance.
+
+preserve_units(bool) – If false, will ensure +units=m.
+
+preserve_units(bool) – If false, will ensure +units=m.
+
+**kwargs– PROJ projection parameters.
+
+**kwargs– PROJ projection parameters.
+
+Example usage:
+
+Expected accuracy of the transformation. -1 if unknown.
+
+float
+
+Added in version 2.3.0.
+
+The area of use object with associated attributes.
+
+AreaOfUse
+
+Definition of the projection.
+
+str
+
+Returns formal definition string for projection
+
+Description of the projection.
+
+str
+
+Make a Transformer from apyproj.crs.CRSor input used to create one.
+
+See:
+
+proj_create_crs_to_crs()proj_create_crs_to_crs_from_pj()
+
+proj_create_crs_to_crs()
+
+proj_create_crs_to_crs()
+
+proj_create_crs_to_crs_from_pj()
+
+proj_create_crs_to_crs_from_pj()
+
+Added in version 2.2.0:always_xy
+
+Added in version 2.3.0:area_of_interest
+
+Added in version 3.1.0:authority, accuracy, allow_ballpark
+
+Added in version 3.4.0:force_over
+
+Added in version 3.5.0:only_best
+
+crs_from(pyproj.crs.CRSorinput used to create one) – Projection of input data.crs_to(pyproj.crs.CRSorinput used to create one) – Projection of output data.always_xy(bool,default=False) – If true, the transform method will accept as input and return as output
+coordinates using the traditional GIS order, that is longitude, latitude
+for geographic CRS and easting, northing for most projected CRS.area_of_interest(AreaOfInterest, optional) – The area of interest to help select the transformation.authority(str,optional) – When not specified, coordinate operations from any authority will be
+searched, with the restrictions set in the
+authority_to_authority_preference database table related to the
+authority of the source/target CRS themselves. If authority is set
+to “any”, then coordinate operations from any authority will be
+searched. If authority is a non-empty string different from “any”,
+then coordinate operations will be searched only in that authority
+namespace (e.g. EPSG).accuracy(float,optional) – The minimum desired accuracy (in metres) of the candidate
+coordinate operations.allow_ballpark(bool,optional) – Set to False to disallow the use of Ballpark transformation
+in the candidate coordinate operations. Default is to allow.force_over(bool,default=False) – If True, it will to force the +over flag on the transformation.
+Requires PROJ 9+.only_best(bool,optional) – Can be set to True to cause PROJ to error out if the best
+transformation known to PROJ and usable by PROJ if all grids known and
+usable by PROJ were accessible, cannot be used. Best transformation should
+be understood as the transformation returned byproj_get_suggested_operation()if all known grids were
+accessible (either locally or through network).
+Note that the default value for this option can be also set with thePROJ_ONLY_BEST_DEFAULTenvironment variable, or with theonly_best_defaultsetting ofproj.ini.
+The only_best kwarg overrides the default value if set.
+Requires PROJ 9.2+.
+
+crs_from(pyproj.crs.CRSorinput used to create one) – Projection of input data.
+
+crs_from(pyproj.crs.CRSorinput used to create one) – Projection of input data.
+
+crs_to(pyproj.crs.CRSorinput used to create one) – Projection of output data.
+
+crs_to(pyproj.crs.CRSorinput used to create one) – Projection of output data.
+
+always_xy(bool,default=False) – If true, the transform method will accept as input and return as output
+coordinates using the traditional GIS order, that is longitude, latitude
+for geographic CRS and easting, northing for most projected CRS.
+
+always_xy(bool,default=False) – If true, the transform method will accept as input and return as output
+coordinates using the traditional GIS order, that is longitude, latitude
+for geographic CRS and easting, northing for most projected CRS.
+
+area_of_interest(AreaOfInterest, optional) – The area of interest to help select the transformation.
+
+area_of_interest(AreaOfInterest, optional) – The area of interest to help select the transformation.
+
+authority(str,optional) – When not specified, coordinate operations from any authority will be
+searched, with the restrictions set in the
+authority_to_authority_preference database table related to the
+authority of the source/target CRS themselves. If authority is set
+to “any”, then coordinate operations from any authority will be
+searched. If authority is a non-empty string different from “any”,
+then coordinate operations will be searched only in that authority
+namespace (e.g. EPSG).
+
+authority(str,optional) – When not specified, coordinate operations from any authority will be
+searched, with the restrictions set in the
+authority_to_authority_preference database table related to the
+authority of the source/target CRS themselves. If authority is set
+to “any”, then coordinate operations from any authority will be
+searched. If authority is a non-empty string different from “any”,
+then coordinate operations will be searched only in that authority
+namespace (e.g. EPSG).
+
+accuracy(float,optional) – The minimum desired accuracy (in metres) of the candidate
+coordinate operations.
+
+accuracy(float,optional) – The minimum desired accuracy (in metres) of the candidate
+coordinate operations.
+
+allow_ballpark(bool,optional) – Set to False to disallow the use of Ballpark transformation
+in the candidate coordinate operations. Default is to allow.
+
+allow_ballpark(bool,optional) – Set to False to disallow the use of Ballpark transformation
+in the candidate coordinate operations. Default is to allow.
+
+force_over(bool,default=False) – If True, it will to force the +over flag on the transformation.
+Requires PROJ 9+.
+
+force_over(bool,default=False) – If True, it will to force the +over flag on the transformation.
+Requires PROJ 9+.
+
+only_best(bool,optional) – Can be set to True to cause PROJ to error out if the best
+transformation known to PROJ and usable by PROJ if all grids known and
+usable by PROJ were accessible, cannot be used. Best transformation should
+be understood as the transformation returned byproj_get_suggested_operation()if all known grids were
+accessible (either locally or through network).
+Note that the default value for this option can be also set with thePROJ_ONLY_BEST_DEFAULTenvironment variable, or with theonly_best_defaultsetting ofproj.ini.
+The only_best kwarg overrides the default value if set.
+Requires PROJ 9.2+.
+
+only_best(bool,optional) – Can be set to True to cause PROJ to error out if the best
+transformation known to PROJ and usable by PROJ if all grids known and
+usable by PROJ were accessible, cannot be used. Best transformation should
+be understood as the transformation returned byproj_get_suggested_operation()if all known grids were
+accessible (either locally or through network).
+Note that the default value for this option can be also set with thePROJ_ONLY_BEST_DEFAULTenvironment variable, or with theonly_best_defaultsetting ofproj.ini.
+The only_best kwarg overrides the default value if set.
+Requires PROJ 9.2+.
+
+Transformer
+
+Make a Transformer from a PROJ pipeline string.
+
+The pipeline operator
+
+See:
+
+proj_create()proj_create_from_database()
+
+proj_create()
+
+proj_create()
+
+proj_create_from_database()
+
+proj_create_from_database()
+
+Added in version 3.1.0:AUTH:CODE string support (e.g. EPSG:1671)
+
+a PROJ stringa WKT stringa PROJJSON stringan object code (e.g. “EPSG:1671”
+“urn:ogc:def:coordinateOperation:EPSG::1671”)an object name. e.g “ITRF2014 to ETRF2014 (1)”.
+In that case as uniqueness is not guaranteed,
+heuristics are applied to determine the appropriate best match.a OGC URN combining references for concatenated operations
+(e.g. “urn:ogc:def:coordinateOperation,coordinateOperation:EPSG::3895,
+coordinateOperation:EPSG::1618”)
+
+a PROJ string
+
+a PROJ string
+
+a WKT string
+
+a WKT string
+
+a PROJJSON string
+
+a PROJJSON string
+
+an object code (e.g. “EPSG:1671”
+“urn:ogc:def:coordinateOperation:EPSG::1671”)
+
+an object code (e.g. “EPSG:1671”
+“urn:ogc:def:coordinateOperation:EPSG::1671”)
+
+an object name. e.g “ITRF2014 to ETRF2014 (1)”.
+In that case as uniqueness is not guaranteed,
+heuristics are applied to determine the appropriate best match.
+
+an object name. e.g “ITRF2014 to ETRF2014 (1)”.
+In that case as uniqueness is not guaranteed,
+heuristics are applied to determine the appropriate best match.
+
+a OGC URN combining references for concatenated operations
+(e.g. “urn:ogc:def:coordinateOperation,coordinateOperation:EPSG::3895,
+coordinateOperation:EPSG::1618”)
+
+a OGC URN combining references for concatenated operations
+(e.g. “urn:ogc:def:coordinateOperation,coordinateOperation:EPSG::3895,
+coordinateOperation:EPSG::1618”)
+
+proj_pipeline(str) – Projection pipeline string.
+
+Transformer
+
+Make a Transformer from apyproj.Projor input used to create one.
+
+Deprecated since version 3.4.1:from_crs()is preferred.
+
+Added in version 2.2.0:always_xy
+
+Added in version 2.3.0:area_of_interest
+
+proj_from(pyproj.Projor input used to create one) – Projection of input data.proj_to(pyproj.Projor input used to create one) – Projection of output data.always_xy(bool,default=False) – If true, the transform method will accept as input and return as output
+coordinates using the traditional GIS order, that is longitude, latitude
+for geographic CRS and easting, northing for most projected CRS.area_of_interest(AreaOfInterest, optional) – The area of interest to help select the transformation.
+
+proj_from(pyproj.Projor input used to create one) – Projection of input data.
+
+proj_from(pyproj.Projor input used to create one) – Projection of input data.
+
+proj_to(pyproj.Projor input used to create one) – Projection of output data.
+
+proj_to(pyproj.Projor input used to create one) – Projection of output data.
+
+always_xy(bool,default=False) – If true, the transform method will accept as input and return as output
+coordinates using the traditional GIS order, that is longitude, latitude
+for geographic CRS and easting, northing for most projected CRS.
+
+always_xy(bool,default=False) – If true, the transform method will accept as input and return as output
+coordinates using the traditional GIS order, that is longitude, latitude
+for geographic CRS and easting, northing for most projected CRS.
+
+area_of_interest(AreaOfInterest, optional) – The area of interest to help select the transformation.
+
+area_of_interest(AreaOfInterest, optional) – The area of interest to help select the transformation.
+
+Transformer
+
+Added in version 2.6.0.
+
+Calculate various cartographic properties, such as scale factors, angular
+distortion and meridian convergence. Depending on the underlying projection
+values will be calculated either numerically (default) or analytically.
+
+The function also calculates the partial derivatives of the given
+coordinate.
+
+Accepted numeric scalar or array:
+
+intfloatnumpy.floatingnumpy.integerlisttuplearray.arraynumpy.ndarrayxarray.DataArraypandas.Series
+
+int
+
+int
+
+float
+
+float
+
+numpy.floating
+
+numpy.floating
+
+numpy.integer
+
+numpy.integer
+
+list
+
+list
+
+tuple
+
+tuple
+
+array.array
+
+array.array
+
+numpy.ndarray
+
+numpy.ndarray
+
+xarray.DataArray
+
+xarray.DataArray
+
+pandas.Series
+
+pandas.Series
+
+longitude(scalarorarray) – Input longitude coordinate(s).latitude(scalarorarray) – Input latitude coordinate(s).radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned on error.
+
+longitude(scalarorarray) – Input longitude coordinate(s).
+
+longitude(scalarorarray) – Input longitude coordinate(s).
+
+latitude(scalarorarray) – Input latitude coordinate(s).
+
+latitude(scalarorarray) – Input latitude coordinate(s).
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned on error.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned on error.
+
+Factors
+
+Added in version 3.4.0.
+
+Note
+
+Requires PROJ 9.1+
+
+See:proj_trans_get_last_used_operation()
+
+The operation used in the transform call.
+
+Transformer
+
+True if an inverse mapping exists.
+
+bool
+
+Check if the Transformer objects are the exact same.
+If it is not a Transformer, then it returns False.
+
+other(Any)
+
+bool
+
+Added in version 3.0.0.
+
+If the network is enabled.
+
+bool
+
+Iterator/generator version of the function pyproj.Transformer.transform.
+
+See:proj_trans_generic()
+
+Added in version 2.1.1:errcheck
+
+Added in version 2.2.0:direction
+
+points(list) – List of point tuples.switch(bool,default=False) – If True x, y or lon,lat coordinates of points are switched to y, x
+or lat, lon. Default is False.time_3rd(bool,default=False) – If the input coordinates are 3 dimensional and the 3rd dimension is time.radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+Ignored for pipeline transformations with pyproj 2,
+but will work in pyproj 3.errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.direction(pyproj.enums.TransformDirection,optional) – The direction of the transform.
+Default ispyproj.enums.TransformDirection.FORWARD.
+
+points(list) – List of point tuples.
+
+points(list) – List of point tuples.
+
+switch(bool,default=False) – If True x, y or lon,lat coordinates of points are switched to y, x
+or lat, lon. Default is False.
+
+switch(bool,default=False) – If True x, y or lon,lat coordinates of points are switched to y, x
+or lat, lon. Default is False.
+
+time_3rd(bool,default=False) – If the input coordinates are 3 dimensional and the 3rd dimension is time.
+
+time_3rd(bool,default=False) – If the input coordinates are 3 dimensional and the 3rd dimension is time.
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+Ignored for pipeline transformations with pyproj 2,
+but will work in pyproj 3.
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+Ignored for pipeline transformations with pyproj 2,
+but will work in pyproj 3.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.
+
+direction(pyproj.enums.TransformDirection,optional) – The direction of the transform.
+Default ispyproj.enums.TransformDirection.FORWARD.
+
+direction(pyproj.enums.TransformDirection,optional) – The direction of the transform.
+Default ispyproj.enums.TransformDirection.FORWARD.
+
+Example
+
+Name of the projection.
+
+str
+
+Added in version 2.4.0.
+
+The operations in a concatenated operation.
+
+tuple[CoordinateOperation]
+
+Added in version 2.4.0.
+
+Remarks about object.
+
+str
+
+Added in version 2.4.0.
+
+Scope of object.
+
+str
+
+Added in version 3.3.0.
+
+The source CRS of a CoordinateOperation.
+
+CRS| None
+
+Added in version 3.3.0.
+
+The target CRS of a CoordinateOperation.
+
+CRS| None
+
+Convert the projection to a JSON string.
+
+Added in version 2.4.0.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+The JSON string.
+
+str
+
+Convert the projection to a JSON dictionary.
+
+Added in version 2.4.0.
+
+The JSON dictionary.
+
+dict
+
+return a new Proj instance which is the geographic (lat/lon)
+coordinate version of the current projection
+
+return the definition string of the geographic (lat/lon)
+coordinate version of the current projection
+
+Convert the projection to a PROJ string.
+
+Added in version 3.1.0.
+
+version(pyproj.enums.ProjVersion) – The version of the PROJ string output.
+Default ispyproj.enums.ProjVersion.PROJ_5.pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+version(pyproj.enums.ProjVersion) – The version of the PROJ string output.
+Default ispyproj.enums.ProjVersion.PROJ_5.
+
+version(pyproj.enums.ProjVersion) – The version of the PROJ string output.
+Default ispyproj.enums.ProjVersion.PROJ_5.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+The PROJ string.
+
+str
+
+Convert the projection to a WKT string.
+
+WKT2_2015WKT2_2015_SIMPLIFIEDWKT2_2019WKT2_2019_SIMPLIFIEDWKT1_GDALWKT1_ESRI
+
+WKT2_2015
+
+WKT2_2015
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2019
+
+WKT2_2019
+
+WKT2_2019_SIMPLIFIED
+
+WKT2_2019_SIMPLIFIED
+
+WKT1_GDAL
+
+WKT1_GDAL
+
+WKT1_ESRI
+
+WKT1_ESRI
+
+version(pyproj.enums.WktVersion,optional) – The version of the WKT output.
+Default ispyproj.enums.WktVersion.WKT2_2019.pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+version(pyproj.enums.WktVersion,optional) – The version of the WKT output.
+Default ispyproj.enums.WktVersion.WKT2_2019.
+
+version(pyproj.enums.WktVersion,optional) – The version of the WKT output.
+Default ispyproj.enums.WktVersion.WKT2_2019.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+The WKT string.
+
+str
+
+Transform points between two coordinate systems.
+
+See:proj_trans_generic()
+
+Added in version 2.1.1:errcheck
+
+Added in version 2.2.0:direction
+
+Added in version 3.2.0:inplace
+
+Accepted numeric scalar or array:
+
+intfloatnumpy.floatingnumpy.integerlisttuplearray.arraynumpy.ndarrayxarray.DataArraypandas.Series
+
+int
+
+int
+
+float
+
+float
+
+numpy.floating
+
+numpy.floating
+
+numpy.integer
+
+numpy.integer
+
+list
+
+list
+
+tuple
+
+tuple
+
+array.array
+
+array.array
+
+numpy.ndarray
+
+numpy.ndarray
+
+xarray.DataArray
+
+xarray.DataArray
+
+pandas.Series
+
+pandas.Series
+
+xx(scalarorarray) – Input x coordinate(s).yy(scalarorarray) – Input y coordinate(s).zz(scalarorarray,optional) – Input z coordinate(s).tt(scalarorarray,optional) – Input time coordinate(s).radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+Ignored for pipeline transformations with pyproj 2,
+but will work in pyproj 3.errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.direction(pyproj.enums.TransformDirection,optional) – The direction of the transform.
+Default ispyproj.enums.TransformDirection.FORWARD.inplace(bool,default=False) – If True, will attempt to write the results to the input array
+instead of returning a new array. This will fail if the input
+is not an array in C order with the double data type.
+
+xx(scalarorarray) – Input x coordinate(s).
+
+xx(scalarorarray) – Input x coordinate(s).
+
+yy(scalarorarray) – Input y coordinate(s).
+
+yy(scalarorarray) – Input y coordinate(s).
+
+zz(scalarorarray,optional) – Input z coordinate(s).
+
+zz(scalarorarray,optional) – Input z coordinate(s).
+
+tt(scalarorarray,optional) – Input time coordinate(s).
+
+tt(scalarorarray,optional) – Input time coordinate(s).
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+Ignored for pipeline transformations with pyproj 2,
+but will work in pyproj 3.
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+Ignored for pipeline transformations with pyproj 2,
+but will work in pyproj 3.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.
+
+direction(pyproj.enums.TransformDirection,optional) – The direction of the transform.
+Default ispyproj.enums.TransformDirection.FORWARD.
+
+direction(pyproj.enums.TransformDirection,optional) – The direction of the transform.
+Default ispyproj.enums.TransformDirection.FORWARD.
+
+inplace(bool,default=False) – If True, will attempt to write the results to the input array
+instead of returning a new array. This will fail if the input
+is not an array in C order with the double data type.
+
+inplace(bool,default=False) – If True, will attempt to write the results to the input array
+instead of returning a new array. This will fail if the input
+is not an array in C order with the double data type.
+
+Example
+
+Added in version 3.1.0.
+
+See:proj_trans_bounds()
+
+Transform boundary densifying the edges to account for nonlinear
+transformations along these edges and extracting the outermost bounds.
+
+If the destination CRS is geographic and right < left then the bounds
+crossed the antimeridian. In this scenario there are two polygons,
+one on each side of the antimeridian. The first polygon should be
+constructed with (left, bottom, 180, top) and the second with
+(-180, bottom, top, right).
+
+To construct the bounding polygons with shapely:
+
+left(float) – Minimum bounding coordinate of the first axis in source CRS
+(or the target CRS if using the reverse direction).bottom(float) – Minimum bounding coordinate of the second axis in source CRS.
+(or the target CRS if using the reverse direction).right(float) – Maximum bounding coordinate of the first axis in source CRS.
+(or the target CRS if using the reverse direction).top(float) – Maximum bounding coordinate of the second axis in source CRS.
+(or the target CRS if using the reverse direction).densify_points(uint,default=21) – Number of points to add to each edge to account for nonlinear edges
+produced by the transform process. Large numbers will produce worse
+performance.radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.direction(pyproj.enums.TransformDirection,optional) – The direction of the transform.
+Default ispyproj.enums.TransformDirection.FORWARD.
+
+left(float) – Minimum bounding coordinate of the first axis in source CRS
+(or the target CRS if using the reverse direction).
+
+left(float) – Minimum bounding coordinate of the first axis in source CRS
+(or the target CRS if using the reverse direction).
+
+bottom(float) – Minimum bounding coordinate of the second axis in source CRS.
+(or the target CRS if using the reverse direction).
+
+bottom(float) – Minimum bounding coordinate of the second axis in source CRS.
+(or the target CRS if using the reverse direction).
+
+right(float) – Maximum bounding coordinate of the first axis in source CRS.
+(or the target CRS if using the reverse direction).
+
+right(float) – Maximum bounding coordinate of the first axis in source CRS.
+(or the target CRS if using the reverse direction).
+
+top(float) – Maximum bounding coordinate of the second axis in source CRS.
+(or the target CRS if using the reverse direction).
+
+top(float) – Maximum bounding coordinate of the second axis in source CRS.
+(or the target CRS if using the reverse direction).
+
+densify_points(uint,default=21) – Number of points to add to each edge to account for nonlinear edges
+produced by the transform process. Large numbers will produce worse
+performance.
+
+densify_points(uint,default=21) – Number of points to add to each edge to account for nonlinear edges
+produced by the transform process. Large numbers will produce worse
+performance.
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+
+radians(bool,default=False) – If True, will expect input data to be in radians and will return radians
+if the projection is geographic. Otherwise, it uses degrees.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.
+
+errcheck(bool,default=False) – If True, an exception is raised if the errors are found in the process.
+If False,infis returned for errors.
+
+direction(pyproj.enums.TransformDirection,optional) – The direction of the transform.
+Default ispyproj.enums.TransformDirection.FORWARD.
+
+direction(pyproj.enums.TransformDirection,optional) – The direction of the transform.
+Default ispyproj.enums.TransformDirection.FORWARD.
+
+left, bottom, right, top– Outermost coordinates in target coordinate reference system.
+
+float
+
+pyproj.proj.Factors¶
+
+Added in version 2.6.0.
+
+These are the scaling and angular distortion factors.
+
+See PROJPJ_FACTORSdocumentation.
+
+meridional_scale(list[float]) – Meridional scale at coordinate.parallel_scale(list[float]) – Parallel scale at coordinate.areal_scale(list[float]) – Areal scale factor at coordinate.angular_distortion(list[float]) – Angular distortion at coordinate.meridian_parallel_angle(list[float]) – Meridian/parallel angle at coordinate.meridian_convergence(list[float]) – Meridian convergence at coordinate. Sometimes also described asgrid declination.tissot_semimajor(list[float]) – Maximum scale factor.tissot_semiminor(list[float]) – Minimum scale factor.dx_dlam(list[float]) – Partial derivative of coordinate.dx_dphi(list[float]) – Partial derivative of coordinate.dy_dlam(list[float]) – Partial derivative of coordinate.dy_dphi(list[float]) – Partial derivative of coordinate.
+
+meridional_scale(list[float]) – Meridional scale at coordinate.
+
+meridional_scale(list[float]) – Meridional scale at coordinate.
+
+parallel_scale(list[float]) – Parallel scale at coordinate.
+
+parallel_scale(list[float]) – Parallel scale at coordinate.
+
+areal_scale(list[float]) – Areal scale factor at coordinate.
+
+areal_scale(list[float]) – Areal scale factor at coordinate.
+
+angular_distortion(list[float]) – Angular distortion at coordinate.
+
+angular_distortion(list[float]) – Angular distortion at coordinate.
+
+meridian_parallel_angle(list[float]) – Meridian/parallel angle at coordinate.
+
+meridian_parallel_angle(list[float]) – Meridian/parallel angle at coordinate.
+
+meridian_convergence(list[float]) – Meridian convergence at coordinate. Sometimes also described asgrid declination.
+
+meridian_convergence(list[float]) – Meridian convergence at coordinate. Sometimes also described asgrid declination.
+
+tissot_semimajor(list[float]) – Maximum scale factor.
+
+tissot_semimajor(list[float]) – Maximum scale factor.
+
+tissot_semiminor(list[float]) – Minimum scale factor.
+
+tissot_semiminor(list[float]) – Minimum scale factor.
+
+dx_dlam(list[float]) – Partial derivative of coordinate.
+
+dx_dlam(list[float]) – Partial derivative of coordinate.
+
+dx_dphi(list[float]) – Partial derivative of coordinate.
+
+dx_dphi(list[float]) – Partial derivative of coordinate.
+
+dy_dlam(list[float]) – Partial derivative of coordinate.
+
+dy_dlam(list[float]) – Partial derivative of coordinate.
+
+dy_dphi(list[float]) – Partial derivative of coordinate.
+
+dy_dphi(list[float]) – Partial derivative of coordinate.
+
+Alias for field number 3
+
+Alias for field number 2
+
+Alias for field number 8
+
+Alias for field number 9
+
+Alias for field number 10
+
+Alias for field number 11
+
+Alias for field number 5
+
+Alias for field number 4
+
+Alias for field number 0
+
+Alias for field number 1
+
+Alias for field number 6
+
+Alias for field number 7
+
+Projpyproj.ProjProjProj.srsProj.crsProj.__call__()Proj.__init__()Proj.accuracyProj.area_of_useProj.definitionProj.definition_string()Proj.descriptionProj.from_crs()Proj.from_pipeline()Proj.from_proj()Proj.get_factors()Proj.get_last_used_operation()Proj.has_inverseProj.is_exact_same()Proj.is_network_enabledProj.itransform()Proj.nameProj.operationsProj.remarksProj.scopeProj.source_crsProj.target_crsProj.to_json()Proj.to_json_dict()Proj.to_latlong()Proj.to_latlong_def()Proj.to_proj4()Proj.to_wkt()Proj.transform()Proj.transform_bounds()pyproj.proj.FactorsFactorsFactors.angular_distortionFactors.areal_scaleFactors.dx_dlamFactors.dx_dphiFactors.dy_dlamFactors.dy_dphiFactors.meridian_convergenceFactors.meridian_parallel_angleFactors.meridional_scaleFactors.parallel_scaleFactors.tissot_semimajorFactors.tissot_semiminor
+
+Projpyproj.ProjProjProj.srsProj.crsProj.__call__()Proj.__init__()Proj.accuracyProj.area_of_useProj.definitionProj.definition_string()Proj.descriptionProj.from_crs()Proj.from_pipeline()Proj.from_proj()Proj.get_factors()Proj.get_last_used_operation()Proj.has_inverseProj.is_exact_same()Proj.is_network_enabledProj.itransform()Proj.nameProj.operationsProj.remarksProj.scopeProj.source_crsProj.target_crsProj.to_json()Proj.to_json_dict()Proj.to_latlong()Proj.to_latlong_def()Proj.to_proj4()Proj.to_wkt()Proj.transform()Proj.transform_bounds()pyproj.proj.FactorsFactorsFactors.angular_distortionFactors.areal_scaleFactors.dx_dlamFactors.dx_dphiFactors.dy_dlamFactors.dy_dphiFactors.meridian_convergenceFactors.meridian_parallel_angleFactors.meridional_scaleFactors.parallel_scaleFactors.tissot_semimajorFactors.tissot_semiminor
+
+pyproj.ProjProjProj.srsProj.crsProj.__call__()Proj.__init__()Proj.accuracyProj.area_of_useProj.definitionProj.definition_string()Proj.descriptionProj.from_crs()Proj.from_pipeline()Proj.from_proj()Proj.get_factors()Proj.get_last_used_operation()Proj.has_inverseProj.is_exact_same()Proj.is_network_enabledProj.itransform()Proj.nameProj.operationsProj.remarksProj.scopeProj.source_crsProj.target_crsProj.to_json()Proj.to_json_dict()Proj.to_latlong()Proj.to_latlong_def()Proj.to_proj4()Proj.to_wkt()Proj.transform()Proj.transform_bounds()pyproj.proj.FactorsFactorsFactors.angular_distortionFactors.areal_scaleFactors.dx_dlamFactors.dx_dphiFactors.dy_dlamFactors.dy_dphiFactors.meridian_convergenceFactors.meridian_parallel_angleFactors.meridional_scaleFactors.parallel_scaleFactors.tissot_semimajorFactors.tissot_semiminor
+
+pyproj.ProjProjProj.srsProj.crsProj.__call__()Proj.__init__()Proj.accuracyProj.area_of_useProj.definitionProj.definition_string()Proj.descriptionProj.from_crs()Proj.from_pipeline()Proj.from_proj()Proj.get_factors()Proj.get_last_used_operation()Proj.has_inverseProj.is_exact_same()Proj.is_network_enabledProj.itransform()Proj.nameProj.operationsProj.remarksProj.scopeProj.source_crsProj.target_crsProj.to_json()Proj.to_json_dict()Proj.to_latlong()Proj.to_latlong_def()Proj.to_proj4()Proj.to_wkt()Proj.transform()Proj.transform_bounds()
+
+ProjProj.srsProj.crsProj.__call__()Proj.__init__()Proj.accuracyProj.area_of_useProj.definitionProj.definition_string()Proj.descriptionProj.from_crs()Proj.from_pipeline()Proj.from_proj()Proj.get_factors()Proj.get_last_used_operation()Proj.has_inverseProj.is_exact_same()Proj.is_network_enabledProj.itransform()Proj.nameProj.operationsProj.remarksProj.scopeProj.source_crsProj.target_crsProj.to_json()Proj.to_json_dict()Proj.to_latlong()Proj.to_latlong_def()Proj.to_proj4()Proj.to_wkt()Proj.transform()Proj.transform_bounds()
+
+ProjProj.srsProj.crsProj.__call__()Proj.__init__()Proj.accuracyProj.area_of_useProj.definitionProj.definition_string()Proj.descriptionProj.from_crs()Proj.from_pipeline()Proj.from_proj()Proj.get_factors()Proj.get_last_used_operation()Proj.has_inverseProj.is_exact_same()Proj.is_network_enabledProj.itransform()Proj.nameProj.operationsProj.remarksProj.scopeProj.source_crsProj.target_crsProj.to_json()Proj.to_json_dict()Proj.to_latlong()Proj.to_latlong_def()Proj.to_proj4()Proj.to_wkt()Proj.transform()Proj.transform_bounds()
+
+Proj.srsProj.crsProj.__call__()Proj.__init__()Proj.accuracyProj.area_of_useProj.definitionProj.definition_string()Proj.descriptionProj.from_crs()Proj.from_pipeline()Proj.from_proj()Proj.get_factors()Proj.get_last_used_operation()Proj.has_inverseProj.is_exact_same()Proj.is_network_enabledProj.itransform()Proj.nameProj.operationsProj.remarksProj.scopeProj.source_crsProj.target_crsProj.to_json()Proj.to_json_dict()Proj.to_latlong()Proj.to_latlong_def()Proj.to_proj4()Proj.to_wkt()Proj.transform()Proj.transform_bounds()
+
+Proj.srs
+
+Proj.crs
+
+Proj.__call__()
+
+Proj.__init__()
+
+Proj.accuracy
+
+Proj.area_of_use
+
+Proj.definition
+
+Proj.definition_string()
+
+Proj.description
+
+Proj.from_crs()
+
+Proj.from_pipeline()
+
+Proj.from_proj()
+
+Proj.get_factors()
+
+Proj.get_last_used_operation()
+
+Proj.has_inverse
+
+Proj.is_exact_same()
+
+Proj.is_network_enabled
+
+Proj.itransform()
+
+Proj.name
+
+Proj.operations
+
+Proj.remarks
+
+Proj.scope
+
+Proj.source_crs
+
+Proj.target_crs
+
+Proj.to_json()
+
+Proj.to_json_dict()
+
+Proj.to_latlong()
+
+Proj.to_latlong_def()
+
+Proj.to_proj4()
+
+Proj.to_wkt()
+
+Proj.transform()
+
+Proj.transform_bounds()
+
+pyproj.proj.FactorsFactorsFactors.angular_distortionFactors.areal_scaleFactors.dx_dlamFactors.dx_dphiFactors.dy_dlamFactors.dy_dphiFactors.meridian_convergenceFactors.meridian_parallel_angleFactors.meridional_scaleFactors.parallel_scaleFactors.tissot_semimajorFactors.tissot_semiminor
+
+FactorsFactors.angular_distortionFactors.areal_scaleFactors.dx_dlamFactors.dx_dphiFactors.dy_dlamFactors.dy_dphiFactors.meridian_convergenceFactors.meridian_parallel_angleFactors.meridional_scaleFactors.parallel_scaleFactors.tissot_semimajorFactors.tissot_semiminor
+
+FactorsFactors.angular_distortionFactors.areal_scaleFactors.dx_dlamFactors.dx_dphiFactors.dy_dlamFactors.dy_dphiFactors.meridian_convergenceFactors.meridian_parallel_angleFactors.meridional_scaleFactors.parallel_scaleFactors.tissot_semimajorFactors.tissot_semiminor
+
+Factors.angular_distortionFactors.areal_scaleFactors.dx_dlamFactors.dx_dphiFactors.dy_dlamFactors.dy_dphiFactors.meridian_convergenceFactors.meridian_parallel_angleFactors.meridional_scaleFactors.parallel_scaleFactors.tissot_semimajorFactors.tissot_semiminor
+
+Factors.angular_distortion
+
+Factors.areal_scale
+
+Factors.dx_dlam
+
+Factors.dx_dphi
+
+Factors.dy_dlam
+
+Factors.dy_dphi
+
+Factors.meridian_convergence
+
+Factors.meridian_parallel_angle
+
+Factors.meridional_scale
+
+Factors.parallel_scale
+
+Factors.tissot_semimajor
+
+Factors.tissot_semiminor
+
+
+--- CODE BLOCK ---
+The `proj` program is limited to converting between geographic and
+projection coordinates within one datum.
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import Proj
+>>> p = Proj(proj='utm',zone=10,ellps='WGS84', preserve_units=False)
+>>> x,y = p(-120.108, 34.36116666)
+>>> 'x=%9.3f y=%11.3f' % (x,y)
+'x=765975.641 y=3805993.134'
+>>> 'lon=%8.3f lat=%5.3f' % p(x,y,inverse=True)
+'lon=-120.108 lat=34.361'
+>>> # do 3 cities at a time in a tuple (Fresno, LA, SF)
+>>> lons = (-119.72,-118.40,-122.38)
+>>> lats = (36.77, 33.93, 37.62 )
+>>> x,y = p(lons, lats)
+>>> 'x: %9.3f %9.3f %9.3f' % x
+'x: 792763.863 925321.537 554714.301'
+>>> 'y: %9.3f %9.3f %9.3f' % y
+'y: 4074377.617 3763936.941 4163835.303'
+>>> lons, lats = p(x, y, inverse=True) # inverse transform
+>>> 'lons: %8.3f %8.3f %8.3f' % lons
+'lons: -119.720 -118.400 -122.380'
+>>> 'lats: %8.3f %8.3f %8.3f' % lats
+'lats:   36.770   33.930   37.620'
+>>> p2 = Proj('+proj=utm +zone=10 +ellps=WGS84', preserve_units=False)
+>>> x,y = p2(-120.108, 34.36116666)
+>>> 'x=%9.3f y=%11.3f' % (x,y)
+'x=765975.641 y=3805993.134'
+>>> p = Proj("EPSG:32667", preserve_units=False)
+>>> 'x=%12.3f y=%12.3f (meters)' % p(-114.057222, 51.045)
+'x=-1783506.250 y= 6193827.033 (meters)'
+>>> p = Proj("EPSG:32667")
+>>> 'x=%12.3f y=%12.3f (feet)' % p(-114.057222, 51.045)
+'x=-5851386.754 y=20320914.191 (feet)'
+>>> # test data with radian inputs
+>>> p1 = Proj("EPSG:4214")
+>>> x1, y1 = p1(116.366, 39.867)
+>>> f'{x1:.3f} {y1:.3f}'
+'116.366 39.867'
+>>> x2, y2 = p1(x1, y1, inverse=True)
+>>> f'{x2:.3f} {y2:.3f}'
+'116.366 39.867'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Proj("EPSG:4326").definition_string()
+'proj=longlat datum=WGS84 no_defs ellps=WGS84 towgs84=0,0,0'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import Transformer
+>>> transformer = Transformer.from_crs(4326, 2100)
+>>> points = [(22.95, 40.63), (22.81, 40.53), (23.51, 40.86)]
+>>> for pt in transformer.itransform(points): '{:.3f} {:.3f}'.format(*pt)
+'2221638.801 2637034.372'
+'2212924.125 2619851.898'
+'2238294.779 2703763.736'
+>>> pipeline_str = (
+...     "+proj=pipeline +step +proj=longlat +ellps=WGS84 "
+...     "+step +proj=unitconvert +xy_in=rad +xy_out=deg"
+... )
+>>> pipe_trans = Transformer.from_pipeline(pipeline_str)
+>>> for pt in pipe_trans.itransform([(2.1, 0.001)]):
+...     '{:.3f} {:.3f}'.format(*pt)
+'2.100 0.001'
+>>> transproj = Transformer.from_crs(
+...     {"proj":'geocent', "ellps":'WGS84', "datum":'WGS84'},
+...     "EPSG:4326",
+...     always_xy=True,
+... )
+>>> for pt in transproj.itransform(
+...     [(-2704026.010, -4253051.810, 3895878.820)],
+...     radians=True,
+... ):
+...     '{:.3f} {:.3f} {:.3f}'.format(*pt)
+'-2.137 0.661 -20.531'
+>>> transprojr = Transformer.from_crs(
+...     "EPSG:4326",
+...     {"proj":'geocent', "ellps":'WGS84', "datum":'WGS84'},
+...     always_xy=True,
+... )
+>>> for pt in transprojr.itransform(
+...     [(-2.137, 0.661, -20.531)],
+...     radians=True
+... ):
+...     '{:.3f} {:.3f} {:.3f}'.format(*pt)
+'-2704214.394 -4254414.478 3894270.731'
+>>> transproj_eq = Transformer.from_crs(
+...     'EPSG:4326',
+...     '+proj=longlat +datum=WGS84 +no_defs +type=crs',
+...     always_xy=True,
+... )
+>>> for pt in transproj_eq.itransform([(-2.137, 0.661)]):
+...     '{:.3f} {:.3f}'.format(*pt)
+'-2.137 0.661'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import Transformer
+>>> transformer = Transformer.from_crs("EPSG:4326", "EPSG:3857")
+>>> x3, y3 = transformer.transform(33, 98)
+>>> f"{x3:.3f}  {y3:.3f}"
+'10909310.098  3895303.963'
+>>> pipeline_str = (
+...     "+proj=pipeline +step +proj=longlat +ellps=WGS84 "
+...     "+step +proj=unitconvert +xy_in=rad +xy_out=deg"
+... )
+>>> pipe_trans = Transformer.from_pipeline(pipeline_str)
+>>> xt, yt = pipe_trans.transform(2.1, 0.001)
+>>> f"{xt:.3f}  {yt:.3f}"
+'2.100  0.001'
+>>> transproj = Transformer.from_crs(
+...     {"proj":'geocent', "ellps":'WGS84', "datum":'WGS84'},
+...     "EPSG:4326",
+...     always_xy=True,
+... )
+>>> xpj, ypj, zpj = transproj.transform(
+...     -2704026.010,
+...     -4253051.810,
+...     3895878.820,
+...     radians=True,
+... )
+>>> f"{xpj:.3f} {ypj:.3f} {zpj:.3f}"
+'-2.137 0.661 -20.531'
+>>> transprojr = Transformer.from_crs(
+...     "EPSG:4326",
+...     {"proj":'geocent', "ellps":'WGS84', "datum":'WGS84'},
+...     always_xy=True,
+... )
+>>> xpjr, ypjr, zpjr = transprojr.transform(xpj, ypj, zpj, radians=True)
+>>> f"{xpjr:.3f} {ypjr:.3f} {zpjr:.3f}"
+'-2704026.010 -4253051.810 3895878.820'
+>>> transformer = Transformer.from_crs("EPSG:4326", 4326)
+>>> xeq, yeq = transformer.transform(33, 98)
+>>> f"{xeq:.0f}  {yeq:.0f}"
+'33  98'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+def bounding_polygon(left, bottom, right, top):
+    if right < left:
+        return shapely.geometry.MultiPolygon(
+            [
+                shapely.geometry.box(left, bottom, 180, top),
+                shapely.geometry.box(-180, bottom, right, top),
+            ]
+        )
+    return shapely.geometry.box(left, bottom, right, top)
+
+------------------

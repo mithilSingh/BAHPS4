@@ -1,0 +1,313 @@
+Installation¶
+
+The easiest methods for installing pyproj are:
+
+Use pip to install the binary wheels fromPyPI:
+
+Use pip to install the binary wheels fromPyPI:
+
+Use pip to install the binary wheels fromPyPI:
+
+Note
+
+Linux (manylinux2014) wheels require pip 19.3+
+
+Note
+
+pyproj 3+ wheels do not include transformation grids.
+For migration assistance see:Transformation Grids
+
+The MacOS and Linux wheels are powered bycibuildwheel&multibuildThe Windows wheels versions <= 3.3.x were built byChristoph Gohlke
+
+The MacOS and Linux wheels are powered bycibuildwheel&multibuild
+
+The MacOS and Linux wheels are powered bycibuildwheel&multibuild
+
+The Windows wheels versions <= 3.3.x were built byChristoph Gohlke
+
+The Windows wheels versions <= 3.3.x were built byChristoph Gohlke
+
+Usecondawith theconda-forgechannel:
+
+Usecondawith theconda-forgechannel:
+
+Usecondawith theconda-forgechannel:
+
+Note
+
+“… we recommend always installing your packages inside a
+new environment instead of the base environment from
+anaconda/miniconda. Using envs make it easier to
+debug problems with packages and ensure the stability
+of your root env.”
+–https://conda-forge.org/docs/user/tipsandtricks.html
+
+Warning
+
+Avoid usingpip installwith a conda environment. If you encounter
+a python package that isn’t in conda-forge, consider submitting a
+recipe:https://github.com/conda-forge/staged-recipes/
+
+pyprojis maintained by thepyproj-feedstock maintainersPROJis maintained by theproj.4-feedstock maintainers
+
+pyprojis maintained by thepyproj-feedstock maintainers
+
+pyprojis maintained by thepyproj-feedstock maintainers
+
+PROJis maintained by theproj.4-feedstock maintainers
+
+PROJis maintained by theproj.4-feedstock maintainers
+
+If these installation methods do not meet your needs, the section below provides further instructions
+for getting setup.
+
+Install nightly wheels from anaconda:
+
+Install nightly wheels from anaconda:
+
+Install nightly wheels from anaconda:
+
+Transformation Grids¶
+
+See:Transformation Grids
+
+Installing from source¶
+
+Version compatibility matrix:
+
+pyproj
+
+PROJ
+
+<= 1.9.6
+
+<= 5.2
+
+2.0-2.1
+
+6.0-7
+
+2.2-2.3
+
+6.1-7
+
+2.4-2.6
+
+6.2-7
+
+3.0.0
+
+7.2
+
+3.0.1-3.2
+
+7.2-9.1
+
+3.3
+
+8.0-9.1
+
+3.4+
+
+8.2+
+
+3.5+
+
+9+
+
+3.7+
+
+9.2+
+
+Setup PROJ¶
+
+PROJ is required when building from source.
+
+PROJ Installation Instructions
+
+You can also download PROJ from:
+
+https://download.osgeo.org/projhttps://github.com/OSGeo/PROJ
+
+https://download.osgeo.org/proj
+
+https://download.osgeo.org/proj
+
+https://github.com/OSGeo/PROJ
+
+https://github.com/OSGeo/PROJ
+
+pyproj Build Environment Variables¶
+
+Added in version 3.0.
+
+This sets the version of PROJ when building pyproj. This
+enables installing pyproj when the PROJ executables are not
+present but the header files exist.
+
+This is the path to the base directory for PROJ.
+Examples of how to set the PROJ_DIR environment variable:
+
+Windows:
+
+Linux:
+
+This is the path to the directory containing the PROJ libraries.
+If not set, it searches thelibandlib64directories inside
+the PROJ directory.
+
+This is the path to the PROJ include directory. If not set, it assumes
+it is theincludesdirectory inside the PROJ directory.
+
+This is a boolean value used when building a wheel. When true
+it includes the contents of thepyproj/proj_dir/proj/sharedirectory if present.
+
+Boolean that sets the compiler directive for cython to include
+the test coverage.
+
+Setup pyproj¶
+
+In the setup.py, the order for searching for PROJ is:
+
+ThePROJ_DIRenvironment variableThe internal PROJ directory (pyproj/proj_dir)Theprojexecutable in sys.prefixTheprojexecutable on the PATH
+
+ThePROJ_DIRenvironment variable
+
+ThePROJ_DIRenvironment variable
+
+The internal PROJ directory (pyproj/proj_dir)
+
+The internal PROJ directory (pyproj/proj_dir)
+
+Theprojexecutable in sys.prefix
+
+Theprojexecutable in sys.prefix
+
+Theprojexecutable on the PATH
+
+Theprojexecutable on the PATH
+
+For best results, set thePROJ_DIRenvironment variable to
+point to location of PROJ installation before running setup.py.
+
+If you have a previous version of PROJ installed alongside the current
+version of PROJ, the best way to avoid conflicts is to:
+
+Remove the previous PROJ fromPATH& unset thePROJ_DATA`(PROJ 9.1+) |PROJ_LIB(PROJ<9.1) environment variables (temporarily)Install PROJ to the internal PROJ directory (pyproj/proj_dir)Set the environment variablePROJ_DIRto point to the internal PROJ directorySet the environment variablePROJ_WHEELto trueBuild pyproj
+
+Remove the previous PROJ fromPATH& unset thePROJ_DATA`(PROJ 9.1+) |PROJ_LIB(PROJ<9.1) environment variables (temporarily)
+
+Remove the previous PROJ fromPATH& unset thePROJ_DATA`(PROJ 9.1+) |PROJ_LIB(PROJ<9.1) environment variables (temporarily)
+
+Install PROJ to the internal PROJ directory (pyproj/proj_dir)
+
+Install PROJ to the internal PROJ directory (pyproj/proj_dir)
+
+Set the environment variablePROJ_DIRto point to the internal PROJ directory
+
+Set the environment variablePROJ_DIRto point to the internal PROJ directory
+
+Set the environment variablePROJ_WHEELto true
+
+Set the environment variablePROJ_WHEELto true
+
+Build pyproj
+
+Build pyproj
+
+Note
+
+Cythonor pip>=10.0.1 is required for the installation.
+
+Note
+
+You may need to run pip with administrative privileges (e.g.sudo pip) or
+perform a user only installation (e.g.pip install –user).
+
+InstallationTransformation GridsInstalling from sourceSetup PROJpyproj Build Environment VariablesSetup pyprojInstall pyprojFrom pypi:From GitHub withpip:From cloned GitHub repo for development:
+
+InstallationTransformation GridsInstalling from sourceSetup PROJpyproj Build Environment VariablesSetup pyprojInstall pyprojFrom pypi:From GitHub withpip:From cloned GitHub repo for development:
+
+Transformation GridsInstalling from sourceSetup PROJpyproj Build Environment VariablesSetup pyprojInstall pyprojFrom pypi:From GitHub withpip:From cloned GitHub repo for development:
+
+Transformation Grids
+
+Installing from sourceSetup PROJpyproj Build Environment VariablesSetup pyprojInstall pyprojFrom pypi:From GitHub withpip:From cloned GitHub repo for development:
+
+Setup PROJpyproj Build Environment VariablesSetup pyprojInstall pyprojFrom pypi:From GitHub withpip:From cloned GitHub repo for development:
+
+Setup PROJ
+
+pyproj Build Environment Variables
+
+Setup pyprojInstall pyprojFrom pypi:From GitHub withpip:From cloned GitHub repo for development:
+
+Install pyprojFrom pypi:From GitHub withpip:From cloned GitHub repo for development:
+
+Install pyprojFrom pypi:From GitHub withpip:From cloned GitHub repo for development:
+
+From pypi:From GitHub withpip:From cloned GitHub repo for development:
+
+From pypi:
+
+From GitHub withpip:
+
+From cloned GitHub repo for development:
+
+
+--- CODE BLOCK ---
+python -m pip install pyproj
+
+------------------
+
+
+
+--- CODE BLOCK ---
+conda config --prepend channels conda-forge
+conda config --set channel_priority strict
+conda create -n pyproj_env pyproj
+conda activate pyproj_env
+
+------------------
+
+
+
+--- CODE BLOCK ---
+python -m pip install pyproj --pre --extra-index-url https://pypi.anaconda.org/scientific-python-nightly-wheels/simple
+
+------------------
+
+
+
+--- CODE BLOCK ---
+set PROJ_DIR=C:\OSGeo4W\
+
+------------------
+
+
+
+--- CODE BLOCK ---
+export PROJ_DIR=/usr/local
+
+------------------
+
+
+
+--- CODE BLOCK ---
+pip install pyproj --no-binary pyproj
+
+------------------
+
+
+
+--- CODE BLOCK ---
+pip install git+https://github.com/pyproj4/pyproj.git
+
+------------------
+
+
+
+--- CODE BLOCK ---
+pip install -e .
+
+------------------

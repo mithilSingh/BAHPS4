@@ -1,0 +1,94 @@
+CLI¶
+
+
+
+pyproj version: 3.7.1 [PROJ version: 9.5.1]
+
+
+
+Named Arguments¶
+
+Show verbose debugging version information.
+
+Default:False
+
+Sub-commands¶
+
+sync¶
+
+Tool for synchronizing PROJ datum and transformation support data.
+
+Specify an area of interest to restrict the resources to download. The area of interest is specified as a bounding box with geographic coordinates, expressed in degrees in an unspecified geographic CRS.west_longandeast_longshould be in the [-180,180] range, andsouth_latandnorth_latin the [-90,90].west_longis generally lower thaneast_long, except in the case where the area of interest crosses the antimeridian.
+
+Possible choices: intersects, contains
+
+Specify how the extent of the resource files are compared to the area of use specified explicitly with–bbox. By default, any resource files whose extent intersects the value specified by–bboxwill be selected. If using thecontainsstrategy, only resource files whose extent is contained in the value specified by–bboxwill be selected.
+
+Default:'intersects'
+
+Restrict resource files to be downloaded to those whose source_id property contains the ID value. Default is all possible values.
+
+Restrict resource files to be downloaded to those whose area_of_use property contains the AREA_OF_USE value. Default is all possible values.
+
+Restrict resource files to be downloaded to those whose name property  (file name) contains the FILE value. Default is all possible values.
+
+Exclude files which have world coverage.
+
+Default:False
+
+Include grids that are already downloaded.
+
+Default:False
+
+List the files without downloading.
+
+Default:False
+
+Download all missing transform grids.
+
+Default:False
+
+If enabled, it will sync grids to the main PROJ data directory instead of the user writable directory.
+
+Default:False
+
+The directory to sync grids to instead of the user writable directory.
+
+Print download information.
+
+Default:False
+
+CLINamed ArgumentsSub-commandssyncNamed Arguments
+
+CLINamed ArgumentsSub-commandssyncNamed Arguments
+
+Named ArgumentsSub-commandssyncNamed Arguments
+
+Named Arguments
+
+Sub-commandssyncNamed Arguments
+
+syncNamed Arguments
+
+syncNamed Arguments
+
+Named Arguments
+
+Named Arguments
+
+
+--- CODE BLOCK ---
+usage: pyproj [-h] [-v] {sync} ...
+
+------------------
+
+
+
+--- CODE BLOCK ---
+pyproj sync [-h] [--bbox BBOX] [--spatial-test {intersects,contains}]
+            [--source-id SOURCE_ID] [--area-of-use AREA_OF_USE] [--file FILE]
+            [--exclude-world-coverage] [--include-already-downloaded]
+            [--list-files] [--all] [--system-directory]
+            [--target-directory TARGET_DIRECTORY] [-v]
+
+------------------

@@ -1,0 +1,1388 @@
+CRS¶
+
+CRS¶
+
+A pythonic Coordinate Reference System manager.
+
+Added in version 2.0.0.
+
+See:proj_create()
+
+The functionality is based on other fantastic projects:
+
+rasterio# noqa: E501opendatacube# noqa: E501
+
+rasterio# noqa: E501
+
+rasterio# noqa: E501
+
+opendatacube# noqa: E501
+
+opendatacube# noqa: E501
+
+The string form of the user input used to create the CRS.
+
+str
+
+PROJ stringDictionary of PROJ parametersPROJ keyword arguments for parametersJSON string with PROJ parametersCRS WKT stringAn authority string [i.e. ‘epsg:4326’]An EPSG integer code [i.e. 4326]A tuple of (“auth_name”: “auth_code”) [i.e (‘epsg’, ‘4326’)]An object with ato_wktmethod.Apyproj.crs.CRSclass
+
+PROJ string
+
+PROJ string
+
+Dictionary of PROJ parameters
+
+Dictionary of PROJ parameters
+
+PROJ keyword arguments for parameters
+
+PROJ keyword arguments for parameters
+
+JSON string with PROJ parameters
+
+JSON string with PROJ parameters
+
+CRS WKT string
+
+CRS WKT string
+
+An authority string [i.e. ‘epsg:4326’]
+
+An authority string [i.e. ‘epsg:4326’]
+
+An EPSG integer code [i.e. 4326]
+
+An EPSG integer code [i.e. 4326]
+
+A tuple of (“auth_name”: “auth_code”) [i.e (‘epsg’, ‘4326’)]
+
+A tuple of (“auth_name”: “auth_code”) [i.e (‘epsg’, ‘4326’)]
+
+An object with ato_wktmethod.
+
+An object with ato_wktmethod.
+
+Apyproj.crs.CRSclass
+
+Apyproj.crs.CRSclass
+
+Example usage:
+
+returns: The area of use object with associated attributes.
+:rtype: AreaOfUse
+
+Retrieves all relevant axis information in the CRS.
+If it is a Bound CRS, it gets the axis list from the Source CRS.
+If it is a Compound CRS, it gets the axis list from the Sub CRS list.
+
+The list of axis information.
+
+list[Axis]
+
+Added in version 2.2.0.
+
+CoordinateOperation
+
+Added in version 2.2.0.
+
+CoordinateSystem
+
+Added in version 3.0.0.
+
+This converts all coordinate systems (cs) in the CRS
+to a list of Climate and Forecast (CF) Version 1.8 dicts.
+
+Managing CRS to and from CF
+
+CF-1.8 version of the coordinate systems.
+
+list[dict]
+
+Added in version 2.2.0.
+
+Datum
+
+Added in version 2.2.0.
+
+The ellipsoid object with associated attributes.
+
+Ellipsoid
+
+Added in version 2.5.0.
+
+Check if the CRS objects are equivalent.
+
+other(Any) – Check if the other object is equivalent to this object.
+If the other object is not a CRS, it will try to create one.
+On Failure, it will return False.ignore_axis_order(bool,default=False) – If True, it will compare the CRS class and ignore the axis order.
+
+other(Any) – Check if the other object is equivalent to this object.
+If the other object is not a CRS, it will try to create one.
+On Failure, it will return False.
+
+other(Any) – Check if the other object is equivalent to this object.
+If the other object is not a CRS, it will try to create one.
+On Failure, it will return False.
+
+ignore_axis_order(bool,default=False) – If True, it will compare the CRS class and ignore the axis order.
+
+ignore_axis_order(bool,default=False) – If True, it will compare the CRS class and ignore the axis order.
+
+bool
+
+Added in version 2.2.0.
+
+Make a CRS from an authority name and authority code
+
+auth_name(str) – The name of the authority.code(intorstr) – The code used by the authority.
+
+auth_name(str) – The name of the authority.
+
+auth_name(str) – The name of the authority.
+
+code(intorstr) – The code used by the authority.
+
+code(intorstr) – The code used by the authority.
+
+CRS
+
+Added in version 2.2.0.
+
+Added in version 3.0.0:ellipsoidal_cs, cartesian_cs, vertical_cs
+
+This converts a Climate and Forecast (CF) Grid Mapping Version 1.8
+dict to apyproj.crs.CRSobject.
+
+Managing CRS to and from CF
+
+in_cf(dict) – CF version of the projection.ellipsoidal_cs(Any,optional) – Input to create an Ellipsoidal Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or an Ellipsoidal Coordinate System created fromCoordinate Systems.cartesian_cs(Any,optional) – Input to create a Cartesian Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.Cartesian2DCS.vertical_cs(Any,optional) – Input to create a Vertical Coordinate System accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.VerticalCS
+
+in_cf(dict) – CF version of the projection.
+
+in_cf(dict) – CF version of the projection.
+
+ellipsoidal_cs(Any,optional) – Input to create an Ellipsoidal Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or an Ellipsoidal Coordinate System created fromCoordinate Systems.
+
+ellipsoidal_cs(Any,optional) – Input to create an Ellipsoidal Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or an Ellipsoidal Coordinate System created fromCoordinate Systems.
+
+cartesian_cs(Any,optional) – Input to create a Cartesian Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.Cartesian2DCS.
+
+cartesian_cs(Any,optional) – Input to create a Cartesian Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.Cartesian2DCS.
+
+vertical_cs(Any,optional) – Input to create a Vertical Coordinate System accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.VerticalCS
+
+vertical_cs(Any,optional) – Input to create a Vertical Coordinate System accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.VerticalCS
+
+CRS
+
+Added in version 2.2.0.
+
+Make a CRS from a dictionary of PROJ parameters.
+
+proj_dict(str) – PROJ params in dict format.
+
+CRS
+
+Make a CRS from an EPSG code
+
+code(intorstr) – An EPSG code.
+
+CRS
+
+Added in version 2.4.0.
+
+Create CRS from a CRS JSON string.
+
+crs_json(str) – CRS JSON string.
+
+CRS
+
+Added in version 2.4.0.
+
+Create CRS from a JSON dictionary.
+
+crs_dict(dict) – CRS dictionary.
+
+CRS
+
+Added in version 2.2.0.
+
+Make a CRS from a PROJ string
+
+in_proj_string(str) – A PROJ string.
+
+CRS
+
+Make a CRS from:
+
+PROJ stringJSON string with PROJ parametersCRS WKT stringAn authority string [i.e. ‘epsg:4326’]
+
+PROJ string
+
+PROJ string
+
+JSON string with PROJ parameters
+
+JSON string with PROJ parameters
+
+CRS WKT string
+
+CRS WKT string
+
+An authority string [i.e. ‘epsg:4326’]
+
+An authority string [i.e. ‘epsg:4326’]
+
+in_crs_string(str) – An EPSG, PROJ, or WKT string.
+
+CRS
+
+PROJ stringDictionary of PROJ parametersPROJ keyword arguments for parametersJSON string with PROJ parametersCRS WKT stringAn authority string [i.e. ‘epsg:4326’]An EPSG integer code [i.e. 4326]A tuple of (“auth_name”: “auth_code”) [i.e (‘epsg’, ‘4326’)]An object with ato_wktmethod.Apyproj.crs.CRSclass
+
+PROJ string
+
+PROJ string
+
+Dictionary of PROJ parameters
+
+Dictionary of PROJ parameters
+
+PROJ keyword arguments for parameters
+
+PROJ keyword arguments for parameters
+
+JSON string with PROJ parameters
+
+JSON string with PROJ parameters
+
+CRS WKT string
+
+CRS WKT string
+
+An authority string [i.e. ‘epsg:4326’]
+
+An authority string [i.e. ‘epsg:4326’]
+
+An EPSG integer code [i.e. 4326]
+
+An EPSG integer code [i.e. 4326]
+
+A tuple of (“auth_name”: “auth_code”) [i.e (‘epsg’, ‘4326’)]
+
+A tuple of (“auth_name”: “auth_code”) [i.e (‘epsg’, ‘4326’)]
+
+An object with ato_wktmethod.
+
+An object with ato_wktmethod.
+
+Apyproj.crs.CRSclass
+
+Apyproj.crs.CRSclass
+
+value(obj) – A Python int, dict, or str.
+
+CRS
+
+Added in version 2.2.0.
+
+Make a CRS from a WKT string
+
+in_wkt_string(str) – A WKT string.
+
+CRS
+
+Added in version 2.2.0.
+
+The geodeticCRS / geographicCRS from the CRS.
+
+CRS
+
+Geod object based on the ellipsoid.
+
+pyproj.geod.Geod
+
+Added in version 3.7.0.
+
+Return a list of non-deprecated objects related to this.
+
+list[CRS]
+
+returns: True if CRS is bound.
+:rtype: bool
+
+Added in version 3.1.0.
+
+True if CRS is compound.
+
+bool
+
+Added in version 3.7.0.
+
+Check if the CRS is deprecated
+
+bool
+
+Added in version 3.2.0.
+
+True if CRS is a Derived CRS.
+
+bool
+
+Added in version 2.2.0.
+
+True if CRS is local/engineering.
+
+bool
+
+Check if the CRS objects are the exact same.
+
+other(Any) – Check if the other CRS is the exact same to this object.
+If the other object is not a CRS, it will try to create one.
+On Failure, it will return False.
+
+bool
+
+This checks if the CRS is geocentric and
+takes into account if the CRS is bound.
+
+True if CRS is in geocentric (x/y) coordinates.
+
+bool
+
+This checks if the CRS is geographic.
+It will check if it has a geographic CRS
+in the sub CRS if it is a compound CRS and will check if
+the source CRS is geographic if it is a bound CRS.
+
+True if the CRS is in geographic (lon/lat) coordinates.
+
+bool
+
+This checks if the CRS is projected.
+It will check if it has a projected CRS
+in the sub CRS if it is a compound CRS and will check if
+the source CRS is projected if it is a bound CRS.
+
+True if CRS is projected.
+
+bool
+
+Added in version 2.2.0.
+
+This checks if the CRS is vertical.
+It will check if it has a vertical CRS
+in the sub CRS if it is a compound CRS and will check if
+the source CRS is vertical if it is a bound CRS.
+
+True if CRS is vertical.
+
+bool
+
+Added in version 3.2.0.
+
+Return the authority names and codes best matching the CRS.
+
+Example:
+
+If the CRS is bound, you can get an authority from
+the source CRS:
+
+auth_name(str,optional) – The name of the authority to filter by.min_confidence(int,default=70) – A value between 0-100 where 100 is the most confident.Why does the EPSG code return when using EPSG:xxxx and not with +init=EPSG:xxxx?
+
+auth_name(str,optional) – The name of the authority to filter by.
+
+auth_name(str,optional) – The name of the authority to filter by.
+
+min_confidence(int,default=70) – A value between 0-100 where 100 is the most confident.Why does the EPSG code return when using EPSG:xxxx and not with +init=EPSG:xxxx?
+
+min_confidence(int,default=70) – A value between 0-100 where 100 is the most confident.Why does the EPSG code return when using EPSG:xxxx and not with +init=EPSG:xxxx?
+
+List of authority matches for the CRS.
+
+list[AuthorityMatchInfo]
+
+returns: The name of the CRS (fromproj_get_name()).
+:rtype: str
+
+Added in version 2.2.0.
+
+The prime meridian object with associated attributes.
+
+PrimeMeridian
+
+Added in version 2.4.0.
+
+Remarks about object.
+
+str
+
+Added in version 2.4.0.
+
+Scope of object.
+
+str
+
+The base CRS of a BoundCRS or a DerivedCRS/ProjectedCRS,
+or the source CRS of a CoordinateOperation.
+
+CRS
+
+If the CRS is a compound CRS, it will return a list of sub CRS objects.
+
+list[CRS]
+
+Added in version 2.2.0.
+
+The hub CRS of a BoundCRS or the target CRS of a CoordinateOperation.
+
+CRS
+
+Added in version 3.6.0.
+
+Convert the current CRS to the 2D version if it makes sense.
+
+name(str,optional) – CRS name. Defaults to use the name of the original CRS.
+
+CRS
+
+Added in version 3.1.0.
+
+Convert the current CRS to the 3D version if it makes sense.
+
+ellipsoidal heightoriented upwardsmetre units
+
+ellipsoidal height
+
+ellipsoidal height
+
+oriented upwards
+
+oriented upwards
+
+metre units
+
+metre units
+
+name(str,optional) – CRS name. Defaults to use the name of the original CRS.
+
+CRS
+
+Added in version 2.2.0.
+
+Return the authority name and code best matching the CRS
+or None if it a match is not found.
+
+Example:
+
+If the CRS is bound, you can get an authority from
+the source CRS:
+
+auth_name(str,optional) – The name of the authority to filter by.min_confidence(int,default=70) – A value between 0-100 where 100 is the most confident.Why does the EPSG code return when using EPSG:xxxx and not with +init=EPSG:xxxx?
+
+auth_name(str,optional) – The name of the authority to filter by.
+
+auth_name(str,optional) – The name of the authority to filter by.
+
+min_confidence(int,default=70) – A value between 0-100 where 100 is the most confident.Why does the EPSG code return when using EPSG:xxxx and not with +init=EPSG:xxxx?
+
+min_confidence(int,default=70) – A value between 0-100 where 100 is the most confident.Why does the EPSG code return when using EPSG:xxxx and not with +init=EPSG:xxxx?
+
+The best matching (<auth_name>, <code>) for the confidence level.
+
+tuple(str,str) or None
+
+Added in version 2.2.0.
+
+This converts apyproj.crs.CRSobject
+to a Climate and Forecast (CF) Grid Mapping Version 1.8 dict.
+
+Managing CRS to and from CF
+
+wkt_version(strorpyproj.enums.WktVersion) – Version of WKT supported by CRS.to_wkt.
+Default ispyproj.enums.WktVersion.WKT2_2019.errcheck(bool,default=False) – If True, will warn when parameters are ignored.
+
+wkt_version(strorpyproj.enums.WktVersion) – Version of WKT supported by CRS.to_wkt.
+Default ispyproj.enums.WktVersion.WKT2_2019.
+
+wkt_version(strorpyproj.enums.WktVersion) – Version of WKT supported by CRS.to_wkt.
+Default ispyproj.enums.WktVersion.WKT2_2019.
+
+errcheck(bool,default=False) – If True, will warn when parameters are ignored.
+
+errcheck(bool,default=False) – If True, will warn when parameters are ignored.
+
+CF-1.8 version of the projection.
+
+dict
+
+Added in version 2.2.0.
+
+Converts the CRS to dictionary of PROJ parameters.
+
+Warning
+
+You will likely lose important projection
+information when converting to a PROJ string from
+another format. See:https://proj.org/faq.html#what-is-the-best-format-for-describing-coordinate-reference-systems# noqa: E501
+
+PROJ params in dict format.
+
+dict
+
+Return the EPSG code best matching the CRS
+or None if it a match is not found.
+
+Example:
+
+If the CRS is bound, you can attempt to get an epsg code from
+the source CRS:
+
+min_confidence(int,default=70) – A value between 0-100 where 100 is the most confident.Why does the EPSG code return when using EPSG:xxxx and not with +init=EPSG:xxxx?
+
+The best matching EPSG code matching the confidence level.
+
+int| None
+
+Added in version 2.4.0.
+
+Convert the object to a JSON string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+indentation(int,default=2) – If pretty is True, it will set the width of the indentation.
+
+str
+
+Added in version 2.4.0.
+
+Convert the object to a JSON dictionary.
+
+dict
+
+Convert the projection to a PROJ string.
+
+Warning
+
+You will likely lose important projection
+information when converting to a PROJ string from
+another format. See:https://proj.org/faq.html#what-is-the-best-format-for-describing-coordinate-reference-systems# noqa: E501
+
+version(pyproj.enums.ProjVersion) – The version of the PROJ string output.
+Default ispyproj.enums.ProjVersion.PROJ_4.
+
+str
+
+Added in version 2.2.0.
+
+Convert the CRS to a string.
+
+It attempts to convert it to the authority string.
+Otherwise, it uses the string format of the user
+input to create the CRS.
+
+str
+
+Convert the projection to a WKT string.
+
+WKT2_2015WKT2_2015_SIMPLIFIEDWKT2_2019WKT2_2019_SIMPLIFIEDWKT1_GDALWKT1_ESRI
+
+WKT2_2015
+
+WKT2_2015
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2015_SIMPLIFIED
+
+WKT2_2019
+
+WKT2_2019
+
+WKT2_2019_SIMPLIFIED
+
+WKT2_2019_SIMPLIFIED
+
+WKT1_GDAL
+
+WKT1_GDAL
+
+WKT1_ESRI
+
+WKT1_ESRI
+
+Added in version 3.6.0:output_axis_rule
+
+version(pyproj.enums.WktVersion,optional) – The version of the WKT output.
+Default ispyproj.enums.WktVersion.WKT2_2019.pretty(bool,default=False) – If True, it will set the output to be a multiline string.output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+version(pyproj.enums.WktVersion,optional) – The version of the WKT output.
+Default ispyproj.enums.WktVersion.WKT2_2019.
+
+version(pyproj.enums.WktVersion,optional) – The version of the WKT output.
+Default ispyproj.enums.WktVersion.WKT2_2019.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+pretty(bool,default=False) – If True, it will set the output to be a multiline string.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+output_axis_rule(bool,optional,default=None) – If True, it will set the axis rule on any case. If false, never.
+None for AUTO, that depends on the CRS and version.
+
+str
+
+returns: The name of the type of the CRS object.
+:rtype: str
+
+Added in version 2.6.0.
+
+Finds the UTM zone in a Projected CRS, Bound CRS, or Compound CRS
+
+The UTM zone number and letter if applicable.
+
+str| None
+
+GeographicCRS¶
+
+Bases:CustomConstructorCRS
+
+Added in version 2.5.0.
+
+This class is for building a Geographic CRS
+
+name(str,default="undefined") – Name of the CRS.datum(Any, default=”urn:ogc:def:ensemble:EPSG::6326”) – Anything accepted bypyproj.crs.Datum.from_user_input()or
+apyproj.crs.datum.CustomDatum.ellipsoidal_cs(Any,optional) – Input to create an Ellipsoidal Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or an Ellipsoidal Coordinate System created fromCoordinate Systems.
+
+name(str,default="undefined") – Name of the CRS.
+
+name(str,default="undefined") – Name of the CRS.
+
+datum(Any, default=”urn:ogc:def:ensemble:EPSG::6326”) – Anything accepted bypyproj.crs.Datum.from_user_input()or
+apyproj.crs.datum.CustomDatum.
+
+datum(Any, default=”urn:ogc:def:ensemble:EPSG::6326”) – Anything accepted bypyproj.crs.Datum.from_user_input()or
+apyproj.crs.datum.CustomDatum.
+
+ellipsoidal_cs(Any,optional) – Input to create an Ellipsoidal Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or an Ellipsoidal Coordinate System created fromCoordinate Systems.
+
+ellipsoidal_cs(Any,optional) – Input to create an Ellipsoidal Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or an Ellipsoidal Coordinate System created fromCoordinate Systems.
+
+DerivedGeographicCRS¶
+
+Bases:CustomConstructorCRS
+
+Added in version 2.5.0.
+
+This class is for building a Derived Geographic CRS
+
+base_crs(Any) – Input to create the Geodetic CRS, aGeographicCRSor
+anything accepted bypyproj.crs.CRS.from_user_input().conversion(Any) – Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or a conversion fromCoordinate Operations.ellipsoidal_cs(Any,optional) – Input to create an Ellipsoidal Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or an Ellipsoidal Coordinate System created fromCoordinate Systems.name(str,default="undefined") – Name of the CRS.
+
+base_crs(Any) – Input to create the Geodetic CRS, aGeographicCRSor
+anything accepted bypyproj.crs.CRS.from_user_input().
+
+base_crs(Any) – Input to create the Geodetic CRS, aGeographicCRSor
+anything accepted bypyproj.crs.CRS.from_user_input().
+
+conversion(Any) – Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or a conversion fromCoordinate Operations.
+
+conversion(Any) – Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or a conversion fromCoordinate Operations.
+
+ellipsoidal_cs(Any,optional) – Input to create an Ellipsoidal Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or an Ellipsoidal Coordinate System created fromCoordinate Systems.
+
+ellipsoidal_cs(Any,optional) – Input to create an Ellipsoidal Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or an Ellipsoidal Coordinate System created fromCoordinate Systems.
+
+name(str,default="undefined") – Name of the CRS.
+
+name(str,default="undefined") – Name of the CRS.
+
+GeocentricCRS¶
+
+Bases:CustomConstructorCRS
+
+Added in version 3.2.0.
+
+This class is for building a Geocentric CRS
+
+name(str,default="undefined") – Name of the CRS.datum(Any, default=”urn:ogc:def:datum:EPSG::6326”) – Anything accepted bypyproj.crs.Datum.from_user_input()or
+apyproj.crs.datum.CustomDatum.
+
+name(str,default="undefined") – Name of the CRS.
+
+name(str,default="undefined") – Name of the CRS.
+
+datum(Any, default=”urn:ogc:def:datum:EPSG::6326”) – Anything accepted bypyproj.crs.Datum.from_user_input()or
+apyproj.crs.datum.CustomDatum.
+
+datum(Any, default=”urn:ogc:def:datum:EPSG::6326”) – Anything accepted bypyproj.crs.Datum.from_user_input()or
+apyproj.crs.datum.CustomDatum.
+
+ProjectedCRS¶
+
+Bases:CustomConstructorCRS
+
+Added in version 2.5.0.
+
+This class is for building a Projected CRS.
+
+conversion(Any) – Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or a conversion fromCoordinate Operations.name(str,optional) – The name of the Projected CRS. Default is undefined.cartesian_cs(Any,optional) – Input to create a Cartesian Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.Cartesian2DCS.geodetic_crs(Any,optional) – Input to create the Geodetic CRS, aGeographicCRSor
+anything accepted bypyproj.crs.CRS.from_user_input().
+
+conversion(Any) – Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or a conversion fromCoordinate Operations.
+
+conversion(Any) – Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()or a conversion fromCoordinate Operations.
+
+name(str,optional) – The name of the Projected CRS. Default is undefined.
+
+name(str,optional) – The name of the Projected CRS. Default is undefined.
+
+cartesian_cs(Any,optional) – Input to create a Cartesian Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.Cartesian2DCS.
+
+cartesian_cs(Any,optional) – Input to create a Cartesian Coordinate System.
+Anything accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.Cartesian2DCS.
+
+geodetic_crs(Any,optional) – Input to create the Geodetic CRS, aGeographicCRSor
+anything accepted bypyproj.crs.CRS.from_user_input().
+
+geodetic_crs(Any,optional) – Input to create the Geodetic CRS, aGeographicCRSor
+anything accepted bypyproj.crs.CRS.from_user_input().
+
+VerticalCRS¶
+
+Bases:CustomConstructorCRS
+
+Added in version 2.5.0.
+
+This class is for building a Vertical CRS.
+
+Warning
+
+geoid_model support only exists in PROJ >= 6.3.0
+
+name(str) – The name of the Vertical CRS (e.g. NAVD88 height).datum(Any) – Anything accepted bypyproj.crs.Datum.from_user_input()vertical_cs(Any,optional) – Input to create a Vertical Coordinate System accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.VerticalCSgeoid_model(str,optional) – The name of the GEOID Model (e.g. GEOID12B).
+
+name(str) – The name of the Vertical CRS (e.g. NAVD88 height).
+
+name(str) – The name of the Vertical CRS (e.g. NAVD88 height).
+
+datum(Any) – Anything accepted bypyproj.crs.Datum.from_user_input()
+
+datum(Any) – Anything accepted bypyproj.crs.Datum.from_user_input()
+
+vertical_cs(Any,optional) – Input to create a Vertical Coordinate System accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.VerticalCS
+
+vertical_cs(Any,optional) – Input to create a Vertical Coordinate System accepted bypyproj.crs.CoordinateSystem.from_user_input()orpyproj.crs.coordinate_system.VerticalCS
+
+geoid_model(str,optional) – The name of the GEOID Model (e.g. GEOID12B).
+
+geoid_model(str,optional) – The name of the GEOID Model (e.g. GEOID12B).
+
+BoundCRS¶
+
+Bases:CustomConstructorCRS
+
+Added in version 2.5.0.
+
+This class is for building a Bound CRS.
+
+source_crs(Any) – Input to create a source CRS.target_crs(Any) – Input to create the target CRS.transformation(Any) – Input to create the transformation.
+
+source_crs(Any) – Input to create a source CRS.
+
+source_crs(Any) – Input to create a source CRS.
+
+target_crs(Any) – Input to create the target CRS.
+
+target_crs(Any) – Input to create the target CRS.
+
+transformation(Any) – Input to create the transformation.
+
+transformation(Any) – Input to create the transformation.
+
+CompoundCRS¶
+
+Bases:CustomConstructorCRS
+
+Added in version 2.5.0.
+
+This class is for building a Compound CRS.
+
+name(str) – The name of the Compound CRS.components(list[Any],optional) – List of CRS to create a Compound Coordinate System.
+List of anything accepted bypyproj.crs.CRS.from_user_input()
+
+name(str) – The name of the Compound CRS.
+
+name(str) – The name of the Compound CRS.
+
+components(list[Any],optional) – List of CRS to create a Compound Coordinate System.
+List of anything accepted bypyproj.crs.CRS.from_user_input()
+
+components(list[Any],optional) – List of CRS to create a Compound Coordinate System.
+List of anything accepted bypyproj.crs.CRS.from_user_input()
+
+CustomConstructorCRS¶
+
+Bases:CRS
+
+This class is a base class for CRS classes
+that use a different constructor than the main CRS class.
+
+Added in version 3.2.0.
+
+See:https://github.com/pyproj4/pyproj/issues/847
+
+PROJ stringDictionary of PROJ parametersPROJ keyword arguments for parametersJSON string with PROJ parametersCRS WKT stringAn authority string [i.e. ‘epsg:4326’]An EPSG integer code [i.e. 4326]A tuple of (“auth_name”: “auth_code”) [i.e (‘epsg’, ‘4326’)]An object with ato_wktmethod.Apyproj.crs.CRSclass
+
+PROJ string
+
+PROJ string
+
+Dictionary of PROJ parameters
+
+Dictionary of PROJ parameters
+
+PROJ keyword arguments for parameters
+
+PROJ keyword arguments for parameters
+
+JSON string with PROJ parameters
+
+JSON string with PROJ parameters
+
+CRS WKT string
+
+CRS WKT string
+
+An authority string [i.e. ‘epsg:4326’]
+
+An authority string [i.e. ‘epsg:4326’]
+
+An EPSG integer code [i.e. 4326]
+
+An EPSG integer code [i.e. 4326]
+
+A tuple of (“auth_name”: “auth_code”) [i.e (‘epsg’, ‘4326’)]
+
+A tuple of (“auth_name”: “auth_code”) [i.e (‘epsg’, ‘4326’)]
+
+An object with ato_wktmethod.
+
+An object with ato_wktmethod.
+
+Apyproj.crs.CRSclass
+
+Apyproj.crs.CRSclass
+
+value(obj) – A Python int, dict, or str.
+
+CRS
+
+Added in version 2.2.0.
+
+The geodeticCRS / geographicCRS from the CRS.
+
+CRS
+
+The base CRS of a BoundCRS or a DerivedCRS/ProjectedCRS,
+or the source CRS of a CoordinateOperation.
+
+CRS
+
+If the CRS is a compound CRS, it will return a list of sub CRS objects.
+
+list[CRS]
+
+Added in version 2.2.0.
+
+The hub CRS of a BoundCRS or the target CRS of a CoordinateOperation.
+
+CRS
+
+Added in version 3.1.0.
+
+Convert the current CRS to the 3D version if it makes sense.
+
+ellipsoidal heightoriented upwardsmetre units
+
+ellipsoidal height
+
+ellipsoidal height
+
+oriented upwards
+
+oriented upwards
+
+metre units
+
+metre units
+
+name(str,optional) – CRS name. Defaults to use the name of the original CRS.
+
+CRS
+
+is_wkt¶
+
+Added in version 2.0.0.
+
+Check if the input projection string is in the Well-Known Text format.
+
+proj_string(str) – The projection string.
+
+bool
+
+True if the string is in the Well-Known Text format
+
+is_proj¶
+
+Added in version 2.2.2.
+
+Check if the input projection string is in the PROJ format.
+
+proj_string(str) – The projection string.
+
+bool
+
+True if the string is in the PROJ format
+
+CRSCRSCRSCRS.srsCRS.__init__()CRS.area_of_useCRS.axis_infoCRS.coordinate_operationCRS.coordinate_systemCRS.cs_to_cf()CRS.datumCRS.ellipsoidCRS.equals()CRS.from_authority()CRS.from_cf()CRS.from_dict()CRS.from_epsg()CRS.from_json()CRS.from_json_dict()CRS.from_proj4()CRS.from_string()CRS.from_user_input()CRS.from_wkt()CRS.geodetic_crsCRS.get_geod()CRS.get_non_deprecated()CRS.is_boundCRS.is_compoundCRS.is_deprecatedCRS.is_derivedCRS.is_engineeringCRS.is_exact_same()CRS.is_geocentricCRS.is_geographicCRS.is_projectedCRS.is_verticalCRS.list_authority()CRS.nameCRS.prime_meridianCRS.remarksCRS.scopeCRS.source_crsCRS.sub_crs_listCRS.target_crsCRS.to_2d()CRS.to_3d()CRS.to_authority()CRS.to_cf()CRS.to_dict()CRS.to_epsg()CRS.to_json()CRS.to_json_dict()CRS.to_proj4()CRS.to_string()CRS.to_wkt()CRS.type_nameCRS.utm_zoneGeographicCRSGeographicCRSGeographicCRS.__init__()DerivedGeographicCRSDerivedGeographicCRSDerivedGeographicCRS.__init__()GeocentricCRSGeocentricCRSGeocentricCRS.__init__()ProjectedCRSProjectedCRSProjectedCRS.__init__()VerticalCRSVerticalCRSVerticalCRS.__init__()BoundCRSBoundCRSBoundCRS.__init__()CompoundCRSCompoundCRSCompoundCRS.__init__()CustomConstructorCRSCustomConstructorCRSCustomConstructorCRS.from_user_input()CustomConstructorCRS.geodetic_crsCustomConstructorCRS.source_crsCustomConstructorCRS.sub_crs_listCustomConstructorCRS.target_crsCustomConstructorCRS.to_3d()is_wktis_wkt()is_projis_proj()
+
+CRSCRSCRSCRS.srsCRS.__init__()CRS.area_of_useCRS.axis_infoCRS.coordinate_operationCRS.coordinate_systemCRS.cs_to_cf()CRS.datumCRS.ellipsoidCRS.equals()CRS.from_authority()CRS.from_cf()CRS.from_dict()CRS.from_epsg()CRS.from_json()CRS.from_json_dict()CRS.from_proj4()CRS.from_string()CRS.from_user_input()CRS.from_wkt()CRS.geodetic_crsCRS.get_geod()CRS.get_non_deprecated()CRS.is_boundCRS.is_compoundCRS.is_deprecatedCRS.is_derivedCRS.is_engineeringCRS.is_exact_same()CRS.is_geocentricCRS.is_geographicCRS.is_projectedCRS.is_verticalCRS.list_authority()CRS.nameCRS.prime_meridianCRS.remarksCRS.scopeCRS.source_crsCRS.sub_crs_listCRS.target_crsCRS.to_2d()CRS.to_3d()CRS.to_authority()CRS.to_cf()CRS.to_dict()CRS.to_epsg()CRS.to_json()CRS.to_json_dict()CRS.to_proj4()CRS.to_string()CRS.to_wkt()CRS.type_nameCRS.utm_zoneGeographicCRSGeographicCRSGeographicCRS.__init__()DerivedGeographicCRSDerivedGeographicCRSDerivedGeographicCRS.__init__()GeocentricCRSGeocentricCRSGeocentricCRS.__init__()ProjectedCRSProjectedCRSProjectedCRS.__init__()VerticalCRSVerticalCRSVerticalCRS.__init__()BoundCRSBoundCRSBoundCRS.__init__()CompoundCRSCompoundCRSCompoundCRS.__init__()CustomConstructorCRSCustomConstructorCRSCustomConstructorCRS.from_user_input()CustomConstructorCRS.geodetic_crsCustomConstructorCRS.source_crsCustomConstructorCRS.sub_crs_listCustomConstructorCRS.target_crsCustomConstructorCRS.to_3d()is_wktis_wkt()is_projis_proj()
+
+CRSCRSCRS.srsCRS.__init__()CRS.area_of_useCRS.axis_infoCRS.coordinate_operationCRS.coordinate_systemCRS.cs_to_cf()CRS.datumCRS.ellipsoidCRS.equals()CRS.from_authority()CRS.from_cf()CRS.from_dict()CRS.from_epsg()CRS.from_json()CRS.from_json_dict()CRS.from_proj4()CRS.from_string()CRS.from_user_input()CRS.from_wkt()CRS.geodetic_crsCRS.get_geod()CRS.get_non_deprecated()CRS.is_boundCRS.is_compoundCRS.is_deprecatedCRS.is_derivedCRS.is_engineeringCRS.is_exact_same()CRS.is_geocentricCRS.is_geographicCRS.is_projectedCRS.is_verticalCRS.list_authority()CRS.nameCRS.prime_meridianCRS.remarksCRS.scopeCRS.source_crsCRS.sub_crs_listCRS.target_crsCRS.to_2d()CRS.to_3d()CRS.to_authority()CRS.to_cf()CRS.to_dict()CRS.to_epsg()CRS.to_json()CRS.to_json_dict()CRS.to_proj4()CRS.to_string()CRS.to_wkt()CRS.type_nameCRS.utm_zoneGeographicCRSGeographicCRSGeographicCRS.__init__()DerivedGeographicCRSDerivedGeographicCRSDerivedGeographicCRS.__init__()GeocentricCRSGeocentricCRSGeocentricCRS.__init__()ProjectedCRSProjectedCRSProjectedCRS.__init__()VerticalCRSVerticalCRSVerticalCRS.__init__()BoundCRSBoundCRSBoundCRS.__init__()CompoundCRSCompoundCRSCompoundCRS.__init__()CustomConstructorCRSCustomConstructorCRSCustomConstructorCRS.from_user_input()CustomConstructorCRS.geodetic_crsCustomConstructorCRS.source_crsCustomConstructorCRS.sub_crs_listCustomConstructorCRS.target_crsCustomConstructorCRS.to_3d()is_wktis_wkt()is_projis_proj()
+
+CRSCRSCRS.srsCRS.__init__()CRS.area_of_useCRS.axis_infoCRS.coordinate_operationCRS.coordinate_systemCRS.cs_to_cf()CRS.datumCRS.ellipsoidCRS.equals()CRS.from_authority()CRS.from_cf()CRS.from_dict()CRS.from_epsg()CRS.from_json()CRS.from_json_dict()CRS.from_proj4()CRS.from_string()CRS.from_user_input()CRS.from_wkt()CRS.geodetic_crsCRS.get_geod()CRS.get_non_deprecated()CRS.is_boundCRS.is_compoundCRS.is_deprecatedCRS.is_derivedCRS.is_engineeringCRS.is_exact_same()CRS.is_geocentricCRS.is_geographicCRS.is_projectedCRS.is_verticalCRS.list_authority()CRS.nameCRS.prime_meridianCRS.remarksCRS.scopeCRS.source_crsCRS.sub_crs_listCRS.target_crsCRS.to_2d()CRS.to_3d()CRS.to_authority()CRS.to_cf()CRS.to_dict()CRS.to_epsg()CRS.to_json()CRS.to_json_dict()CRS.to_proj4()CRS.to_string()CRS.to_wkt()CRS.type_nameCRS.utm_zone
+
+CRSCRS.srsCRS.__init__()CRS.area_of_useCRS.axis_infoCRS.coordinate_operationCRS.coordinate_systemCRS.cs_to_cf()CRS.datumCRS.ellipsoidCRS.equals()CRS.from_authority()CRS.from_cf()CRS.from_dict()CRS.from_epsg()CRS.from_json()CRS.from_json_dict()CRS.from_proj4()CRS.from_string()CRS.from_user_input()CRS.from_wkt()CRS.geodetic_crsCRS.get_geod()CRS.get_non_deprecated()CRS.is_boundCRS.is_compoundCRS.is_deprecatedCRS.is_derivedCRS.is_engineeringCRS.is_exact_same()CRS.is_geocentricCRS.is_geographicCRS.is_projectedCRS.is_verticalCRS.list_authority()CRS.nameCRS.prime_meridianCRS.remarksCRS.scopeCRS.source_crsCRS.sub_crs_listCRS.target_crsCRS.to_2d()CRS.to_3d()CRS.to_authority()CRS.to_cf()CRS.to_dict()CRS.to_epsg()CRS.to_json()CRS.to_json_dict()CRS.to_proj4()CRS.to_string()CRS.to_wkt()CRS.type_nameCRS.utm_zone
+
+CRSCRS.srsCRS.__init__()CRS.area_of_useCRS.axis_infoCRS.coordinate_operationCRS.coordinate_systemCRS.cs_to_cf()CRS.datumCRS.ellipsoidCRS.equals()CRS.from_authority()CRS.from_cf()CRS.from_dict()CRS.from_epsg()CRS.from_json()CRS.from_json_dict()CRS.from_proj4()CRS.from_string()CRS.from_user_input()CRS.from_wkt()CRS.geodetic_crsCRS.get_geod()CRS.get_non_deprecated()CRS.is_boundCRS.is_compoundCRS.is_deprecatedCRS.is_derivedCRS.is_engineeringCRS.is_exact_same()CRS.is_geocentricCRS.is_geographicCRS.is_projectedCRS.is_verticalCRS.list_authority()CRS.nameCRS.prime_meridianCRS.remarksCRS.scopeCRS.source_crsCRS.sub_crs_listCRS.target_crsCRS.to_2d()CRS.to_3d()CRS.to_authority()CRS.to_cf()CRS.to_dict()CRS.to_epsg()CRS.to_json()CRS.to_json_dict()CRS.to_proj4()CRS.to_string()CRS.to_wkt()CRS.type_nameCRS.utm_zone
+
+CRS.srsCRS.__init__()CRS.area_of_useCRS.axis_infoCRS.coordinate_operationCRS.coordinate_systemCRS.cs_to_cf()CRS.datumCRS.ellipsoidCRS.equals()CRS.from_authority()CRS.from_cf()CRS.from_dict()CRS.from_epsg()CRS.from_json()CRS.from_json_dict()CRS.from_proj4()CRS.from_string()CRS.from_user_input()CRS.from_wkt()CRS.geodetic_crsCRS.get_geod()CRS.get_non_deprecated()CRS.is_boundCRS.is_compoundCRS.is_deprecatedCRS.is_derivedCRS.is_engineeringCRS.is_exact_same()CRS.is_geocentricCRS.is_geographicCRS.is_projectedCRS.is_verticalCRS.list_authority()CRS.nameCRS.prime_meridianCRS.remarksCRS.scopeCRS.source_crsCRS.sub_crs_listCRS.target_crsCRS.to_2d()CRS.to_3d()CRS.to_authority()CRS.to_cf()CRS.to_dict()CRS.to_epsg()CRS.to_json()CRS.to_json_dict()CRS.to_proj4()CRS.to_string()CRS.to_wkt()CRS.type_nameCRS.utm_zone
+
+CRS.srs
+
+CRS.__init__()
+
+CRS.area_of_use
+
+CRS.axis_info
+
+CRS.coordinate_operation
+
+CRS.coordinate_system
+
+CRS.cs_to_cf()
+
+CRS.datum
+
+CRS.ellipsoid
+
+CRS.equals()
+
+CRS.from_authority()
+
+CRS.from_cf()
+
+CRS.from_dict()
+
+CRS.from_epsg()
+
+CRS.from_json()
+
+CRS.from_json_dict()
+
+CRS.from_proj4()
+
+CRS.from_string()
+
+CRS.from_user_input()
+
+CRS.from_wkt()
+
+CRS.geodetic_crs
+
+CRS.get_geod()
+
+CRS.get_non_deprecated()
+
+CRS.is_bound
+
+CRS.is_compound
+
+CRS.is_deprecated
+
+CRS.is_derived
+
+CRS.is_engineering
+
+CRS.is_exact_same()
+
+CRS.is_geocentric
+
+CRS.is_geographic
+
+CRS.is_projected
+
+CRS.is_vertical
+
+CRS.list_authority()
+
+CRS.name
+
+CRS.prime_meridian
+
+CRS.remarks
+
+CRS.scope
+
+CRS.source_crs
+
+CRS.sub_crs_list
+
+CRS.target_crs
+
+CRS.to_2d()
+
+CRS.to_3d()
+
+CRS.to_authority()
+
+CRS.to_cf()
+
+CRS.to_dict()
+
+CRS.to_epsg()
+
+CRS.to_json()
+
+CRS.to_json_dict()
+
+CRS.to_proj4()
+
+CRS.to_string()
+
+CRS.to_wkt()
+
+CRS.type_name
+
+CRS.utm_zone
+
+GeographicCRSGeographicCRSGeographicCRS.__init__()
+
+GeographicCRSGeographicCRS.__init__()
+
+GeographicCRSGeographicCRS.__init__()
+
+GeographicCRS.__init__()
+
+GeographicCRS.__init__()
+
+DerivedGeographicCRSDerivedGeographicCRSDerivedGeographicCRS.__init__()
+
+DerivedGeographicCRSDerivedGeographicCRS.__init__()
+
+DerivedGeographicCRSDerivedGeographicCRS.__init__()
+
+DerivedGeographicCRS.__init__()
+
+DerivedGeographicCRS.__init__()
+
+GeocentricCRSGeocentricCRSGeocentricCRS.__init__()
+
+GeocentricCRSGeocentricCRS.__init__()
+
+GeocentricCRSGeocentricCRS.__init__()
+
+GeocentricCRS.__init__()
+
+GeocentricCRS.__init__()
+
+ProjectedCRSProjectedCRSProjectedCRS.__init__()
+
+ProjectedCRSProjectedCRS.__init__()
+
+ProjectedCRSProjectedCRS.__init__()
+
+ProjectedCRS.__init__()
+
+ProjectedCRS.__init__()
+
+VerticalCRSVerticalCRSVerticalCRS.__init__()
+
+VerticalCRSVerticalCRS.__init__()
+
+VerticalCRSVerticalCRS.__init__()
+
+VerticalCRS.__init__()
+
+VerticalCRS.__init__()
+
+BoundCRSBoundCRSBoundCRS.__init__()
+
+BoundCRSBoundCRS.__init__()
+
+BoundCRSBoundCRS.__init__()
+
+BoundCRS.__init__()
+
+BoundCRS.__init__()
+
+CompoundCRSCompoundCRSCompoundCRS.__init__()
+
+CompoundCRSCompoundCRS.__init__()
+
+CompoundCRSCompoundCRS.__init__()
+
+CompoundCRS.__init__()
+
+CompoundCRS.__init__()
+
+CustomConstructorCRSCustomConstructorCRSCustomConstructorCRS.from_user_input()CustomConstructorCRS.geodetic_crsCustomConstructorCRS.source_crsCustomConstructorCRS.sub_crs_listCustomConstructorCRS.target_crsCustomConstructorCRS.to_3d()
+
+CustomConstructorCRSCustomConstructorCRS.from_user_input()CustomConstructorCRS.geodetic_crsCustomConstructorCRS.source_crsCustomConstructorCRS.sub_crs_listCustomConstructorCRS.target_crsCustomConstructorCRS.to_3d()
+
+CustomConstructorCRSCustomConstructorCRS.from_user_input()CustomConstructorCRS.geodetic_crsCustomConstructorCRS.source_crsCustomConstructorCRS.sub_crs_listCustomConstructorCRS.target_crsCustomConstructorCRS.to_3d()
+
+CustomConstructorCRS.from_user_input()CustomConstructorCRS.geodetic_crsCustomConstructorCRS.source_crsCustomConstructorCRS.sub_crs_listCustomConstructorCRS.target_crsCustomConstructorCRS.to_3d()
+
+CustomConstructorCRS.from_user_input()
+
+CustomConstructorCRS.geodetic_crs
+
+CustomConstructorCRS.source_crs
+
+CustomConstructorCRS.sub_crs_list
+
+CustomConstructorCRS.target_crs
+
+CustomConstructorCRS.to_3d()
+
+is_wktis_wkt()
+
+is_wkt()
+
+is_wkt()
+
+is_projis_proj()
+
+is_proj()
+
+is_proj()
+
+
+--- CODE BLOCK ---
+>>> from pyproj import CRS
+>>> crs_utm = CRS.from_user_input(26915)
+>>> crs_utm
+<Projected CRS: EPSG:26915>
+Name: NAD83 / UTM zone 15N
+Axis Info [cartesian]:
+- E[east]: Easting (metre)
+- N[north]: Northing (metre)
+Area of Use:
+- name: North America - 96°W to 90°W and NAD83 by country
+- bounds: (-96.0, 25.61, -90.0, 84.0)
+Coordinate Operation:
+- name: UTM zone 15N
+- method: Transverse Mercator
+Datum: North American Datum 1983
+- Ellipsoid: GRS 1980
+- Prime Meridian: Greenwich
+
+>>> crs_utm.area_of_use.bounds
+(-96.0, 25.61, -90.0, 84.0)
+>>> crs_utm.ellipsoid
+ELLIPSOID["GRS 1980",6378137,298.257222101,
+    LENGTHUNIT["metre",1],
+    ID["EPSG",7019]]
+>>> crs_utm.ellipsoid.inverse_flattening
+298.257222101
+>>> crs_utm.ellipsoid.semi_major_metre
+6378137.0
+>>> crs_utm.ellipsoid.semi_minor_metre
+6356752.314140356
+>>> crs_utm.prime_meridian
+PRIMEM["Greenwich",0,
+    ANGLEUNIT["degree",0.0174532925199433],
+    ID["EPSG",8901]]
+>>> crs_utm.prime_meridian.unit_name
+'degree'
+>>> crs_utm.prime_meridian.unit_conversion_factor
+0.017453292519943295
+>>> crs_utm.prime_meridian.longitude
+0.0
+>>> crs_utm.datum
+DATUM["North American Datum 1983",
+    ELLIPSOID["GRS 1980",6378137,298.257222101,
+        LENGTHUNIT["metre",1]],
+    ID["EPSG",6269]]
+>>> crs_utm.coordinate_system
+CS[Cartesian,2],
+    AXIS["(E)",east,
+        ORDER[1],
+        LENGTHUNIT["metre",1,
+            ID["EPSG",9001]]],
+    AXIS["(N)",north,
+        ORDER[2],
+        LENGTHUNIT["metre",1,
+            ID["EPSG",9001]]]
+>>> print(crs_utm.coordinate_operation.to_wkt(pretty=True))
+CONVERSION["UTM zone 15N",
+    METHOD["Transverse Mercator",
+        ID["EPSG",9807]],
+    PARAMETER["Latitude of natural origin",0,
+        ANGLEUNIT["degree",0.0174532925199433],
+        ID["EPSG",8801]],
+    PARAMETER["Longitude of natural origin",-93,
+        ANGLEUNIT["degree",0.0174532925199433],
+        ID["EPSG",8802]],
+    PARAMETER["Scale factor at natural origin",0.9996,
+        SCALEUNIT["unity",1],
+        ID["EPSG",8805]],
+    PARAMETER["False easting",500000,
+        LENGTHUNIT["metre",1],
+        ID["EPSG",8806]],
+    PARAMETER["False northing",0,
+        LENGTHUNIT["metre",1],
+        ID["EPSG",8807]],
+    ID["EPSG",16015]]
+>>> crs = CRS(proj='utm', zone=10, ellps='WGS84')
+>>> print(crs.to_wkt(pretty=True))
+PROJCRS["unknown",
+    BASEGEOGCRS["unknown",
+        DATUM["Unknown based on WGS84 ellipsoid",
+            ELLIPSOID["WGS 84",6378137,298.257223563,
+                LENGTHUNIT["metre",1],
+                ID["EPSG",7030]]],
+        PRIMEM["Greenwich",0,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8901]]],
+    CONVERSION["UTM zone 10N",
+        METHOD["Transverse Mercator",
+            ID["EPSG",9807]],
+        PARAMETER["Latitude of natural origin",0,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8801]],
+        PARAMETER["Longitude of natural origin",-123,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8802]],
+        PARAMETER["Scale factor at natural origin",0.9996,
+            SCALEUNIT["unity",1],
+            ID["EPSG",8805]],
+        PARAMETER["False easting",500000,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8806]],
+        PARAMETER["False northing",0,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8807]],
+        ID["EPSG",16010]],
+    CS[Cartesian,2],
+        AXIS["(E)",east,
+            ORDER[1],
+            LENGTHUNIT["metre",1,
+                ID["EPSG",9001]]],
+        AXIS["(N)",north,
+            ORDER[2],
+            LENGTHUNIT["metre",1,
+                ID["EPSG",9001]]]]
+>>> geod = crs.get_geod()
+>>> f"+a={geod.a:.0f} +f={geod.f:.8f}"
+'+a=6378137 +f=0.00335281'
+>>> crs.is_projected
+True
+>>> crs.is_geographic
+False
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import CRS
+>>> ccs = CRS("EPSG:4328")
+>>> ccs.list_authority()
+[AuthorityMatchInfo(auth_name='EPSG', code='4326', confidence=100)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import CRS
+>>> ccs = CRS("+proj=geocent +datum=WGS84 +towgs84=0,0,0")
+>>> ccs.list_authority()
+[]
+>>> ccs.source_crs.list_authority()
+[AuthorityMatchInfo(auth_name='EPSG', code='4978', confidence=70)]
+>>> ccs == CRS.from_authorty('EPSG', '4978')
+False
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import CRS
+>>> ccs = CRS("EPSG:4328")
+>>> ccs.to_authority()
+('EPSG', '4328')
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import CRS
+>>> ccs = CRS("+proj=geocent +datum=WGS84 +towgs84=0,0,0")
+>>> ccs.to_authority()
+>>> ccs.source_crs.to_authority()
+('EPSG', '4978')
+>>> ccs == CRS.from_authorty('EPSG', '4978')
+False
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import CRS
+>>> ccs = CRS("EPSG:4328")
+>>> ccs.to_epsg()
+4328
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import CRS
+>>> ccs = CRS("+proj=geocent +datum=WGS84 +towgs84=0,0,0")
+>>> ccs.to_epsg()
+>>> ccs.source_crs.to_epsg()
+4978
+>>> ccs == CRS.from_epsg(4978)
+False
+
+------------------

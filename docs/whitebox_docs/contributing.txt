@@ -1,0 +1,23 @@
+Contributing and Reporting Bugs
+
+If you would like to contribute financial support to the project, the best way to proceed is to purchase a license for one of theWhiteboxTools Extension productsor by purchasing aWhiteboxTools Open-Core binary. The proceeds from the sales go towards paying developers who work on the open-core portion of the WhiteboxTools platform. Each license sale goes a long way towards making the ongoing development of WhiteboxTools more sustainable.
+
+If you would like to contribute to the project as a developer, follow these instructions to get started:
+
+Fork theWhiteboxToolsproject ( https://github.com/jblindsay/whitebox-tools )Create your feature branch (git checkout -b my-new-feature)Commit your changes (git commit -am 'Add some feature')Push to the branch (git push origin my-new-feature)Create a new Pull Request
+
+Fork theWhiteboxToolsproject ( https://github.com/jblindsay/whitebox-tools )
+
+Create your feature branch (git checkout -b my-new-feature)
+
+Commit your changes (git commit -am 'Add some feature')
+
+Push to the branch (git push origin my-new-feature)
+
+Create a new Pull Request
+
+Unless explicitly stated otherwise, any contribution intentionally submitted for inclusion in the work shall be licensed under theMIT Licensewithout any additional terms or conditions.
+
+We also welcome contributions in the form of media exposure. If you have written an article or blog aboutWhiteboxToolsplease let us know about it (support@whiteboxgeo.com).
+
+WhiteboxTools is distributed as is and without warranty of suitability for application. If you encounter flaws with the software (i.e. bugs) please report the issue. Providing a detailed description of the conditions under which the bug occurred will help to identify the bug.Use the Issues tracker on GitHub to report issues with the software and to request feature enchancements.Please do not email Dr. Lindsay directly with bugs.

@@ -1,0 +1,69 @@
+Global Context¶
+
+Deprecated since version 3.7.0:No longer necessary as there is only one context per thread now.
+
+If you have a single-threaded application that generates many objects,
+enabling the use of the global context can provide performance enhancements.
+
+Warning
+
+The global context is not thread safe.
+
+Warning
+
+The global context maintains a connection to the database
+through the duration of each python session and is closed
+once the program terminates.
+
+How to enable:
+
+Usingpyproj.set_use_global_context().Using the environment variablePYPROJ_GLOBAL_CONTEXT.
+
+Usingpyproj.set_use_global_context().
+
+Usingpyproj.set_use_global_context().
+
+Using the environment variablePYPROJ_GLOBAL_CONTEXT.
+
+Using the environment variablePYPROJ_GLOBAL_CONTEXT.
+
+pyproj.set_use_global_context¶
+
+Deprecated since version 3.7.0:No longer necessary as there is only one context per thread now.
+
+Added in version 3.0.0.
+
+Activates the usage of the global context. Using this
+option can enhance the performance of initializing objects
+in single-threaded applications.
+
+Warning
+
+The global context is not thread safe.
+
+Warning
+
+The global context maintains a connection to the database
+through the duration of each python session and is closed
+once the program terminates.
+
+Note
+
+To modify network settings see:Network capabilities.
+
+active(bool,optional) – If True, it activates the use of the global context. If False,
+the use of the global context is deactivated. If None, it uses
+the environment variable PYPROJ_GLOBAL_CONTEXT and defaults
+to False if it is not found.
+
+Global Contextpyproj.set_use_global_contextset_use_global_context()
+
+Global Contextpyproj.set_use_global_contextset_use_global_context()
+
+pyproj.set_use_global_contextset_use_global_context()
+
+pyproj.set_use_global_contextset_use_global_context()
+
+set_use_global_context()
+
+set_use_global_context()

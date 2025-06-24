@@ -1,0 +1,55 @@
+Lists¶
+
+pyproj.list.get_proj_operations_map¶
+
+Note
+
+The backwards compatible import ispyproj.get_proj_operations_map
+
+Operations supported by PROJ.
+
+dict
+
+pyproj.list.get_ellps_map¶
+
+Note
+
+The backwards compatible import ispyproj.get_ellps_map
+
+Ellipsoids supported by PROJ.
+
+dict
+
+pyproj.list.get_prime_meridians_map¶
+
+Note
+
+The backwards compatible import ispyproj.get_prime_meridians_map
+
+Prime Meridians supported by PROJ.
+
+dict
+
+Listspyproj.list.get_proj_operations_mapget_proj_operations_map()pyproj.list.get_ellps_mapget_ellps_map()pyproj.list.get_prime_meridians_mapget_prime_meridians_map()
+
+Listspyproj.list.get_proj_operations_mapget_proj_operations_map()pyproj.list.get_ellps_mapget_ellps_map()pyproj.list.get_prime_meridians_mapget_prime_meridians_map()
+
+pyproj.list.get_proj_operations_mapget_proj_operations_map()pyproj.list.get_ellps_mapget_ellps_map()pyproj.list.get_prime_meridians_mapget_prime_meridians_map()
+
+pyproj.list.get_proj_operations_mapget_proj_operations_map()
+
+get_proj_operations_map()
+
+get_proj_operations_map()
+
+pyproj.list.get_ellps_mapget_ellps_map()
+
+get_ellps_map()
+
+get_ellps_map()
+
+pyproj.list.get_prime_meridians_mapget_prime_meridians_map()
+
+get_prime_meridians_map()
+
+get_prime_meridians_map()

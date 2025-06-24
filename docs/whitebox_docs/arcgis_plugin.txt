@@ -1,0 +1,4 @@
+ArcGIS Plugin
+
+WhiteboxToolsfunctionality can also be accessed conveniently through the ArcGIS. ThisWhiteboxToolsfront-end has been developed and is maintained by Prof.Qiusheng Wu, of Binghamton University (SUNY). This front-end is available from theGihub repository. The plugin works for ArcGIS 10.6 and ArcGIS Pro; other version of ArcGIS have not been tested for support. Detailed instructions on installing and setting-up the ArcGIS toolbox can be found on the GitHub site.
+

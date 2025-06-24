@@ -1,0 +1,71 @@
+Sync Transformation Grids¶
+
+pyproj.sync.get_transform_grid_list¶
+
+Get a list of transform grids that can be downloaded.
+
+source_id(str,optional)area_of_use(str,optional)filename(str,optional)bbox(BBox,optional)spatial_test(str,default="intersects") – Can be “contains” or “intersects”.include_world_coverage(bool,default=True) – If True, it will include grids with a global extent.include_already_downloaded(bool,default=False) – If True, it will list grids regardless of if they are downloaded.target_directory(str|Path,optional) – The directory to download the geojson file to.
+Default is the user writable directory.
+
+source_id(str,optional)
+
+source_id(str,optional)
+
+area_of_use(str,optional)
+
+area_of_use(str,optional)
+
+filename(str,optional)
+
+filename(str,optional)
+
+bbox(BBox,optional)
+
+bbox(BBox,optional)
+
+spatial_test(str,default="intersects") – Can be “contains” or “intersects”.
+
+spatial_test(str,default="intersects") – Can be “contains” or “intersects”.
+
+include_world_coverage(bool,default=True) – If True, it will include grids with a global extent.
+
+include_world_coverage(bool,default=True) – If True, it will include grids with a global extent.
+
+include_already_downloaded(bool,default=False) – If True, it will list grids regardless of if they are downloaded.
+
+include_already_downloaded(bool,default=False) – If True, it will list grids regardless of if they are downloaded.
+
+target_directory(str|Path,optional) – The directory to download the geojson file to.
+Default is the user writable directory.
+
+target_directory(str|Path,optional) – The directory to download the geojson file to.
+Default is the user writable directory.
+
+A list of geojson data of containing information about features
+that can be downloaded.
+
+list[dict[str, Any]]
+
+pyproj.sync.get_proj_endpoint¶
+
+URL of the endpoint where PROJ grids are stored.
+
+str
+
+Sync Transformation Gridspyproj.sync.get_transform_grid_listget_transform_grid_list()pyproj.sync.get_proj_endpointget_proj_endpoint()
+
+Sync Transformation Gridspyproj.sync.get_transform_grid_listget_transform_grid_list()pyproj.sync.get_proj_endpointget_proj_endpoint()
+
+pyproj.sync.get_transform_grid_listget_transform_grid_list()pyproj.sync.get_proj_endpointget_proj_endpoint()
+
+pyproj.sync.get_transform_grid_listget_transform_grid_list()
+
+get_transform_grid_list()
+
+get_transform_grid_list()
+
+pyproj.sync.get_proj_endpointget_proj_endpoint()
+
+get_proj_endpoint()
+
+get_proj_endpoint()

@@ -1,0 +1,1545 @@
+GIS Analysis → Overlay Tools
+
+AverageOverlayClipClipRasterToPolygonCountIfDifferenceEraseErasePolygonFromRasterHighestPositionIntersectLineIntersectionsLowestPositionMaxAbsoluteOverlayMaxOverlayMergeLineSegmentsMinAbsoluteOverlayMinOverlayMultiplyOverlayPercentEqualToPercentGreaterThanPercentLessThanPickFromListPolygonizeSplitWithLinesSumOverlaySymmetricalDifferenceUnionUpdateNodataCellsWeightedOverlayWeightedSum
+
+AverageOverlay
+
+Clip
+
+ClipRasterToPolygon
+
+CountIf
+
+Difference
+
+Erase
+
+ErasePolygonFromRaster
+
+HighestPosition
+
+Intersect
+
+LineIntersections
+
+LowestPosition
+
+MaxAbsoluteOverlay
+
+MaxOverlay
+
+MergeLineSegments
+
+MinAbsoluteOverlay
+
+MinOverlay
+
+MultiplyOverlay
+
+PercentEqualTo
+
+PercentGreaterThan
+
+PercentLessThan
+
+PickFromList
+
+Polygonize
+
+SplitWithLines
+
+SumOverlay
+
+SymmetricalDifference
+
+Union
+
+UpdateNodataCells
+
+WeightedOverlay
+
+WeightedSum
+
+
+
+AverageOverlay
+
+This tool can be used to find the average value in each cell of a grid from a set of input images (--inputs).
+It is therefore similar to theWeightedSumtool except that each input image is given equal weighting. This
+tool operates on a cell-by-cell basis. Therefore, each of the input rasters must share the same number of rows
+and columns and spatial extent. An error will be issued if this is not the case. At least two input rasters are
+required to run this tool. Like each of the WhiteboxTools overlay tools, this tool has been optimized for
+parallel processing.
+
+See Also:WeightedSum
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 13/10/2018
+
+
+
+Clip
+
+This tool will extract all the features, or parts of features, that overlap with the features
+of the clip vector file. The clipping operation is one of the most common vector overlay
+operations in GIS and effectively imposes the boundary of the clip layer on a set of input
+vector features, or target features. The operation is sometimes likened to a 'cookie-cutter'.
+The input vector file can be of any feature type (i.e. points, lines, polygons), however, the
+clip vector must consist of polygons.
+
+See Also:Erase
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 28/10/2018
+
+Last Modified: 3/11/2018
+
+
+
+ClipRasterToPolygon
+
+This tool can be used to clip an input raster (--input) to the extent of a vector polygon (shapefile). The user
+must specify the name of the input clip file (--polygons), which must be a vector of a Polygon base shape type.
+The clip file may contain multiple polygon features. Polygon hole parts will be respected during clipping, i.e.
+polygon holes will be removed from the output raster by setting them to a NoData background value. Raster grid
+cells that fall outside of a polygons in the clip file will be assigned the NoData background value in the output
+file. By default, the output raster will be cropped to the spatial extent of the clip file, unless the--maintain_dimensionsparameter is used, in which case the output grid extent will match that of the input raster.
+The grid resolution of output raster is the same as the input raster.
+
+It is very important that the input raster and the input vector polygon file share the same projection. The result
+is unlikely to be satisfactory otherwise.
+
+See Also:ErasePolygonFromRaster
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 25/04/2018
+
+Last Modified: 06/12/2022
+
+
+
+CountIf
+
+This tool counts the number of occurrences of a specified value (--value) in a stack of input rasters
+(--inputs). Each grid cell in the output raster (--output) will contain the number of occurrences
+of the specified value in the stack of corresponding cells in the input image. At least two input rasters
+are required to run this tool. Each of the input rasters must share the same number of rows and columns and
+spatial extent. An error will be issued if this is not the case.
+
+See Also:PickFromList
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 14/04/2018
+
+Last Modified: 13/10/2018
+
+
+
+Difference
+
+This tool will remove all the overlapping features, or parts of overlapping features, between
+input and overlay vector files, outputting only the features that occur in one of the two
+inputs but not both. TheSymmetrical Differenceis related to the Boolean
+exclusive-or (XOR) operation in  set theory and is one of the common vector overlay
+operations in GIS. The user must specify  the names of the input and overlay vector files
+as well as the output vector file name. The tool operates on vector points,
+lines, or polygon, but both the input and overlay files must contain the same ShapeType.
+
+TheSymmetrical Differencecan also be derived using a combination of other vector
+overlay operations, as either(A union B) difference (A intersect B), or(A difference B) union (B difference A).
+
+The attributes of the two input vectors will be merged in the output attribute table.
+Fields that are duplicated between the inputs will share a single attribute in the
+output. Fields that only exist in one of the two inputs will be populated bynullin the output table. Multipoint ShapeTypes however will simply contain a single
+output feature identifier (FID) attribute. Also, note that depending on the
+ShapeType (polylines and polygons),MeasureandZShapeDimension data will not
+be transferred to the output geometries. If the input attribute table contains fields
+that measure the geometric properties of their associated features (e.g. length or area),
+these fields will not be updated to reflect changes in geometry shape and size
+resulting from the overlay operation.
+
+See Also:Intersect,Difference,Union,Clip,Erase
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 8/11/2018
+
+Last Modified: 8/11/2018
+
+
+
+Erase
+
+This tool will remove all the features, or parts of features, that overlap with the features
+of the erase vector file. The erasing operation is one of the most common vector overlay
+operations in GIS and effectively imposes the boundary of the erase layer on a set of input
+vector features, or target features.
+
+See Also:Clip
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 4/11/2018
+
+Last Modified: 4/11/2018
+
+
+
+ErasePolygonFromRaster
+
+This tool can be used to set values an input raster (--input) to a NoData background value with a vector
+erasing polygon (--polygons). The input erase polygon file must be a vector of a Polygon base shape type.
+The erase file may contain multiple polygon features. Polygon hole parts will be respected during clipping, i.e.
+polygon holes will not be removed from the output raster. Raster grid cells that fall inside of a polygons in
+the erase file will be assigned the NoData background value in the output file.
+
+See Also:ClipRasterToPolygon
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/03/2018
+
+Last Modified: 13/10/2018
+
+
+
+HighestPosition
+
+This tool identifies the stack position (index) of the maximum value within a raster stack on a cell-by-cell
+basis. For example, if five raster images (--inputs) are input to the tool, the output raster (--output)
+would show which of the five input rasters contained the highest value for each grid cell. The index value in
+the output raster is the zero-order number of the raster stack, i.e. if the highest value in the stack is
+contained in the first image, the output value would be 0; if the highest stack value were the second image,
+the output value would be 1, and so on. If any of the cell values within the stack is NoData, the output raster
+will contain the NoData value for the corresponding grid cell. The index value is related to the order of the
+input images.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows and columns.
+
+See Also:LowestPosition,PickFromList
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 13/10/2018
+
+
+
+Intersect
+
+The result of theIntersectvector overlay operation includes all the feature parts that
+occur in both input layers, excluding all other parts. It is analogous to theORlogical operator and multiplication in arithmetic. This tool is one of the common vector overlay
+operations in GIS. The user must specify the names of the input and overlay vector files
+as well as the output vector file name. The tool operates on vector points,
+lines, or polygon, but both the input and overlay files must contain the same ShapeType.
+
+TheIntersecttool is similar to theCliptool. The difference is that the overlay vector
+layer in aClipoperation must always be polygons, regardless of whether the input layer
+consists of points or polylines.
+
+The attributes of the two input vectors will be merged in the output attribute table.
+Note, duplicate fields should not exist between the inputs layers, as they will share a
+single attribute in the output (assigned from the first layer). Multipoint ShapeTypes will
+simply contain a single output feature identifier (FID) attribute. Also, note that depending
+on the ShapeType (polylines and polygons),MeasureandZShapeDimension data will not
+be transferred to the output geometries. If the input attribute table contains fields
+that measure the geometric properties of their associated features (e.g. length or area),
+these fields will not be updated to reflect changes in geometry shape and size
+resulting from the overlay operation.
+
+See Also:Difference,Union,SymmetricalDifference,Clip,Erase
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 8/11/2018
+
+Last Modified: 21/11/2018
+
+
+
+LineIntersections
+
+This tool identifies points where the features of two vector line/polygon layers
+intersect. The user must specify the names of two input vector line files and the
+output file. The output file will be a vector of POINT ShapeType. If the input
+vectors intersect at a line segment, the beginning and end vertices of the segment
+will be present in the output file. A warning is issued if intersection line segments
+are identified during analysis. If no intersections are found between the input line
+files, the output file will not be saved and a warning will be issued.
+
+Each intersection point will containPARENT1andPARENT2attribute fields,
+identifying the instersecting features in the first and second input line files
+respectively. Additionally, the output attribute table will contain all of the
+attributes (excludingFIDs) of the two parent line features.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 16/10/2018
+
+Last Modified: 16/10/2018
+
+
+
+LowestPosition
+
+This tool identifies the stack position (index) of the minimum value within a raster stack on a cell-by-cell
+basis. For example, if five raster images (--inputs) are input to the tool, the output raster (--output)
+would show which of the five input rasters contained the lowest value for each grid cell. The index value in
+the output raster is the zero-order number of the raster stack, i.e. if the lowest value in the stack is
+contained in the first image, the output value would be 0; if the lowest stack value were the second image,
+the output value would be 1, and so on. If any of the cell values within the stack is NoData, the output raster
+will contain the NoData value for the corresponding grid cell. The index value is related to the order of the
+input images.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows and columns.
+
+See Also:HighestPosition,PickFromList
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 04/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+MaxAbsoluteOverlay
+
+This tool can be used to find the maximum absolute (non-negative) value in each cell of a grid from a set of
+input images (--inputs). NoData values in any of the input images will result in a NoData pixel in the output
+image.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows
+and columns.
+
+See Also:MaxOverlay,MinAbsoluteOverlay,MinOverlay
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 13/10/2018
+
+
+
+MaxOverlay
+
+This tool can be used to find the maximum value in each cell of a grid from a set of input images (--inputs).
+NoData values in any of the input images will result in a NoData pixel in the output image (--output). It is
+similar to theMaxmathematical tool, except that it will accept more than two input images.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows and columns.
+
+See Also:MinOverlay,MaxAbsoluteOverlay,MinAbsoluteOverlay,Max
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 13/10/2018
+
+
+
+MergeLineSegments
+
+Vector lines can sometimes contain two features that are connected by a shared end vertex. This tool
+identifies connected line features in an input vector file (--input) and merges them in the output
+file (--output). Two line features are merged if their ends are coincident, and are not coincident
+with any other feature (i.e. a bifurcation junction). End vertices are considered to be coincident if
+they are within the specified snap distance (--snap).
+
+See Also:SplitWithLines
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 09/04/2019
+
+Last Modified: 09/04/2019
+
+
+
+MinAbsoluteOverlay
+
+This tool can be used to find the minimum absolute (non-negative) value in each cell of a grid from a set of
+input images (--inputs). NoData values in any of the input images will result in a NoData pixel in the output
+image.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows
+and columns.
+
+See Also:MinOverlay,MaxAbsoluteOverlay,MaxOverlay
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 13/10/2018
+
+
+
+MinOverlay
+
+This tool can be used to find the minimum value in each cell of a grid from a set of input images (--inputs).
+NoData values in any of the input images will result in a NoData pixel in the output image (--output). It is
+similar to theMinmathematical tool, except that it will accept more than two input images.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows and columns.
+
+See Also:MaxOverlay,MaxAbsoluteOverlay,MinAbsoluteOverlay,Min
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 13/10/2018
+
+
+
+MultiplyOverlay
+
+This tool multiplies a stack of raster images (--inputs) on a pixel-by-pixel basis. This tool is particularly
+well suited when you need to create a masking layer from the combination of several Boolean rasters, i.e.
+for constraint mapping applications. NoData values in any of the input images will result in a NoData pixel in
+the output image (--output).
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows and columns.
+
+See Also:SumOverlay,WeightedSum
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 04/02/2022
+
+Last Modified: 04/02/2022
+
+
+
+PercentEqualTo
+
+This tool calculates the percentage of a raster stack (--inputs) that have cell values equal to an inputcomparisonraster. The user must specify the name of the value raster (--comparison), the names of the raster files contained
+in the stack, and an output raster file name (--output). The tool, working on a cell-by-cell basis, will count the
+number of rasters within the stack that have the same grid cell value as the corresponding grid cell in thecomparisonraster. This count is then expressed as a percentage of the number of rasters contained within the stack and output.
+If any of the rasters within the stack contain the NoData value, the corresponding grid cell in the output raster will
+be assigned NoData.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows and columns.
+
+See Also:PercentGreaterThan,PercentLessThan
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 31/01/2019
+
+
+
+PercentGreaterThan
+
+This tool calculates the percentage of a raster stack (--inputs) that have cell values greater than an inputcomparisonraster. The user must specify the name of the value raster (--comparison), the names of the raster files contained
+in the stack, and an output raster file name (--output). The tool, working on a cell-by-cell basis, will count the
+number of rasters within the stack with larger grid cell values greater than the corresponding grid cell in thecomparisonraster. This count is then expressed as a percentage of the number of rasters contained within the stack and output.
+If any of the rasters within the stack contain the NoData value, the corresponding grid cell in the output raster will
+be assigned NoData.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows and columns.
+
+See Also:PercentLessThan,PercentEqualTo
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 31/01/2019
+
+
+
+PercentLessThan
+
+This tool calculates the percentage of a raster stack (--inputs) that have cell values less than an inputcomparisonraster. The user must specify the name of the value raster (--comparison), the names of the raster files contained
+in the stack, and an output raster file name (--output). The tool, working on a cell-by-cell basis, will count the
+number of rasters within the stack with larger grid cell values less than the corresponding grid cell in thecomparisonraster. This count is then expressed as a percentage of the number of rasters contained within the stack and output.
+If any of the rasters within the stack contain the NoData value, the corresponding grid cell in the output raster will
+be assigned NoData.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows and columns.
+
+See Also:PercentGreaterThan,PercentEqualTo
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 31/01/2019
+
+
+
+PickFromList
+
+This tool outputs the cell value from a raster stack specified (--inputs) by a position raster (--pos_input). The
+user must specify the name of the position raster, the names of the raster files contained in the stack (i.e. group
+of rasters), and an output raster file name (--output). The tool, working on a cell-by-cell basis, will assign the
+value to the output grid cell contained in the corresponding cell in the stack image in the position specified by the
+cell value in the position raster. Importantly, the positions raster should be in zero-based order. That is, the first
+image in the stack should be assigned the value zero, the second raster is assigned 1, and so on.
+
+At least two input rasters are required to run this tool. Each of the input rasters must share the same number of rows
+and columns and spatial extent. An error will be issued if this is not the case.
+
+See Also:CountIf
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 13/10/2018
+
+
+
+Polygonize
+
+This tool outputs a vector polygon layer from two or more intersecting line features
+contained in one or more input vector line files. Each space enclosed by the intersecting
+line set is converted to polygon added to the output layer. This tool should not be
+confused with theLinesToPolygonstool, which can be used to convert a vector file of
+polylines into a set of polygons, simply by closing each line feature. TheLinesToPolygonstool does not deal with line intersection in the same way that thePolygonizetool does.
+
+See Also:LinesToPolygons
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 19/10/2018
+
+Last Modified: 28/10/2018
+
+
+
+SplitWithLines
+
+This tool splits the lines or polygons in one layer using the lines in another layer
+to define the breaking points. Intersection points between geometries in both layers
+are considered as split points. The input layer (--input) can be of either
+POLYLINE or POLYGON ShapeType and the output file will share this geometry type.
+The user must also specify an split layer (--split), of POLYLINE ShapeType, used
+to bisect the input geometries.
+
+Each split geometry's attribute record will containFIDandPARENT_FIDvalues
+and all of the attributes (excludingFID's) of the input layer.
+
+See Also:
+'MergeLineSegments'
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 17/10/2018
+
+Last Modified: 08/04/2019
+
+
+
+SumOverlay
+
+This tool calculates the sum for each grid cell from a group of raster images (--inputs). NoData values in any of the input
+images will result in a NoData pixel in the output image (--output).
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows and columns.
+
+See Also:WeightedSum,MultiplyOverlay
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/09/2018
+
+Last Modified: 13/10/2018
+
+
+
+SymmetricalDifference
+
+This tool will remove all the overlapping features, or parts of overlapping features, between
+input and overlay vector files, outputting only the features that occur in one of the two
+inputs but not both. TheSymmetrical Differenceis related to the Boolean
+exclusive-or (XOR) operation in  set theory and is one of the common vector overlay
+operations in GIS. The user must specify  the names of the input and overlay vector files
+as well as the output vector file name. The tool operates on vector points,
+lines, or polygon, but both the input and overlay files must contain the same ShapeType.
+
+TheSymmetrical Differencecan also be derived using a combination of other vector
+overlay operations, as either(A union B) difference (A intersect B), or(A difference B) union (B difference A).
+
+The attributes of the two input vectors will be merged in the output attribute table.
+Fields that are duplicated between the inputs will share a single attribute in the
+output. Fields that only exist in one of the two inputs will be populated bynullin the output table. Multipoint ShapeTypes however will simply contain a single
+output feature identifier (FID) attribute. Also, note that depending on the
+ShapeType (polylines and polygons),MeasureandZShapeDimension data will not
+be transferred to the output geometries. If the input attribute table contains fields
+that measure the geometric properties of their associated features (e.g. length or area),
+these fields will not be updated to reflect changes in geometry shape and size
+resulting from the overlay operation.
+
+See Also:Intersect,Difference,Union,Clip,Erase
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 5/11/2018
+
+Last Modified: 08/11/2018
+
+
+
+Union
+
+This tool splits vector layers at their overlaps, creating a layer containing all the portions from both
+input and overlay layers. TheUnionis related to the BooleanORoperation in  set theory and is one of the common vector overlay
+operations in GIS. The user must specify  the names of the input and overlay vector files
+as well as the output vector file name. The tool operates on vector points,
+lines, or polygon, but both the input and overlay files must contain the same ShapeType.
+
+The attributes of the two input vectors will be merged in the output attribute table.
+Fields that are duplicated between the inputs will share a single attribute in the
+output. Fields that only exist in one of the two inputs will be populated bynullin the output table. Multipoint ShapeTypes however will simply contain a single
+output feature identifier (FID) attribute. Also, note that depending on the
+ShapeType (polylines and polygons),MeasureandZShapeDimension data will not
+be transferred to the output geometries. If the input attribute table contains fields
+that measure the geometric properties of their associated features (e.g. length or area),
+these fields will not be updated to reflect changes in geometry shape and size
+resulting from the overlay operation.
+
+See Also:Intersect,Difference,SymmetricalDifference,Clip,Erase
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/11/2018
+
+Last Modified: 08/04/2019
+
+
+
+UpdateNodataCells
+
+This tool will assign theNoDatavalued cells in an input raster (--input1) the
+values contained in the corresponding grid cells in a second input raster (--input2).
+This operation is sometimes necessary because most other overlay operations exclude
+areas ofNoDatavalues from the analysis. This tool can be used when there is need
+to update the values of a raster within these missing data areas.
+
+See Also:IsNodata
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/05/2020
+
+Last Modified: 26/05/2020
+
+
+
+WeightedOverlay
+
+This tool performs a weighted overlay on multiple input images. It can be used to
+combine multiple factors with varying levels of weight or relative importance. The
+WeightedOverlay tool is similar to the WeightedSum tool but is more powerful because
+it automatically converts the input factors to a common user-defined scale and allows
+the user to specify benefit factors and cost factors. A benefit factor is a factor
+for which higher values are more suitable. A cost factor is a factor for which higher
+values are less suitable. By default, WeightedOverlay assumes that input images are
+benefit factors, unless a cost value of 'true' is entered in the cost array.
+Constraints are absolute restriction with values of 0 (unsuitable) and 1 (suitable).
+This tool is particularly useful for performing multi-criteria evaluations (MCE).
+
+Notice that the algorithm will convert the user-defined factor weights internally such
+that the sum of the weights is always equal to one. As such, the user can specify the
+relative weights as decimals, percentages, or relative weightings (e.g. slope is 2 times
+more important than elevation, in which case the weights may not sum to 1 or 100).
+
+NoData valued grid cells in any of the input images will be assigned NoData values in
+the output image. The output raster is of the float data type and continuous data scale.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows
+and columns.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 07/05/2018
+
+Last Modified: 13/10/2018
+
+
+
+WeightedSum
+
+This tool performs a weighted-sum overlay on multiple input raster images.
+If you have a stack of rasters that you would like to sum, each with an
+equal weighting (1.0), then use theSumOverlaytool instead.
+
+Warning:
+
+Each of the input rasters must have the same spatial extent and number of rows
+and columns.
+
+See Also:SumOverlay
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 13/10/2018
+
+
+--- CODE BLOCK ---
+wbt.average_overlay(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=AverageOverlay -v --wd='/path/to/data/' ^
+-i='image1.dep;image2.dep;image3.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.clip(
+    i, 
+    clip, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Clip -v --wd="/path/to/data/" ^
+-i=lines1.shp --clip=clip_poly.shp -o=out_file.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.clip_raster_to_polygon(
+    i, 
+    polygons, 
+    output, 
+    maintain_dimensions=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ClipRasterToPolygon -v ^
+--wd="/path/to/data/" -i=raster.tif --polygons=poly.shp ^
+-o=output.tif --maintain_dimensions 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.count_if(
+    inputs, 
+    output, 
+    value, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CountIf -v --wd='/path/to/data/' ^
+-i='image1.dep;image2.dep;image3.tif' -o=output.tif ^
+--value=5.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.difference(
+    i, 
+    overlay, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Difference -v --wd="/path/to/data/" ^
+-input=layer1.shp --overlay=layer2.shp -o=out_file.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.erase(
+    i, 
+    erase, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Erase -v --wd="/path/to/data/" ^
+-i=lines1.shp --erase=erase_poly.shp -o=out_file.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.erase_polygon_from_raster(
+    i, 
+    polygons, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ErasePolygonFromRaster -v ^
+--wd="/path/to/data/" -i='DEM.tif' --polygons='lakes.shp' ^
+-o='output.tif' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.highest_position(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=HighestPosition -v ^
+--wd='/path/to/data/' -i='image1.tif;image2.tif;image3.tif' ^
+-o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.intersect(
+    i, 
+    overlay, 
+    output, 
+    snap=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Intersect -v --wd="/path/to/data/" ^
+-input=layer1.shp --overlay=layer2.shp -o=out_file.shp ^
+--snap=0.0000001 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.line_intersections(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LineIntersections -v ^
+--wd="/path/to/data/" --i1=lines1.shp --i2=lines2.shp ^
+-o=out_file.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.lowest_position(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LowestPosition -v --wd='/path/to/data/' ^
+-i='image1.tif;image2.tif;image3.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.max_absolute_overlay(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MaxAbsoluteOverlay -v ^
+--wd='/path/to/data/' -i='image1.tif;image2.tif;image3.tif' ^
+-o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.max_overlay(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MaxOverlay -v --wd='/path/to/data/' ^
+-i='image1.tif;image2.tif;image3.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.merge_line_segments(
+    i, 
+    output, 
+    snap=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MergeLineSegments -v ^
+--wd="/path/to/data/" --input=layer1.shp -o=out_file.shp ^
+--snap=0.0000001 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.min_absolute_overlay(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MinAbsoluteOverlay -v ^
+--wd='/path/to/data/' -i='image1.tif;image2.tif;image3.tif' ^
+-o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.min_overlay(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MinOverlay -v --wd='/path/to/data/' ^
+-i='image1.tif;image2.tif;image3.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.multiply_overlay(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MultiplyOverlay -v ^
+--wd='/path/to/data/' -i='image1.dep;image2.dep;image3.tif' ^
+-o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.percent_equal_to(
+    inputs, 
+    comparison, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PercentEqualTo -v --wd='/path/to/data/' ^
+-i='image1.tif;image2.tif;image3.tif' --comparison='comp.tif' ^
+-o='output.tif' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.percent_greater_than(
+    inputs, 
+    comparison, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PercentGreaterThan -v ^
+--wd='/path/to/data/' -i='image1.tif;image2.tif;image3.tif' ^
+--comparison='comp.tif' -o='output.tif' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.percent_less_than(
+    inputs, 
+    comparison, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PercentLessThan -v ^
+--wd='/path/to/data/' -i='image1.tif;image2.tif;image3.tif' ^
+--comparison='comp.tif' -o='output.tif' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.pick_from_list(
+    inputs, 
+    pos_input, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PickFromList -v --wd='/path/to/data/' ^
+--pos_input=position.tif -i='image1.tif;image2.tif;image3.tif' ^
+-o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.polygonize(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Polygonize -v --wd="/path/to/data/" ^
+-i='lines1.shp;lines2.shp;lines3.shp' -o=out_file.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.split_with_lines(
+    i, 
+    split, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=SplitWithLines -v --wd="/path/to/data/" ^
+--input=polygons.shp --split=lines.shp -o=out_file.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.sum_overlay(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=SumOverlay -v --wd='/path/to/data/' ^
+-i='image1.dep;image2.dep;image3.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.symmetrical_difference(
+    i, 
+    overlay, 
+    output, 
+    snap=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=SymmetricalDifference -v ^
+--wd="/path/to/data/" -input=layer1.shp --overlay=layer2.shp ^
+-o=out_file.shp --snap=0.0000001 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.union(
+    i, 
+    overlay, 
+    output, 
+    snap=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Union -v --wd="/path/to/data/" ^
+-input=layer1.shp --overlay=layer2.shp -o=out_file.shp ^
+--snap=0.0000001 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.update_nodata_cells(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=UpdateNodataCells -v ^
+--wd="/path/to/data/" --input1=input1.tif ^
+--input2=update_layer.tif -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.weighted_overlay(
+    factors, 
+    weights, 
+    output, 
+    cost=None, 
+    constraints=None, 
+    scale_max=1.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=WeightedOverlay -v ^
+--wd='/path/to/data/' ^
+--factors='image1.tif;image2.tif;image3.tif' ^
+--weights='0.3;0.2;0.5' --cost='false;false;true' -o=output.tif ^
+--scale_max=100.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.weighted_sum(
+    inputs, 
+    weights, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=WeightedSum -v --wd='/path/to/data/' ^
+-i='image1.tif;image2.tif;image3.tif' --weights='0.3;0.2;0.5' ^
+-o=output.tif 
+
+------------------

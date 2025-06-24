@@ -1,0 +1,131 @@
+Using rio-calc
+
+Simple raster data processing on the command line is possible using Rasterio’s
+rio-calc command. It uses thesnuggsNumpy S-expression engine. Thesnuggs READMEexplains how
+expressions are written and evaluated in general. This document explains
+Rasterio-specific details of rio-calc and offers some examples.
+
+Expressions
+
+Rio-calc expressions look like
+
+wherefuncmay be the name of any function in the modulenumpyor
+one of the rio-calc builtins:read,fillnodata, orsieve; andoperatormay be any of the standard Python arithmetic or logical operators.
+The arguments may themselves be expressions.
+
+Copying a file
+
+Here’s a trivial example of copying a dataset. The expression(read1)evaluates to all bands of the first input dataset, an array with shape(3,718,791)in this case.
+
+Note: rio-calc’s indexes start at1.
+
+Reversing the band order of a file
+
+The expression(readij)evaluates to the j-th band of the i-th input
+dataset. Theasarrayfunction collects bands read in reverse order into
+an array with shape(3,718,791)for output.
+
+Stacking bands of multiple files
+
+Bands can be read from multiple input files. This example is another (slower)
+way to copy a file.
+
+Named datasets
+
+Datasets can be referenced in expressions by name and single bands picked out
+using thetakefunction.
+
+The third example, re-done using names, is:
+
+Read and take
+
+The functionsreadandtakeoverlap a bit in the previous examples but
+are rather different. The former involves I/O and the latter does not. You may
+alsotakefrom any array, as in this example.
+
+Arithmetic operations
+
+Arithmetic operations can be performed as with Numpy. Here is an example of
+scaling all three bands of a dataset by the same factors.
+
+Here is a more complicated example of scaling bands by different factors.
+
+Logical operations
+
+Logical operations can be used in conjunction with arithmetic operations. In
+this example, the output values are 255 wherever the input values are greater
+than or equal to 40.
+
+
+--- CODE BLOCK ---
+(func|operator arg [*args])
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio calc "(read 1)" tests/data/RGB.byte.tif out.tif
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio calc "(asarray (read 1 3) (read 1 2) (read 1 1))" tests/data/RGB.byte.tif out.tif
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio calc "(asarray (read 1 1) (read 2 2) (read 3 3))" \
+> tests/data/RGB.byte.tif tests/data/RGB.byte.tif tests/data/RGB.byte.tif \
+> out.tif
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio calc "(asarray (take a 3) (take a 2) (take a 1))" \
+> --name "a=tests/data/RGB.byte.tif" out.tif
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio calc "(asarray (take a 1) (take b 2) (take b 3))" \
+> --name "a=tests/data/RGB.byte.tif" --name "b=tests/data/RGB.byte.tif" \
+> --name "c=tests/data/RGB.byte.tif" out.tif
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio calc "(take (read 1) 1)" tests/data/RGB.byte.tif out.tif
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio calc "(+ 2 (* 0.95 (read 1)))" tests/data/RGB.byte.tif out.tif
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio calc "(asarray (+ 2 (* 0.95 (read 1 1))) (+ 3 (* 0.9 (read 1 2))) (+ 4 (* 0.85 (read 1 3))))" tests/data/RGB.byte.tif out.tif
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio calc "(* (>= (read 1) 40) 255)" tests/data/RGB.byte.tif out.tif
+
+------------------

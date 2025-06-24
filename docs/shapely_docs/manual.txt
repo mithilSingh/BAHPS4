@@ -1,0 +1,2892 @@
+The Shapely User Manual#
+
+Sean Gillies, <sean.gillies@gmail.com>
+
+2.1.1
+
+May 19, 2025
+
+This work is licensed under aCreative Commons Attribution 3.0
+United States License.
+
+This document explains how to use the Shapely Python package for
+computational geometry.
+
+Introduction#
+
+Deterministic spatial analysis is an important component of computational
+approaches to problems in agriculture, ecology, epidemiology, sociology, and
+many other fields. What is the surveyed perimeter/area ratio of these patches
+of animal habitat? Which properties in this town intersect with the 50-year
+flood contour from this new flooding model? What are the extents of findspots
+for ancient ceramic wares with maker’s marks “A” and “B”, and where do the
+extents overlap? What’s the path from home to office that best skirts
+identified zones of location based spam? These are just a few of the possible
+questions addressable using non-statistical spatial analysis, and more
+specifically, computational geometry.
+
+Shapely is a Python package for set-theoretic analysis and manipulation of
+planar features using functions from the
+well known and widely deployedGEOSlibrary. GEOS, a port of theJava
+Topology Suite(JTS), is the geometry engine of thePostGISspatial
+extension for the PostgreSQL RDBMS. The designs of JTS and GEOS are largely
+guided by theOpen Geospatial Consortium’s Simple Features Access
+Specification[1]and Shapely adheres mainly to the same set of standard
+classes and operations. Shapely is thereby deeply rooted in the conventions of
+the geographic information systems (GIS) world, but aspires to be equally
+useful to programmers working on non-conventional problems.
+
+The first premise of Shapely is that Python programmers should be able to
+perform PostGIS type geometry operations outside of an RDBMS. Not all
+geographic data originate or reside in a RDBMS or are best processed using SQL.
+We can load data into a spatial RDBMS to do work, but if there’s no mandate to
+manage (the “M” in “RDBMS”) the data over time in the database we’re using the
+wrong tool for the job. The second premise is that the persistence,
+serialization, and map projection of features are significant, but orthogonal
+problems. You may not need a hundred GIS format readers and writers or the
+multitude of State Plane projections, and Shapely doesn’t burden you with them.
+The third premise is that Python idioms trump GIS (or Java, in this case, since
+the GEOS library is derived from JTS, a Java project) idioms.
+
+If you enjoy and profit from idiomatic Python, appreciate packages that do one
+thing well, and agree that a spatially enabled RDBMS is often enough the wrong
+tool for your computational geometry job, Shapely might be for you.
+
+Spatial Data Model#
+
+The fundamental types of geometric objects implemented by Shapely are points,
+curves, and surfaces. Each is associated with three sets of (possibly infinite)
+points in the plane. Theinterior,boundary, andexteriorsets of a
+feature are mutually exclusive and their union coincides with the entire plane[2].
+
+APointhas aninteriorset of exactly one point, aboundaryset of
+exactly no points, and anexteriorset of all other points. APointhas
+a topological dimension of 0.ACurvehas aninteriorset consisting of the infinitely many points
+along its length (imagine aPointdragged in space), aboundaryset
+consisting of its two end points, and anexteriorset of all other points.
+ACurvehas a topological dimension of 1.ASurfacehas aninteriorset consisting of the infinitely many points
+within (imagine aCurvedragged in space to cover an area), aboundaryset consisting of one or moreCurves, and anexteriorset of all other
+points including those within holes that might exist in the surface. ASurfacehas a topological dimension of 2.
+
+APointhas aninteriorset of exactly one point, aboundaryset of
+exactly no points, and anexteriorset of all other points. APointhas
+a topological dimension of 0.
+
+APointhas aninteriorset of exactly one point, aboundaryset of
+exactly no points, and anexteriorset of all other points. APointhas
+a topological dimension of 0.
+
+ACurvehas aninteriorset consisting of the infinitely many points
+along its length (imagine aPointdragged in space), aboundaryset
+consisting of its two end points, and anexteriorset of all other points.
+ACurvehas a topological dimension of 1.
+
+ACurvehas aninteriorset consisting of the infinitely many points
+along its length (imagine aPointdragged in space), aboundaryset
+consisting of its two end points, and anexteriorset of all other points.
+ACurvehas a topological dimension of 1.
+
+ASurfacehas aninteriorset consisting of the infinitely many points
+within (imagine aCurvedragged in space to cover an area), aboundaryset consisting of one or moreCurves, and anexteriorset of all other
+points including those within holes that might exist in the surface. ASurfacehas a topological dimension of 2.
+
+ASurfacehas aninteriorset consisting of the infinitely many points
+within (imagine aCurvedragged in space to cover an area), aboundaryset consisting of one or moreCurves, and anexteriorset of all other
+points including those within holes that might exist in the surface. ASurfacehas a topological dimension of 2.
+
+That may seem a bit esoteric, but will help clarify the meanings of Shapely’s
+spatial predicates, and it’s as deep into theory as this manual will go.
+Consequences of point-set theory, including some that manifest themselves as
+“gotchas”, for different classes will be discussed later in this manual.
+
+The point type is implemented by aPointclass; curve by theLineStringandLinearRingclasses; and surface by aPolygonclass. Shapely implements no
+smooth (i.e.having continuous tangents) curves. All curves must be
+approximated by linear splines. All rounded patches must be approximated by
+regions bounded by linear splines.
+
+Collections of points are implemented by aMultiPointclass, collections of
+curves by aMultiLineStringclass, and collections of surfaces by aMultiPolygonclass. These collections aren’t computationally significant, but
+are useful for modeling certain kinds of features. A Y-shaped line feature, for
+example, is well modeled as a whole by aMultiLineString.
+
+The standard data model has additional constraints specific to certain types
+of geometric objects that will be discussed in following sections of this
+manual.
+
+See alsohttps://web.archive.org/web/20160719195511/http://www.vividsolutions.com/jts/discussion.htmfor more illustrations of this data model.
+
+Relationships#
+
+The spatial data model is accompanied by a group of natural language
+relationships between geometric objects –contains,intersects,overlaps,touches, etc. – and a theoretical framework for understanding them using the
+3x3 matrix of the mutual intersections of their component point sets[3]: the
+DE-9IM. A comprehensive review of the relationships in terms of the DE-9IM is
+found in[4]and will not be reiterated in this manual.
+
+Operations#
+
+Following the JTS technical specs[5], this manual will make a distinction
+between constructive (buffer,convex hull) and set-theoretic operations
+(intersection,union, etc.). The individual operations will be fully
+described in a following section of the manual.
+
+Coordinate Systems#
+
+Even though the Earth is not flat – and for that matter not exactly spherical –
+there are many analytic problems that can be approached by transforming Earth
+features to a Cartesian plane, applying tried and true algorithms, and then
+transforming the results back to geographic coordinates.  This practice is as
+old as the tradition of accurate paper maps.
+
+Shapely does not support coordinate system transformations. All operations on
+two or more features presume that the features exist in the same Cartesian
+plane.
+
+Geometric Objects#
+
+Geometric objects are created in the typical Python fashion, using the classes
+themselves as instance factories. A few of their intrinsic properties will be
+discussed in this sections, others in the following sections on operations and
+serializations.
+
+Instances ofPoint,LineString, andLinearRinghave as their most
+important attribute a finite sequence of coordinates that determines their
+interior, boundary, and exterior point sets. A line string can be determined by
+as few as 2 points, but contains an infinite number of points. Coordinate
+sequences are immutable. A thirdzcoordinate value may be used when
+constructing instances, but has no effect on geometric analysis.  All
+operations are performed in thex-yplane.
+
+In all constructors, numeric values are converted to typefloat. In other
+words,Point(0,0)andPoint(0.0,0.0)produce geometrically equivalent
+instances. Shapely does not check the topological simplicity or validity of
+instances when they are constructed as the cost is unwarranted in most cases.
+Validating factories are easily implemented using the :attr:is_validpredicate by users that require them.
+
+Note
+
+Shapely is a planar geometry library andz, the height
+above or below the plane, is ignored in geometric analysis. There is
+a potential pitfall for users here: coordinate tuples that differ only inzare not distinguished from each other and their application can result
+in surprisingly invalid geometry objects. For example,LineString([(0,0,0),(0,0,1)])does not return a vertical line of unit length, but an invalid line
+in the plane with zero length. Similarly,Polygon([(0,0,0),(0,0,1),(1,1,1)])is not bounded by a closed ring and is invalid.
+
+General Attributes and Methods#
+
+Returns the area (float) of the object.
+
+Returns a(minx,miny,maxx,maxy)tuple (floatvalues) that bounds
+the object.
+
+Returns the length (float) of the object.
+
+Returns the smallest distance by which a node could be moved to produce an invalid geometry.
+
+This can be thought of as a measure of the robustness of a geometry, where larger values of
+minimum clearance indicate a more robust geometry. If no minimum clearance exists for a geometry,
+such as a point, this will returnmath.infinity.
+
+New in Shapely 1.7.1
+
+Returns a string specifying theGeometry Typeof the object in accordance
+with[1].
+
+Returns the minimum distance (float) to theothergeometric object.
+
+Returns the Hausdorff distance (float) to theothergeometric object.
+The Hausdorff distance between two geometries is the furthest distance that
+a point on either geometry can be from the nearest point to it on the other
+geometry.
+
+New in Shapely 1.6.0
+
+Returns a cheaply computed point that is guaranteed to be within the
+geometric object.
+
+Note
+
+This is not in general the same as the centroid.
+
+Points#
+
+ThePointconstructor takes positional coordinate values or point tuple
+parameters.
+
+APointhas zero area and zero length.
+
+Itsx-ybounding box is a(minx,miny,maxx,maxy)tuple.
+
+Coordinate values are accessed viacoords,x,y,z, andmproperties.
+
+Coordinates may also be sliced.New in version 1.2.14.
+
+When aPointinstance is passed to thePointconstructor, it returns a
+reference to the passed instance. It does not make a copy, as geometry objects
+are immutable.
+
+LineStrings#
+
+TheLineStringconstructor takes an ordered sequence of 2 or more(x,y[,z])point tuples.
+
+The constructedLineStringobject represents one or more connected linear
+splines between the points. Repeated points in the ordered sequence are
+allowed, but may incur performance penalties and should be avoided. ALineStringmay cross itself (i.e.becomplexand notsimple).
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 1. A simpleLineStringon the left, a complexLineStringon the
+right. The (MultiPoint) boundary of each is shown in black, the other points
+that describe the lines are shown in grey.
+
+ALineStringhas zero area and non-zero length if it isn’tempty.
+
+Itsx-ybounding box is a(minx,miny,maxx,maxy)tuple.
+
+The defining coordinate values are accessed via thecoordsproperty.
+
+Coordinates may also be sliced.New in version 1.2.14.
+
+When the constructor is passed anotherLineStringinstance, a reference to
+the instance is returned.
+
+ALineStringmay also be constructed using a sequence of mixedPointinstances or coordinate tuples. The individual coordinates are copied into
+the new object.
+
+LinearRings#
+
+TheLinearRingconstructor takes an ordered sequence of(x,y[,z])point tuples.
+
+The sequence may be explicitly closed by passing identical values in the first
+and last indices. Otherwise, the sequence will be implicitly closed by copying
+the first tuple to the last index. As with aLineString, repeated points in
+the ordered sequence are allowed, but may incur performance penalties and
+should be avoided. ALinearRingmay not cross itself, and may not touch
+itself at a single point.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 2. A validLinearRingon the left, an invalid self-touchingLinearRingon the right. The points that describe the rings are shown in
+grey. A ring’s boundary isempty.
+
+Note
+
+Shapely will not prevent the creation of such rings, but exceptions will be
+raised when they are operated on.
+
+ALinearRinghas zero area and non-zero length if it isn’tempty.
+
+Itsx-ybounding box is a(minx,miny,maxx,maxy)tuple.
+
+Defining coordinate values are accessed via thecoordsproperty.
+
+TheLinearRingconstructor also accepts anotherLineStringorLinearRinginstance, returning a newLinearRinginstance or a reference to the passed
+instance, respectively.
+
+As withLineString, a sequence ofPointinstances is a valid
+constructor parameter.
+
+Polygons#
+
+ThePolygonconstructor takes two positional parameters. The first is an
+ordered sequence of(x,y[,z])point tuples and is treated exactly as in
+theLinearRingcase. The second is an optional unordered sequence of
+ring-like sequences specifying the interior boundaries or “holes” of the
+feature.
+
+Rings of avalidPolygonmay not cross each other, but may touch at a
+single point only.  Again, Shapely will not prevent the creation of invalid
+features, but when they are operated on the results might be wrong or
+exceptions might be raised.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 3. On the left, a validPolygonwith one interior ring that touches
+the exterior ring at one point, and on the right aPolygonthat isinvalidbecause its interior ring touches the exterior ring at more than one point. The
+points that describe the rings are shown in grey.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 4. On the left, aPolygonthat isinvalidbecause its exterior and
+interior rings touch along a line, and on the right, aPolygonthat isinvalidbecause its interior rings touch along a line.
+
+APolygonhas non-zero area and non-zero length if it isn’tempty.
+
+Itsx-ybounding box is a(minx,miny,maxx,maxy)tuple.
+
+Component rings are accessed viaexteriorandinteriorsproperties.
+
+ThePolygonconstructor also accepts instances ofLineStringandLinearRing.
+
+Rectangular polygons occur commonly, and can be conveniently constructed using
+theshapely.geometry.box()function.
+
+Makes a rectangular polygon from the provided bounding box values, with
+counter-clockwise order by default.
+
+New in version 1.2.9.
+
+For example:
+
+This is the first appearance of an explicit polygon handedness in Shapely.
+
+To obtain a polygon with a known orientation, useshapely.geometry.polygon.orient():
+
+Returns a newPolygoninstance with the coordinates of the given polygon in
+proper orientation. The signed area of the result will have the given sign. A
+sign of 1.0 means that the coordinates of the product’s exterior ring will be
+oriented counter-clockwise and the interior rings (holes) will be oriented
+clockwise.
+
+New in version 1.2.10.
+
+Collections#
+
+Heterogeneous collections of geometric objects may result from some Shapely
+operations. For example, twoLineStringsmay intersect along a line and at a
+point. To represent these kind of results, Shapely providesfrozenset-like,
+immutable collections of geometric objects.  The collections may be homogeneous
+(MultiPointetc.) or heterogeneous.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 5. a) a green and a yellow line that intersect along a line and at a
+single point; b) the intersection (in blue) is a collection containing oneLineStringand onePoint.
+
+Members of aGeometryCollectionare accessed via thegeomsproperty.
+
+Note
+
+When possible, it is better to use one of the homogeneous collection types
+described below.
+
+Collections of Points#
+
+TheMultiPointconstructor takes a sequence of(x,y[,z])point
+tuples.
+
+AMultiPointhas zero area and zero length.
+
+Itsx-ybounding box is a(minx,miny,maxx,maxy)tuple.
+
+Members of a multi-point collection are accessed via thegeomsproperty.
+
+The constructor also accepts anotherMultiPointinstance or an unordered
+sequence ofPointinstances, thereby making copies.
+
+Collections of Lines#
+
+TheMultiLineStringconstructor takes a sequence of line-like sequences or
+objects.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 6. On the left, asimple, disconnectedMultiLineString, and on the
+right, a non-simpleMultiLineString. The points defining the objects are
+shown in gray, the boundaries of the objects in black.
+
+AMultiLineStringhas zero area and non-zero length if it isn’tempty.
+
+Itsx-ybounding box is a(minx,miny,maxx,maxy)tuple.
+
+Its members are instances ofLineStringand are accessed via thegeomsproperty.
+
+The constructor also accepts another instance ofMultiLineStringor an
+unordered sequence ofLineStringinstances, thereby making copies.
+
+Collections of Polygons#
+
+TheMultiPolygonconstructor takes a sequence of exterior ring and
+hole list tuples: [((a1, …, aM), [(b1, …, bN), …]), …].
+
+More clearly, the constructor also accepts an unordered sequence ofPolygoninstances, thereby making copies.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 7. On the left, avalidMultiPolygonwith 2 members, and on the
+right, aMultiPolygonthat is invalid because its members touch at an
+infinite number of points (along a line).
+
+Itsx-ybounding box is a(minx,miny,maxx,maxy)tuple.
+
+Its members are instances ofPolygonand are accessed via thegeomsproperty.
+
+Empty features#
+
+An “empty” feature is one with a point set that coincides with the empty set;
+notNone, but likeset([]). Empty features can be created by calling
+the various constructors with no arguments. Almost no operations are supported
+by empty features.
+
+Coordinate sequences#
+
+The list of coordinates that describe a geometry are represented as theCoordinateSequenceobject. These sequences should not be initialised
+directly, but can be accessed from an existing geometry as theGeometry.coordsproperty.
+
+Coordinate sequences can be indexed, sliced and iterated over as if they were a
+list of coordinate tuples.
+
+Polygons have a coordinate sequence for their exterior and each of their
+interior rings.
+
+Multipart geometries do not have a coordinate sequence. Instead the coordinate
+sequences are stored on their component geometries.
+
+Linear Referencing Methods#
+
+It can be useful to specify position along linear features such asLineStringsandMultiLineStringswith a 1-dimensional referencing system.
+Shapely supports linear referencing based on length or distance, evaluating the
+distance along a geometric object to the projection of a given point, or the
+point at a given distance along the object.
+
+Return a point at the specified distance along a linear geometric object.
+
+If thenormalizedarg isTrue, the distance will be interpreted as a
+fraction of the geometric object’s length.
+
+Returns the distance along this geometric object to a point nearest theotherobject.
+
+If thenormalizedarg isTrue, return the distance normalized to the
+length of the object. Theproject()method is the inverse ofinterpolate().
+
+For example, the linear referencing methods might be used to cut lines at a
+specified distance.
+
+Predicates and Relationships#
+
+Objects of the types explained inGeometric Objectsprovide standard[1]predicates as attributes (for unary predicates) and methods (for binary
+predicates). Whether unary or binary, all returnTrueorFalse.
+
+Unary Predicates#
+
+Standard unary predicates are implemented as read-only property attributes. An
+example will be shown for each.
+
+ReturnsTrueif the feature haszcoordinates, either with XYZ or XYZM
+coordinate types.
+
+ReturnsTrueif the feature hasmcoordinates, either with XYM or XYZM
+coordinate types.
+
+New in version 2.1 with GEOS 3.12.
+
+ReturnsTrueif coordinates are in counter-clockwise order (bounding a
+region with positive signed area). This method applies toLinearRingobjects only.
+
+New in version 1.2.10.
+
+A ring with an undesired orientation can be reversed like this:
+
+ReturnsTrueif the feature’sinteriorandboundary(in point set
+terms) coincide with the empty set.
+
+Note
+
+With the help of theoperatormodule’sattrgetter()function,
+unary predicates such asis_emptycan be easily used as predicates for
+the built infilter().
+
+ReturnsTrueif the feature is a closed and simpleLineString. A closed feature’sboundarycoincides with the empty set.
+
+This property is applicable toLineStringandLinearRinginstances, but
+meaningless for others.
+
+ReturnsTrueif the feature does not cross itself.
+
+Note
+
+The simplicity test is meaningful only forLineStringsandLinearRings.
+
+Operations on non-simpleLineStringsare fully supported by Shapely.
+
+ReturnsTrueif a feature is “valid” in the sense of[1].
+
+A validPolygonmay not possess any overlapping exterior or interior rings. A
+validMultiPolygonmay not collect any overlapping polygons. A validLineStringmust have non-zero length if it isn’tempty. Operations on invalid
+features may fail.
+
+The two points above are close enough that the polygons resulting from the
+buffer operations (explained in a following section) overlap.
+
+Note
+
+Theis_validpredicate can be used to write a validating decorator that
+could ensure that only valid objects are returned from a constructor
+function.
+
+Binary Predicates#
+
+Standard binary predicates are implemented as methods. These predicates
+evaluate topological, set-theoretic relationships. In a few cases the results
+may not be what one might expect starting from different assumptions. All take
+another geometric object as argument and returnTrueorFalse.
+
+ReturnsTrueif the two objects are of the same geometric type, and
+the coordinates of the two objects match precisely.
+
+ReturnsTrueif the set-theoreticboundary,interior, andexteriorof the object coincide with those of the other.
+
+The coordinates passed to the object constructors are of these sets, and
+determine them, but are not the entirety of the sets. This is a potential
+“gotcha” for new users.  Equivalent lines, for example, can be constructed
+differently.
+
+ReturnsTrueif the geometries are structurally equivalent within a
+given tolerance.
+
+This method uses exact coordinate equality, which requires coordinates
+to be equal (within specified tolerance) and in the same order for
+all components (vertices, rings, or parts) of a geometry. This is in
+contrast with theequals()function which uses spatial
+(topological) equality and does not require all components to be in the
+same order. Because of this, it is possible forequals()to
+beTruewhileequals_exact()isFalse.
+
+The order of the coordinates can be normalized (by setting thenormalizekeyword toTrue) so that this function will returnTruewhen geometries
+are structurally equivalent but differ only in the ordering of vertices.
+However, this function will still returnFalseif the order of interior
+rings within aPolygonor the order of geometries within a multi
+geometry are different.
+
+ReturnsTrueif no points ofotherlie in the exterior of theobjectand at least one point of the interior ofotherlies in the interior ofobject.
+
+This predicate applies to all types, and is inverse towithin().
+The expressiona.contains(b)==b.within(a)always evaluates toTrue.
+
+A line’s endpoints are part of itsboundaryand are therefore not contained.
+
+Note
+
+Binary predicates can be used directly as predicates forfilter()oritertools.ifilter().
+
+ReturnsTrueif every point ofotheris a point on the interior or
+boundary ofobject. This is similar toobject.contains(other)except
+that this does not require any interior points ofotherto lie in the
+interior ofobject.
+
+ReturnsTrueif every point ofobjectis a point on the interior or
+boundary ofother. This is equivalent toother.covers(object).
+
+New in version 1.8.
+
+ReturnsTrueif theinteriorof the object intersects theinteriorof
+the other but does not contain it, and the dimension of the intersection is
+less than the dimension of the one or the other.
+
+A line does not cross a point that it contains.
+
+ReturnsTrueif theboundaryandinteriorof the object do not
+intersect at all with those of the other.
+
+This predicate applies to all types and is the inverse ofintersects().
+
+ReturnsTrueif theboundaryorinteriorof the object intersect in
+any way with those of the other.
+
+In other words, geometric objects intersect if they have any boundary or
+interior point in common.
+
+ReturnsTrueif the geometries have more than one but not all points in
+common, have the same dimension, and the intersection of the interiors of the
+geometries has the same dimension as the geometries themselves.
+
+ReturnsTrueif the objects have at least one point in common and their
+interiors do not intersect with any part of the other.
+
+Overlapping features do not thereforetouch, another potential “gotcha”. For
+example, the following lines touch at(1,1), but do not overlap.
+
+ReturnsTrueif the object’sboundaryandinteriorintersect only
+with theinteriorof the other (not itsboundaryorexterior).
+
+This applies to all types and is the inverse ofcontains().
+
+Used in asorted()key,within()makes it easy to spatially
+sort objects. Let’s say we have 4 stereotypic features: a point that is
+contained by a polygon which is itself contained by another polygon, and a free
+spirited point contained by none
+
+and that copies of these are collected into a list
+
+that we’d prefer to have ordered as[d,c,c,b,a]in reverse containment
+order.
+
+DE-9IM Relationships#
+
+Therelate()method tests all the DE-9IM[4]relationships
+between objects, of which the named relationship predicates above are a subset.
+
+Returns a string representation of the DE-9IM matrix of relationships
+between an object’sinterior,boundary,exteriorand those of another
+geometric object.
+
+The named relationship predicates (contains(), etc.) are
+typically implemented as wrappers aroundrelate().
+
+Two different points have mainlyF(false) values in their matrix; the
+intersection of theirexternalsets (the 9th element) is a2dimensional
+object (the rest of the plane). The intersection of theinteriorof one with
+theexteriorof the other is a0dimensional object (3rd and 7th elements
+of the matrix).
+
+The matrix for a line and a point on the line has more “true” (notF)
+elements.
+
+Returns True if the DE-9IM string code for the relationship between the
+geometries satisfies the pattern, otherwise False.
+
+Therelate_pattern()compares the DE-9IM code string for two
+geometries against a specified pattern. If the string matches the pattern thenTrueis returned, otherwiseFalse. The pattern specified can be an
+exact match (0,1or2), a boolean match (TorF), or a
+wildcard (*). For example, the pattern for thewithinpredicate isT*****FF*.
+
+Note that the order or the geometries is significant, as demonstrated below.
+In this example the square contains the point, but the point does not contain
+the square.
+
+Further discussion of the DE-9IM matrix is beyond the scope of this manual. See[4]andhttps://pypi.org/project/de9im/.
+
+Spatial Analysis Methods#
+
+As well as boolean attributes and methods, Shapely provides analysis methods
+that return new geometric objects.
+
+Set-theoretic Methods#
+
+Almost every binary predicate method has a counterpart that returns a new
+geometric object. In addition, the set-theoreticboundaryof an object is
+available as a read-only attribute.
+
+Note
+
+These methods willalwaysreturn a geometric object. An intersection of
+disjoint geometries for example will return an emptyGeometryCollection,
+notNoneorFalse. To test for a non-empty result, use the geometry’sis_emptyproperty.
+
+Returns a lower dimensional object representing the object’s set-theoreticboundary.
+
+The boundary of a polygon is a line, the boundary of a line is a collection of
+points. The boundary of a point is an empty collection.
+
+See the figures inLineStringsandCollections of Linesfor the
+illustration of lines and their boundaries.
+
+Returns a representation of the object’s geometric centroid (point).
+
+Note
+
+The centroid of an object might be one of its points, but this is not
+guaranteed.
+
+Returns a representation of the points making up this geometric object that
+do not make up theotherobject.
+
+Note
+
+Thebuffer()method is used to produce approximately circular polygons
+in the examples of this section; it will be explained in detail later in this
+manual.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 8. Differences between two approximately circular polygons.
+
+Note
+
+Shapely can not represent the difference between an object and a lower
+dimensional object (such as the difference between a polygon and a line or
+point) as a single object, and in these cases the difference method returns a
+deep copy of the object namedself.
+
+Returns a representation of the intersection of this object with theothergeometric object.
+
+See the figure undersymmetric_difference()below.
+
+Returns a representation of the points in this object not in theothergeometric object, and the points in theothernot in this geometric object.
+
+(Sourcecode,png,hires.png,pdf)
+
+Returns a representation of the union of points from this object and theothergeometric object.
+
+The type of object returned depends on the relationship between the operands.
+The union of polygons (for example) will be a polygon or a multi-polygon
+depending on whether they intersect or not.
+
+The semantics of these operations vary with type of geometric object.  For
+example, compare the boundary of the union of polygons to the union of their
+boundaries.
+
+(Sourcecode,png,hires.png,pdf)
+
+Note
+
+union()is an expensive way to find the cumulative union
+of many objects. Seeshapely.unary_union()for a more effective
+method.
+
+Several of these set-theoretic methods can be invoked using overloaded
+operators:
+
+intersectioncan be accessed with and,&unioncan be accessed with or,|differencecan be accessed with minus,-symmetric_differencecan be accessed with xor,^
+
+intersectioncan be accessed with and,&
+
+intersectioncan be accessed with and,&
+
+unioncan be accessed with or,|
+
+unioncan be accessed with or,|
+
+differencecan be accessed with minus,-
+
+differencecan be accessed with minus,-
+
+symmetric_differencecan be accessed with xor,^
+
+symmetric_differencecan be accessed with xor,^
+
+Constructive Methods#
+
+Shapely geometric object have several methods that yield new objects not
+derived from set-theoretic analysis.
+
+Returns an approximate representation of all points within a givendistanceof the this geometric object.
+
+The styles of caps are specified by integer values: 1 (round), 2 (flat),
+3 (square). These values are also enumerated by the objectshapely.BufferCapStyle(see below).
+
+The styles of joins between offset segments are specified by integer values:
+1 (round), 2 (mitre), and 3 (bevel). These values are also enumerated by the
+objectshapely.BufferJoinStyle(see below).
+
+Attribute
+
+Value
+
+round
+
+1
+
+flat
+
+2
+
+square
+
+3
+
+Attribute
+
+Value
+
+round
+
+1
+
+mitre
+
+2
+
+bevel
+
+3
+
+A positive distance has an effect of dilation; a negative distance, erosion.
+The optionalquad_segsargument determines the number of segments used to
+approximate a quarter circle around a point.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 9. Dilation of a line (left) and erosion of a polygon (right). New
+object is shown in blue.
+
+The default (quad_segsof 16) buffer of a point is a polygonal patch with
+99.8% of the area of the circular disk it approximates.
+
+With aquad_segsof 1, the buffer is a square patch.
+
+You may want a buffer only on one side. You can achieve this effect withsingle_sidedoption.
+
+The side used is determined by the sign of the buffer distance:
+
+a positive distance indicates the left-hand sidea negative distance indicates the right-hand side
+
+a positive distance indicates the left-hand side
+
+a positive distance indicates the left-hand side
+
+a negative distance indicates the right-hand side
+
+a negative distance indicates the right-hand side
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 10. Single sided buffer of 0.5 left hand (left) and of 0.3 right hand
+(right).
+
+The single-sided buffer of point geometries is the same as the regular buffer.
+The End Cap Style for single-sided buffers is always ignored, and forced to
+the equivalent ofBufferCapStyle.flat.
+
+Passed adistanceof 0,buffer()can sometimes be used to
+“clean” self-touching or self-crossing polygons such as the classic “bowtie”.
+Users have reported that very small distance values sometimes produce cleaner
+results than 0. Your mileage may vary when cleaning surfaces.
+
+Buffering splits the polygon in two at the point where they touch.
+
+Returns a representation of the smallest convexPolygoncontaining all the
+points in the object unless the number of points in the object is less than
+three. For two points, the convex hull collapses to aLineString; for 1, aPoint.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 11. Convex hull (blue) of 2 points (left) and of 6 points (right).
+
+Returns a representation of the point or smallest rectangular polygon (with
+sides parallel to the coordinate axes) that contains the object.
+
+Returns the general minimum bounding rectangle that contains the object.
+Unlike envelope this rectangle is not constrained to be parallel to the
+coordinate axes. If the convex hull of the object is a degenerate (line or
+point) this degenerate is returned.
+
+New in Shapely 1.6.0
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 12. Minimum rotated rectangle for a multipoint feature (left) and a
+linestring feature (right).
+
+Returns a LineString or MultiLineString geometry at a distance from the
+object on its right or its left side.
+
+Older alternative method to theoffset_curve()method, but usesresolutioninstead ofquad_segsand asidekeyword (‘left’ or
+‘right’) instead of sign of the distance. This method is kept for backwards
+compatibility for now, but is is recommended to useoffset_curve()instead.
+
+Returns a LineString or MultiLineString geometry at a distance from the
+object on its right or its left side.
+
+Thedistanceparameter must be a float value.
+
+The side is determined by the sign of thedistanceparameter (negative for
+right side offset, positive for left side offset). Left and right are
+determined by following the direction of the given geometric points of the
+LineString.
+
+Note: the behaviour regarding orientation of the resulting line depends
+on the GEOS version. With GEOS < 3.11, the line retains the same
+direction for a left offset (positive distance) or has reverse direction
+for a right offset (negative distance), and this behaviour was documented
+as such in previous Shapely versions. Starting with GEOS 3.11, the
+function tries to preserve the orientation of the original line.
+
+The resolution of the offset around each vertex of the object is
+parameterized as in thebuffer()method (usingquad_segs).
+
+Thejoin_styleis for outside corners between line segments. Accepted
+integer values are 1 (round), 2 (mitre), and 3 (bevel). See alsoshapely.BufferJoinStyle.
+
+Severely mitered corners can be controlled by themitre_limitparameter
+(spelled in British English, en-gb). The corners of a parallel line will
+be further from the original than most places with the mitre join style.
+The ratio of this further distance to the specifieddistanceis the miter
+ratio. Corners with a ratio which exceed the limit will be beveled.
+
+Note
+
+This method may sometimes return aMultiLineStringwhere a simpleLineStringwas expected; for example, an offset to a slightly
+curved LineString.
+
+Note
+
+This method is only available forLinearRingandLineStringobjects.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 13. Three styles of parallel offset lines on the left side of a simple
+line string (its starting point shown as a circle) and one offset on the right
+side, a multipart.
+
+The effect of themitre_limitparameter is shown below.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 14. Large and small mitre_limit values for left and right offsets.
+
+Returns a simplified representation of the geometric object.
+
+All points in the simplified object will be within thetolerancedistance of
+the original geometry. By default a slower algorithm is used that preserves
+topology. If preserve topology is set toFalsethe much quicker
+Douglas-Peucker algorithm[6]is used.
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 15. Simplification of a nearly circular polygon using a tolerance of 0.2
+(left) and 0.5 (right).
+
+Note
+
+Invalidgeometric objects may result from simplification that does not
+preserve topology and simplification may be sensitive to the order of
+coordinates: two geometries differing only in order of coordinates may be
+simplified differently.
+
+Affine Transformations#
+
+A collection of affine transform functions are in theshapely.affinitymodule, which return transformed geometries by either directly supplying
+coefficients to an affine transformation matrix, or by using a specific, named
+transform (rotate,scale, etc.). The functions can be used with all
+geometry types (exceptGeometryCollection), and 3D types are either
+preserved or supported by 3D affine transformations.
+
+New in version 1.2.17.
+
+Returns a transformed geometry using an affine transformation matrix.
+
+The coefficientmatrixis provided as a list or tuple with 6 or 12 items
+for 2D or 3D transformations, respectively.
+
+For 2D affine transformations, the 6 parametermatrixis:
+
+[a,b,d,e,xoff,yoff]
+
+which represents the augmented matrix:
+
+or the equations for the transformed coordinates:
+
+For 3D affine transformations, the 12 parametermatrixis:
+
+[a,b,c,d,e,f,g,h,i,xoff,yoff,zoff]
+
+which represents the augmented matrix:
+
+or the equations for the transformed coordinates:
+
+Returns a rotated geometry on a 2D plane.
+
+The angle of rotation can be specified in either degrees (default) or
+radians by settinguse_radians=True. Positive angles are
+counter-clockwise and negative are clockwise rotations.
+
+The point of origin can be a keyword'center'for the bounding box
+center (default),'centroid'for the geometry’s centroid, aPointobject
+or a coordinate tuple(x0,y0).
+
+The affine transformation matrix for 2D rotation with angleθis:
+
+where the offsets are calculated from the origin(x0,y0):
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 16. Rotation of aLineString(gray) by an angle of 90°
+counter-clockwise (blue) using different origins.
+
+Returns a scaled geometry, scaled by factors along each dimension.
+
+The point of origin can be a keyword'center'for the 2D bounding box
+center (default),'centroid'for the geometry’s 2D centroid, aPointobject or a coordinate tuple(x0,y0,z0).
+
+Negative scale factors will mirror or reflect coordinates.
+
+The general 3D affine transformation matrix for scaling is:
+
+where the offsets are calculated from the origin(x0,y0,z0):
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 17. Scaling of a gray triangle to blue result: a) by a factor of 1.5
+along x-direction, with reflection across y-axis; b) by a factor of 2 along
+x-direction with custom origin at (1, 1).
+
+Returns a skewed geometry, sheared by angles along x and y dimensions.
+
+The shear angle can be specified in either degrees (default) or radians
+by settinguse_radians=True.
+
+The point of origin can be a keyword'center'for the bounding box
+center (default),'centroid'for the geometry’s centroid, aPointobject or a coordinate tuple(x0,y0).
+
+The general 2D affine transformation matrix for skewing is:
+
+where the offsets are calculated from the origin(x0,y0):
+
+(Sourcecode,png,hires.png,pdf)
+
+Figure 18. Skewing of a gray “R” to blue result: a) by a shear angle of 20°
+along the x-direction and an origin at (1, 1); b) by a shear angle of 30°
+along the y-direction, using default origin.
+
+Returns a translated geometry shifted by offsets along each dimension.
+
+The general 3D affine transformation matrix for translation is:
+
+Other Transformations#
+
+Shapely supports map projections and other arbitrary transformations of
+geometric objects.
+
+Appliesfuncto all coordinates ofgeomand returns a new
+geometry of the same type from the transformed coordinates.
+
+funcmaps x, y, and optionally z to output xp, yp, zp. The input
+parameters may be iterable types like lists or arrays or single values.
+The output shall be of the same type: scalars in, scalars out;
+lists in, lists out.
+
+transformtries to determine which kind of function was passed in
+by callingfuncfirst with n iterables of coordinates, where n
+is the dimensionality of the input geometry. Iffuncraises
+aTypeErrorwhen called with iterables as arguments,
+then it will instead callfuncon each individual coordinate
+in the geometry.
+
+New in version 1.2.18.
+
+For example, here is an identity function applicable to both types of input
+(scalar or array).
+
+If usingpyproj>=2.1.0, the preferred method to project geometries is:
+
+It is important to note that in the example above, thealways_xykwarg is
+required as Shapely only supports coordinates in X,Y order, and in PROJ 6 the
+WGS84 CRS uses the EPSG-defined Lat/Lon coordinate order instead of the
+expected Lon/Lat.
+
+If usingpyproj < 2.1, then the canonical example is:
+
+Lambda expressions such as the one in
+
+also satisfy the requirements forfunc.
+
+Other Operations#
+
+Merging Linear Features#
+
+Sequences of touching lines can be merged intoMultiLineStringsorPolygons.
+
+Returns an iterator over polygons constructed from the inputlines.
+
+The source should be a sequence of LineString objects.
+
+Creates polygons from a source of lines, returning the polygons
+and leftover geometries.
+
+The source should be a sequence of LineString objects.
+
+Returns a tuple of objects: (polygons, cut edges, dangles, invalid ring
+lines). Each are a geometry collection.
+
+Dangles are edges which have one or both ends which are not incident on
+another edge endpoint. Cut edges are connected at both ends but do not
+form part of polygon. Invalid ring lines form rings which are invalid
+(bowties, etc).
+
+New in version 1.2.18.
+
+ReturnsLineString(s)orMultiLineString(s)representing the merger of
+all contiguous elements of the inputMultiLineString(s).
+
+Efficient Rectangle Clipping#
+
+Theclip_by_rect()function returns the portion of a geometry
+within a rectangle.
+
+The geometry is clipped in a fast but possibly dirty way. The output is
+not guaranteed to be valid. No exceptions will be raised for topological
+errors.
+
+New in version 1.7.
+
+Efficient Unions#
+
+Theunary_union()function is more efficient than accumulating
+withunion().
+
+(Sourcecode,png,hires.png,pdf)
+
+Returns a representation of the union of the given geometric objects.
+
+Areas of overlappingPolygonswill get merged.LineStringswill
+get fully dissolved and noded. DuplicatePointswill get merged.
+
+Because the union merges the areas of overlappingPolygonsit can be
+used in an attempt to fix invalidMultiPolygons. As with the zero
+distancebuffer()trick, your mileage may vary when using this.
+
+Delaunay triangulation#
+
+Thedelaunay_triangles()function calculates a Delaunay
+triangulation from a collection of points.
+
+(Sourcecode,png,hires.png,pdf)
+
+Returns a Delaunay triangulation of the vertices of the input geometry.
+
+The source may be any geometry type. All vertices of the geometry will be
+used as the points of the triangulation.
+
+Thetolerancekeyword argument sets the snapping tolerance used to improve
+the robustness of the triangulation computation. A tolerance of 0.0
+specifies that no snapping will take place.
+
+If theedgeskeyword argument isFalsea list ofPolygontriangles
+will be returned. Otherwise a list ofLineStringedges is returned.
+
+New in version  1.4.0
+
+Voronoi Diagram#
+
+Thevoronoi_polygons()function constructs a Voronoi diagram
+from a collection points, or the vertices of any geometry.
+
+(Sourcecode,png,hires.png,pdf)
+
+Constructs a Voronoi diagram from the vertices of the input geometry.
+
+The source may be any geometry type. All vertices of the geometry will be
+used as the input points to the diagram.
+
+Theenvelopekeyword argument provides an envelope to use to clip the
+resulting diagram. IfNone, it will be calculated automatically.
+The diagram will be clipped to thelargerof the provided envelope
+or an envelope surrounding the sites.
+
+Thetolerancekeyword argument sets the snapping tolerance used to improve
+the robustness of the computation. A tolerance of 0.0 specifies
+that no snapping will take place. The toleranceargumentcan be
+finicky and is known to cause the algorithm to fail in several cases.
+If you’re usingtoleranceand getting a failure, try removing it.
+The test cases intests/test_voronoi_diagram.pyshow more details.
+
+If theedgeskeyword argument isFalsea list ofPolygon`s
+will be returned. Otherwise a list of `LineStringedges is returned.
+
+Nearest points/shortest line#
+
+Theshortest_line()function calculates the shortest line
+between a pair of geometries.
+
+Returns a tuple of the shortest line between the input geometries. The
+points are returned in the same order as the input geometries.
+
+New in version 2.0.
+
+Note that the shortest line may not connect to vertices of the input
+geometries.
+
+Snapping#
+
+Thesnap()snaps the vertices in one geometry to the vertices in
+a second geometry with a given tolerance.
+
+Snaps vertices ingeom1to vertices in thegeom2. A new instance of typegeom1is returned. The input geometries are not modified.
+
+Thetoleranceargument specifies the minimum distance between vertices for
+them to be snapped.
+
+New in version 1.5.0
+
+Shared paths#
+
+Theshared_paths()function finds the shared paths between two
+linear geometries.
+
+Finds the shared paths betweengeom1andgeom2, where both geometries
+areLineStrings.
+
+AGeometryCollectionis returned with two elements. The first element is aMultiLineStringcontaining shared paths with the same direction for both
+inputs. The second element is a MultiLineString containing shared paths with
+the opposite direction for the two inputs.
+
+New in version 1.6.0
+
+Splitting#
+
+Thesplit()function inshapely.opssplits a geometry by
+another geometry.
+
+Splits a geometry by another geometry and returns a collection of
+geometries. This function is the theoretical opposite of the union of the
+split geometry parts. If the splitter does not split the geometry, a
+collection with a single geometry equal to the input geometry is returned.
+
+The function supports:
+
+Splitting a (Multi)LineString by a (Multi)Point or (Multi)LineString or
+(Multi)Polygon boundarySplitting a (Multi)Polygon by a LineString
+
+Splitting a (Multi)LineString by a (Multi)Point or (Multi)LineString or
+(Multi)Polygon boundary
+
+Splitting a (Multi)LineString by a (Multi)Point or (Multi)LineString or
+(Multi)Polygon boundary
+
+Splitting a (Multi)Polygon by a LineString
+
+Splitting a (Multi)Polygon by a LineString
+
+It may be convenient to snap the splitter with low tolerance to the
+geometry. For example in the case of splitting a line by a point, the point
+must be exactly on the line, for the line to be correctly split. When
+splitting a line by a polygon, the boundary of the polygon is used for the
+operation. When splitting a line by another line, a ValueError is raised if
+the two overlap at some segment.
+
+Substring#
+
+Thesubstring()function inshapely.opsreturns a
+line segment between specified distances along aLineString.
+
+Return theLineStringbetweenstart_distandend_distor aPointif they are at the same location
+
+Negative distance values are taken as measured in the reverse
+direction from the end of the geometry. Out-of-range index
+values are handled by clamping them to the valid range of values.
+
+If the start distance equals the end distance, a point is being returned.
+
+If the start distance is actually past the end distance, then the
+reversed substring is returned such that the start distance is
+at the first coordinate.
+
+If the normalized arg isTrue, the distance will be interpreted as a
+fraction of the geometry’s length
+
+New in version 1.7.0
+
+Here are some examples that returnLineStringgeometries.
+
+And here is an example that returns aPoint.
+
+Prepared Geometry Operations#
+
+Shapely geometries can be processed into a state that supports more efficient
+batches of operations.
+
+Creates and returns a prepared geometric object.
+
+To test one polygon containment against a large batch of points, one should
+first use theprepared.prep()function.
+
+Prepared geometries instances have the following methods:contains,contains_properly,covers, andintersects. All have exactly the
+same arguments and usage as their counterparts in non-prepared geometric
+objects.
+
+Diagnostics#
+
+Returns a string explaining the validity or invalidity of the object.
+
+New in version 1.2.1.
+
+The messages may or may not have a representation of a problem point that can
+be parsed out.
+
+Returns a valid representation of the geometry, if it is invalid.
+If it is valid, the input geometry will be returned.
+
+In many cases, in order to create a valid geometry, the input geometry
+must be split into multiple parts or multiple geometries. If the geometry
+must be split into multiple parts of the same geometry type, then a multi-part
+geometry (e.g. a MultiPolygon) will be returned. if the geometry must be split
+into multiple parts of different types, then a GeometryCollection will be returned.
+
+For example, this operation on a geometry with a bow-tie structure:
+
+(Sourcecode,png,hires.png,pdf)
+
+While this operation:#
+
+(Sourcecode,png,hires.png,pdf)
+
+New in version 1.8#
+
+The Shapely version, GEOS library version, and GEOS C API version are
+accessible viashapely.__version__,shapely.geos_version_string, andshapely.geos_capi_version.
+
+Polylabel#
+
+Finds the approximate location of the pole of inaccessibility for a given
+polygon. Based on Vladimir Agafonkin’spolylabel.
+
+New in version 1.6.0
+
+Note
+
+Prior to 1.7polylabelmust be imported fromshapely.algorithms.polylabelinstead ofshapely.ops.
+
+STR-packed R-tree#
+
+Shapely provides an interface to the query-only GEOS R-tree packed using the
+Sort-Tile-Recursive algorithm. Pass a list of geometry objects to the STRtree
+constructor to create a spatial index that you can query with another geometric
+object. Query-only means that once created, theSTRtreeis immutable. You
+cannot add or remove geometries.
+
+TheSTRtreeconstructor takes a sequence of geometric objects.
+
+References to these geometric objects are kept and stored in the R-tree.
+
+New in version 1.4.0.
+
+Returns the integer indices of all geometries in thestrtreewhose extents
+intersect the extent ofgeom. This means that a subsequent search through the returned
+subset using the desired binary predicate (eg. intersects, crosses, contains,
+overlaps) may be necessary to further filter the results according to their
+specific spatial relationships.
+
+Returns the nearest geometry instrtreetogeom.
+
+Interoperation#
+
+Shapely provides 4 avenues for interoperation with other software.
+
+Well-Known Formats#
+
+AWell Known Text(WKT) orWell Known Binary(WKB) representation[1]of
+any geometric object can be had via itswktorwkbattribute.
+These representations allow interchange with many GIS programs. PostGIS, for
+example, trades in hex-encoded WKB.
+
+Theshapely.wktandshapely.wkbmodules providedumps()andloads()functions that work almost exactly as theirpickleandsimplejsonmodule
+counterparts. To serialize a geometric object to a binary or text string, usedumps(). To deserialize a string and get a new geometric object of the
+appropriate type, useloads().
+
+The default settings for the wkt attribute andshapely.wkt.dumps()function
+are different. By default, the attribute’s value is trimmed of excess decimals,
+while this is not the case fordumps(), though it can be replicated by settingtrim=True.
+
+Returns a WKB representation ofob.
+
+Returns a geometric object from a WKB representationwkb.
+
+All of Shapely’s geometry types are supported by these functions.
+
+Returns a WKT representation ofob. Several keyword arguments are available
+to alter the WKT which is returned; see the docstrings for more details.
+
+Returns a geometric object from a WKT representationwkt.
+
+Numpy and Python Arrays#
+
+All geometric objects with coordinate sequences (Point,LinearRing,LineString) provide the Numpy array interface and can thereby be converted or
+adapted to Numpy arrays.
+
+The coordinates of the same types of geometric objects can be had as standard
+Python arrays ofxandyvalues via thexyattribute.
+
+Python Geo Interface#
+
+Any object that provides the GeoJSON-likePython geo interfacecan be
+converted to a Shapely geometry using theshapely.geometry.shape()function.
+
+Returns a new, independent geometry with coordinatescopiedfrom the
+context.
+
+For example, a dictionary:
+
+Or a simple placemark-type object:
+
+The GeoJSON-like mapping of a geometric object can be obtained usingshapely.geometry.mapping().
+
+Returns a GeoJSON-like mapping from a Geometry or any object which
+implements__geo_interface__.
+
+New in version 1.2.3.
+
+For example, using the sameGeoThingclass:
+
+Performance#
+
+Shapely uses theGEOSlibrary for all operations. GEOS is written in C++ and
+used in many applications and you can expect that all operations are highly
+optimized. The creation of new geometries with many coordinates, however,
+involves some overhead that might slow down your code.
+
+Conclusion#
+
+We hope that you will enjoy and profit from using Shapely. This manual will
+be updated and improved regularly. Its source is available atshapely/shapely.
+
+References#
+
+John R. Herring, Ed.,
+“OpenGIS Implementation Specification for Geographic information - Simple
+feature access - Part 1: Common architecture,” Oct. 2006.
+
+M.J. Egenhofer and John R. Herring,
+Categorizing Binary Topological Relations Between Regions, Lines, and Points
+in Geographic Databases,  Orono, ME: University of Maine, 1991.
+
+E. Clementini, P. Di Felice, and P. van Oosterom,
+“A Small Set of Formal Topological Relationships Suitable for End-User
+Interaction,” Third International Symposium on Large Spatial Databases
+(SSD). Lecture Notes in Computer Science no. 692, David Abel and Beng Chin
+Ooi, Eds.,  Singapore: Springer Verlag, 1993, pp. 277-295.
+
+C. Strobl, “Dimensionally Extended Nine-Intersection Model (DE-9IM),”
+Encyclopedia of GIS, S. Shekhar and H. Xiong, Eds.,
+Springer, 2008, pp. 240-245. [PDF]
+
+Martin Davis, “JTS Technical Specifications,” Mar. 2003. [PDF]
+
+David H. Douglas and Thomas K. Peucker,
+“Algorithms for the Reduction of the Number of Points Required to Represent
+a Digitized Line or its Caricature,” Cartographica: The International
+Journal for Geographic Information and Geovisualization,  vol. 10, Dec.
+1973, pp. 112-122.
+
+
+--- CODE BLOCK ---
+>>> from shapely import Polygon
+>>> Polygon([[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]).minimum_clearance
+1.0
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import Point, LineString
+>>> Point(0, 0).geom_type
+'Point'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0,0).distance(Point(1,1))
+1.4142135623730951
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> point = Point(1, 1)
+>>> line = LineString([(2, 0), (2, 4), (3, 4)])
+>>> point.hausdorff_distance(line)
+3.605551275463989
+>>> point.distance(Point(3, 4))
+3.605551275463989
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> diamond = Point(0, 0).buffer(2.0, 1).difference(Point(0, 0).buffer(1.0, 1))
+>>> diamond.centroid
+<POINT (0 0)>
+>>> diamond.representative_point()
+<POINT (-1 0.5)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import Point
+>>> point = Point(0.0, 0.0)
+>>> q = Point((0.0, 0.0))
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> point.area
+0.0
+>>> point.length
+0.0
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> point.bounds
+(0.0, 0.0, 0.0, 0.0)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> list(point.coords)
+[(0.0, 0.0)]
+>>> point.x
+0.0
+>>> point.y
+0.0
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> point.coords[:]
+[(0.0, 0.0)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(point)
+<POINT (0 0)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import LineString
+>>> line = LineString([(0, 0), (1, 1)])
+>>> line.area
+0.0
+>>> line.length
+1.4142135623730951
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> line.bounds
+(0.0, 0.0, 1.0, 1.0)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> len(line.coords)
+2
+>>> list(line.coords)
+[(0.0, 0.0), (1.0, 1.0)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> line.coords[:]
+[(0.0, 0.0), (1.0, 1.0)]
+>>> line.coords[1:]
+[(1.0, 1.0)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LineString(line)
+<LINESTRING (0 0, 1 1)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LineString([Point(0.0, 1.0), (2.0, 3.0), Point(4.0, 5.0)])
+<LINESTRING (0 1, 2 3, 4 5)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import LinearRing
+>>> ring = LinearRing([(0, 0), (1, 1), (1, 0)])
+>>> ring.area
+0.0
+>>> ring.length
+3.414213562373095
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> ring.bounds
+(0.0, 0.0, 1.0, 1.0)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> len(ring.coords)
+4
+>>> list(ring.coords)
+[(0.0, 0.0), (1.0, 1.0), (1.0, 0.0), (0.0, 0.0)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LinearRing(ring)
+<LINEARRING (0 0, 1 1, 1 0, 0 0)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import Polygon
+>>> polygon = Polygon([(0, 0), (1, 1), (1, 0)])
+>>> polygon.area
+0.5
+>>> polygon.length
+3.414213562373095
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> polygon.bounds
+(0.0, 0.0, 1.0, 1.0)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> list(polygon.exterior.coords)
+[(0.0, 0.0), (1.0, 1.0), (1.0, 0.0), (0.0, 0.0)]
+>>> list(polygon.interiors)
+[]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> coords = [(0, 0), (1, 1), (1, 0)]
+>>> r = LinearRing(coords)
+>>> s = Polygon(r)
+>>> s.area
+0.5
+>>> t = Polygon(s.buffer(1.0).exterior, [r])
+>>> t.area
+6.5507620529190325
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import box
+>>> b = box(0.0, 0.0, 1.0, 1.0)
+>>> b
+<POLYGON ((1 0, 1 1, 0 1, 0 0, 1 0))>
+>>> list(b.exterior.coords)
+[(1.0, 0.0), (1.0, 1.0), (0.0, 1.0), (0.0, 0.0), (1.0, 0.0)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> a = LineString([(0, 0), (1, 1), (1,2), (2,2)])
+>>> b = LineString([(0, 0), (1, 1), (2,1), (2,2)])
+>>> x = a.intersection(b)
+>>> x
+<GEOMETRYCOLLECTION (LINESTRING (0 0, 1 1), POINT (2 2))>
+>>> list(x.geoms)
+[<LINESTRING (0 0, 1 1)>, <POINT (2 2)>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> list(x.geoms)
+[<LINESTRING (0 0, 1 1)>, <POINT (2 2)>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import MultiPoint
+>>> points = MultiPoint([(0.0, 0.0), (1.0, 1.0)])
+>>> points.area
+0.0
+>>> points.length
+0.0
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> points.bounds
+(0.0, 0.0, 1.0, 1.0)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> list(points.geoms)
+[<POINT (0 0)>, <POINT (1 1)>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> MultiPoint([Point(0, 0), Point(1, 1)])
+<MULTIPOINT ((0 0), (1 1))>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import MultiLineString
+>>> coords = [((0, 0), (1, 1)), ((-1, 0), (1, 0))]
+>>> lines = MultiLineString(coords)
+>>> lines.area
+0.0
+>>> lines.length
+3.414213562373095
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> lines.bounds
+(-1.0, 0.0, 1.0, 1.0)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> len(lines.geoms)
+2
+>>> print(list(lines.geoms))
+[<LINESTRING (0 0, 1 1)>, <LINESTRING (-1 0, 1 0)>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> MultiLineString(lines)
+<MULTILINESTRING ((0 0, 1 1), (-1 0, 1 0))>
+>>> MultiLineString(lines.geoms)
+<MULTILINESTRING ((0 0, 1 1), (-1 0, 1 0))>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import MultiPolygon
+>>> polygons = MultiPolygon([polygon, s, t])
+>>> len(polygons.geoms)
+3
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> polygons.bounds
+(-1.0, -1.0, 2.0, 2.0)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> len(polygons.geoms)
+3
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> line = LineString()
+>>> line.is_empty
+True
+>>> line.length
+0.0
+>>> line.bounds
+(nan, nan, nan, nan)
+>>> list(line.coords)
+[]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> line = LineString([(0, 1), (2, 3), (4, 5)])
+>>> line.coords
+<shapely.coords.CoordinateSequence object at ...>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> line.coords[0]
+(0.0, 1.0)
+>>> line.coords[1:]
+[(2.0, 3.0), (4.0, 5.0)]
+>>> for x, y in line.coords:
+...     print("x={}, y={}".format(x, y))
+...
+x=0.0, y=1.0
+x=2.0, y=3.0
+x=4.0, y=5.0
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> poly = Polygon([(0, 0), (0, 1), (1, 1), (0, 0)])
+>>> poly.exterior.coords
+<shapely.coords.CoordinateSequence object at ...>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> p = MultiPoint([(0, 0), (1, 1), (2, 2)])
+>>> p.geoms[2].coords
+<shapely.coords.CoordinateSequence object at ...>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> ip = LineString([(0, 0), (0, 1), (1, 1)]).interpolate(1.5)
+>>> ip
+<POINT (0.5 1)>
+>>> LineString([(0, 0), (0, 1), (1, 1)]).interpolate(0.75, normalized=True)
+<POINT (0.5 1)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LineString([(0, 0), (0, 1), (1, 1)]).project(ip)
+1.5
+>>> LineString([(0, 0), (0, 1), (1, 1)]).project(ip, normalized=True)
+0.75
+
+------------------
+
+
+
+--- CODE BLOCK ---
+def cut(line, distance):
+    # Cuts a line in two at a distance from its starting point
+    if distance <= 0.0 or distance >= line.length:
+        return [LineString(line)]
+    coords = list(line.coords)
+    for i, p in enumerate(coords):
+        pd = line.project(Point(p))
+        if pd == distance:
+            return [
+                LineString(coords[:i+1]),
+                LineString(coords[i:])]
+        if pd > distance:
+            cp = line.interpolate(distance)
+            return [
+                LineString(coords[:i] + [(cp.x, cp.y)]),
+                LineString([(cp.x, cp.y)] + coords[i:])]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> line = LineString([(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0)])
+>>> print([list(x.coords) for x in cut(line, 1.0)])
+[[(0.0, 0.0), (1.0, 0.0)],
+ [(1.0, 0.0), (2.0, 0.0), (3.0, 0.0), (4.0, 0.0), (5.0, 0.0)]]
+>>> print([list(x.coords) for x in cut(line, 2.5)])
+[[(0.0, 0.0), (1.0, 0.0), (2.0, 0.0), (2.5, 0.0)],
+ [(2.5, 0.0), (3.0, 0.0), (4.0, 0.0), (5.0, 0.0)]]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0).has_z
+False
+>>> Point(0, 0, 0).has_z
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0, 0).has_m
+False
+>>> from shapely import from_wkt
+>>> from_wkt("POINT M (0 0 0)").has_m
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LinearRing([(1,0), (1,1), (0,0)]).is_ccw
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> ring = LinearRing([(0,0), (1,1), (1,0)])
+>>> ring.is_ccw
+False
+>>> ring2 = LinearRing(list(ring.coords)[::-1])
+>>> ring2.is_ccw
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point().is_empty
+True
+>>> Point(0, 0).is_empty
+False
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from operator import attrgetter
+>>> empties = filter(attrgetter('is_empty'), [Point(), Point(0, 0)])
+>>> len(list(empties))
+1
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LineString([(0, 0), (1, 1), (1, -1)]).is_ring
+False
+>>> LinearRing([(0, 0), (1, 1), (1, -1)]).is_ring
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LineString([(0, 0), (1, 1), (1, -1), (0, 1)]).is_simple
+False
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> MultiPolygon([Point(0, 0).buffer(2.0), Point(1, 1).buffer(2.0)]).is_valid
+False
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from functools import wraps
+def validate(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        ob = func(*args, **kwargs)
+        if not ob.is_valid:
+            raise TopologicalError(
+                "Given arguments do not determine a valid geometric object")
+        return ob
+    return wrapper
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> @validate
+... def ring(coordinates):
+...     return LinearRing(coordinates)
+...
+>>> coords = [(0, 0), (1, 1), (1, -1), (0, 1)]
+>>> ring(coords)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 7, in wrapper
+shapely.geos.TopologicalError: Given arguments do not determine a valid geometric object
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> a = LineString([(0, 0), (1, 1)])
+>>> b = LineString([(0, 0), (0.5, 0.5), (1, 1)])
+>>> c = LineString([(0, 0), (0, 0), (1, 1)])
+>>> a.equals(b)
+True
+>>> a == b
+False
+>>> b.equals(c)
+True
+>>> b == c
+False
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> p1 = Point(1.0, 1.0)
+>>> p2 = Point(2.0, 2.0)
+>>> p3 = Point(1.0, 1.0 + 1e-7)
+>>> p1.equals_exact(p2)
+False
+>>> p1.equals_exact(p3)
+False
+>>> p1.equals_exact(p3, tolerance=1e-6)
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> coords = [(0, 0), (1, 1)]
+>>> LineString(coords).contains(Point(0.5, 0.5))
+True
+>>> Point(0.5, 0.5).within(LineString(coords))
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LineString(coords).contains(Point(1.0, 1.0))
+False
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> line = LineString(coords)
+>>> contained = list(filter(line.contains, [Point(), Point(0.5, 0.5)]))
+>>> len(contained)
+1
+>>> contained
+[<POINT (0.5 0.5)>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LineString(coords).crosses(LineString([(0, 1), (1, 0)]))
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LineString(coords).crosses(Point(0.5, 0.5))
+False
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0).disjoint(Point(1, 1))
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> a = LineString([(0, 0), (1, 1)])
+>>> b = LineString([(1, 1), (2, 2)])
+>>> a.touches(b)
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> a = Point(2, 2)
+>>> b = Polygon([[1, 1], [1, 3], [3, 3], [3, 1]])
+>>> c = Polygon([[0, 0], [0, 4], [4, 4], [4, 0]])
+>>> d = Point(-1, -1)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> features = [c, a, d, b, c]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0).relate(Point(1, 1))
+'FF0FFF0F2'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0).relate(LineString([(0, 0), (1, 1)]))
+'F0FFFF102'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> point = Point(0.5, 0.5)
+>>> square = Polygon([(0, 0), (0, 1), (1, 1), (1, 0)])
+>>> square.relate_pattern(point, 'T*****FF*')
+True
+>>> point.within(square)
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> point.relate(square)
+'0FFFFF212'
+>>> square.relate(point)
+'0F2FF1FF2'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> coords = [((0, 0), (1, 1)), ((-1, 0), (1, 0))]
+>>> lines = MultiLineString(coords)
+>>> lines.boundary
+<MULTIPOINT ((-1 0), (0 0), (1 0), (1 1))>
+>>> list(lines.boundary.geoms)
+[<POINT (-1 0)>, <POINT (0 0)>, <POINT (1 0)>, <POINT (1 1)>]
+>>> lines.boundary.boundary
+<GEOMETRYCOLLECTION EMPTY>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> LineString([(0, 0), (1, 1)]).centroid
+<POINT (0.5 0.5)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> a = Point(1, 1).buffer(1.5)
+>>> b = Point(2, 1).buffer(1.5)
+>>> a.difference(b)
+<POLYGON ((1.435 -0.435, 1.293 -0.471, 1.147 -0.493, 1 -0.5, 0.853 -0.493, 0...>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> a = Point(1, 1).buffer(1.5)
+>>> b = Point(2, 1).buffer(1.5)
+>>> a.intersection(b)
+<POLYGON ((2.493 0.853, 2.471 0.707, 2.435 0.565, 2.386 0.426, 2.323 0.293, ...>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> a = Point(1, 1).buffer(1.5)
+>>> b = Point(2, 1).buffer(1.5)
+>>> a.symmetric_difference(b)
+<MULTIPOLYGON (((1.574 -0.386, 1.707 -0.323, 1.833 -0.247, 1.952 -0.16, 2.06...>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> a = Point(1, 1).buffer(1.5)
+>>> b = Point(2, 1).buffer(1.5)
+>>> a.union(b)
+<POLYGON ((1.435 -0.435, 1.293 -0.471, 1.147 -0.493, 1 -0.5, 0.853 -0.493, 0...>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> a.union(b).boundary
+<LINESTRING (1.435 -0.435, 1.293 -0.471, 1.147 -0.493, 1 -0.5, 0.853 -0.493,...>
+>>> a.boundary.union(b.boundary)
+<MULTILINESTRING ((2.5 1, 2.493 0.853, 2.471 0.707, 2.435 0.565, 2.386 0.426...>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import wkt
+>>> p1 = wkt.loads('POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))')
+>>> p2 = wkt.loads('POLYGON((0.5 0, 1.5 0, 1.5 1, 0.5 1, 0.5 0))')
+>>> p1 & p2
+<POLYGON ((0.5 0, 0.5 1, 1 1, 1 0, 0.5 0))>
+>>> p1 | p2
+<POLYGON ((0 0, 0 1, 0.5 1, 1 1, 1.5 1, 1.5 0, 1 0, 0.5 0, 0 0))>
+>>> p1 - p2
+<POLYGON ((0 0, 0 1, 0.5 1, 0.5 0, 0 0))>
+>>> (p1 ^ p2).wkt
+'MULTIPOLYGON (((0 0, 0 1, 0.5 1, 0.5 0, 0 0)), ((1 1, 1.5 1, 1.5 0, 1 0, 1 1)))'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import BufferCapStyle, BufferJoinStyle
+>>> BufferCapStyle.flat.value
+2
+>>> BufferJoinStyle.bevel.value
+3
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> line = LineString([(0, 0), (1, 1), (0, 2), (2, 2), (3, 1), (1, 0)])
+>>> dilated = line.buffer(0.5)
+>>> eroded = dilated.buffer(-0.3)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> p = Point(0, 0).buffer(10.0)
+>>> len(p.exterior.coords)
+65
+>>> p.area
+313.6548490545941
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> q = Point(0, 0).buffer(10.0, 1)
+>>> len(q.exterior.coords)
+5
+>>> q.area
+200.0
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> line = LineString([(0, 0), (1, 1), (0, 2), (2, 2), (3, 1), (1, 0)])
+>>> left_hand_side = line.buffer(0.5, single_sided=True)
+>>> right_hand_side = line.buffer(-0.3, single_sided=True)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> coords = [(0, 0), (0, 2), (1, 1), (2, 2), (2, 0), (1, 1), (0, 0)]
+>>> bowtie = Polygon(coords)
+>>> bowtie.is_valid
+False
+>>> clean = bowtie.buffer(0)
+>>> clean.is_valid
+True
+>>> clean
+<MULTIPOLYGON (((0 0, 0 2, 1 1, 0 0)), ((1 1, 2 2, 2 0, 1 1)))>
+>>> len(clean.geoms)
+2
+>>> list(clean.geoms[0].exterior.coords)
+[(0.0, 0.0), (0.0, 2.0), (1.0, 1.0), (0.0, 0.0)]
+>>> list(clean.geoms[1].exterior.coords)
+[(1.0, 1.0), (2.0, 2.0), (2.0, 0.0), (1.0, 1.0)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0).convex_hull
+<POINT (0 0)>
+>>> MultiPoint([(0, 0), (1, 1)]).convex_hull
+<LINESTRING (0 0, 1 1)>
+>>> MultiPoint([(0, 0), (1, 1), (1, -1)]).convex_hull
+<POLYGON ((1 -1, 0 0, 1 1, 1 -1))>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0).envelope
+<POINT (0 0)>
+>>> MultiPoint([(0, 0), (1, 1)]).envelope
+<POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0).minimum_rotated_rectangle
+<POINT (0 0)>
+>>> MultiPoint([(0,0),(1,1),(2,0.5)]).minimum_rotated_rectangle.normalize()
+<POLYGON ((-0.176 0.706, 1.824 1.206, 2 0.5, 0 0, -0.176 0.706))>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> p = Point(0.0, 0.0)
+>>> x = p.buffer(1.0)
+>>> x.area
+3.1365484905459398
+>>> len(x.exterior.coords)
+65
+>>> s = x.simplify(0.05, preserve_topology=False)
+>>> s.area
+3.061467458920719
+>>> len(s.exterior.coords)
+17
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import affinity
+>>> line = LineString([(1, 3), (1, 1), (4, 1)])
+>>> rotated_a = affinity.rotate(line, 90)
+>>> rotated_b = affinity.rotate(line, 90, origin='centroid')
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> triangle = Polygon([(1, 1), (2, 3), (3, 1)])
+>>> triangle_a = affinity.scale(triangle, xfact=1.5, yfact=-1)
+>>> triangle_a.exterior.coords[:]
+[(0.5, 3.0), (2.0, 1.0), (3.5, 3.0), (0.5, 3.0)]
+>>> triangle_b = affinity.scale(triangle, xfact=2, origin=(1,1))
+>>> triangle_b.exterior.coords[:]
+[(1.0, 1.0), (3.0, 3.0), (5.0, 1.0), (1.0, 1.0)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+def id_func(x, y, z=None):
+    return tuple(filter(None, [x, y, z]))
+
+g2 = transform(id_func, g1)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import pyproj
+
+from shapely import Point
+from shapely.ops import transform
+
+wgs84_pt = Point(-72.2495, 43.886)
+
+wgs84 = pyproj.CRS('EPSG:4326')
+utm = pyproj.CRS('EPSG:32618')
+
+project = pyproj.Transformer.from_crs(wgs84, utm, always_xy=True).transform
+utm_point = transform(project, wgs84_pt)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from functools import partial
+import pyproj
+
+from shapely.ops import transform
+
+wgs84 = pyproj.Proj(init='epsg:4326')
+utm = pyproj.Proj(init='epsg:32618')
+
+project = partial(
+    pyproj.transform,
+    wgs84,
+    utm)
+
+utm_point = transform(project, wgs84_pt)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+g2 = transform(lambda x, y, z=None: (x+1.0, y+1.0), g1)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import polygonize
+>>> lines = [
+...     LineString([(0, 0), (1, 1)]),
+...     LineString([(0, 0), (0, 1)]),
+...     LineString([(0, 1), (1, 1)]),
+...     LineString([(1, 1), (1, 0)]),
+...     LineString([(1, 0), (0, 0)]),
+...     ]
+>>> list(polygonize(lines).geoms)
+[<POLYGON ((0 0, 1 1, 1 0, 0 0))>, <POLYGON ((1 1, 0 0, 0 1, 1 1))>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import polygonize_full
+>>> lines = [
+...     LineString([(0, 0), (1, 1)]),
+...     LineString([(0, 0), (0, 1)]),
+...     LineString([(0, 1), (1, 1)]),
+...     LineString([(1, 1), (1, 0)]),
+...     LineString([(1, 0), (0, 0)]),
+...     LineString([(5, 5), (6, 6)]),
+...     LineString([(1, 1), (100, 100)]),
+...     ]
+>>> result, cuts, dangles, invalids = polygonize_full(lines)
+>>> len(result.geoms)
+2
+>>> list(result.geoms)
+[<POLYGON ((0 0, 1 1, 1 0, 0 0))>, <POLYGON ((1 1, 0 0, 0 1, 1 1))>]
+>>> list(dangles.geoms)
+[<LINESTRING (1 1, 100 100)>, <LINESTRING (5 5, 6 6)>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import line_merge
+>>> line_merge(MultiLineString(lines))
+<MULTILINESTRING ((1 1, 1 0, 0 0), (0 0, 1 1), (0 0, 0 1, 1 1), (1 1, 100 10...>
+>>> list(line_merge(MultiLineString(lines)).geoms)
+[<LINESTRING (1 1, 1 0, 0 0)>,
+ <LINESTRING (0 0, 1 1)>,
+ <LINESTRING (0 0, 0 1, 1 1)>,
+ <LINESTRING (1 1, 100 100)>,
+ <LINESTRING (5 5, 6 6)>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import clip_by_rect
+>>> polygon = Polygon(
+...     shell=[(0, 0), (0, 30), (30, 30), (30, 0), (0, 0)],
+...     holes=[[(10, 10), (20, 10), (20, 20), (10, 20), (10, 10)]],
+... )
+>>> clipped_polygon = clip_by_rect(polygon, 5, 5, 15, 15)
+>>> clipped_polygon
+<POLYGON ((5 5, 5 15, 10 15, 10 10, 15 10, 15 5, 5 5))>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import unary_union
+>>> polygons = [Point(i, 0).buffer(0.7) for i in range(5)]
+>>> unary_union(polygons)
+<POLYGON ((0.444 -0.541, 0.389 -0.582, 0.33 -0.617, 0.268 -0.647, 0.203 -0.6...>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> m = MultiPolygon(polygons)
+>>> m.area
+7.684543801837549
+>>> m.is_valid
+False
+>>> unary_union(m).area
+6.610301355116799
+>>> unary_union(m).is_valid
+True
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import delaunay_triangles
+>>> points = MultiPoint([(0, 0), (1, 1), (0, 2), (2, 2), (3, 1), (1, 0)])
+>>> list(delaunay_triangles(points).geoms)
+[<POLYGON ((0 2, 0 0, 1 1, 0 2))>,
+ <POLYGON ((0 2, 1 1, 2 2, 0 2))>,
+ <POLYGON ((2 2, 1 1, 3 1, 2 2))>,
+ <POLYGON ((3 1, 1 1, 1 0, 3 1))>,
+ <POLYGON ((1 0, 1 1, 0 0, 1 0))>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import voronoi_polygons
+>>> points = MultiPoint([(0, 0), (1, 1), (0, 2), (2, 2), (3, 1), (1, 0)])
+>>> regions = voronoi_polygons(points)
+>>> list(regions.geoms)
+[<POLYGON ((2 1, 2 0.5, 0.5 0.5, 0 1, 1 2, 2 1))>,
+ <POLYGON ((6 -3, 3.75 -3, 2 0.5, 2 1, 6 5, 6 -3))>,
+ <POLYGON ((-3 -3, -3 1, 0 1, 0.5 0.5, 0.5 -3, -3 -3))>,
+ <POLYGON ((0.5 -3, 0.5 0.5, 2 0.5, 3.75 -3, 0.5 -3))>,
+ <POLYGON ((-3 5, 1 5, 1 2, 0 1, -3 1, -3 5))>,
+ <POLYGON ((6 5, 2 1, 1 2, 1 5, 6 5))>]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import shortest_line
+>>> triangle = Polygon([(0, 0), (1, 0), (0.5, 1), (0, 0)])
+>>> square = Polygon([(0, 2), (1, 2), (1, 3), (0, 3), (0, 2)])
+>>> shortest_line(triangle, square)
+<LINESTRING (0.5 1, 0.5 2)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import snap
+>>> square = Polygon([(1,1), (2, 1), (2, 2), (1, 2), (1, 1)])
+>>> line = LineString([(0,0), (0.8, 0.8), (1.8, 0.95), (2.6, 0.5)])
+>>> result = snap(line, square, 0.5)
+>>> result
+<LINESTRING (0 0, 1 1, 2 1, 2.6 0.5)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import shared_paths
+>>> g1 = LineString([(0, 0), (10, 0), (10, 5), (20, 5)])
+>>> g2 = LineString([(5, 0), (30, 0), (30, 5), (0, 5)])
+>>> forward, backward = shared_paths(g1, g2).geoms
+>>> forward
+<MULTILINESTRING ((5 0, 10 0))>
+>>> backward
+<MULTILINESTRING ((10 5, 20 5))>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely.ops import split
+>>> pt = Point((1, 1))
+>>> line = LineString([(0,0), (2,2)])
+>>> result = split(line, pt)
+>>> result
+<GEOMETRYCOLLECTION (LINESTRING (0 0, 1 1), LINESTRING (1 1, 2 2))>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely.ops import substring
+>>> ls = LineString((i, 0) for i in range(6))
+>>> ls
+<LINESTRING (0 0, 1 0, 2 0, 3 0, 4 0, 5 0)>
+>>> substring(ls, start_dist=1, end_dist=3)
+<LINESTRING (1 0, 2 0, 3 0)>
+>>> substring(ls, start_dist=3, end_dist=1)
+<LINESTRING (3 0, 2 0, 1 0)>
+>>> substring(ls, start_dist=1, end_dist=-3)
+<LINESTRING (1 0, 2 0)>
+>>> substring(ls, start_dist=0.2, end_dist=-0.6, normalized=True)
+<LINESTRING (1 0, 2 0)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> substring(ls, start_dist=2.5, end_dist=-2.5)
+<POINT (2.5 0)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely.prepared import prep
+>>> points = [...] # large list of points
+>>> polygon = Point(0.0, 0.0).buffer(1.0)
+>>> prepared_polygon = prep(polygon)
+>>> prepared_polygon
+<shapely.prepared.PreparedGeometry object at 0x...>
+>>> hits = filter(prepared_polygon.contains, points)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> coords = [(0, 0), (0, 2), (1, 1), (2, 2), (2, 0), (1, 1), (0, 0)]
+>>> p = Polygon(coords)
+>>> from shapely.validation import explain_validity
+>>> explain_validity(p)
+'Ring Self-intersection[1 1]'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely.validation import make_valid
+>>> coords = [(0, 0), (0, 2), (1, 1), (2, 2), (2, 0), (1, 1), (0, 0)]
+>>> p = Polygon(coords)
+>>> make_valid(p)
+<MULTIPOLYGON (((1 1, 0 0, 0 2, 1 1)), ((2 0, 1 1, 2 2, 2 0)))>
+
+Yields a MultiPolygon with two parts:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely.validation import make_valid
+>>> coords = [(0, 2), (0, 1), (2, 0), (0, 0), (0, 2)]
+>>> p = Polygon(coords)
+>>> make_valid(p)
+<GEOMETRYCOLLECTION (POLYGON ((2 0, 0 0, 0 1, 2 0)), LINESTRING (0 2, 0 1))>
+
+Yields a GeometryCollection with a Polygon and a LineString:
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> import shapely
+>>> shapely.__version__
+'2.0.0'
+>>> shapely.geos_version
+(3, 10, 2)
+>>> shapely.geos_capi_version_string
+'3.10.2-CAPI-1.16.0'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely.ops import polylabel
+>>> polygon = LineString([(0, 0), (50, 200), (100, 100), (20, 50),
+... (-100, -20), (-150, -200)]).buffer(100)
+>>> label = polylabel(polygon, tolerance=0.001)
+>>> label
+<POINT (59.733 111.33)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import STRtree
+>>> points = [Point(i, i) for i in range(10)]
+>>> tree = STRtree(points)
+>>> query_geom = Point(2,2).buffer(0.99)
+>>> [points[idx].wkt for idx in tree.query(query_geom)]
+['POINT (2 2)']
+>>> query_geom = Point(2, 2).buffer(1.0)
+>>> [points[idx].wkt for idx in tree.query(query_geom)]
+['POINT (1 1)', 'POINT (2 2)', 'POINT (3 3)']
+>>> [points[idx].wkt for idx in tree.query(query_geom, predicate="intersects")]
+['POINT (2 2)']
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> points = [Point(i, i) for i in range(10)]
+>>> tree = STRtree(points)
+>>> idx = tree.nearest(Point(2.2, 2.2))
+>>> points[idx]
+<POINT (2 2)>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0).wkt
+'POINT (0 0)'
+>>> Point(0, 0).wkb
+b'\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+>>> Point(0, 0).wkb_hex
+'010100000000000000000000000000000000000000'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import wkb, Point
+>>> pt = Point(0, 0)
+>>> wkb.dumps(pt)
+b'\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+>>> pt.wkb
+b'\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+>>> wkb.loads(pt.wkb).wkt
+'POINT (0 0)'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely import wkt, Point
+>>> pt = Point(0, 0)
+>>> wkt.dumps(pt)
+'POINT (0.0000000000000000 0.0000000000000000)'
+>>> pt.wkt
+'POINT (0 0)'
+>>> wkt.loads(pt.wkt).wkt
+'POINT (0 0)'
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> import numpy as np
+>>> np.asarray(Point(0, 0).coords)
+array([[0., 0.]])
+>>> np.asarray(LineString([(0, 0), (1, 1)]).coords)
+array([[0., 0.],
+       [1., 1.]])
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0).xy
+(array('d', [0.0]), array('d', [0.0]))
+>>> LineString([(0, 0), (1, 1)]).xy
+(array('d', [0.0, 1.0]), array('d', [0.0, 1.0]))
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely.geometry import shape
+>>> data = {"type": "Point", "coordinates": (0.0, 0.0)}
+>>> geom = shape(data)
+>>> geom.geom_type
+'Point'
+>>> list(geom.coords)
+[(0.0, 0.0)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> class GeoThing:
+...     def __init__(self, d):
+...         self.__geo_interface__ = d
+>>> thing = GeoThing({"type": "Point", "coordinates": (0.0, 0.0)})
+>>> geom = shape(thing)
+>>> geom.geom_type
+'Point'
+>>> list(geom.coords)
+[(0.0, 0.0)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from shapely.geometry import mapping
+>>> thing = GeoThing({"type": "Point", "coordinates": (0.0, 0.0)})
+>>> m = mapping(thing)
+>>> m['type']
+'Point'
+>>> m['coordinates']
+(0.0, 0.0)
+
+------------------

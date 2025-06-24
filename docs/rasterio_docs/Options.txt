@@ -1,0 +1,108 @@
+Options
+
+GDAL’s format drivers have manyconfiguration options.
+These options come in two flavors:
+
+Configuration optionsare used to alter the default behavior of GDAL
+and OGR and are generally treated as global environment variables by GDAL. These
+are set through arasterio.Envcontext block in Python.Creation optionsare passed into the driver at dataset creation time as
+keyword arguments torasterio.open(mode='w').
+
+Configuration optionsare used to alter the default behavior of GDAL
+and OGR and are generally treated as global environment variables by GDAL. These
+are set through arasterio.Envcontext block in Python.
+
+Configuration optionsare used to alter the default behavior of GDAL
+and OGR and are generally treated as global environment variables by GDAL. These
+are set through arasterio.Envcontext block in Python.
+
+Creation optionsare passed into the driver at dataset creation time as
+keyword arguments torasterio.open(mode='w').
+
+Creation optionsare passed into the driver at dataset creation time as
+keyword arguments torasterio.open(mode='w').
+
+Configuration Options
+
+GDAL options are typically set as environment variables. While
+environment variables will influence the behavior ofrasterio, we
+highly recommended avoiding them in favor of defining behavior programmatically.
+
+The preferred way to set options for rasterio is viarasterio.Env.
+Options set on entering the context are deleted on exit.
+
+Use native Python forms (TrueandFalse) for boolean options. Rasterio
+will convert them GDAL’s internal forms.
+
+See theconfiguration optionspage for a complete list of available options.
+
+Creation options
+
+Each format has it’s own set of driver-specific creation options that can be used to
+fine tune the output rasters. For details on a particular driver, see theformats list.
+
+For the purposes of this document, we will focus on theGeoTIFF creation options.
+Some of the common GeoTIFF creation options include:
+
+TILED,BLOCKXSIZE, andBLOCKYSIZEto define the internal tilingCOMPRESSto define the compression methodPHOTOMETRICto define the band’s color interpretation
+
+TILED,BLOCKXSIZE, andBLOCKYSIZEto define the internal tiling
+
+TILED,BLOCKXSIZE, andBLOCKYSIZEto define the internal tiling
+
+COMPRESSto define the compression method
+
+COMPRESSto define the compression method
+
+PHOTOMETRICto define the band’s color interpretation
+
+PHOTOMETRICto define the band’s color interpretation
+
+To specify these creation options in python code, you pass them as keyword arguments
+to therasterio.open()command in write mode.
+
+Note
+
+The GeoTIFF format requires thatblockxsizeandblockysizebe multiples of 16.
+
+On the command line,riocommands will accept multiple--cooptions.
+
+These keyword arguments may be lowercase or uppercase, as you prefer.
+
+Attention
+
+Some options may at a glance appear to be boolean, but are not. The GeoTIFF format’s BIGTIFF option is one of these. The value must be YES, NO, IF_NEEDED, or IF_SAFER.
+
+Note
+
+Someconfigurationoptions also have an effect on driver behavior at creation time.
+
+
+--- CODE BLOCK ---
+import rasterio
+
+with rasterio.Env(GDAL_TIFF_INTERNAL_MASK=True):
+    # GeoTIFFs written here will have internal masks, not the
+    # .msk sidecars.
+    # ...
+
+# Option is gone and the default (False) returns.
+
+------------------
+
+
+
+--- CODE BLOCK ---
+with rasterio.open("output.tif", 'w', **src.meta, compress="JPEG",
+                   tiled=True, blockxsize=256, blockysize=256,
+                   photometric="YCBCR") as dataset:
+    # Write data to the dataset.
+
+------------------
+
+
+
+--- CODE BLOCK ---
+$ rio copy source.tif dest.tif --co tiled=true
+
+------------------

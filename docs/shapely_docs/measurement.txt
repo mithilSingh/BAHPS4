@@ -1,0 +1,37 @@
+Measurement#
+
+area(geometry, **kwargs)
+
+Compute the area of a (multi)polygon.
+
+bounds(geometry, **kwargs)
+
+Compute the bounds (extent) of a geometry.
+
+distance(a, b, **kwargs)
+
+Compute the Cartesian distance between two geometries.
+
+frechet_distance(a, b[, densify])
+
+Compute the discrete Fréchet distance between two geometries.
+
+hausdorff_distance(a, b[, densify])
+
+Compute the discrete Hausdorff distance between two geometries.
+
+length(geometry, **kwargs)
+
+Compute the length of a (multi)linestring or polygon perimeter.
+
+minimum_bounding_radius(geometry, **kwargs)
+
+Compute the radius of the minimum bounding circle of an input geometry.
+
+minimum_clearance(geometry, **kwargs)
+
+Compute the Minimum Clearance distance.
+
+total_bounds(geometry, **kwargs)
+
+Compute the total bounds (extent) of the geometry.

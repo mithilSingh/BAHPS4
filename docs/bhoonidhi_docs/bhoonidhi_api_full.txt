@@ -1,0 +1,589 @@
+Bhoonidhi API Specification
+API
+भूनिधि
+Home
+Introduction
+Authentication
+Collections
+Search
+Download
+Rate Limiting
+Errors
+Introduction
+Bhoonidhi Data Access Software Interface Specification (SIS) outlines the protocol for accessing the data product catalog and facilitating data downloads from Bhoonidhi. It includes details on the access methods and the range of data products available for download. Bhoonidhi facilitates the dissemination of open satellite data via a user-friendly web application equipped with robust search functionalities for identifying target areas and downloading data.
+The Bhoonidhi API allows developers and researchers to programmatically access and retrieve a diverse range of earth observation satellite data.
+Key Features
+Data Access: Detailed documentation on accessing the Bhoonidhi data product catalog and initiating downloads.
+Search Capabilities: Bhoonidhi Search API works on STAC catalogue and  follows the STAC specifications, leveraging advanced search options to identify and select satellite data products.
+Integration Guidelines: Guidance for integrating Bhoonidhi APIs into applications for automated data retrieval and processing.
+Use Cases: Examples illustrating how to effectively utilize Bhoonidhi API’s capabilities in various research and operational scenarios.
+Getting Started
+Whether you are a developer integrating satellite data into applications or a researcher exploring remote sensing data, this API specification provides all the necessary details to access Bhoonidhi API effectively.
+The input is to be submitted as a request having JSON payload in the body of a POST request to the endpoint. The output response contains the same standard fields. The "errorCode" and "description" fields are populated in case of an API exception.
+Authenticate yourself using the userId and password: /auth/token
+Prepare the filter parameters
+Search for your data by providing the filter inputs: /data
+Download the product: /download
+Prerequisites
+Python - minimum version supported is Python 3
+Authentication
+To access the APIs at Bhoonidhi, users must authenticate themselves with user id and password. Once the user is authenticated, access token is generated which is used to search and download data products. The access tokens are used for authenticating all catalogue access API requests within the validity period. Tokens are JSON Web Tokens (JWT). Do not fetch a new token for each API request you make.
+Authentication in our API employs access tokens and refresh tokens to secure access and manage user sessions effectively.
+Access Token
+Access token is used to grant permission to access specific resources on behalf of the user. Validity of these tokens is short-lived and the token must be included in the 'Authorization' header of API requests (Bearer <access_token>).
+Endpoint:
+/auth/token
+URL:
+https://bhoonidhi-api.nrsc.gov.in/auth/token
+Refresh Token
+Refresh tokens are used to obtain a new access token once the current one expires. The validity of refresh token is longer-lived, designed to persist between sessions. Send this refresh token to the token endpoint to request a new access token when the current one expires.
+Endpoint:
+/auth/token
+URL:
+https://bhoonidhi-api.nrsc.gov.in/auth/token
+Logout
+Logout functionality in our API allows users to securely terminate their session and revoke access to their resources. To logout a user from our system, clients should send a POST request to the token revocation endpoint (/auth/logout) with the refresh_token included in the Authorization header of API requests (Bearer <refresh_token>).
+Endpoint:
+/auth/logout
+URL:
+https://bhoonidhi-api.nrsc.gov.in/auth/logout
+Authentication Flow
+Obtain Access Token: Client requests an access token from the authorization server by presenting credentials (e.g., username/password or client credentials).
+Use Access Token: Include the access token in API requests to authenticate and authorize actions.
+Refresh Access Token: When the access token expires, use the refresh token to obtain a new access token without requiring re-authorization.
+Usage and Validity
+These tokens have finite lifetimes for various reasons, but you can obtain new ones or request them from the Bhoonidhi API auth server using the token endpoint provided below. Although tokens are not permanent, they remain valid for a reasonable duration, ensuring they can be effectively reused. Avoid requesting a new token for every API call. Token retrieval is subject to rate limiting; therefore, receiving an HTTP 429 error indicates excessive token requests.
+Response Code
+Code
+Description
+Scenario
+Handling
+200
+Success
+The inputs given are proper and the request was processed.
+NA
+400
+Bad Request
+Incorrect keys given in the request
+Verify the inputs given
+401
+Unauthorized
+Incorrect password
+Enter correct userId and password
+403
+Forbidden
+Max sessions already active
+Logout of active sessions or re-use active sessions
+500
+Internal Server Error
+Issue occurred at server while trying to process the request
+Try again after sometime. If the issue still persists, inform API administrator
+Access Token
+Input JSON Object Format
+Output JSON Object Format
+content_copy
+{
+    "userId": <userId>,
+    "password": <password>,
+    "grant_type": "password"
+}
+{
+    "userId": <user_id>,
+    "access_token": <access_token>,
+    "token_type": "Bearer",
+    "expires_in": <access_token-expiry-time-in-seconds>,
+    "refresh_token": <refresh_token>
+}
+Refresh Token
+Input JSON Object Format
+Output JSON Object Format
+content_copy
+{
+    "userId": <userId>,
+    "refresh_token": <refresh_token>,
+    "grant_type": "refresh_token"
+}
+{
+    "userId": <user_id>,
+    "access_token": <access_token>,
+    "token_type": "Bearer",
+    "expires_in": <access_token-expiry-time-in-seconds>,
+    "refresh_token": <refresh_token>
+}
+Example Input JSON Object for Access Token:
+{
+"userId" : "bhoonidhiuser",
+"password" : "password@123",
+"grant_type" : "password"
+}
+Example Output JSON Object for Access Token:
+{
+"userId": "bhoonidhiuser",
+"access_token": "eyJhbGcidfgdUzdgisvJ9.eyJ0aW1lc3RhbXAiOjE3MjEwNDQxMzIzMDksInN112345k9OTF9hYmNwcXIiLCJpYXQiOjE3MjEwNDQxMzIsImV4cCI6MTcyMTA0NTMzMn0.S13PlY0mCKgbpSTO-BmySigpLZa2ibKnU1Bw-owWBU9vpH2my0MHxGnOLLGazV10JKleGurhm-9Zy20KEskA0w",
+"token_type": "Bearer",
+"expires_in": 1200,
+"refresh_token": "eyJhbGcidfgdUzUxMiJ9.eyJzdWIiOiJPTkxfYWJjcHFyIiwiaWF0IjoxNzIxMDQ0MTMyLC09876iOjE3MjEwNjIxMzJ9.31eyXxroTEXGIUEwEzttO7JGe4WpcZXeKJ_BZ6jsP3iWOqAl_F7n6BHsxlIWadF_tfRmxq4uF4StS8yN1DqA7Q"
+}
+Example Input JSON Object for Refresh Token:
+{
+"userId" : "bhoonidhiuser",
+"refresh_token" : "eyJhbGciOiJIUzUxMgfhgfhiJ9.eyJzdWIiOiJPTkxfbmFzZWViIiwiaWF0IjoxNzfyhhghIwNjk2NTMwLCJleHAiOjE3MjA3MTQ1MzB9.c-rukaI-9N9uLzqRQsKffghgfhS1GZI7fgAPZ0hAa-Clb3u47Q6kIw7LNkpyeGpusa7wkpk2-swFPK0Efr_CX1f-DmlA",
+"grant_type" : "refresh_token"
+}
+Example Output JSON Object for Refresh Token:
+{
+"userId": "bhoonidhiuser",
+"access_token": "eyJhbGciOighgfJIUzUxMiJ9.eyJ0aW1lc3RhbXAiOjE3MjEwNDQyNjI3NzEsInN1YiI6Ifghk9OTF9hYmNwcXIiLCJpYXQiOjE3MjEwNDQyNjIsImV4cCI6MTcyMTA0NTQ2Mn0.6OeHy4Xf0r_jguOQiLeu9wd6B7P_P3O-L4f9GudcNC9-cxpI3LUmWd6jepxcZ5nZNhQcclSvvyS_cRCUffpN5w",
+"token_type": "Bearer",
+"expires_in": 1200,
+"refresh_token": "eyJhbGciOiJIUfghgzUxMiJ9.eyJzdWIiOiJPTkxfYWJjcHFyIiwiaWF0IfghgfjoxNzIxMDQ0MjYyLCJleHAiOjE3MjEwNjIyNjJ9.DUbVoZXRoSLXu8GjhICuUgqLWXwikvN9al-M2sqT1DKeeypNZcyRJtFpfqqtXzY6rX8Hej3Y8D2SGVmkaJFing"
+}
+Collections
+Bhoonidhi STAC Collection groups geospatial data assets that share common satellite, sensor and product type. It provides a high-level structure to describe and organize multiple STAC Items, enabling easier discovery and access to spatial data.
+Available Collections
+ResourceSat-2_AWIFS_L2
+ResourceSat-2_AWIFS_BOA
+ResourceSat-2_LISS3_L2
+ResourceSat-2_LISS3_BOA
+ResourceSat-2_LISS4-MX70_L2
+ResourceSat-2A_AWIFS_L2
+ResourceSat-2A_AWIFS_BOA
+ResourceSat-2A_LISS3_L2
+ResourceSat-2A_LISS3_BOA
+ResourceSat-2A_LISS4-MX70_L2
+EOS-04_SAR-MRS_L2A
+EOS-04_SAR-MRS_L2B
+EOS-04_SAR-MRS_SM
+EOS-04_SAR-CRS_L2A
+EOS-04_SAR-CRS_L2B
+EOS-04_SAR-FRS1_L2A
+EOS-04_SAR-FRS2_L2A
+EOS-04_SAR-MRS_1deg-mosaic
+EOS-04_SAR-MRS_WS-1deg-mosaic
+EOS-06_OCM-LAC_L1C
+EOS-06_OCM-LAC_L2C-AOD
+EOS-06_OCM-LAC_L2C-CHL
+EOS-06_OCM-LAC_L2C-DA
+EOS-06_OCM-LAC_L2C-NDVI
+EOS-06_OCM-LAC_L2C-RRS
+EOS-06_OCM-LAC_L2C-TSM
+EOS-06_OCM-LAC_NDVI_8day_360m
+EOS-06_OCM-LAC_AOD_8day_500m
+EOS-06_OCM-LAC_TSM_8day_500m
+EOS-06_OCM-GAC_L1C
+EOS-06_OCM-GAC_L2C-AOD
+EOS-06_OCM-GAC_L2C-CHL
+EOS-06_OCM-GAC_L2C-DA
+EOS-06_OCM-GAC_L2C-NDVI
+EOS-06_OCM-GAC_L2C-RRS
+EOS-06_OCM-GAC_L2C-TSM
+EOS-06_OCM-GAC_L2C-VF
+EOS-06_OCM-GAC_NDVI_8day_1km
+EOS-06_OCM-GAC_AOD_8day_4km
+EOS-06_OCM-GAC_Chlorophyll_8day_4km
+EOS-06_OCM-GAC_DA_8day_4km
+EOS-06_OCM-GAC_TSM_8day_4km
+Note: Include the
+access_token
+in the 'Authorization' header of API requests (Bearer
+access_token
+)
+1. Get all collections:
+https://bhoonidhi-api.nrsc.gov.in/data/collections
+2. Get collection details:
+https://bhoonidhi-api.nrsc.gov.in/data/collections/ {collection_id}
+3. Get all items in a collection:
+https://bhoonidhi-api.nrsc.gov.in/data/collections/ {collection_id}/items
+4. Get details of an item (id):
+https://bhoonidhi-api.nrsc.gov.in/data/collections/ {collection_id}/items/{item_id}
+Search Data
+Search for satellite data products from Bhoonidhi STAC catalogue
+Endpoint:
+/search
+URL:
+https://bhoonidhi-api.nrsc.gov.in/data/search
+Search Methods
+GET request using query parameters
+POST request with query parameters as request body
+Requesting for Data
+Note: Include the
+access_token
+in the 'Authorization' header of API requests (Bearer
+access_token
+)
+Query Parameters
+S.No
+Field
+Description
+Format
+Values
+1
+collections
+Array of one or more Collection IDs
+["col_id1", "col_id2"]
+Above mentioned available collections
+2
+datetime
+Date range
+Single date+time, or a range ('Z' separator), formatted to
+RFC 3339, section 5.6
+'2023-11-02T00:00:00Z/2023-11-03T23:59:59Z'
+3
+filter
+Conditions to filter the data-sets
+'args': [ {'property': 'property_name'}, 'property_value' ], 'op': 'condition'
+'args': [ {'property': 'Polarization'}, 'DH' ], 'op': 'eq' 
+                                            Can be used to filter products available for direct download
+see Examples (filter_by_online_status)
+4
+filter-lang
+Language of filter being used
+'cql2-json'
+'cql2-json' (fixed)
+5
+intersects
+Searches items by performing intersection between their geometry and provided GeoJSON geometry.
+GeoJSON geometry
+"intersects": {"type": "geometry_type", "coordinates": [coordinate_array] }
+6
+limit
+The maximum number of results to return
+Integer value, max fixed to 500
+10
+Default (when empty JSON is given): A set of 10 items from STAC catalogue are returned.
+GET request
+Search by Query Parameters – date, ID, bbox, etc
+Examples:
+?datetime=2024-10-01T00:59:31.293Z/
+?bbox=-80.673805 ,-0.52849 ,-78.060341 ,1.689651
+?datetime=2021-12-31T09:59:31.293Z/2023-12-31T09:59:31.293Z
+?bbox=-80.673805,-0.52849,-78.060341,1.689651&datetime=2014-10-13T23:28:54.650Z
+?limit=10
+STAC item properties as attributes for filtering; see
+query_by_filters
+POST request
+Input json format
+{
+  "collections": ["string"],
+  "ids": ["string"],
+  "bbox": ["string","string","string","string"],
+  "intersects": {
+    "type": "Point", //Other options - MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon
+    "coordinates": ["string","string"],
+    "bbox": ["string","string","string","string"]
+  },
+  "datetime": "string",
+  "limit": 10,
+  "sortby": [
+    {
+      "field": "string",
+      "direction": "asc"
+    }
+  ],
+  "fields": {
+    "include": [],
+    "exclude": []
+  },
+  "token": "string",
+  "filter": {},
+  "filter-crs": "string",
+  "filter-lang": "cql2-json"
+  }
+Pagination
+For GET and POST requests, a link with
+"rel": "next"
+is provided in the response. This link will contain the URL to get the next page of results. For more details, please refer
+this
+Responses
+Code
+Description
+Scenario
+Handling
+200
+Success
+The inputs given are proper and the request was processed.
+In case no items are returned (indicated by
+context -> returned -> 0
+), the search criteria are to be modified.
+401
+Unauthorized
+Session expired
+Invalid session detected. Please login again
+500
+Internal Server Error
+Issue occurred at server while trying to process the request
+Recheck the search given. If everything is correct, try again after some time or intimate the API provider
+503
+Service Unavailable
+STAC connection failed
+Try again after some time or intimate the API provider
+nnn
+STAC search error forwarded as received
+STAC search failed
+nnn – HTTP error forwarded as received from STAC search
+Search Response Format (STAC)
+content_copy
+{
+  "type": "FeatureCollection",
+  "context": {
+    "limit": number,
+    "returned": number
+  },
+  "features": array(<
+    {
+      "id": string,
+      "geometry": {
+        "type": string,
+        "coordinates": array
+      },
+      "collection": string,
+      "links": array
+    }
+  >),
+  "links": array(<
+    {
+      "rel": string,
+      "type": string,
+      "href": string
+    }
+  >)
+}
+Example Input JSON Object for query_by_date:
+{
+"collections":["EOS-04_SAR-MRS_L2A","EOS-06_OCM-LAC_L1C"],
+"datetime": "2023-11-02T00:00:00Z/2023-11-03T23:59:59Z",
+"limit": 100
+}
+Example Input JSON Object for filter_by_online_status:
+{
+"collections": ["EOS-04_SAR-MRS_L2A"],
+"datetime":"2023-01-01T00:00:00Z/2023-01-31T23:59:59Z",
+"filter": {
+    "args": [{"property": "Online"}, "Y"],
+    "op":"eq"
+},
+"filter-lang": "cql2-json",
+"limit": 500
+}
+Example Input JSON Object for query_by_filters:
+{
+"collections": ["EOS-04_SAR-MRS_L2A"],
+"datetime":"2023-01-01T00:00:00Z/2024-01-31T23:59:59Z",
+"filter": { 
+    "args": [
+        {"op":"eq","args": [{"property": "Polarization"}, "DH"]},
+        {"op":"eq","args": [{"property": "Look_Direction"}, "RIGHT"]},
+        {"op":"eq","args": [{"property": "Node"}, "DESCENDING"]}
+    ],
+    "op":"and"
+}, 
+"filter-lang": "cql2-json",
+"limit": 100
+}
+Example Input JSON Object for query_by_id:
+{
+"collections":["EOS-04_SAR-MRS_L2A"],
+"datetime":"2023-01-01T00:00:00Z/2023-12-31T23:59:59Z",
+"filter": {
+    "args":[{"property":"id"}, "E04_SAR_MRS_28DEC2023_362001201630_10311_STUC00ZTD_13022_22_DH_D_R_N06308_E084544"],
+    "op":"eq"
+},
+"filter-lang":"cql2-json",
+"limit": 100
+}
+Example Input JSON Object for aoi_single_polygon:
+{
+"collections": ["EOS-04_SAR-MRS_L2A"],
+"datetime":"2023-01-01T00:00:00Z/2023-01-31T23:59:59Z",
+"intersects": {
+    "type": "Polygon",
+    "coordinates": [
+        [[-15.706019901023444, 17.50409862311953], 
+        [-15.204430443106522, 18.10105932077886], 
+        [68.43561166453935, 21.63831711003979], 
+        [68.93720112245624, 20.937274866185614], 
+        [-15.706019901023444, 17.50409862311953]]]
+    },
+"filter": {
+    "args": [{"property": "Online"}, "Y"],
+    "op":"eq"
+},
+"filter-lang": "cql2-json",
+"limit": 500
+}
+Example Input JSON Object for aoi_multi_point:
+{
+"collections": [ "EOS-04_SAR-MRS_L2A"],
+"datetime": "2023-01-01T00:00:00Z/2024-01-31T23:59:59Z",
+"intersects": {
+    "type": "MultiPoint",
+    "coordinates": [ 
+        [ 77.066075753508841, 28.663926440611249 ],
+        [ 78.161399358956317, 22.477376446880136 ],
+        [ 73.212159363971438, 27.933710703646266 ],
+        [ 72.583362479362691, 23.065605790546371 ],
+        [ 80.250627717495021, 16.169123830321524 ]]    
+    } 
+}
+Data Product Download
+The product download endpoints facilitate seamless access to the data products from ISRO's earth observation satellites. Developers can integrate these endpoints into their applications to automate the download of products and this specification details the endpoints, parameters, authentication requirements, expected responses, and error handling procedures necessary to effectively utilize Bhoonidhi's comprehensive data repository of satellite data products.
+Endpoint:
+/download
+URL:
+https://bhoonidhi-api.nrsc.gov.in/download
+GET request
+https://bhoonidhi-api.nrsc.gov.in/download?id=<id>&collection=<collection_name>
+Note:
+Include the
+access_token
+in the 'Authorization' header of API requests (Bearer
+access_token
+)
+Download Issues
+Any issue at download is indicated by the response code returned in the response object. If the response code indicates an error, “wait” logic is to be implemented instead of immediate multiple retires.
+The users are requested to periodically check the Bhoonidhi notifications page at Bhoonidhi home URL about known system downtimes or dataset issues.
+We recommend using concurrent downloads as it is allowed at Bhoonidhi. If the request returns a Rate Limit error, decrease the concurrency.
+Download only the products with property 'Online' = 'Y'
+see Search -> Examples (filter_by_online_status)
+. Accessing downloads tagged as 'Online' = 'N' will cause data fetch delays. Download restrictions and throttling are active on the Bhoonidhi API. If you encounter slow download speeds, it's probably due to high data demand.
+Responses
+Code
+Description
+Scenario
+Handling
+401
+Unauthorized
+Session expired
+Invalid session detected. Please login again
+404
+Product not found
+Product is not available on online storage
+Product cannot be downloaded as it is not available on online storage.
+412
+Precondition failed
+Concurrent downloads exceeded
+Wait till the currently running download is completed before initiating another download.
+500
+Internal Server Error
+Issue occurred at server while trying to process the request
+Recheck the input given. If everything is correct, try again after some time or intimate the API provider
+504
+Gateway Timeout
+Download gets interrupted
+Download interrupted. Download the product again
+Rate Limiting
+To enhance user experience and maintain system stability, Bhoonidhi implements rate limiting to prevent system overload. When the rate limit is exceeded, the Bhoonidhi API responds with an HTTP 429 response code. In such cases, we recommend increasing the time interval between retry attempts for failed requests to improve API interaction reliability.
+Authentication endpoint: 20 requests per hour per IP address
+Search endpoint: 3 requests per second per IP address
+Download endpoint:
+5 concurrent downloads per user & IP address. If this limit is exceeded, an HTTP 412 response code is returned.
+Once the daily download limit is reached, only 1 concurrent download per user & IP address is allowed, and the bandwidth will be throttled.
+Errors
+Whenever an error occurs, whether it be the fault of the user or an internal system, an error object will be returned. HTTP response codes of
+4xx
+suggest a bad request. If you receive a
+4xx
+response, we recommend reviewing the API docs for more context to help you troubleshoot.
+5xx
+errors suggest a problem on Bhoonidhi API's end, so if you receive a
+5xx
+error, please contact support.
+{
+    "ErrorCode": <error_code>,
+    "Description": <description>,
+    "Action": <action>
+  }
+In case of any issues while accessing Bhoonidhi API, please contact us at bhoonidhi[at]nrsc[dot]gov[dot]in. The mail to have following details:
+Subject: Bhoonidhi API access - UserId, IP address, End point
+Contents: Contents of the request and response, error snapshot and any other information that may help us in debugging and provide resolution to the issues.
+HTTP Status Code Summary
+Response Code
+Description
+400
+Bad Request
+401
+Unauthorized
+402
+Payment Required
+403
+Forbidden
+404
+Not Found
+405
+Method Not Allowed
+406
+Not Acceptable
+407
+Proxy Authentication Required
+408
+Request Timeout
+409
+Conflict
+410
+Gone
+411
+Length Required
+412
+Precondition Failed
+413
+Payload Too Large
+414
+Request-URI Too Long
+415
+Unsupported Media Type
+416
+Requested Range Not Satisfiable
+417
+Expectation Failed
+418
+I’m a teapot
+421
+Misdirected Request
+422
+Unprocessable Entity
+Response Code
+Description
+423
+Locked
+424
+Failed Dependency
+426
+Upgrade Required
+428
+Precondition Required
+429
+Too Many Requests
+431
+Request Header Fields Too Large
+444
+Connection Closed Without Response
+451
+Unavailable for Legal Reasons
+499
+Client Closed Request
+500
+Internal Server Error
+501
+Not Implemented
+502
+Bad Gateway
+503
+Service Unavailable
+504
+Gateway Timeout
+505
+HTTP Version Not Supported
+506
+Variant Also Negotiates
+507
+Insufficient Storage
+508
+Loop Detected
+510
+Not Extended
+511
+Network Authentication Required
+598
+Network Read Timeout Error
+599
+Network Connect Timeout Error

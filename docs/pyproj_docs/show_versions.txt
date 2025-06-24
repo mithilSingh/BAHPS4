@@ -1,0 +1,23 @@
+Show Versions¶
+
+pyproj.show_versions¶
+
+Added in version 2.2.1.
+
+Print useful debugging information
+
+Example
+
+> python -c “import pyproj; pyproj.show_versions()”
+
+Show Versionspyproj.show_versionsshow_versions()
+
+Show Versionspyproj.show_versionsshow_versions()
+
+pyproj.show_versionsshow_versions()
+
+pyproj.show_versionsshow_versions()
+
+show_versions()
+
+show_versions()

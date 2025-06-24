@@ -1,0 +1,5712 @@
+User Reference - OSMnx 2.0.4 documentation
+Contents
+Menu
+Expand
+Light mode
+Dark mode
+Auto light/dark, in light mode
+Auto light/dark, in dark mode
+Hide navigation sidebar
+Hide table of contents sidebar
+Skip to content
+Toggle site navigation sidebar
+OSMnx 2.0.4 documentation
+Toggle Light / Dark / Auto color theme
+Toggle table of contents sidebar
+OSMnx 2.0.4 documentation
+Installation
+Getting Started
+User Reference
+Internals Reference
+Further Reading
+Back to top
+View this page
+Toggle Light / Dark / Auto color theme
+Toggle table of contents sidebar
+User Reference
+¶
+This is the User Reference for the OSMnx package. If you are looking for an introduction to OSMnx, read the
+Getting Started
+guide. This guide describes the usage of OSMnx’s public API.
+OSMnx 2.0 is released: read the
+migration guide
+.
+osmnx.bearing module
+¶
+Calculate graph edge bearings and orientation entropy.
+osmnx.bearing.
+add_edge_bearings
+(
+G
+)
+¶
+Calculate and add compass
+bearing
+attributes to all graph edges.
+Vectorized function to calculate (initial) bearing from origin node to
+destination node for each edge in a directed, unprojected graph then add
+these bearings as new
+bearing
+edge attributes. Bearing represents angle
+in degrees (clockwise) between north and the geodesic line from the origin
+node to the destination node. Ignores self-loop edges as their bearings
+are undefined.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Unprojected graph.
+Returns
+:
+G
+– Graph with
+bearing
+attributes on the edges.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.bearing.
+calculate_bearing
+(
+lat1
+,
+lon1
+,
+lat2
+,
+lon2
+)
+¶
+Calculate the compass bearing(s) between pairs of lat-lon points.
+Vectorized function to calculate initial bearings between two points’
+coordinates or between arrays of points’ coordinates. Expects coordinates
+in decimal degrees. The bearing represents the clockwise angle in degrees
+between north and the geodesic line from
+(lat1, lon1)
+to
+(lat2, lon2)
+.
+Parameters
+:
+lat1
+(
+float | npt.NDArray[np.float64]
+) – First point’s latitude coordinate(s).
+lon1
+(
+float | npt.NDArray[np.float64]
+) – First point’s longitude coordinate(s).
+lat2
+(
+float | npt.NDArray[np.float64]
+) – Second point’s latitude coordinate(s).
+lon2
+(
+float | npt.NDArray[np.float64]
+) – Second point’s longitude coordinate(s).
+Returns
+:
+bearing
+– The bearing(s) in decimal degrees.
+Return type
+:
+float | npt.NDArray[np.float64]
+osmnx.bearing.
+orientation_entropy
+(
+G
+,
+*
+,
+num_bins
+=
+36
+,
+min_length
+=
+0
+,
+weight
+=
+None
+)
+¶
+Calculate graph’s orientation entropy.
+Orientation entropy is the Shannon entropy of the graphs’ edges’ bearings
+across evenly spaced bins. Ignores self-loop edges as their bearings are
+undefined. If
+G
+is a MultiGraph, all edge bearings will be bidirectional
+(ie, two reciprocal bearings per undirected edge). If
+G
+is a
+MultiDiGraph, all edge bearings will be directional (ie, one bearing per
+directed edge).
+For more info see: Boeing, G. 2019. “Urban Spatial Order: Street Network
+Orientation, Configuration, and Entropy.” Applied Network Science, 4 (1),
+67.
+https://doi.org/10.1007/s41109-019-0189-1
+Parameters
+:
+G
+(
+nx.MultiGraph | nx.MultiDiGraph
+) – Unprojected graph with
+bearing
+attributes on each edge.
+num_bins
+(
+int
+) – Number of bins. For example, if
+num_bins=36
+is provided, then each
+bin will represent 10 degrees around the compass.
+min_length
+(
+float
+) – Ignore edges with “length” attributes less than
+min_length
+. Useful
+to ignore the noise of many very short edges.
+weight
+(
+str | None
+) – If None, apply equal weight for each bearing. Otherwise, weight edges’
+bearings by this (non-null) edge attribute. For example, if “length”
+is provided, each edge’s bearing observation will be weighted by its
+“length” attribute value.
+Returns
+:
+entropy
+– The orientation entropy of
+G
+.
+Return type
+:
+float
+osmnx.convert module
+¶
+Convert spatial graphs to/from different data types.
+osmnx.convert.
+graph_from_gdfs
+(
+gdf_nodes
+,
+gdf_edges
+,
+*
+,
+graph_attrs
+=
+None
+)
+¶
+Convert node and edge GeoDataFrames to a MultiDiGraph.
+This function is the inverse of
+graph_to_gdfs
+and is designed to work in
+conjunction with it. However, you can convert arbitrary node and edge
+GeoDataFrames as long as 1)
+gdf_nodes
+is uniquely indexed by
+osmid
+, 2)
+gdf_nodes
+contains
+x
+and
+y
+coordinate columns representing node
+geometries, 3)
+gdf_edges
+is uniquely multi-indexed by
+(u, v, key)
+(following normal MultiDiGraph structure). This allows you to load any
+node/edge Shapefiles or GeoPackage layers as GeoDataFrames then convert
+them to a MultiDiGraph for network analysis.
+Note that any
+geometry
+attribute on
+gdf_nodes
+is discarded, since
+x
+and
+y
+provide the necessary node geometry information instead.
+Parameters
+:
+gdf_nodes
+(
+GeoDataFrame
+) – GeoDataFrame of graph nodes uniquely indexed by
+osmid
+.
+gdf_edges
+(
+GeoDataFrame
+) – GeoDataFrame of graph edges uniquely multi-indexed by
+(u, v, key)
+.
+graph_attrs
+(
+dict
+[
+str
+,
+Any
+] |
+None
+) – The new
+G.graph
+attribute dictionary. If None, use
+gdf_edges
+’s CRS
+as the only graph-level attribute (
+gdf_edges
+must have its
+crs
+attribute set).
+Returns
+:
+G
+– The converted MultiDiGraph.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.convert.
+graph_to_gdfs
+(
+G
+,
+*
+,
+nodes
+=
+True
+,
+edges
+=
+True
+,
+node_geometry
+=
+True
+,
+fill_edge_geometry
+=
+True
+)
+¶
+Convert a MultiGraph or MultiDiGraph to node and/or edge GeoDataFrames.
+This function is the inverse of
+graph_from_gdfs
+.
+Parameters
+:
+G
+(
+nx.MultiGraph | nx.MultiDiGraph
+) – Input graph.
+nodes
+(
+bool
+) – If True, convert graph nodes to a GeoDataFrame and return it.
+edges
+(
+bool
+) – If True, convert graph edges to a GeoDataFrame and return it.
+node_geometry
+(
+bool
+) – If True, create a geometry column from node “x” and “y” attributes.
+fill_edge_geometry
+(
+bool
+) – If True, fill missing edge geometry fields using endpoint nodes’
+coordinates to create a LineString.
+Returns
+:
+gdf_nodes or gdf_edges or (gdf_nodes, gdf_edges)
+–
+gdf_nodes
+is indexed by
+osmid
+and
+gdf_edges
+is multi-indexed by
+(u, v, key)
+following normal MultiGraph/MultiDiGraph structure.
+Return type
+:
+gpd.GeoDataFrame | tuple[gpd.GeoDataFrame, gpd.GeoDataFrame]
+osmnx.convert.
+to_digraph
+(
+G
+,
+*
+,
+weight
+=
+'length'
+)
+¶
+Convert MultiDiGraph to DiGraph.
+Chooses between parallel edges by minimizing
+weight
+attribute value. See
+also
+to_undirected
+to convert MultiDiGraph to MultiGraph.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+weight
+(
+str
+) – Attribute value to minimize when choosing between parallel edges.
+Returns
+:
+D
+– The converted DiGraph.
+Return type
+:
+networkx.DiGraph
+osmnx.convert.
+to_undirected
+(
+G
+)
+¶
+Convert MultiDiGraph to undirected MultiGraph.
+This function has a limited use case: it allows you to create a MultiGraph
+for use with functions/algorithms that only accept a MultiGraph object.
+Rather, if you want a fully bidirectional graph (such as for a walking
+network), configure the
+settings
+module’s
+bidirectional_network_types
+before creating your graph to generate a fully bidirectional MultiDiGraph.
+This function maintains parallel edges only if their geometries differ.
+See also
+to_digraph
+to convert MultiDiGraph to DiGraph.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+Returns
+:
+Gu
+– The converted MultiGraph.
+Return type
+:
+networkx.MultiGraph
+osmnx.distance module
+¶
+Calculate distances and find nearest graph node/edge(s) to point(s).
+osmnx.distance.
+add_edge_lengths
+(
+G
+,
+*
+,
+edges
+=
+None
+)
+¶
+Calculate and add
+length
+attribute (in meters) to each edge.
+Vectorized function to calculate great-circle distance between each edge’s
+incident nodes. Ensure graph is unprojected and unsimplified to calculate
+accurate distances.
+Note: this function is run by all the
+graph.graph_from_x
+functions
+automatically to add
+length
+attributes to all edges. It calculates edge
+lengths as the great-circle distance from node
+u
+to node
+v
+. When
+OSMnx automatically runs this function upon graph creation, it does it
+before simplifying the graph: thus it calculates the straight-line lengths
+of edge segments that are themselves all straight. Only after
+simplification do edges take on (potentially) curvilinear geometry. If you
+wish to calculate edge lengths later, note that you will be calculating
+straight-line distances which necessarily ignore the curvilinear geometry.
+Thus you only want to run this function on a graph with all straight edges
+(such as is the case with an unsimplified graph).
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Unprojected and unsimplified input graph.
+edges
+(
+Iterable
+[
+tuple
+[
+int
+,
+int
+,
+int
+]] |
+None
+) – The subset of edges to add
+length
+attributes to, as
+(u, v, k)
+tuples. If None, add lengths to all edges.
+Returns
+:
+G
+– Graph with
+length
+attributes on the edges.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.distance.
+euclidean
+(
+y1
+,
+x1
+,
+y2
+,
+x2
+)
+¶
+Calculate Euclidean distances between pairs of points.
+Vectorized function to calculate the Euclidean distance between two
+points’ coordinates or between arrays of points’ coordinates. For accurate
+results, use projected coordinates rather than decimal degrees.
+Parameters
+:
+y1
+(
+float | npt.NDArray[np.float64]
+) – First point’s y coordinate(s).
+x1
+(
+float | npt.NDArray[np.float64]
+) – First point’s x coordinate(s).
+y2
+(
+float | npt.NDArray[np.float64]
+) – Second point’s y coordinate(s).
+x2
+(
+float | npt.NDArray[np.float64]
+) – Second point’s x coordinate(s).
+Returns
+:
+dist
+– Distance from each
+(x1, y1)
+point to each
+(x2, y2)
+point in same
+units as the points’ coordinates.
+Return type
+:
+float | npt.NDArray[np.float64]
+osmnx.distance.
+great_circle
+(
+lat1
+,
+lon1
+,
+lat2
+,
+lon2
+,
+earth_radius
+=
+6371009
+)
+¶
+Calculate great-circle distances between pairs of points.
+Vectorized function to calculate the great-circle distance between two
+points’ coordinates or between arrays of points’ coordinates using the
+haversine formula. Expects coordinates in decimal degrees.
+Parameters
+:
+lat1
+(
+float | npt.NDArray[np.float64]
+) – First point’s latitude coordinate(s).
+lon1
+(
+float | npt.NDArray[np.float64]
+) – First point’s longitude coordinate(s).
+lat2
+(
+float | npt.NDArray[np.float64]
+) – Second point’s latitude coordinate(s).
+lon2
+(
+float | npt.NDArray[np.float64]
+) – Second point’s longitude coordinate(s).
+earth_radius
+(
+float
+) – Earth’s radius in units in which distance will be returned (default
+represents meters).
+Returns
+:
+dist
+– Distance from each
+(lat1, lon1)
+point to each
+(lat2, lon2)
+point
+in units of
+earth_radius
+.
+Return type
+:
+float | npt.NDArray[np.float64]
+osmnx.distance.
+nearest_edges
+(
+G
+,
+X
+,
+Y
+,
+*
+,
+return_dist
+=
+False
+)
+¶
+Find the nearest edge to a point or to each of several points.
+If
+X
+and
+Y
+are single coordinate values, this function will return the
+nearest edge to that point. If
+X
+and
+Y
+are iterables of coordinate
+values, it will return the nearest edge to each point.
+This function is vectorized: if you have many points to search for, pass
+them in one call as numpy arrays (avoid using loops) to maximize runtime
+speed. It uses an R-tree spatial index and minimizes the Euclidean
+distance from each point to the possible matches. For accurate results,
+use a projected graph and projected points.
+Parameters
+:
+G
+(
+nx.MultiDiGraph
+) – Graph in which to find nearest edges.
+X
+(
+float | Iterable[float]
+) – The points’ x (longitude) coordinates, in same CRS/units as graph and
+containing no nulls.
+Y
+(
+float | Iterable[float]
+) – The points’ y (latitude) coordinates, in same CRS/units as graph and
+containing no nulls.
+return_dist
+(
+bool
+) – If True, optionally also return the distance(s) between point(s) and
+nearest edge(s), in same units as graph and points.
+Returns
+:
+ne or (ne, dist)
+– Nearest edge ID(s) as
+(u, v, k)
+tuples, or optionally a tuple of
+ID(s) and distance(s) between each point and its nearest edge.
+Return type
+:
+tuple[int, int, int] | npt.NDArray[np.object_] | tuple[tuple[int, int, int], float] | tuple[npt.NDArray[np.object_], npt.NDArray[np.float64]]
+osmnx.distance.
+nearest_nodes
+(
+G
+,
+X
+,
+Y
+,
+*
+,
+return_dist
+=
+False
+)
+¶
+Find the nearest node to a point or to each of several points.
+If
+X
+and
+Y
+are single coordinate values, this function will return the
+nearest node to that point. If
+X
+and
+Y
+are iterables of coordinate
+values, it will return the nearest node to each point.
+This function is vectorized: if you have many points to search for, pass
+them in one call as numpy arrays (avoid using loops) to maximize runtime
+speed. If the graph is projected, it uses a k-d tree for Euclidean nearest
+neighbor search, which requires that scipy is installed as an optional
+dependency. If the graph is unprojected, it uses a ball tree for haversine
+nearest neighbor search, which requires that scikit-learn is installed as
+an optional dependency.
+Parameters
+:
+G
+(
+nx.MultiDiGraph
+) – Graph in which to find nearest nodes.
+X
+(
+float | Iterable[float]
+) – The points’ x (longitude) coordinates, in same CRS/units as graph and
+containing no nulls.
+Y
+(
+float | Iterable[float]
+) – The points’ y (latitude) coordinates, in same CRS/units as graph and
+containing no nulls.
+return_dist
+(
+bool
+) – If True, optionally also return the distance(s) between point(s) and
+nearest node(s).
+Returns
+:
+nn or (nn, dist)
+– Nearest node ID(s) or optionally a tuple of ID(s) and distance(s)
+between each point and its nearest node.
+Return type
+:
+int | npt.NDArray[np.int64] | tuple[int, float] | tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]
+osmnx.elevation module
+¶
+Add node elevations from raster files or web APIs, and calculate edge grades.
+osmnx.elevation.
+add_edge_grades
+(
+G
+,
+*
+,
+add_absolute
+=
+True
+)
+¶
+Calculate and add
+grade
+attributes to all graph edges.
+Vectorized function to calculate the directed grade (i.e., rise over run)
+for each edge in the graph and add it to the edge as an attribute. Nodes
+must already have
+elevation
+and
+length
+attributes before using this
+function.
+See also the
+add_node_elevations_raster
+and
+add_node_elevations_google
+functions.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Graph with
+elevation
+node attributes.
+add_absolute
+(
+bool
+) – If True, also add absolute value of grade as
+grade_abs
+attribute.
+Returns
+:
+G
+– Graph with
+grade
+(and optionally
+grade_abs
+) attributes on the
+edges.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.elevation.
+add_node_elevations_google
+(
+G
+,
+*
+,
+api_key
+=
+None
+,
+batch_size
+=
+512
+,
+pause
+=
+0
+)
+¶
+Add
+elevation
+(meters) attributes to all nodes using a web API.
+By default this uses the Google Maps Elevation API, but you could instead
+use any equivalent API with the same interface and response format (such
+as the Open Topo Data API or the Open-Elevation API) via the
+settings
+module’s
+elevation_url_template
+. Adjust the
+batch_size
+and
+pause
+arguments as needed for the provider. The Google Maps Elevation API
+requires an API key but other providers may not. You can find more
+information about the Google Maps Elevation API interface and format at:
+https://developers.google.com/maps/documentation/elevation
+For a free local alternative see the
+add_node_elevations_raster
+function. See also the
+add_edge_grades
+function.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Graph to add elevation data to.
+api_key
+(
+str
+|
+None
+) – A valid API key. Can be None if the API does not require a key.
+batch_size
+(
+int
+) – Max number of coordinate pairs to submit in each request (depends on
+provider’s limits). Google’s limit is 512.
+pause
+(
+float
+) – How long to pause in seconds between API calls, which can be increased
+if you get rate limited.
+Returns
+:
+G
+– Graph with
+elevation
+attributes on the nodes.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.elevation.
+add_node_elevations_raster
+(
+G
+,
+filepath
+,
+*
+,
+band
+=
+1
+,
+cpus
+=
+None
+)
+¶
+Add
+elevation
+attributes to all nodes from local raster file(s).
+If
+filepath
+is an iterable of paths, this will generate a virtual raster
+composed of the files at those paths as an intermediate step.
+See also the
+add_edge_grades
+function.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Graph in same CRS as raster.
+filepath
+(
+str
+|
+Path
+|
+Iterable
+[
+str
+|
+Path
+]
+) – The path(s) to the raster file(s) to query.
+band
+(
+int
+) – Which raster band to query.
+cpus
+(
+int
+|
+None
+) – How many CPU cores to use if multiprocessing. If None, use all
+available. If you are multiprocessing, make sure you protect your
+entry point: see the Python docs for details.
+Returns
+:
+G
+– Graph with
+elevation
+attributes on the nodes.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.features module
+¶
+Download and create GeoDataFrames from OpenStreetMap geospatial features.
+Retrieve points of interest, building footprints, transit lines/stops, or any
+other map features from OSM, including their geometries and attribute data,
+then construct a GeoDataFrame of them. You can use this module to query for
+nodes, ways, and relations (the latter of type “multipolygon” or “boundary”
+only) by passing a dictionary of desired OSM tags.
+For more details, see
+https://wiki.openstreetmap.org/wiki/Map_features
+and
+https://wiki.openstreetmap.org/wiki/Elements
+Refer to the Getting Started guide for usage limitations.
+osmnx.features.
+features_from_address
+(
+address
+,
+tags
+,
+dist
+)
+¶
+Download OSM features within some distance of an address.
+You can use the
+settings
+module to retrieve a snapshot of historical OSM
+data as of a certain date, or to configure the Overpass server timeout,
+memory allocation, and other custom settings. This function searches for
+features using tags. For more details, see:
+https://wiki.openstreetmap.org/wiki/Map_features
+Parameters
+:
+address
+(
+str
+) – The address to geocode and use as the center point around which to
+retrieve the features.
+tags
+(
+dict
+[
+str
+,
+bool
+|
+str
+|
+list
+[
+str
+]]
+) – Tags for finding elements in the selected area. Results are the union,
+not intersection of the tags and each result matches at least one tag.
+The keys are OSM tags (e.g.
+building
+,
+landuse
+,
+highway
+, etc) and
+the values can be either
+True
+to retrieve all elements matching the
+tag, or a string to retrieve a single
+tag:value
+combination, or a
+list of strings to retrieve multiple values for the tag. For example,
+tags = {‘building’: True}
+would return all buildings in the area.
+Or,
+tags = {‘amenity’:True, ‘landuse’:[‘retail’,’commercial’],
+‘highway’:’bus_stop’}
+would return all amenities, any landuse=retail,
+any landuse=commercial, and any highway=bus_stop.
+dist
+(
+float
+) – Distance in meters from
+address
+to create a bounding box to query.
+Returns
+:
+gdf
+– The features, multi-indexed by element type and OSM ID.
+Return type
+:
+geopandas.GeoDataFrame
+osmnx.features.
+features_from_bbox
+(
+bbox
+,
+tags
+)
+¶
+Download OSM features within a lat-lon bounding box.
+You can use the
+settings
+module to retrieve a snapshot of historical OSM
+data as of a certain date, or to configure the Overpass server timeout,
+memory allocation, and other custom settings. This function searches for
+features using tags. For more details, see:
+https://wiki.openstreetmap.org/wiki/Map_features
+Parameters
+:
+bbox
+(
+tuple
+[
+float
+,
+float
+,
+float
+,
+float
+]
+) – Bounding box as
+(left, bottom, right, top)
+. Coordinates should be in
+unprojected latitude-longitude degrees (EPSG:4326).
+tags
+(
+dict
+[
+str
+,
+bool
+|
+str
+|
+list
+[
+str
+]]
+) – Tags for finding elements in the selected area. Results are the union,
+not intersection of the tags and each result matches at least one tag.
+The keys are OSM tags (e.g.
+building
+,
+landuse
+,
+highway
+, etc) and
+the values can be either
+True
+to retrieve all elements matching the
+tag, or a string to retrieve a single
+tag:value
+combination, or a
+list of strings to retrieve multiple values for the tag. For example,
+tags = {‘building’: True}
+would return all buildings in the area.
+Or,
+tags = {‘amenity’:True, ‘landuse’:[‘retail’,’commercial’],
+‘highway’:’bus_stop’}
+would return all amenities, any landuse=retail,
+any landuse=commercial, and any highway=bus_stop.
+Returns
+:
+gdf
+– The features, multi-indexed by element type and OSM ID.
+Return type
+:
+geopandas.GeoDataFrame
+osmnx.features.
+features_from_place
+(
+query
+,
+tags
+,
+*
+,
+which_result
+=
+None
+)
+¶
+Download OSM features within the boundaries of some place(s).
+The query must be geocodable and OSM must have polygon boundaries for the
+geocode result. If OSM does not have a polygon for this place, you can
+instead get features within it using the
+features_from_address
+function, which geocodes the place name to a point and gets the features
+within some distance of that point.
+If OSM does have polygon boundaries for this place but you’re not finding
+it, try to vary the query string, pass in a structured query dict, or vary
+the
+which_result
+argument to use a different geocode result. If you know
+the OSM ID of the place, you can retrieve its boundary polygon using the
+geocode_to_gdf
+function, then pass it to the
+features_from_polygon
+function.
+You can use the
+settings
+module to retrieve a snapshot of historical OSM
+data as of a certain date, or to configure the Overpass server timeout,
+memory allocation, and other custom settings. This function searches for
+features using tags. For more details, see:
+https://wiki.openstreetmap.org/wiki/Map_features
+Parameters
+:
+query
+(
+str
+|
+dict
+[
+str
+,
+str
+] |
+list
+[
+str
+|
+dict
+[
+str
+,
+str
+]]
+) – The query or queries to geocode to retrieve place boundary polygon(s).
+tags
+(
+dict
+[
+str
+,
+bool
+|
+str
+|
+list
+[
+str
+]]
+) – Tags for finding elements in the selected area. Results are the union,
+not intersection of the tags and each result matches at least one tag.
+The keys are OSM tags (e.g.
+building
+,
+landuse
+,
+highway
+, etc) and
+the values can be either
+True
+to retrieve all elements matching the
+tag, or a string to retrieve a single
+tag:value
+combination, or a
+list of strings to retrieve multiple values for the tag. For example,
+tags = {‘building’: True}
+would return all buildings in the area.
+Or,
+tags = {‘amenity’:True, ‘landuse’:[‘retail’,’commercial’],
+‘highway’:’bus_stop’}
+would return all amenities, any landuse=retail,
+any landuse=commercial, and any highway=bus_stop.
+which_result
+(
+int
+|
+None
+|
+list
+[
+int
+|
+None
+]
+) – Which search result to return. If None, auto-select the first
+(Multi)Polygon or raise an error if OSM doesn’t return one.
+Returns
+:
+gdf
+– The features, multi-indexed by element type and OSM ID.
+Return type
+:
+geopandas.GeoDataFrame
+osmnx.features.
+features_from_point
+(
+center_point
+,
+tags
+,
+dist
+)
+¶
+Download OSM features within some distance of a lat-lon point.
+You can use the
+settings
+module to retrieve a snapshot of historical OSM
+data as of a certain date, or to configure the Overpass server timeout,
+memory allocation, and other custom settings. This function searches for
+features using tags. For more details, see:
+https://wiki.openstreetmap.org/wiki/Map_features
+Parameters
+:
+center_point
+(
+tuple
+[
+float
+,
+float
+]
+) – The
+(lat, lon)
+center point around which to retrieve the features.
+Coordinates should be in unprojected latitude-longitude degrees
+(EPSG:4326).
+tags
+(
+dict
+[
+str
+,
+bool
+|
+str
+|
+list
+[
+str
+]]
+) – Tags for finding elements in the selected area. Results are the union,
+not intersection of the tags and each result matches at least one tag.
+The keys are OSM tags (e.g.
+building
+,
+landuse
+,
+highway
+, etc) and
+the values can be either
+True
+to retrieve all elements matching the
+tag, or a string to retrieve a single
+tag:value
+combination, or a
+list of strings to retrieve multiple values for the tag. For example,
+tags = {‘building’: True}
+would return all buildings in the area.
+Or,
+tags = {‘amenity’:True, ‘landuse’:[‘retail’,’commercial’],
+‘highway’:’bus_stop’}
+would return all amenities, any landuse=retail,
+any landuse=commercial, and any highway=bus_stop.
+dist
+(
+float
+) – Distance in meters from
+center_point
+to create a bounding box to
+query.
+Returns
+:
+gdf
+– The features, multi-indexed by element type and OSM ID.
+Return type
+:
+geopandas.GeoDataFrame
+osmnx.features.
+features_from_polygon
+(
+polygon
+,
+tags
+)
+¶
+Download OSM features within the boundaries of a (Multi)Polygon.
+You can use the
+settings
+module to retrieve a snapshot of historical OSM
+data as of a certain date, or to configure the Overpass server timeout,
+memory allocation, and other custom settings. This function searches for
+features using tags. For more details, see:
+https://wiki.openstreetmap.org/wiki/Map_features
+Parameters
+:
+polygon
+(
+Polygon | MultiPolygon
+) – The geometry within which to retrieve features. Coordinates should be
+in unprojected latitude-longitude degrees (EPSG:4326).
+tags
+(
+dict[str, bool | str | list[str]]
+) – Tags for finding elements in the selected area. Results are the union,
+not intersection of the tags and each result matches at least one tag.
+The keys are OSM tags (e.g.
+building
+,
+landuse
+,
+highway
+, etc) and
+the values can be either
+True
+to retrieve all elements matching the
+tag, or a string to retrieve a single
+tag:value
+combination, or a
+list of strings to retrieve multiple values for the tag. For example,
+tags = {‘building’: True}
+would return all buildings in the area.
+Or,
+tags = {‘amenity’:True, ‘landuse’:[‘retail’,’commercial’],
+‘highway’:’bus_stop’}
+would return all amenities, any landuse=retail,
+any landuse=commercial, and any highway=bus_stop.
+Returns
+:
+gdf
+– The features, multi-indexed by element type and OSM ID.
+Return type
+:
+gpd.GeoDataFrame
+osmnx.features.
+features_from_xml
+(
+filepath
+,
+*
+,
+polygon
+=
+None
+,
+tags
+=
+None
+,
+encoding
+=
+'utf-8'
+)
+¶
+Create a GeoDataFrame of OSM features from data in an OSM XML file.
+Because this function creates a GeoDataFrame of features from an OSM XML
+file that has already been downloaded (i.e., no query is made to the
+Overpass API), the
+polygon
+and
+tags
+arguments are optional. If they
+are None, filtering will be skipped.
+Parameters
+:
+filepath
+(
+str | Path
+) – Path to file containing OSM XML data.
+polygon
+(
+Polygon | MultiPolygon | None
+) – Spatial boundaries to optionally filter the final GeoDataFrame.
+tags
+(
+dict[str, bool | str | list[str]] | None
+) – Query tags to optionally filter the final GeoDataFrame.
+encoding
+(
+str
+) – The OSM XML file’s character encoding.
+Returns
+:
+gdf
+– The features, multi-indexed by element type and OSM ID.
+Return type
+:
+gpd.GeoDataFrame
+osmnx.geocoder module
+¶
+Geocode place names or addresses or retrieve OSM elements by place name or ID.
+This module uses the Nominatim API’s “search” and “lookup” endpoints. For more
+details see
+https://wiki.openstreetmap.org/wiki/Elements
+and
+https://nominatim.org/
+.
+osmnx.geocoder.
+geocode
+(
+query
+)
+¶
+Geocode place names or addresses to
+(lat, lon)
+with the Nominatim API.
+This geocodes the query via the Nominatim “search” endpoint.
+Parameters
+:
+query
+(
+str
+) – The query string to geocode.
+Returns
+:
+point
+– The
+(lat, lon)
+coordinates returned by the geocoder.
+Return type
+:
+tuple[float, float]
+osmnx.geocoder.
+geocode_to_gdf
+(
+query
+,
+*
+,
+which_result
+=
+None
+,
+by_osmid
+=
+False
+)
+¶
+Retrieve OSM elements by place name or OSM ID with the Nominatim API.
+If searching by place name, the
+query
+argument can be a string or
+structured dict, or a list of such strings/dicts to send to the geocoder.
+This uses the Nominatim “search” endpoint to geocode the place name to the
+best-matching OSM element, then returns that element and its attribute
+data.
+You can instead query by OSM ID by passing
+by_osmid=True
+. This uses the
+Nominatim “lookup” endpoint to retrieve the OSM element with that ID. In
+this case, the function treats the
+query
+argument as an OSM ID (or list
+of OSM IDs), which must be prepended with their types: node (N), way (W),
+or relation (R) in accordance with the Nominatim API format. For example,
+query=[“R2192363”, “N240109189”, “W427818536”]
+.
+If
+query
+is a list, then
+which_result
+must be either an int or a list
+with the same length as
+query
+. The queries you provide must be
+resolvable to elements in the Nominatim database. The resulting
+GeoDataFrame’s geometry column contains place boundaries if they exist.
+Parameters
+:
+query
+(
+str
+|
+dict
+[
+str
+,
+str
+] |
+list
+[
+str
+|
+dict
+[
+str
+,
+str
+]]
+) – The query string(s) or structured dict(s) to geocode.
+which_result
+(
+int
+|
+None
+|
+list
+[
+int
+|
+None
+]
+) – Which search result to return. If None, auto-select the first
+(Multi)Polygon or raise an error if OSM doesn’t return one. To get
+the top match (sorted by importance) regardless of geometry type, set
+which_result=1
+. Ignored if
+by_osmid=True
+.
+by_osmid
+(
+bool
+) – If True, treat query as an OSM ID lookup rather than text search.
+Returns
+:
+gdf
+– GeoDataFrame with one row for each query result.
+Return type
+:
+geopandas.GeoDataFrame
+osmnx.graph module
+¶
+Download and create graphs from OpenStreetMap data.
+Refer to the Getting Started guide for usage limitations.
+osmnx.graph.
+graph_from_address
+(
+address
+,
+dist
+,
+*
+,
+dist_type
+=
+'bbox'
+,
+network_type
+=
+'all'
+,
+simplify
+=
+True
+,
+retain_all
+=
+False
+,
+truncate_by_edge
+=
+False
+,
+custom_filter
+=
+None
+)
+¶
+Download and create a graph within some distance of an address.
+This function uses filters to query the Overpass API: you can either
+specify a pre-defined
+network_type
+or provide your own
+custom_filter
+with Overpass QL.
+Use the
+settings
+module’s
+useful_tags_node
+and
+useful_tags_way
+settings to configure which OSM node/way tags are added as graph node/edge
+attributes. If you want a fully bidirectional network, ensure your
+network_type
+is in
+settings.bidirectional_network_types
+before
+creating your graph. You can also use the
+settings
+module to retrieve a
+snapshot of historical OSM data as of a certain date, or to configure the
+Overpass server timeout, memory allocation, and other customizations.
+Parameters
+:
+address
+(
+str
+) – The address to geocode and use as the central point around which to
+construct the graph.
+dist
+(
+float
+) – Retain only those nodes within this many meters of
+center_point
+,
+measuring distance according to
+dist_type
+.
+dist_type
+(
+str
+) – {“network”, “bbox”}
+If “bbox”, retain only those nodes within a bounding box of
+dist
+. If
+“network”, retain only those nodes within
+dist
+network distance from
+the centermost node.
+network_type
+(
+str
+) – {“all”, “all_public”, “bike”, “drive”, “drive_service”, “walk”}
+What type of street network to retrieve if
+custom_filter
+is None.
+simplify
+(
+bool
+) – If True, simplify graph topology with the
+simplify_graph
+function.
+retain_all
+(
+bool
+) – If True, return the entire graph even if it is not connected. If
+False, retain only the largest weakly connected component.
+truncate_by_edge
+(
+bool
+) – If True, retain nodes the outside bounding box if at least one of
+the node’s neighbors lies within the bounding box.
+custom_filter
+(
+str
+|
+list
+[
+str
+] |
+None
+) – A custom ways filter to be used instead of the
+network_type
+presets,
+e.g.
+‘[“power”~”line”]’ or ‘[“highway”~”motorway|trunk”]’
+. If
+str
+,
+the intersection of keys/values will be used, e.g.,
+‘[maxspeed=50][lanes=2]’
+will return all ways having both maxspeed of 50 and two lanes. If
+list
+, the union of the
+list
+items will be used, e.g.,
+[‘[maxspeed=50]’, ‘[lanes=2]’]
+will return all ways having either
+maximum speed of 50 or two lanes. Also pass in a
+network_type
+that
+is in
+settings.bidirectional_network_types
+if you want the graph to
+be fully bidirectional.
+Returns
+:
+G
+– The resulting MultiDiGraph.
+Return type
+:
+networkx.MultiDiGraph
+Notes
+Very large query areas use the
+utils_geo._consolidate_subdivide_geometry
+function to automatically make multiple requests: see that function’s
+documentation for caveats.
+osmnx.graph.
+graph_from_bbox
+(
+bbox
+,
+*
+,
+network_type
+=
+'all'
+,
+simplify
+=
+True
+,
+retain_all
+=
+False
+,
+truncate_by_edge
+=
+False
+,
+custom_filter
+=
+None
+)
+¶
+Download and create a graph within a lat-lon bounding box.
+This function uses filters to query the Overpass API: you can either
+specify a pre-defined
+network_type
+or provide your own
+custom_filter
+with Overpass QL.
+Use the
+settings
+module’s
+useful_tags_node
+and
+useful_tags_way
+settings to configure which OSM node/way tags are added as graph node/edge
+attributes. If you want a fully bidirectional network, ensure your
+network_type
+is in
+settings.bidirectional_network_types
+before
+creating your graph. You can also use the
+settings
+module to retrieve a
+snapshot of historical OSM data as of a certain date, or to configure the
+Overpass server timeout, memory allocation, and other customizations.
+Parameters
+:
+bbox
+(
+tuple
+[
+float
+,
+float
+,
+float
+,
+float
+]
+) – Bounding box as
+(left, bottom, right, top)
+. Coordinates should be in
+unprojected latitude-longitude degrees (EPSG:4326).
+network_type
+(
+str
+) – {“all”, “all_public”, “bike”, “drive”, “drive_service”, “walk”}
+What type of street network to retrieve if
+custom_filter
+is None.
+simplify
+(
+bool
+) – If True, simplify graph topology via the
+simplify_graph
+function.
+retain_all
+(
+bool
+) – If True, return the entire graph even if it is not connected. If
+False, retain only the largest weakly connected component.
+truncate_by_edge
+(
+bool
+) – If True, retain nodes the outside bounding box if at least one of
+the node’s neighbors lies within the bounding box.
+custom_filter
+(
+str
+|
+list
+[
+str
+] |
+None
+) – A custom ways filter to be used instead of the
+network_type
+presets,
+e.g.
+‘[“power”~”line”]’ or ‘[“highway”~”motorway|trunk”]’
+. If
+str
+,
+the intersection of keys/values will be used, e.g.,
+‘[maxspeed=50][lanes=2]’
+will return all ways having both maxspeed of 50 and two lanes. If
+list
+, the union of the
+list
+items will be used, e.g.,
+[‘[maxspeed=50]’, ‘[lanes=2]’]
+will return all ways having either
+maximum speed of 50 or two lanes. Also pass in a
+network_type
+that
+is in
+settings.bidirectional_network_types
+if you want the graph to
+be fully bidirectional.
+Returns
+:
+G
+– The resulting MultiDiGraph.
+Return type
+:
+networkx.MultiDiGraph
+Notes
+Very large query areas use the
+utils_geo._consolidate_subdivide_geometry
+function to automatically make multiple requests: see that function’s
+documentation for caveats.
+osmnx.graph.
+graph_from_place
+(
+query
+,
+*
+,
+network_type
+=
+'all'
+,
+simplify
+=
+True
+,
+retain_all
+=
+False
+,
+truncate_by_edge
+=
+False
+,
+which_result
+=
+None
+,
+custom_filter
+=
+None
+)
+¶
+Download and create a graph within the boundaries of some place(s).
+The query must be geocodable and OSM must have polygon boundaries for the
+geocode result. If OSM does not have a polygon for this place, you can
+instead get its street network using the
+graph_from_address
+function,
+which geocodes the place name to a point and gets the network within some
+distance of that point.
+If OSM does have polygon boundaries for this place but you’re not finding
+it, try to vary the query string, pass in a structured query dict, or vary
+the
+which_result
+argument to use a different geocode result. If you know
+the OSM ID of the place, you can retrieve its boundary polygon using the
+geocode_to_gdf
+function, then pass it to the
+features_from_polygon
+function.
+This function uses filters to query the Overpass API: you can either
+specify a pre-defined
+network_type
+or provide your own
+custom_filter
+with Overpass QL.
+Use the
+settings
+module’s
+useful_tags_node
+and
+useful_tags_way
+settings to configure which OSM node/way tags are added as graph node/edge
+attributes. If you want a fully bidirectional network, ensure your
+network_type
+is in
+settings.bidirectional_network_types
+before
+creating your graph. You can also use the
+settings
+module to retrieve a
+snapshot of historical OSM data as of a certain date, or to configure the
+Overpass server timeout, memory allocation, and other customizations.
+Parameters
+:
+query
+(
+str
+|
+dict
+[
+str
+,
+str
+] |
+list
+[
+str
+|
+dict
+[
+str
+,
+str
+]]
+) – The query or queries to geocode to retrieve place boundary polygon(s).
+network_type
+(
+str
+) – {“all”, “all_public”, “bike”, “drive”, “drive_service”, “walk”}
+What type of street network to retrieve if
+custom_filter
+is None.
+simplify
+(
+bool
+) – If True, simplify graph topology with the
+simplify_graph
+function.
+retain_all
+(
+bool
+) – If True, return the entire graph even if it is not connected. If
+False, retain only the largest weakly connected component.
+truncate_by_edge
+(
+bool
+) – If True, retain nodes outside the place boundary polygon(s) if at
+least one of the node’s neighbors lies within the polygon(s).
+which_result
+(
+int
+|
+None
+|
+list
+[
+int
+|
+None
+]
+) – Which geocoding result to use. if None, auto-select the first
+(Multi)Polygon or raise an error if OSM doesn’t return one.
+custom_filter
+(
+str
+|
+list
+[
+str
+] |
+None
+) – A custom ways filter to be used instead of the
+network_type
+presets,
+e.g.
+‘[“power”~”line”]’ or ‘[“highway”~”motorway|trunk”]’
+. If
+str
+,
+the intersection of keys/values will be used, e.g.,
+‘[maxspeed=50][lanes=2]’
+will return all ways having both maxspeed of 50 and two lanes. If
+list
+, the union of the
+list
+items will be used, e.g.,
+[‘[maxspeed=50]’, ‘[lanes=2]’]
+will return all ways having either
+maximum speed of 50 or two lanes. Also pass in a
+network_type
+that
+is in
+settings.bidirectional_network_types
+if you want the graph to
+be fully bidirectional.
+Returns
+:
+G
+– The resulting MultiDiGraph.
+Return type
+:
+networkx.MultiDiGraph
+Notes
+Very large query areas use the
+utils_geo._consolidate_subdivide_geometry
+function to automatically make multiple requests: see that function’s
+documentation for caveats.
+osmnx.graph.
+graph_from_point
+(
+center_point
+,
+dist
+,
+*
+,
+dist_type
+=
+'bbox'
+,
+network_type
+=
+'all'
+,
+simplify
+=
+True
+,
+retain_all
+=
+False
+,
+truncate_by_edge
+=
+False
+,
+custom_filter
+=
+None
+)
+¶
+Download and create a graph within some distance of a lat-lon point.
+This function uses filters to query the Overpass API: you can either
+specify a pre-defined
+network_type
+or provide your own
+custom_filter
+with Overpass QL.
+Use the
+settings
+module’s
+useful_tags_node
+and
+useful_tags_way
+settings to configure which OSM node/way tags are added as graph node/edge
+attributes. If you want a fully bidirectional network, ensure your
+network_type
+is in
+settings.bidirectional_network_types
+before
+creating your graph. You can also use the
+settings
+module to retrieve a
+snapshot of historical OSM data as of a certain date, or to configure the
+Overpass server timeout, memory allocation, and other customizations.
+Parameters
+:
+center_point
+(
+tuple
+[
+float
+,
+float
+]
+) – The
+(lat, lon)
+center point around which to construct the graph.
+Coordinates should be in unprojected latitude-longitude degrees
+(EPSG:4326).
+dist
+(
+float
+) – Retain only those nodes within this many meters of
+center_point
+,
+measuring distance according to
+dist_type
+.
+dist_type
+(
+str
+) – {“bbox”, “network”}
+If “bbox”, retain only those nodes within a bounding box of
+dist
+length/width. If “network”, retain only those nodes within
+dist
+network distance of the nearest node to
+center_point
+.
+network_type
+(
+str
+) – {“all”, “all_public”, “bike”, “drive”, “drive_service”, “walk”}
+What type of street network to retrieve if
+custom_filter
+is None.
+simplify
+(
+bool
+) – If True, simplify graph topology with the
+simplify_graph
+function.
+retain_all
+(
+bool
+) – If True, return the entire graph even if it is not connected. If
+False, retain only the largest weakly connected component.
+truncate_by_edge
+(
+bool
+) – If True, retain nodes the outside bounding box if at least one of
+the node’s neighbors lies within the bounding box.
+custom_filter
+(
+str
+|
+list
+[
+str
+] |
+None
+) – A custom ways filter to be used instead of the
+network_type
+presets,
+e.g.
+‘[“power”~”line”]’ or ‘[“highway”~”motorway|trunk”]’
+. If
+str
+,
+the intersection of keys/values will be used, e.g.,
+‘[maxspeed=50][lanes=2]’
+will return all ways having both maxspeed of 50 and two lanes. If
+list
+, the union of the
+list
+items will be used, e.g.,
+[‘[maxspeed=50]’, ‘[lanes=2]’]
+will return all ways having either
+maximum speed of 50 or two lanes. Also pass in a
+network_type
+that
+is in
+settings.bidirectional_network_types
+if you want the graph to
+be fully bidirectional.
+Returns
+:
+G
+– The resulting MultiDiGraph.
+Return type
+:
+networkx.MultiDiGraph
+Notes
+Very large query areas use the
+utils_geo._consolidate_subdivide_geometry
+function to automatically make multiple requests: see that function’s
+documentation for caveats.
+osmnx.graph.
+graph_from_polygon
+(
+polygon
+,
+*
+,
+network_type
+=
+'all'
+,
+simplify
+=
+True
+,
+retain_all
+=
+False
+,
+truncate_by_edge
+=
+False
+,
+custom_filter
+=
+None
+)
+¶
+Download and create a graph within the boundaries of a (Multi)Polygon.
+This function uses filters to query the Overpass API: you can either
+specify a pre-defined
+network_type
+or provide your own
+custom_filter
+with Overpass QL.
+Use the
+settings
+module’s
+useful_tags_node
+and
+useful_tags_way
+settings to configure which OSM node/way tags are added as graph node/edge
+attributes. If you want a fully bidirectional network, ensure your
+network_type
+is in
+settings.bidirectional_network_types
+before
+creating your graph. You can also use the
+settings
+module to retrieve a
+snapshot of historical OSM data as of a certain date, or to configure the
+Overpass server timeout, memory allocation, and other customizations.
+Parameters
+:
+polygon
+(
+Polygon | MultiPolygon
+) – The geometry within which to construct the graph. Coordinates should
+be in unprojected latitude-longitude degrees (EPSG:4326).
+network_type
+(
+str
+) – {“all”, “all_public”, “bike”, “drive”, “drive_service”, “walk”}
+What type of street network to retrieve if
+custom_filter
+is None.
+simplify
+(
+bool
+) – If True, simplify graph topology with the
+simplify_graph
+function.
+retain_all
+(
+bool
+) – If True, return the entire graph even if it is not connected. If
+False, retain only the largest weakly connected component.
+truncate_by_edge
+(
+bool
+) – If True, retain nodes outside
+polygon
+if at least one of the node’s
+neighbors lies within
+polygon
+.
+custom_filter
+(
+str | list[str] | None
+) – A custom ways filter to be used instead of the
+network_type
+presets,
+e.g.
+‘[“power”~”line”]’ or ‘[“highway”~”motorway|trunk”]’
+. If
+str
+,
+the intersection of keys/values will be used, e.g.,
+‘[maxspeed=50][lanes=2]’
+will return all ways having both maxspeed of 50 and two lanes. If
+list
+, the union of the
+list
+items will be used, e.g.,
+[‘[maxspeed=50]’, ‘[lanes=2]’]
+will return all ways having either
+maximum speed of 50 or two lanes. Also pass in a
+network_type
+that
+is in
+settings.bidirectional_network_types
+if you want the graph to
+be fully bidirectional.
+Returns
+:
+G
+– The resulting MultiDiGraph.
+Return type
+:
+nx.MultiDiGraph
+Notes
+Very large query areas use the
+utils_geo._consolidate_subdivide_geometry
+function to automatically make multiple requests: see that function’s
+documentation for caveats.
+osmnx.graph.
+graph_from_xml
+(
+filepath
+,
+*
+,
+bidirectional
+=
+False
+,
+simplify
+=
+True
+,
+retain_all
+=
+False
+,
+encoding
+=
+'utf-8'
+)
+¶
+Create a graph from data in an OSM XML file.
+Do not load an XML file previously generated by OSMnx: this use case is
+not supported and may not behave as expected. To save/load graphs to/from
+disk for later use in OSMnx, use the
+io.save_graphml
+and
+io.load_graphml
+functions instead.
+Use the
+settings
+module’s
+useful_tags_node
+and
+useful_tags_way
+settings to configure which OSM node/way tags are added as graph node/edge
+attributes.
+Parameters
+:
+filepath
+(
+str
+|
+Path
+) – Path to file containing OSM XML data.
+bidirectional
+(
+bool
+) – If True, create bidirectional edges for one-way streets.
+simplify
+(
+bool
+) – If True, simplify graph topology with the
+simplify_graph
+function.
+retain_all
+(
+bool
+) – If True, return the entire graph even if it is not connected. If
+False, retain only the largest weakly connected component.
+encoding
+(
+str
+) – The OSM XML file’s character encoding.
+Returns
+:
+G
+– The resulting MultiDiGraph.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.io module
+¶
+File I/O functions to save/load graphs to/from files on disk.
+osmnx.io.
+load_graphml
+(
+filepath
+=
+None
+,
+*
+,
+graphml_str
+=
+None
+,
+node_dtypes
+=
+None
+,
+edge_dtypes
+=
+None
+,
+graph_dtypes
+=
+None
+)
+¶
+Load an OSMnx-saved GraphML file from disk or GraphML string.
+This function converts node, edge, and graph-level attributes (serialized
+as strings) to their appropriate data types. These can be customized as
+needed by passing in dtypes arguments providing types or custom converter
+functions. For example, if you want to convert some attribute’s values to
+bool
+, consider using the built-in
+ox.io._convert_bool_string
+function
+to properly handle “True”/”False” string literals as True/False booleans:
+ox.load_graphml(fp, node_dtypes={my_attr: ox.io._convert_bool_string})
+.
+If you manually configured the
+all_oneway=True
+setting, you may need to
+manually specify here that edge
+oneway
+attributes should be type
+str
+.
+Note that you must pass one and only one of
+filepath
+or
+graphml_str
+.
+If passing
+graphml_str
+, you may need to decode the bytes read from your
+file before converting to string to pass to this function.
+Parameters
+:
+filepath
+(
+str
+|
+Path
+|
+None
+) – Path to the GraphML file.
+graphml_str
+(
+str
+|
+None
+) – Valid and decoded string representation of a GraphML file’s contents.
+node_dtypes
+(
+dict
+[
+str
+,
+Any
+] |
+None
+) – Dict of node attribute names:types to convert values’ data types. The
+type can be a type or a custom string converter function.
+edge_dtypes
+(
+dict
+[
+str
+,
+Any
+] |
+None
+) – Dict of edge attribute names:types to convert values’ data types. The
+type can be a type or a custom string converter function.
+graph_dtypes
+(
+dict
+[
+str
+,
+Any
+] |
+None
+) – Dict of graph-level attribute names:types to convert values’ data
+types. The type can be a type or a custom string converter function.
+Returns
+:
+G
+– The loaded MultiDiGraph.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.io.
+save_graph_geopackage
+(
+G
+,
+filepath
+=
+None
+,
+*
+,
+directed
+=
+False
+,
+encoding
+=
+'utf-8'
+)
+¶
+Save graph nodes and edges to disk as layers in a GeoPackage file.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – The graph to save.
+filepath
+(
+str
+|
+Path
+|
+None
+) – Path to the GeoPackage file including extension. If None, use default
+settings.data_folder/graph.gpkg
+.
+directed
+(
+bool
+) – If False, save one edge for each undirected edge in the graph but
+retain original oneway and to/from information as edge attributes. If
+True, save one edge for each directed edge in the graph.
+encoding
+(
+str
+) – The character encoding of the saved GeoPackage file.
+Return type
+:
+None
+osmnx.io.
+save_graph_xml
+(
+G
+,
+filepath
+=
+None
+,
+*
+,
+way_tag_aggs
+=
+None
+,
+encoding
+=
+'utf-8'
+)
+¶
+Save graph to disk as an OSM XML file.
+This function exists only to allow serialization to the OSM XML format
+for applications that require it, and has constraints to conform to that.
+As such, it has a limited use case which does not include saving/loading
+graphs for subsequent OSMnx analysis. To save/load graphs to/from disk for
+later use in OSMnx, use the
+io.save_graphml
+and
+io.load_graphml
+functions instead. To load a graph from an OSM XML file that you have
+downloaded or generated elsewhere, use the
+graph.graph_from_xml
+function.
+Use the
+settings
+module’s
+useful_tags_node
+and
+useful_tags_way
+settings to configure which tags your graph is created and saved with.
+This function merges graph edges such that each OSM way has one entry in
+the XML output, with the way’s nodes topologically sorted.
+G
+must be
+unsimplified to save as OSM XML: otherwise, one edge could comprise
+multiple OSM ways, making it impossible to group and sort edges in way.
+G
+should also have been created with
+ox.settings.all_oneway=True
+for
+this function to behave properly.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Unsimplified, unprojected graph to save as an OSM XML file.
+filepath
+(
+str
+|
+Path
+|
+None
+) – Path to the saved file including extension. If None, use default
+settings.data_folder/graph.osm
+.
+way_tag_aggs
+(
+dict
+[
+str
+,
+Any
+] |
+None
+) – Keys are OSM way tag keys and values are aggregation functions
+(anything accepted as an argument by pandas.agg). Allows user to
+aggregate graph edge attribute values into single OSM way values. If
+None, or if some tag’s key does not exist in the dict, the way
+attribute will be assigned the value of the first edge of the way.
+encoding
+(
+str
+) – The character encoding of the saved OSM XML file.
+Return type
+:
+None
+osmnx.io.
+save_graphml
+(
+G
+,
+filepath
+=
+None
+,
+*
+,
+gephi
+=
+False
+,
+encoding
+=
+'utf-8'
+)
+¶
+Save graph to disk as GraphML file.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – The graph to save as.
+filepath
+(
+str
+|
+Path
+|
+None
+) – Path to the GraphML file including extension. If None, use default
+settings.data_folder/graph.graphml
+.
+gephi
+(
+bool
+) – If True, give each edge a unique key/id for compatibility with Gephi’s
+interpretation of the GraphML specification.
+encoding
+(
+str
+) – The character encoding of the saved GraphML file.
+Return type
+:
+None
+osmnx.plot module
+¶
+Visualize street networks, routes, orientations, and geospatial features.
+osmnx.plot.
+get_colors
+(
+n
+,
+*
+,
+cmap
+=
+'viridis'
+,
+start
+=
+0
+,
+stop
+=
+1
+,
+alpha
+=
+None
+)
+¶
+Return
+n
+evenly-spaced colors from a matplotlib colormap.
+Parameters
+:
+n
+(
+int
+) – How many colors to sample.
+cmap
+(
+str
+) – Name of the matplotlib colormap from which to sample the colors.
+start
+(
+float
+) – Where to start sampling from the colorspace (from 0 to 1).
+stop
+(
+float
+) – Where to end sampling from the colorspace (from 0 to 1).
+alpha
+(
+float
+|
+None
+) – If
+None
+, return colors as HTML-like hex triplet “#rrggbb” RGB
+strings. If
+float
+, return as “#rrggbbaa” RGBa strings.
+Returns
+:
+color_list
+– The sampled colors.
+Return type
+:
+list[str]
+osmnx.plot.
+get_edge_colors_by_attr
+(
+G
+,
+attr
+,
+*
+,
+num_bins
+=
+None
+,
+cmap
+=
+'viridis'
+,
+start
+=
+0
+,
+stop
+=
+1
+,
+na_color
+=
+'none'
+,
+equal_size
+=
+False
+)
+¶
+Return colors based on edges’ numerical attribute values.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+attr
+(
+str
+) – Name of a node attribute with numerical values.
+num_bins
+(
+int
+|
+None
+) – If None, linearly map a color to each value. Otherwise, assign values
+to this many bins then assign a color to each bin.
+cmap
+(
+str
+) – Name of the matplotlib colormap from which to choose the colors.
+start
+(
+float
+) – Where to start in the colorspace (from 0 to 1).
+stop
+(
+float
+) – Where to end in the colorspace (from 0 to 1).
+na_color
+(
+str
+) – The color to assign to nodes with missing
+attr
+values.
+equal_size
+(
+bool
+) – Ignored if
+num_bins
+is None. If True, bin into equal-sized quantiles
+(requires unique bin edges). If False, bin into equal-spaced bins.
+Returns
+:
+edge_colors
+– Labels are
+(u, v, k)
+edge IDs, values are colors as hex strings.
+Return type
+:
+pandas.Series
+osmnx.plot.
+get_node_colors_by_attr
+(
+G
+,
+attr
+,
+*
+,
+num_bins
+=
+None
+,
+cmap
+=
+'viridis'
+,
+start
+=
+0
+,
+stop
+=
+1
+,
+na_color
+=
+'none'
+,
+equal_size
+=
+False
+)
+¶
+Return colors based on nodes’ numerical attribute values.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+attr
+(
+str
+) – Name of a node attribute with numerical values.
+num_bins
+(
+int
+|
+None
+) – If None, linearly map a color to each value. Otherwise, assign values
+to this many bins then assign a color to each bin.
+cmap
+(
+str
+) – Name of the matplotlib colormap from which to choose the colors.
+start
+(
+float
+) – Where to start in the colorspace (from 0 to 1).
+stop
+(
+float
+) – Where to end in the colorspace (from 0 to 1).
+na_color
+(
+str
+) – The color to assign to nodes with missing
+attr
+values.
+equal_size
+(
+bool
+) – Ignored if
+num_bins
+is None. If True, bin into equal-sized quantiles
+(requires unique bin edges). If False, bin into equal-spaced bins.
+Returns
+:
+node_colors
+– Labels are node IDs, values are colors as hex strings.
+Return type
+:
+pandas.Series
+osmnx.plot.
+plot_figure_ground
+(
+G
+,
+*
+,
+dist
+=
+805
+,
+street_widths
+=
+None
+,
+default_width
+=
+4
+,
+color
+=
+'w'
+,
+**
+pg_kwargs
+)
+¶
+Plot a figure-ground diagram of a street network.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – An unprojected graph.
+dist
+(
+float
+) – How many meters to extend plot’s bounding box from the graph’s center
+point. Default corresponds to a square mile bounding box.
+street_widths
+(
+dict
+[
+str
+,
+float
+] |
+None
+) – Dict keys are street types (ie, OSM “highway” tags) and values are the
+widths to plot them, in pixels.
+default_width
+(
+float
+) – Fallback width, in pixels, for any street type not in
+street_widths
+.
+color
+(
+str
+) – The color of the streets.
+**pg_kwargs
+(
+Any
+) – Keyword arguments to pass to
+plot_graph
+.
+Returns
+:
+fig, ax
+– The resulting matplotlib figure and axes objects.
+Return type
+:
+tuple[matplotlib.figure.Figure, matplotlib.axes._axes.Axes]
+osmnx.plot.
+plot_footprints
+(
+gdf
+,
+*
+,
+ax
+=
+None
+,
+figsize
+=
+(8,
+8)
+,
+color
+=
+'orange'
+,
+edge_color
+=
+'none'
+,
+edge_linewidth
+=
+0
+,
+alpha
+=
+None
+,
+bgcolor
+=
+'#111111'
+,
+bbox
+=
+None
+,
+show
+=
+True
+,
+close
+=
+False
+,
+save
+=
+False
+,
+filepath
+=
+None
+,
+dpi
+=
+600
+)
+¶
+Visualize a GeoDataFrame of geospatial features’ footprints.
+Parameters
+:
+gdf
+(
+gpd.GeoDataFrame
+) – GeoDataFrame of footprints (i.e., Polygons and/or MultiPolygons).
+ax
+(
+Axes | None
+) – If not None, plot on this pre-existing axes instance.
+figsize
+(
+tuple[float, float]
+) – If
+ax
+is None, create new figure with size
+(width, height)
+.
+color
+(
+str
+) – Color of the footprints.
+edge_color
+(
+str
+) – Color of the footprints’ edges.
+edge_linewidth
+(
+float
+) – Width of the footprints’ edges.
+alpha
+(
+float | None
+) – Opacity of the footprints’ edges.
+bgcolor
+(
+str
+) – Background color of the figure.
+bbox
+(
+tuple[float, float, float, float] | None
+) – Bounding box as
+(left, bottom, right, top)
+. If None, calculate it
+from the spatial extents of the geometries in
+gdf
+.
+show
+(
+bool
+) – If True, call
+pyplot.show()
+to show the figure.
+close
+(
+bool
+) – If True, call
+pyplot.close()
+to close the figure.
+save
+(
+bool
+) – If True, save the figure to disk at
+filepath
+.
+filepath
+(
+str | Path | None
+) – The path to the file if
+save
+is True. File format is determined from
+the extension. If None, save at
+settings.imgs_folder/image.png
+.
+dpi
+(
+int
+) – The resolution of saved file if
+save
+is True.
+Returns
+:
+fig, ax
+– The resulting matplotlib figure and axes objects.
+Return type
+:
+tuple[Figure, Axes]
+osmnx.plot.
+plot_graph
+(
+G
+,
+*
+,
+ax
+=
+None
+,
+figsize
+=
+(8,
+8)
+,
+bgcolor
+=
+'#111111'
+,
+node_color
+=
+'w'
+,
+node_size
+=
+15
+,
+node_alpha
+=
+None
+,
+node_edgecolor
+=
+'none'
+,
+node_zorder
+=
+1
+,
+edge_color
+=
+'#999999'
+,
+edge_linewidth
+=
+1
+,
+edge_alpha
+=
+None
+,
+bbox
+=
+None
+,
+show
+=
+True
+,
+close
+=
+False
+,
+save
+=
+False
+,
+filepath
+=
+None
+,
+dpi
+=
+300
+)
+¶
+Visualize a graph.
+Parameters
+:
+G
+(
+nx.MultiGraph | nx.MultiDiGraph
+) – Input graph.
+ax
+(
+Axes | None
+) – If not None, plot on this pre-existing axes instance.
+figsize
+(
+tuple[float, float]
+) – If
+ax
+is None, create new figure with size
+(width, height)
+.
+bgcolor
+(
+str
+) – Background color of the figure.
+node_color
+(
+str | Sequence[str]
+) – Color(s) of the nodes.
+node_size
+(
+float | Sequence[float]
+) – Size(s) of the nodes. If 0, then skip plotting the nodes.
+node_alpha
+(
+float | None
+) – Opacity of the nodes. If you passed RGBa values to
+node_color
+, set
+node_alpha=None
+to use the alpha channel in
+node_color
+.
+node_edgecolor
+(
+str | Iterable[str]
+) – Color(s) of the nodes’ markers’ borders.
+node_zorder
+(
+int
+) – The zorder to plot nodes. Edges are always 1, so set
+node_zorder=0
+to plot nodes beneath edges.
+edge_color
+(
+str | Iterable[str]
+) – Color(s) of the edges’ lines.
+edge_linewidth
+(
+float | Sequence[float]
+) – Width(s) of the edges’ lines. If 0, then skip plotting the edges.
+edge_alpha
+(
+float | None
+) – Opacity of the edges. If you passed RGBa values to
+edge_color
+, set
+edge_alpha=None
+to use the alpha channel in
+edge_color
+.
+bbox
+(
+tuple[float, float, float, float] | None
+) – Bounding box as
+(left, bottom, right, top)
+. If None, calculate it
+from spatial extents of plotted geometries.
+show
+(
+bool
+) – If True, call
+pyplot.show()
+to show the figure.
+close
+(
+bool
+) – If True, call
+pyplot.close()
+to close the figure.
+save
+(
+bool
+) – If True, save the figure to disk at
+filepath
+.
+filepath
+(
+str | Path | None
+) – The path to the file if
+save
+is True. File format is determined from
+the extension. If None, save at
+settings.imgs_folder/image.png
+.
+dpi
+(
+int
+) – The resolution of saved file if
+save
+is True.
+Returns
+:
+fig, ax
+– The resulting matplotlib figure and axes objects.
+Return type
+:
+tuple[Figure, Axes]
+osmnx.plot.
+plot_graph_route
+(
+G
+,
+route
+,
+*
+,
+route_color
+=
+'r'
+,
+route_linewidth
+=
+4
+,
+route_alpha
+=
+0.5
+,
+orig_dest_size
+=
+100
+,
+ax
+=
+None
+,
+**
+pg_kwargs
+)
+¶
+Visualize a path along a graph.
+Parameters
+:
+G
+(
+nx.MultiDiGraph
+) – Input graph.
+route
+(
+list[int]
+) – A path of node IDs.
+route_color
+(
+str
+) – The color of the route.
+route_linewidth
+(
+float
+) – Width of the route’s line.
+route_alpha
+(
+float
+) – Opacity of the route’s line.
+orig_dest_size
+(
+float
+) – Size of the origin and destination nodes.
+ax
+(
+Axes | None
+) – If not None, plot on this pre-existing axes instance.
+**pg_kwargs
+(
+Any
+) – Keyword arguments to pass to
+plot_graph
+.
+Returns
+:
+fig, ax
+– The resulting matplotlib figure and axes objects.
+Return type
+:
+tuple[Figure, Axes]
+osmnx.plot.
+plot_graph_routes
+(
+G
+,
+routes
+,
+*
+,
+route_colors
+=
+'r'
+,
+route_linewidths
+=
+4
+,
+**
+pgr_kwargs
+)
+¶
+Visualize multiple paths along a graph.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+routes
+(
+Iterable
+[
+list
+[
+int
+]]
+) – Paths of node IDs.
+route_colors
+(
+str
+|
+Iterable
+[
+str
+]
+) – If string, the one color for all routes. Otherwise, the color for each
+route.
+route_linewidths
+(
+float
+|
+Iterable
+[
+float
+]
+) – If float, the one linewidth for all routes. Otherwise, the linewidth
+for each route.
+**pgr_kwargs
+(
+Any
+) – Keyword arguments to pass to
+plot_graph_route
+.
+Returns
+:
+fig, ax
+– The resulting matplotlib figure and axes objects.
+Return type
+:
+tuple[matplotlib.figure.Figure, matplotlib.axes._axes.Axes]
+osmnx.plot.
+plot_orientation
+(
+G
+,
+*
+,
+num_bins
+=
+36
+,
+min_length
+=
+0
+,
+weight
+=
+None
+,
+ax
+=
+None
+,
+figsize
+=
+(5,
+5)
+,
+area
+=
+True
+,
+color
+=
+'#003366'
+,
+edgecolor
+=
+'k'
+,
+linewidth
+=
+0.5
+,
+alpha
+=
+0.7
+,
+title
+=
+None
+,
+title_y
+=
+1.05
+,
+title_font
+=
+None
+,
+xtick_font
+=
+None
+)
+¶
+Plot a polar histogram of a spatial network’s edge bearings.
+Ignores self-loop edges as their bearings are undefined. If
+G
+is a
+MultiGraph, all edge bearings will be bidirectional (ie, two reciprocal
+bearings per undirected edge). If
+G
+is a MultiDiGraph, all edge bearings
+will be directional (ie, one bearing per directed edge). See also the
+bearings
+module.
+For more info see: Boeing, G. 2019. “Urban Spatial Order: Street Network
+Orientation, Configuration, and Entropy.” Applied Network Science, 4 (1),
+67.
+https://doi.org/10.1007/s41109-019-0189-1
+Parameters
+:
+G
+(
+nx.MultiGraph | nx.MultiDiGraph
+) – Unprojected graph with
+bearing
+attributes on each edge.
+num_bins
+(
+int
+) – Number of bins. For example, if
+num_bins=36
+is provided, then each
+bin will represent 10 degrees around the compass.
+min_length
+(
+float
+) – Ignore edges with “length” attribute values less than
+min_length
+.
+weight
+(
+str | None
+) – If not None, weight the edges’ bearings by this (non-null) edge
+attribute.
+ax
+(
+PolarAxes | None
+) – If not None, plot on this pre-existing axes instance (must have
+projection=polar).
+figsize
+(
+tuple[float, float]
+) – If
+ax
+is None, create new figure with size
+(width, height)
+.
+area
+(
+bool
+) – If True, set bar length so area is proportional to frequency.
+Otherwise, set bar length so height is proportional to frequency.
+color
+(
+str
+) – Color of the histogram bars.
+edgecolor
+(
+str
+) – Color of the histogram bar edges.
+linewidth
+(
+float
+) – Width of the histogram bar edges.
+alpha
+(
+float
+) – Opacity of the histogram bars.
+title
+(
+str | None
+) – The figure’s title.
+title_y
+(
+float
+) – The y position to place
+title
+.
+title_font
+(
+dict[str, Any] | None
+) – The title’s
+fontdict
+to pass to matplotlib.
+xtick_font
+(
+dict[str, Any] | None
+) – The xtick labels’
+fontdict
+to pass to matplotlib.
+Returns
+:
+fig, ax
+– The resulting matplotlib figure and polar axes objects.
+Return type
+:
+tuple[Figure, PolarAxes]
+osmnx.projection module
+¶
+Project a graph, GeoDataFrame, or geometry to a different CRS.
+osmnx.projection.
+is_projected
+(
+crs
+)
+¶
+Determine if a coordinate reference system is projected or not.
+Parameters
+:
+crs
+(
+Any
+) – The identifier of the coordinate reference system. This can be
+anything accepted by
+pyproj.CRS.from_user_input()
+, such as an
+authority string or a WKT string.
+Returns
+:
+projected
+– True if
+crs
+is projected, otherwise False.
+Return type
+:
+bool
+osmnx.projection.
+project_gdf
+(
+gdf
+,
+*
+,
+to_crs
+=
+None
+,
+to_latlong
+=
+False
+)
+¶
+Project a GeoDataFrame from its current CRS to another.
+If
+to_latlong
+is True, this projects the GeoDataFrame to the coordinate
+reference system defined by
+settings.default_crs
+. Otherwise it projects
+it to the CRS defined by
+to_crs
+. If
+to_crs
+is
+None
+, it projects it
+to the CRS of an appropriate UTM zone given
+gdf
+’s bounds.
+Parameters
+:
+gdf
+(
+GeoDataFrame
+) – The GeoDataFrame to be projected.
+to_crs
+(
+Any
+|
+None
+) – If None, project to an appropriate UTM zone. Otherwise project to
+this CRS.
+to_latlong
+(
+bool
+) – If True, project to
+settings.default_crs
+and ignore
+to_crs
+.
+Returns
+:
+gdf_proj
+– The projected GeoDataFrame.
+Return type
+:
+geopandas.GeoDataFrame
+osmnx.projection.
+project_geometry
+(
+geom
+,
+*
+,
+crs
+=
+None
+,
+to_crs
+=
+None
+,
+to_latlong
+=
+False
+)
+¶
+Project a Shapely geometry from its current CRS to another.
+If
+to_latlong
+is True, this projects the geometry to the coordinate
+reference system defined by
+settings.default_crs
+. Otherwise it projects
+it to the CRS defined by
+to_crs
+. If
+to_crs
+is
+None
+, it projects it
+to the CRS of an appropriate UTM zone given
+geometry
+’s bounds.
+Parameters
+:
+geom
+(
+Geometry
+) – The geometry to be projected.
+crs
+(
+Any
+|
+None
+) – The initial CRS of
+geometry
+. If None, it will be set to
+settings.default_crs
+.
+to_crs
+(
+Any
+|
+None
+) – If None, project to an appropriate UTM zone. Otherwise project to this
+CRS.
+to_latlong
+(
+bool
+) – If True, project to
+settings.default_crs
+and ignore
+to_crs
+.
+Returns
+:
+geom_proj, crs
+– The projected geometry and its new CRS.
+Return type
+:
+tuple[shapely.Geometry,
+Any
+]
+osmnx.projection.
+project_graph
+(
+G
+,
+*
+,
+to_crs
+=
+None
+,
+to_latlong
+=
+False
+)
+¶
+Project a graph from its current CRS to another.
+If
+to_latlong
+is True, this projects the graph to the coordinate
+reference system defined by
+settings.default_crs
+. Otherwise it projects
+it to the CRS defined by
+to_crs
+. If
+to_crs
+is
+None
+, it projects it
+to the CRS of an appropriate UTM zone given
+geometry
+’s bounds.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – The graph to be projected.
+to_crs
+(
+Any
+|
+None
+) – If None, project to an appropriate UTM zone. Otherwise project to
+this CRS.
+to_latlong
+(
+bool
+) – If True, project to
+settings.default_crs
+and ignore
+to_crs
+.
+Returns
+:
+G_proj
+– The projected graph.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.routing module
+¶
+Calculate edge speeds, travel times, and weighted shortest paths.
+osmnx.routing.
+add_edge_speeds
+(
+G
+,
+*
+,
+hwy_speeds
+=
+None
+,
+fallback
+=
+None
+,
+agg
+=
+numpy.mean
+)
+¶
+Add edge speeds (km per hour) to graph as new
+speed_kph
+edge attributes.
+By default, this imputes free-flow travel speeds for all edges via the
+mean
+maxspeed
+value of the edges of each highway type. For highway types
+in the graph that have no
+maxspeed
+value on any edge, it assigns the
+mean of all
+maxspeed
+values in graph.
+This default mean-imputation can obviously be imprecise, and the user can
+override it by passing in
+hwy_speeds
+and/or
+fallback
+arguments that
+correspond to local speed limit standards. The user can also specify a
+different aggregation function (such as the median) to impute missing
+values from the observed values.
+If edge
+maxspeed
+attribute has “mph” in it, value will automatically be
+converted from miles per hour to km per hour. Any other speed units should
+be manually converted to km per hour prior to running this function,
+otherwise there could be unexpected results. If “mph” does not appear in
+the edge’s maxspeed attribute string, then function assumes kph, per OSM
+guidelines:
+https://wiki.openstreetmap.org/wiki/Map_Features/Units
+If you wish to set all edge speeds to a single constant value (such as for
+a walking network), use
+nx.set_edge_attributes
+to set the
+speed_kph
+attribute value directly, rather than using this function.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+hwy_speeds
+(
+dict
+[
+str
+,
+float
+] |
+None
+) – Dict keys are OSM highway types and values are typical speeds (km per
+hour) to assign to edges of that highway type for any edges missing
+speed data. Any edges with highway type not in
+hwy_speeds
+will be
+assigned the mean pre-existing speed value of all edges of that
+highway type.
+fallback
+(
+float
+|
+None
+) – Default speed value (km per hour) to assign to edges whose highway
+type did not appear in
+hwy_speeds
+and had no pre-existing speed
+attribute values on any edge.
+agg
+(
+Callable
+[[
+Any
+],
+Any
+]
+) – Aggregation function to impute missing values from observed values.
+The default is
+numpy.mean
+, but you might also consider for example
+numpy.median
+,
+numpy.nanmedian
+, or your own custom function.
+Returns
+:
+G
+– Graph with
+speed_kph
+attributes on all edges.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.routing.
+add_edge_travel_times
+(
+G
+)
+¶
+Add edge travel time (seconds) to graph as new
+travel_time
+edge attributes.
+Calculates free-flow travel time along each edge, based on
+length
+and
+speed_kph
+attributes. Note: run
+add_edge_speeds
+first to generate the
+speed_kph
+attribute. All edges must have
+length
+and
+speed_kph
+attributes and all their values must be non-null.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+Returns
+:
+G
+– Graph with
+travel_time
+attributes on all edges.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.routing.
+k_shortest_paths
+(
+G
+,
+orig
+,
+dest
+,
+k
+,
+*
+,
+weight
+=
+'length'
+)
+¶
+Solve
+k
+shortest paths from an origin node to a destination node.
+Uses Yen’s algorithm. See also
+shortest_path
+to solve just the one
+shortest path.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+orig
+(
+int
+) – Origin node ID.
+dest
+(
+int
+) – Destination node ID.
+k
+(
+int
+) – Number of shortest paths to solve.
+weight
+(
+str
+) – Edge attribute to minimize when solving shortest paths.
+Yields
+:
+path
+– The node IDs constituting the next-shortest path.
+Return type
+:
+Iterator
+[
+list
+[
+int
+]]
+osmnx.routing.
+route_to_gdf
+(
+G
+,
+route
+,
+*
+,
+weight
+=
+'length'
+)
+¶
+Return a GeoDataFrame of the edges in a path, in order.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+route
+(
+list
+[
+int
+]
+) – Node IDs constituting the path.
+weight
+(
+str
+) – Attribute value to minimize when choosing between parallel edges.
+Returns
+:
+gdf_edges
+– The ordered edges in the path.
+Return type
+:
+geopandas.GeoDataFrame
+osmnx.routing.
+shortest_path
+(
+G
+,
+orig
+,
+dest
+,
+*
+,
+weight
+=
+'length'
+,
+cpus
+=
+1
+)
+¶
+Solve shortest path from origin node(s) to destination node(s).
+Uses Dijkstra’s algorithm. If
+orig
+and
+dest
+are single node IDs, this
+will return a list of the nodes constituting the shortest path between
+them. If
+orig
+and
+dest
+are lists of node IDs, this will return a list
+of lists of the nodes constituting the shortest path between each
+origin-destination pair. If a path cannot be solved, this will return None
+for that path. You can parallelize solving multiple paths with the
+cpus
+parameter, but be careful to not exceed your available RAM.
+See also
+k_shortest_paths
+to solve multiple shortest paths between a
+single origin and destination. For additional functionality or different
+solver algorithms, use NetworkX directly.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+orig
+(
+int
+|
+Iterable
+[
+int
+]
+) – Origin node ID(s).
+dest
+(
+int
+|
+Iterable
+[
+int
+]
+) – Destination node ID(s).
+weight
+(
+str
+) – Edge attribute to minimize when solving shortest path.
+cpus
+(
+int
+|
+None
+) – How many CPU cores to use if multiprocessing. If None, use all
+available. If you are multiprocessing, make sure you protect your
+entry point: see the Python docs for details.
+Returns
+:
+path
+– The node IDs constituting the shortest path, or, if
+orig
+and
+dest
+are both iterable, then a list of such paths.
+Return type
+:
+list[int] | None | list[list[int] | None]
+osmnx.settings module
+¶
+Global settings that can be configured by the user.
+all_oneway
+bool
+Only use if subsequently saving graph to an OSM XML file via the
+save_graph_xml
+function. If True, forces all ways to be added as one-way
+ways, preserving the original order of the nodes in the OSM way. This also
+retains the original OSM way’s oneway tag’s string value as edge attribute
+values, rather than converting them to True/False bool values. Default is
+False
+.
+bidirectional_network_types
+list[str]
+Network types for which a fully bidirectional graph will be created.
+Default is
+[“walk”]
+.
+cache_folder
+str | Path
+Path to folder to save/load HTTP response cache files, if the
+use_cache
+setting is True. Default is
+“./cache”
+.
+cache_only_mode
+bool
+If True, download network data from Overpass then raise a
+CacheOnlyModeInterrupt
+error for user to catch. This prevents graph
+building from taking place and instead just saves Overpass response to
+cache. Useful for sequentially caching lots of raw data (as you can
+only query Overpass one request at a time) then using the local cache to
+quickly build many graphs simultaneously with multiprocessing. Default is
+False
+.
+data_folder
+str | Path
+Path to folder to save/load graph files by default. Default is
+“./data”
+.
+default_access
+str
+Filter for the OSM “access” tag. Default is
+‘[“access”!~”private”]’
+.
+Note that also filtering out “access=no” ways prevents including
+transit-only bridges (e.g., Tilikum Crossing) from appearing in drivable
+road network (e.g.,
+‘[“access”!~”private|no”]’
+). However, some drivable
+tollroads have “access=no” plus a “access:conditional” tag to clarify when
+it is accessible, so we can’t filter out all “access=no” ways by default.
+Best to be permissive here then remove complicated combinations of tags
+programatically after the full graph is downloaded and constructed.
+default_crs
+str
+Default coordinate reference system to set when creating graphs. Default
+is
+“epsg:4326”
+.
+doh_url_template
+str | None
+Endpoint to resolve DNS-over-HTTPS if local DNS resolution fails. Set to
+None to disable DoH, but see
+downloader._config_dns
+documentation for
+caveats. Default is:
+“https://8.8.8.8/resolve?name={hostname}”
+elevation_url_template
+str
+Endpoint of the Google Maps Elevation API (or equivalent), containing
+up to two parameters, in order:
+locations
+and
+key
+. Default is:
+“https://maps.googleapis.com/maps/api/elevation/json?locations={locations}&key={key}”
+.
+As alternative free examples, the Open Topo Data API would be:
+“https://api.opentopodata.org/v1/aster30m?locations={locations}”
+and the Open-Elevation API would be:
+“https://api.open-elevation.com/api/v1/lookup?locations={locations}”
+.
+http_accept_language
+str
+HTTP header accept-language. Default is
+“en”
+. Note that Nominatim’s
+default language is “en” and it may sort its results’ importance scores
+differently if a different language is specified.
+http_referer
+str
+HTTP header referer. Default is
+“OSMnx Python package (https://github.com/gboeing/osmnx)”
+.
+http_user_agent
+str
+HTTP header user-agent. Default is
+“OSMnx Python package (https://github.com/gboeing/osmnx)”
+.
+imgs_folder
+str | Path
+Path to folder in which to save plotted images by default. Default is
+“./images”
+.
+log_file
+bool
+If True, save log output to a file in
+logs_folder
+. Default is
+False
+.
+log_filename
+str
+Name of the log file, without file extension. Default is
+“osmnx”
+.
+log_console
+bool
+If True, print log output to the console (terminal window). Default is
+False
+.
+log_level
+int
+One of Python’s
+logger.level
+constants. Default is
+logging.INFO
+.
+log_name
+str
+Name of the logger. Default is
+“OSMnx”
+.
+logs_folder
+str | Path
+Path to folder in which to save log files. Default is
+“./logs”
+.
+max_query_area_size
+float
+Maximum area for any part of the geometry in meters: any polygon bigger
+than this will get divided up for multiple queries to the API. Default is
+2500000000
+.
+nominatim_key
+str | None
+Your Nominatim API key, if you are using an API instance that requires
+one. Default is
+None
+.
+nominatim_url
+str
+The base API url to use for Nominatim queries. Default is
+“https://nominatim.openstreetmap.org/”
+.
+overpass_memory
+int | None
+Overpass server memory allocation size for the query, in bytes. If
+None, server will choose its default allocation size. Use with caution.
+Default is
+None
+.
+overpass_rate_limit
+bool
+If True, check the Overpass server status endpoint for how long to
+pause before making request. Necessary if server uses slot management,
+but can be set to False if you are running your own Overpass instance
+without rate limiting. Default is
+True
+.
+overpass_settings
+str
+Settings string for Overpass queries. Default is
+“[out:json][timeout:{timeout}]{maxsize}”
+. By default, the {timeout} and
+{maxsize} values are set dynamically by OSMnx when used.
+To query, for example, historical OSM data as of a certain date:
+‘[out:json][timeout:90][date:”2019-10-28T19:20:00Z”]’
+. Use with caution.
+overpass_url
+str
+The base API url to use for Overpass queries. Default is
+“https://overpass-api.de/api”
+.
+requests_kwargs
+dict[str, Any]
+Optional keyword args to pass to the requests package when connecting
+to APIs, for example to configure authentication or provide a path to
+a local certificate file. More info on options such as auth, cert,
+verify, and proxies can be found in the requests package advanced docs.
+Default is
+{}
+.
+requests_timeout
+int
+The timeout interval in seconds for HTTP requests, and (when applicable)
+for Overpass server to use for executing the query. Default is
+180
+.
+use_cache
+bool
+If True, cache HTTP responses locally in
+cache_folder
+instead of calling
+API repeatedly for the same request. Default is
+True
+.
+useful_tags_node
+list[str]
+OSM “node” tags to add as graph node attributes, when present in the data
+retrieved from OSM. Default is
+[“highway”, “junction”, “railway”, “ref”]
+.
+useful_tags_way
+list[str]
+OSM “way” tags to add as graph edge attributes, when present in the data
+retrieved from OSM. Default is
+[“access”, “area”, “bridge”, “est_width”,
+“highway”, “junction”, “landuse”, “lanes”, “maxspeed”, “name”, “oneway”,
+“ref”, “service”, “tunnel”, “width”]
+.
+osmnx.simplification module
+¶
+Simplify, correct, and consolidate spatial graph nodes and edges.
+osmnx.simplification.
+consolidate_intersections
+(
+G
+,
+*
+,
+tolerance
+=
+10
+,
+rebuild_graph
+=
+True
+,
+dead_ends
+=
+False
+,
+reconnect_edges
+=
+True
+,
+node_attr_aggs
+=
+None
+)
+¶
+Consolidate intersections comprising clusters of nearby nodes.
+This algorithm is described in the journal article: Boeing, G. 2025.
+“Topological Graph Simplification Solutions to the Street Intersection
+Miscount Problem.” Transactions in GIS, 29 (3), e70037.
+https://doi.org/10.1111/tgis.70037
+Merges nearby nodes and returns either their centroids or a rebuilt graph
+with consolidated intersections and reconnected edge geometries. The
+tolerance
+argument can be a single value applied to all nodes or
+individual per-node values. It should be adjusted to approximately match
+street design standards in the specific street network, and you should use
+a projected graph to work in meaningful and consistent units like meters.
+Note:
+tolerance
+represents a per-node buffering radius. For example, to
+consolidate nodes within 10 meters of each other, use
+tolerance=5
+.
+When
+rebuild_graph
+is False, it uses a purely geometric (and relatively
+fast) algorithm to identify “geometrically close” nodes, merge them, and
+return the merged intersections’ centroids. When
+rebuild_graph
+is True,
+it uses a topological (and slower but more accurate) algorithm to identify
+“topologically close” nodes, merge them, then rebuild/return the graph.
+Returned graph’s node IDs represent clusters rather than “osmid” values.
+Refer to nodes’ “osmid_original” attributes for original “osmid” values.
+If multiple nodes were merged together, the “osmid_original” attribute is
+a list of merged nodes’ “osmid” values.
+Divided roads are often represented by separate centerline edges. The
+intersection of two divided roads thus creates 4 nodes, representing where
+each edge intersects a perpendicular edge. These 4 nodes represent a
+single intersection in the real world. A similar situation occurs with
+roundabouts and traffic circles. This function consolidates nearby nodes
+by buffering them to an arbitrary distance, merging overlapping buffers,
+and taking their centroid.
+Parameters
+:
+G
+(
+nx.MultiDiGraph
+) – A projected graph.
+tolerance
+(
+float | dict[int, float]
+) – Nodes are buffered to this distance (in graph’s geometry’s units) and
+subsequent overlaps are dissolved into a single node. If scalar, then
+that single value will be used for all nodes. If dict (mapping node
+IDs to individual values), then those values will be used per node and
+any missing node IDs will not be buffered.
+rebuild_graph
+(
+bool
+) – If True, consolidate the nodes topologically, rebuild the graph, and
+return as MultiDiGraph. Otherwise, consolidate the nodes geometrically
+and return the consolidated node points as GeoSeries.
+dead_ends
+(
+bool
+) – If False, discard dead-end nodes to return only street-intersection
+points.
+reconnect_edges
+(
+bool
+) – If True, reconnect edges (and their geometries) to the consolidated
+nodes in rebuilt graph, and update the edge length attributes. If
+False, the returned graph has no edges (which is faster if you just
+need topologically consolidated intersection counts). Ignored if
+rebuild_graph
+is not True.
+node_attr_aggs
+(
+dict[str, Any] | None
+) – Allows user to aggregate node attributes values when merging nodes.
+Keys are node attribute names and values are aggregation functions
+(anything accepted as an argument by
+pandas.agg
+). Node attributes
+not in
+node_attr_aggs
+will contain the unique values across the
+merged nodes. If None, defaults to
+{“elevation”: numpy.mean}
+.
+Returns
+:
+Gc or gs
+– If
+rebuild_graph=True
+, returns MultiDiGraph with consolidated
+intersections and (optionally) reconnected edge geometries. If
+rebuild_graph=False
+, returns GeoSeries of Points representing the
+centroids of street intersections.
+Return type
+:
+nx.MultiDiGraph | gpd.GeoSeries
+osmnx.simplification.
+simplify_graph
+(
+G
+,
+*
+,
+node_attrs_include
+=
+None
+,
+edge_attrs_differ
+=
+None
+,
+remove_rings
+=
+True
+,
+track_merged
+=
+False
+,
+edge_attr_aggs
+=
+None
+)
+¶
+Simplify a graph’s topology by removing interstitial nodes.
+This algorithm is described in the journal article: Boeing, G. 2025.
+“Topological Graph Simplification Solutions to the Street Intersection
+Miscount Problem.” Transactions in GIS, 29 (3), e70037.
+https://doi.org/10.1111/tgis.70037
+This simplifies the graph’s topology by removing all nodes that are not
+intersections or dead-ends, by creating an edge directly between the end
+points that encapsulate them while retaining the full geometry of the
+original edges, saved as a new
+geometry
+attribute on the new edge.
+Note that only simplified edges receive a
+geometry
+attribute. Some of
+the resulting consolidated edges may comprise multiple OSM ways, and if
+so, their unique attribute values are stored as a list. Optionally, the
+simplified edges can receive a
+merged_edges
+attribute that contains a
+list of all the
+(u, v)
+node pairs that were merged together.
+Use the
+node_attrs_include
+or
+edge_attrs_differ
+parameters to relax
+simplification strictness. For example,
+edge_attrs_differ=[“osmid”]
+will
+retain every node whose incident edges have different OSM IDs. This lets
+you keep nodes at elbow two-way intersections (but be aware that sometimes
+individual blocks have multiple OSM IDs within them too). You could also
+use this parameter to retain nodes where sidewalks or bike lanes begin/end
+in the middle of a block. Or for example,
+node_attrs_include=[“highway”]
+will retain every node with a “highway” attribute (regardless of its
+value), even if it does not represent a street junction.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+node_attrs_include
+(
+Iterable
+[
+str
+] |
+None
+) – Node attribute names for relaxing the strictness of endpoint
+determination. A node is always an endpoint if it possesses one or
+more of the attributes in
+node_attrs_include
+.
+edge_attrs_differ
+(
+Iterable
+[
+str
+] |
+None
+) – Edge attribute names for relaxing the strictness of endpoint
+determination. A node is always an endpoint if its incident edges have
+different values than each other for any attribute in
+edge_attrs_differ
+.
+remove_rings
+(
+bool
+) – If True, remove any graph components that consist only of a single
+chordless cycle (i.e., an isolated self-contained ring).
+track_merged
+(
+bool
+) – If True, add
+merged_edges
+attribute on simplified edges, containing
+a list of all the
+(u, v)
+node pairs that were merged together.
+edge_attr_aggs
+(
+dict
+[
+str
+,
+Any
+] |
+None
+) – Allows user to aggregate edge segment attributes when simplifying an
+edge. Keys are edge attribute names and values are aggregation
+functions to apply to these attributes when they exist for a set of
+edges being merged. Edge attributes not in
+edge_attr_aggs
+will
+contain the unique values across the merged edge segments. If None,
+defaults to
+{“length”: sum, “travel_time”: sum}
+.
+Returns
+:
+Gs
+– Topologically simplified graph, with a new
+geometry
+attribute on
+each simplified edge.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.stats module
+¶
+Calculate geometric and topological network measures.
+This module defines streets as the edges in an undirected representation of
+the graph. Using undirected graph edges prevents double-counting bidirectional
+edges of a two-way street, but may double-count a divided road’s separate
+centerlines with different end point nodes. Due to OSMnx’s periphery cleaning
+when the graph was created, you will get accurate node degrees (and in turn
+streets-per-node counts) even at the periphery of the graph.
+You can use NetworkX directly for additional topological network measures.
+osmnx.stats.
+basic_stats
+(
+G
+,
+*
+,
+area
+=
+None
+,
+clean_int_tol
+=
+None
+)
+¶
+Calculate basic descriptive geometric and topological measures of a graph.
+Density measures are only calculated if
+area
+is provided and clean
+intersection measures are only calculated if
+clean_int_tol
+is provided.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+area
+(
+float
+|
+None
+) – If not None, calculate density measures and use
+area
+(in square
+meters) as the denominator.
+clean_int_tol
+(
+float
+|
+None
+) – If not None, calculate consolidated intersections count (and density,
+if
+area
+is also provided) and use this tolerance value. Refer to the
+simplification.consolidate_intersections
+function documentation for
+details.
+Returns
+:
+dict
+[
+str
+,
+Any
+]
+–
+stats
+–
+Dictionary containing the following keys:
+circuity_avg
+- see
+circuity_avg
+function documentation
+clean_intersection_count
+- see
+clean_intersection_count
+function documentation
+clean_intersection_density_km
+-
+clean_intersection_count
+per sq km
+edge_density_km
+-
+edge_length_total
+per sq km
+edge_length_avg
+-
+edge_length_total / m
+edge_length_total
+- see
+edge_length_total
+function documentation
+intersection_count
+- see
+intersection_count
+function documentation
+intersection_density_km
+-
+intersection_count
+per sq km
+k_avg
+- graph’s average node degree (in-degree and out-degree)
+m
+- count of edges in graph
+n
+- count of nodes in graph
+node_density_km
+-
+n
+per sq km
+self_loop_proportion
+- see
+self_loop_proportion
+function documentation
+street_density_km
+-
+street_length_total
+per sq km
+street_length_avg
+-
+street_length_total / street_segment_count
+street_length_total
+- see
+street_length_total
+function documentation
+street_segment_count
+- see
+street_segment_count
+function documentation
+streets_per_node_avg
+- see
+streets_per_node_avg
+function documentation
+streets_per_node_counts
+- see
+streets_per_node_counts
+function documentation
+streets_per_node_proportions
+- see
+streets_per_node_proportions
+function documentation
+Return type
+:
+dict[str,
+Any
+]
+osmnx.stats.
+circuity_avg
+(
+Gu
+)
+¶
+Calculate average street circuity using edges of undirected graph.
+Circuity is the sum of edge lengths divided by the sum of straight-line
+distances between edge endpoints. Calculates straight-line distance as
+euclidean distance if projected or great-circle distance if unprojected.
+Returns None if the edge lengths sum to zero.
+Parameters
+:
+Gu
+(
+MultiGraph
+) – Undirected input graph.
+Returns
+:
+circuity_avg
+– The graph’s average undirected edge circuity.
+Return type
+:
+float | None
+osmnx.stats.
+count_streets_per_node
+(
+G
+,
+*
+,
+nodes
+=
+None
+)
+¶
+Count how many physical street segments connect to each node in a graph.
+This function uses an undirected representation of the graph and special
+handling of self-loops to accurately count physical streets rather than
+directed edges. Note: this function is automatically run by all the
+graph.graph_from_x
+functions prior to truncating the graph to the
+requested boundaries, to add accurate
+street_count
+attributes to each
+node even if some of its neighbors are outside the requested graph
+boundaries.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+nodes
+(
+Iterable
+[
+int
+] |
+None
+) – Which node IDs to get counts for. If None, use all graph nodes.
+Otherwise calculate counts only for these node IDs.
+Returns
+:
+streets_per_node
+– Counts of how many physical streets connect to each node, with keys =
+node ids and values = counts.
+Return type
+:
+dict[int, int]
+osmnx.stats.
+edge_length_total
+(
+G
+)
+¶
+Calculate graph’s total edge length.
+Parameters
+:
+G
+(
+MultiGraph
+) – Input graph.
+Returns
+:
+length
+– Total length (meters) of edges in graph.
+Return type
+:
+float
+osmnx.stats.
+intersection_count
+(
+G
+,
+*
+,
+min_streets
+=
+2
+)
+¶
+Count the intersections in a graph.
+Intersections are defined as nodes with at least
+min_streets
+number of
+streets incident on them.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+min_streets
+(
+int
+) – A node must have at least
+min_streets
+incident on them to count as
+an intersection.
+Returns
+:
+count
+– Count of intersections in graph.
+Return type
+:
+int
+osmnx.stats.
+self_loop_proportion
+(
+Gu
+)
+¶
+Calculate percent of edges that are self-loops in a graph.
+A self-loop is defined as an edge from node
+u
+to node
+v
+where
+u==v
+.
+Parameters
+:
+Gu
+(
+MultiGraph
+) – Undirected input graph.
+Returns
+:
+proportion
+– Proportion of graph edges that are self-loops.
+Return type
+:
+float
+osmnx.stats.
+street_length_total
+(
+Gu
+)
+¶
+Calculate graph’s total street segment length.
+Parameters
+:
+Gu
+(
+MultiGraph
+) – Undirected input graph.
+Returns
+:
+length
+– Total length (meters) of streets in graph.
+Return type
+:
+float
+osmnx.stats.
+street_segment_count
+(
+Gu
+)
+¶
+Count the street segments in a graph.
+Parameters
+:
+Gu
+(
+MultiGraph
+) – Undirected input graph.
+Returns
+:
+count
+– Count of street segments in graph.
+Return type
+:
+int
+osmnx.stats.
+streets_per_node
+(
+G
+)
+¶
+Retrieve nodes’
+street_count
+attribute values.
+See also the
+count_streets_per_node
+function for the calculation.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+Returns
+:
+spn
+– Dictionary with node ID keys and street count values.
+Return type
+:
+dict[int, int]
+osmnx.stats.
+streets_per_node_avg
+(
+G
+)
+¶
+Calculate graph’s average count of streets per node.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+Returns
+:
+spna
+– Average count of streets per node.
+Return type
+:
+float
+osmnx.stats.
+streets_per_node_counts
+(
+G
+)
+¶
+Calculate streets-per-node counts.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+Returns
+:
+spnc
+– Dictionary keyed by count of streets incident on each node, and with
+values of how many nodes in the graph have this count.
+Return type
+:
+dict[int, int]
+osmnx.stats.
+streets_per_node_proportions
+(
+G
+)
+¶
+Calculate streets-per-node proportions.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+Returns
+:
+spnp
+– Dictionary keyed by count of streets incident on each node, and with
+values of what proportion of nodes in the graph have this count.
+Return type
+:
+dict[int, float]
+osmnx.truncate module
+¶
+Truncate graph by distance, bounding box, or polygon.
+osmnx.truncate.
+largest_component
+(
+G
+,
+*
+,
+strongly
+=
+False
+)
+¶
+Return
+G
+’s largest weakly or strongly connected component as a graph.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+strongly
+(
+bool
+) – If True, return the largest strongly connected component. Otherwise
+return the largest weakly connected component.
+Returns
+:
+G
+– The largest connected component subgraph of the original graph.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.truncate.
+truncate_graph_bbox
+(
+G
+,
+bbox
+,
+*
+,
+truncate_by_edge
+=
+False
+)
+¶
+Remove from a graph every node that falls outside a bounding box.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+bbox
+(
+tuple
+[
+float
+,
+float
+,
+float
+,
+float
+]
+) – Bounding box as
+(left, bottom, right, top)
+.
+truncate_by_edge
+(
+bool
+) – If True, retain nodes outside bounding box if at least one of node’s
+neighbors is within the bounding box.
+Returns
+:
+G
+– The truncated graph.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.truncate.
+truncate_graph_dist
+(
+G
+,
+source_node
+,
+dist
+,
+*
+,
+weight
+=
+'length'
+)
+¶
+Remove from a graph every node beyond some network distance from a node.
+This function must calculate shortest path distances between
+source_node
+and every other graph node, which can be slow on large graphs.
+Parameters
+:
+G
+(
+MultiDiGraph
+) – Input graph.
+source_node
+(
+int
+) – Node from which to measure network distances to all other nodes.
+dist
+(
+float
+) – Remove every node in the graph that is greater than
+dist
+distance
+(in same units as
+weight
+attribute) along the network from
+source_node
+.
+weight
+(
+str
+) – Graph edge attribute to use to measure distance.
+Returns
+:
+G
+– The truncated graph.
+Return type
+:
+networkx.MultiDiGraph
+osmnx.truncate.
+truncate_graph_polygon
+(
+G
+,
+polygon
+,
+*
+,
+truncate_by_edge
+=
+False
+)
+¶
+Remove from a graph every node that falls outside a (Multi)Polygon.
+Parameters
+:
+G
+(
+nx.MultiDiGraph
+) – Input graph.
+polygon
+(
+Polygon | MultiPolygon
+) – Only retain nodes in graph that lie within this geometry.
+truncate_by_edge
+(
+bool
+) – If True, retain nodes outside boundary polygon if at least one of
+node’s neighbors is within the polygon.
+Returns
+:
+G
+– The truncated graph.
+Return type
+:
+nx.MultiDiGraph
+osmnx.utils module
+¶
+General utility functions.
+osmnx.utils.
+citation
+(
+style
+=
+'bibtex'
+)
+¶
+Print the OSMnx package’s citation information.
+Boeing, G. (2025). Modeling and Analyzing Urban Networks and Amenities with
+OSMnx. Geographical Analysis, published online ahead of print.
+doi:10.1111/gean.70009
+Parameters
+:
+style
+(
+str
+) – {“apa”, “bibtex”, “ieee”}
+The citation format, either APA or BibTeX or IEEE.
+Return type
+:
+None
+osmnx.utils.
+log
+(
+message
+,
+level
+=
+None
+,
+name
+=
+None
+,
+filename
+=
+None
+)
+¶
+Write a message to the logger.
+This logs to file and/or prints to the console (terminal), depending on
+the current configuration of
+settings.log_file
+and
+settings.log_console
+.
+Parameters
+:
+message
+(
+str
+) – The message to log.
+level
+(
+int
+|
+None
+) – One of the Python
+logger.level
+constants. If None, set to
+settings.log_level
+value.
+name
+(
+str
+|
+None
+) – The name of the logger. If None, set to
+settings.log_name
+value.
+filename
+(
+str
+|
+None
+) – The name of the log file, without file extension. If None, set to
+settings.log_filename
+value.
+Return type
+:
+None
+osmnx.utils.
+ts
+(
+style
+=
+'datetime'
+,
+template
+=
+None
+)
+¶
+Return current local timestamp as a string.
+Parameters
+:
+style
+(
+str
+) – {“datetime”, “iso8601”, “date”, “time”}
+Format the timestamp with this built-in style.
+template
+(
+str
+|
+None
+) – If not None, format the timestamp with this format string instead of
+one of the built-in styles.
+Returns
+:
+timestamp
+– The current timestamp.
+Return type
+:
+str
+osmnx.utils_geo module
+¶
+Geospatial utility functions.
+osmnx.utils_geo.
+bbox_from_point
+(
+point
+,
+dist
+,
+*
+,
+project_utm
+=
+False
+,
+return_crs
+=
+False
+)
+¶
+Create a bounding box around a (lat, lon) point.
+Create a bounding box some distance (in meters) in each direction (top,
+bottom, right, and left) from the center point and optionally project it.
+Parameters
+:
+point
+(
+tuple
+[
+float
+,
+float
+]
+) – The
+(lat, lon)
+center point to create the bounding box around.
+dist
+(
+float
+) – Bounding box distance in meters from the center point.
+project_utm
+(
+bool
+) – If True, return bounding box as UTM-projected coordinates.
+return_crs
+(
+bool
+) – If True, and
+project_utm
+is True, then return the projected CRS too.
+Returns
+:
+bbox or bbox, crs
+–
+(left, bottom, right, top)
+or
+((left, bottom, right, top), crs)
+.
+Return type
+:
+tuple[float, float, float, float] | tuple[tuple[float, float, float, float],
+Any
+]
+osmnx.utils_geo.
+bbox_to_poly
+(
+bbox
+)
+¶
+Convert bounding box coordinates to Shapely Polygon.
+Parameters
+:
+bbox
+(
+tuple
+[
+float
+,
+float
+,
+float
+,
+float
+]
+) – Bounding box as
+(left, bottom, right, top)
+.
+Returns
+:
+polygon
+– The resulting bounding box polygon.
+Return type
+:
+shapely.Polygon
+osmnx.utils_geo.
+buffer_geometry
+(
+geom
+,
+dist
+)
+¶
+Buffer an unprojected Shapely geometry by some distance in meters.
+Parameters
+:
+geom
+(
+Geometry
+) – The geometry to be buffered. Coordinates should be in unprojected
+latitude-longitude degrees (EPSG:4326).
+dist
+(
+float
+) – The buffer distance in meters.
+Returns
+:
+geometry_buff
+– The (also unprojected) buffered geometry.
+Return type
+:
+shapely.Geometry
+osmnx.utils_geo.
+interpolate_points
+(
+geom
+,
+dist
+)
+¶
+Interpolate evenly spaced points along a LineString.
+The spacing is approximate because the LineString’s length may not be
+evenly divisible by it.
+Parameters
+:
+geom
+(
+LineString
+) – A LineString geometry.
+dist
+(
+float
+) – Spacing distance between interpolated points, in same units as
+geom
+.
+Smaller values accordingly generate more points.
+Yields
+:
+point
+– Interpolated point’s
+(x, y)
+coordinates.
+Return type
+:
+Iterator
+[
+tuple
+[
+float
+,
+float
+]]
+osmnx.utils_geo.
+sample_points
+(
+G
+,
+n
+)
+¶
+Randomly sample points constrained to a spatial graph.
+This generates a graph-constrained uniform random sample of points. Unlike
+typical spatially uniform random sampling, this method accounts for the
+graph’s geometry. And unlike equal-length edge segmenting, this method
+guarantees uniform randomness.
+Parameters
+:
+G
+(
+MultiGraph
+) – Graph from which to sample points. Should be undirected (to avoid
+oversampling bidirectional edges) and projected (for accurate point
+interpolation).
+n
+(
+int
+) – How many points to sample.
+Returns
+:
+points
+– The sampled points, multi-indexed by
+(u, v, key)
+of the edge from
+which each point was sampled.
+Return type
+:
+geopandas.GeoSeries
+Next
+Internals Reference
+Previous
+Getting Started
+Copyright © 2016-2025, Geoff Boeing
+Made with
+Sphinx
+and
+@pradyunsg
+'s
+Furo
+On this page
+User Reference
+osmnx.bearing module
+add_edge_bearings()
+calculate_bearing()
+orientation_entropy()
+osmnx.convert module
+graph_from_gdfs()
+graph_to_gdfs()
+to_digraph()
+to_undirected()
+osmnx.distance module
+add_edge_lengths()
+euclidean()
+great_circle()
+nearest_edges()
+nearest_nodes()
+osmnx.elevation module
+add_edge_grades()
+add_node_elevations_google()
+add_node_elevations_raster()
+osmnx.features module
+features_from_address()
+features_from_bbox()
+features_from_place()
+features_from_point()
+features_from_polygon()
+features_from_xml()
+osmnx.geocoder module
+geocode()
+geocode_to_gdf()
+osmnx.graph module
+graph_from_address()
+graph_from_bbox()
+graph_from_place()
+graph_from_point()
+graph_from_polygon()
+graph_from_xml()
+osmnx.io module
+load_graphml()
+save_graph_geopackage()
+save_graph_xml()
+save_graphml()
+osmnx.plot module
+get_colors()
+get_edge_colors_by_attr()
+get_node_colors_by_attr()
+plot_figure_ground()
+plot_footprints()
+plot_graph()
+plot_graph_route()
+plot_graph_routes()
+plot_orientation()
+osmnx.projection module
+is_projected()
+project_gdf()
+project_geometry()
+project_graph()
+osmnx.routing module
+add_edge_speeds()
+add_edge_travel_times()
+k_shortest_paths()
+route_to_gdf()
+shortest_path()
+osmnx.settings module
+osmnx.simplification module
+consolidate_intersections()
+simplify_graph()
+osmnx.stats module
+basic_stats()
+circuity_avg()
+count_streets_per_node()
+edge_length_total()
+intersection_count()
+self_loop_proportion()
+street_length_total()
+street_segment_count()
+streets_per_node()
+streets_per_node_avg()
+streets_per_node_counts()
+streets_per_node_proportions()
+osmnx.truncate module
+largest_component()
+truncate_graph_bbox()
+truncate_graph_dist()
+truncate_graph_polygon()
+osmnx.utils module
+citation()
+log()
+ts()
+osmnx.utils_geo module
+bbox_from_point()
+bbox_to_poly()
+buffer_geometry()
+interpolate_points()
+sample_points()

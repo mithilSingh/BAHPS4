@@ -1,0 +1,129 @@
+Constructive operations#
+
+BufferCapStyle(*values)
+
+Enumeration of buffer cap styles.
+
+BufferJoinStyle(*values)
+
+Enumeration of buffer join styles.
+
+boundary(geometry, **kwargs)
+
+Return the topological boundary of a geometry.
+
+buffer(geometry, distance[, quad_segs, ...])
+
+Compute the buffer of a geometry for positive and negative buffer distance.
+
+build_area(geometry, **kwargs)
+
+Create an areal geometry formed by the constituent linework of given geometry.
+
+centroid(geometry, **kwargs)
+
+Compute the geometric center (center-of-mass) of a geometry.
+
+clip_by_rect(geometry, xmin, ymin, xmax, ...)
+
+Return the portion of a geometry within a rectangle.
+
+concave_hull(geometry[, ratio, allow_holes])
+
+Compute a concave geometry that encloses an input geometry.
+
+constrained_delaunay_triangles(geometry, ...)
+
+Compute the constrained Delaunay triangulation of polygons.
+
+convex_hull(geometry, **kwargs)
+
+Compute the minimum convex geometry that encloses an input geometry.
+
+delaunay_triangles(geometry[, tolerance, ...])
+
+Compute a Delaunay triangulation around the vertices of an input geometry.
+
+envelope(geometry, **kwargs)
+
+Compute the minimum bounding box that encloses an input geometry.
+
+extract_unique_points(geometry, **kwargs)
+
+Return all distinct vertices of an input geometry as a multipoint.
+
+make_valid(geometry, *[, method, keep_collapsed])
+
+Repair invalid geometries.
+
+maximum_inscribed_circle(geometry[, tolerance])
+
+Find the largest circle that is fully contained within the input geometry.
+
+minimum_bounding_circle(geometry, **kwargs)
+
+Compute the minimum bounding circle that encloses an input geometry.
+
+minimum_clearance_line(geometry, **kwargs)
+
+Return a LineString whose endpoints define the minimum clearance.
+
+minimum_rotated_rectangle(geometry, **kwargs)
+
+Compute the oriented envelope (minimum rotated rectangle) of the input geometry.
+
+node(geometry, **kwargs)
+
+Return the fully noded version of the linear input as MultiLineString.
+
+normalize(geometry, **kwargs)
+
+Convert Geometry to strict normal form (or canonical form).
+
+offset_curve(geometry, distance[, ...])
+
+Return a (Multi)LineString at a distance from the object.
+
+orient_polygons(geometry, *[, exterior_cw])
+
+Enforce a ring orientation on all polygonal elements in the input geometry.
+
+oriented_envelope(geometry, **kwargs)
+
+Compute the oriented envelope (minimum rotated rectangle) of the input geometry.
+
+point_on_surface(geometry, **kwargs)
+
+Return a point that intersects an input geometry.
+
+polygonize(geometries, **kwargs)
+
+Create polygons formed from the linework of a set of Geometries.
+
+polygonize_full(geometries, **kwargs)
+
+Create polygons formed from the linework of a set of Geometries.
+
+remove_repeated_points(geometry[, tolerance])
+
+Return a copy of a Geometry with repeated points removed.
+
+reverse(geometry, **kwargs)
+
+Return a copy of a Geometry with the order of coordinates reversed.
+
+segmentize(geometry, max_segment_length, ...)
+
+Add vertices to line segments based on maximum segment length.
+
+simplify(geometry, tolerance[, ...])
+
+Return a simplified version of an input geometry.
+
+snap(geometry, reference, tolerance, **kwargs)
+
+Snap the vertices and segments of the geometry to vertices of the reference.
+
+voronoi_polygons(geometry[, tolerance, ...])
+
+Compute a Voronoi diagram from the vertices of an input geometry.

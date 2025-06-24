@@ -1,0 +1,32 @@
+Testing#
+
+The functions in this module are not directly importable from the rootshapelymodule. Instead, import them from the submodule as follows:
+
+Utilities for testing with shapely geometries.
+
+Raise an AssertionError if two geometry array_like objects are not equal.
+
+Given two array_like objects, check that the shape is equal and all elements
+of these objects are equal. An exception is raised at shape mismatch or
+conflicting values. In contrast to the standard usage in shapely, no
+assertion is raised if both objects have NaNs/Nones in the same positions.
+
+Geometry or geometries to compare.
+
+The tolerance to use when comparing geometries.
+
+Whether to consider None elements equal to other None elements.
+
+Whether to consider nan coordinates as equal to other nan coordinates.
+
+Whether to normalize geometries prior to comparison.
+
+The error message to be printed in case of failure.
+
+If True, the conflicting values are appended to the error message.
+
+
+--- CODE BLOCK ---
+>>> from shapely.testing import assert_geometries_equal
+
+------------------

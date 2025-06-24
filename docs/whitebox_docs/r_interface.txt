@@ -1,0 +1,84 @@
+Interfacing WithR
+
+In addition to the Python interface, theWhiteboxToolslibrary is also accessible from anRlanguage package.Ris a common programming language used within the statistical and scientific computing communities and theR WhiteboxToolspackage targets these groups. Prof.Qiusheng Wu, at Binghamton University (SUNY) maintains theRpackage.
+
+Installation
+
+WhiteboxToolsis available onR-Forgeand can be installed with the command:
+
+You can alternatively install the development version of theRpackagewhiteboxfrom theGitHub repositoryas follows:
+
+You will also need to make sure your machine is able to build packages from source. SeePackage Development Prerequisitesfor the tools needed for your operating system.
+
+Usage
+
+A complete list of functions available in thewhiteboxRpackage can be foundwithin the GitHub repository. A comprehensivedemonstration, complete with detailed examples, is also available from this site.
+
+AboutWhiteboxTools
+
+How to run tools?
+
+Tool names in thewhitebox Rpackage can be called using the snake_case (e.g. lidar_info). A comprehensive list of all available function tools can be found on thepackage repository site. For example:
+
+
+--- CODE BLOCK ---
+install.packages("whitebox", repos="http://R-Forge.R-project.org")
+
+------------------
+
+
+
+--- CODE BLOCK ---
+if (!require(devtools)) install.packages('devtools')
+devtools::install_github("giswqs/whiteboxR")
+
+------------------
+
+
+
+--- CODE BLOCK ---
+library(whitebox)
+
+# Prints the whitebox-tools help...a listing of available commands
+print(wbt_help())
+
+# Prints the whitebox-tools license
+print(wbt_license())
+
+# Prints the whitebox-tools version
+print(wbt_version())
+
+# Prints the toolbox for a specific tool.
+print(wbt_toolbox())
+
+# List all available tools in whitebox-tools
+print(wbt_list_tools())
+
+# Lists tools with 'lidar' in tool name or description.
+print(wbt_list_tools("lidar"))
+
+# Prints the help for a specific tool.
+print(wbt_tool_help("lidar_info"))
+
+# Retrieves the tool parameter descriptions for a specific tool.
+print(wbt_tool_parameters("slope"))
+
+# View the source code for a specific tool on the source code repository.
+print(wbt_view_code("breach_depressions"))
+
+------------------
+
+
+
+--- CODE BLOCK ---
+library(whitebox)
+
+# Set input raster DEM file
+dem <- system.file("extdata", "DEM.tif", package="whitebox")
+
+# Run tools
+feature_preserving_denoise(dem, "./smoothed.tif", filter=9)
+breach_depressions("./smoothed.tif", "./breached.tif")
+d_inf_flow_accumulation(dem, "./flow_accum.tif", verbose_mode=FALSE)
+
+------------------

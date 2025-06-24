@@ -1,0 +1,2030 @@
+Image Processing Tools → Filters
+
+AdaptiveFilterBilateralFilterCannyEdgeDetectionConservativeSmoothingFilterCornerDetectionDiffOfGaussianFilterDiversityFilterEdgePreservingMeanFilterEmbossFilterFastAlmostGaussianFilterGaussianFilterHighPassBilateralFilterHighPassFilterHighPassMedianFilterKNearestMeanFilterLaplacianFilterLaplacianOfGaussianFilterLeeSigmaFilterLineDetectionFilterMajorityFilterMaximumFilterMeanFilterMedianFilterMinimumFilterOlympicFilterPercentileFilterPrewittFilterRangeFilterRobertsCrossFilterScharrFilterSobelFilterStandardDeviationFilterTotalFilterUnsharpMaskingUserDefinedWeightsFilter
+
+AdaptiveFilter
+
+BilateralFilter
+
+CannyEdgeDetection
+
+ConservativeSmoothingFilter
+
+CornerDetection
+
+DiffOfGaussianFilter
+
+DiversityFilter
+
+EdgePreservingMeanFilter
+
+EmbossFilter
+
+FastAlmostGaussianFilter
+
+GaussianFilter
+
+HighPassBilateralFilter
+
+HighPassFilter
+
+HighPassMedianFilter
+
+KNearestMeanFilter
+
+LaplacianFilter
+
+LaplacianOfGaussianFilter
+
+LeeSigmaFilter
+
+LineDetectionFilter
+
+MajorityFilter
+
+MaximumFilter
+
+MeanFilter
+
+MedianFilter
+
+MinimumFilter
+
+OlympicFilter
+
+PercentileFilter
+
+PrewittFilter
+
+RangeFilter
+
+RobertsCrossFilter
+
+ScharrFilter
+
+SobelFilter
+
+StandardDeviationFilter
+
+TotalFilter
+
+UnsharpMasking
+
+UserDefinedWeightsFilter
+
+
+
+AdaptiveFilter
+
+This tool performs a type of adaptive filter on a raster image. An adaptive filter can be used to reduce
+the level of random noise (shot noise) in an image. The algorithm operates by calculating the average
+value in a moving window centred on each grid cell. If the absolute difference between the window mean
+value and the centre grid cell value is beyond a user-defined threshold (--threshold), the grid cell in the
+output image is assigned the mean value, otherwise it is equivalent to the original value. Therefore, the
+algorithm only modifies the image where grid cell values are substantially different than their neighbouring
+values.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+See Also:MeanFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+BilateralFilter
+
+This tool can be used to perform an edge-preserving smoothing filter, or bilateral filter, on an image. A bilateral
+filter can be used to emphasize the longer-range variability in an image, effectively acting to smooth the image,
+while reducing the edge blurring effect common with other types of smoothing filters. As such, this filter is very
+useful for reducing the noise in an image. Bilateral filtering is a non-linear filtering technique introduced by
+Tomasi and Manduchi (1998). The algorithm operates by convolving a kernel of weights with each grid cell and its
+neighbours in an image. The bilateral filter is related to Gaussian smoothing, in that the weights of the convolution
+kernel are partly determined by the 2-dimensional Gaussian (i.e. normal) curve, which gives stronger weighting to
+cells nearer the kernel centre. Unlike theGaussianFilter, however, the bilateral kernel weightings are also
+affected by their similarity to the intensity value of the central pixel. Pixels that are very different in intensity
+from the central pixel are weighted less, also based on a Gaussian weight distribution. Therefore, this non-linear
+convolution filter is determined by the spatial and intensity domains of a localized pixel neighborhood.
+
+The heavier weighting given to nearer and similar-valued pixels makes the bilateral filter an attractive alternative
+for image smoothing and noise reduction compared to the much-used Mean filter. The size of the filter is determined
+by setting the standard deviation distance parameter (--sigma_dist); the larger the standard deviation the larger
+the resulting filter kernel. The standard deviation can be any number in the range 0.5-20 and is specified in the
+unit of pixels. The standard deviation intensity parameter (--sigma_int), specified in the same units as the z-values,
+determines the intensity domain contribution to kernel weightings.
+
+References:
+
+Tomasi, C., & Manduchi, R. (1998, January). Bilateral filtering for gray and color images. In null (p. 839). IEEE.
+
+See Also:EdgePreservingMeanFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+CannyEdgeDetection
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs aCanny edge-detectionfiltering
+operation on an input image (--input). The Canny edge-detection filter is a multi-stage filter that
+combines a Gassian filtering (GaussianFilter) operation with various thresholding operations to
+generate a single-cell wide edges output raster (--output). The--sigmaparameter, measured in grid
+cells determines the size of the Gaussian filter kernel. The--lowand--highparameters determine
+the characteristics of the thresholding steps; both parameters range from 0.0 to 1.0.
+
+By default, the output raster will be Boolean, with 1's designating edge-cells. It is possible, using the--add_backparameter to add the edge cells back into the original image, providing an edge-enchanced
+output, similar in concept to theUnsharpMaskingoperation.
+
+
+
+References:
+
+This implementation was inspired by the algorithm described here:https://towardsdatascience.com/canny-edge-detection-step-by-step-in-python-computer-vision-b49c3a2d8123
+
+See Also:GaussianFilter,SobelFilter,UnsharpMasking,ScharrFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 12/03/2021
+
+Last Modified: 12/03/2021
+
+
+
+ConservativeSmoothingFilter
+
+This tool performs a conservative smoothing filter on a raster image. A conservative smoothing filter can be used
+to remove short-range variability in an image, effectively acting to smooth the image. It is particularly useful
+for eliminating local spikes and reducing the noise in an image. The algorithm operates by calculating the
+minimum and maximum neighbouring values surrounding a grid cell. If the cell at the centre of the kernel is
+greater than the calculated maximum value, it is replaced with the maximum value in the output image. Similarly,
+if the cell value at the kernel centre is less than the neighbouring minimum value, the corresponding grid cell
+in the output image is replaced with the minimum value. This filter tends to alter an image very little compared
+with other smoothing filters such as theMeanFilter,EdgePreservingMeanFilter,BilateralFilter,MedianFilter,GaussianFilter, orOlympicFilter.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+See Also:MeanFilter,EdgePreservingMeanFilter,BilateralFilter,MedianFilter,GaussianFilter,OlympicFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+CornerDetection
+
+This tool identifies corner patterns in boolean images using hit-and-miss pattern matching. Foreground pixels
+in the input image (--input) are designated by any positive, non-zero values. Zero-valued and NoData-valued
+grid cells are interpreted by the algorithm as background values.
+
+Reference:
+
+Fisher, R, Brown, N, Cammas, N, Fitzgibbon, A, Horne, S, Koryllos, K, Murdoch, A, Robertson, J, Sharman, T, Strachan, C,
+2004. Hypertext Image Processing Resource. online: http://homepages.inf.ed.ac.uk/rbf/HIPR2/hitmiss.htm
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Simon Gudim
+
+Created: 04/05/2017
+
+Last Modified: 25/02/2019
+
+
+
+DiffOfGaussianFilter
+
+This tool can be used to perform a difference-of-Gaussians (DoG) filter on a raster image. In digital
+image processing, DoG is a feature enhancement algorithm that involves the subtraction of one blurred
+version of an image from another, less blurred version of the original. The blurred images are obtained
+by applying filters with Gaussian-weighted kernels of differing standard deviations to the input image
+(--input). Blurring an image using a Gaussian-weighted kernel suppresses high-frequency spatial
+information and emphasizes lower-frequency variation. Subtracting one blurred image from the other
+preserves spatial information that lies between the range of frequencies that are preserved in the
+two blurred images. Thus, the difference-of-Gaussians is a band-pass filter that discards all but a
+specified range of spatial frequencies that are present in the original image.
+
+The algorithm operates by differencing the results of convolving two kernels of weights with each grid
+cell and its neighbours in an image. The weights of the convolution kernels are determined by the 2-dimensional
+Gaussian (i.e. normal) curve, which gives stronger weighting to cells nearer the kernel centre. The size of
+the two convolution kernels are determined by setting the two standard deviation parameters (--sigma1and--sigma2); the larger the standard deviation the larger the resulting filter kernel. The second standard
+deviation should be a larger value than the first, however if this is not the case, the tool will automatically
+swap the two parameters. Both standard deviations can range from 0.5-20.
+
+The difference-of-Gaussians filter can be used to emphasize edges present in an image. Other edge-sharpening
+filters also operate by enhancing high-frequency detail, but because random noise also has a high spatial
+frequency, many of these sharpening filters tend to enhance noise, which can be an undesirable artifact.
+The difference-of-Gaussians filter can remove high-frequency noise while emphasizing edges. This filter can,
+however, reduce overall image contrast.
+
+See Also:GaussianFilter,FastAlmostGaussianFilter,LaplacianFilter, LaplacianOfGaussianFilter`
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+DiversityFilter
+
+This tool assigns each cell in the output grid the number of different values in a moving window centred on
+each grid cell in the input raster. The input image should contain integer values but floating point data
+are allowable and will be handled by multiplying pixel values by 1000 and rounding. Neighbourhood size, or
+filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These
+dimensions should be odd, positive integer values, e.g. 3, 5, 7, 9... If the kernel filter size is the same
+in the x and y dimensions, the silent--filterflag may be used instead (command-line interface only).
+
+See Also:MajorityFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 03/05/2019
+
+
+
+EdgePreservingMeanFilter
+
+This tool performs a type of edge-preserving mean filter operation on an input image (--input). The filter, a
+type of low-pass filter, can be used to emphasize the longer-range variability in an image, effectively acting to
+smooth the image and to reduce noise in the image. The algorithm calculates the average value in a moving window
+centred on each grid cell, including in the averaging only the set of neighbouring values for which the absolute
+value difference with the centre value is less than a specified threshold value (--threshold). It is, therefore,
+similar to theBilateralFilter, except all neighbours within the threshold difference are equally weighted and
+neighbour distance is not accounted for. Filter kernels are always square, and filter size, is specified using
+the--filterparameter. This dimensions should be odd, positive integer values, e.g. 3, 5, 7, 9...
+
+This tool works with both greyscale and red-green-blue (RGB) input images. RGB images are decomposed into
+intensity-hue-saturation (IHS) and the filter is applied to the intensity channel. If an RGB image is input, the
+threshold value must be in the range 0.0-1.0 (more likely less than 0.15), where a value of 1.0 would result in an ordinary mean filter
+(MeanFilter). NoData values in the input image are ignored during filtering.
+
+See Also:MeanFilter,BilateralFilter,EdgePreservingMeanFilter,GaussianFilter,MedianFilter,RgbToIhs
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 24/03/2018
+
+Last Modified: 22/10/2019
+
+
+
+EmbossFilter
+
+This tool can be used to perform one of eight 3x3 emboss filters on a raster image. Like theSobelFilterandPrewittFilter, theEmbossFilteris often applied in edge-detection applications. While these other two
+common edge-detection filters approximate the slope magnitude of the local neighbourhood surrounding each
+grid cell, theEmbossFiltercan be used to estimate the directional slope. The kernel weights for each of
+the eight available filters are as follows:
+
+North (n)
+
+Northeast (ne)
+
+East (e)
+
+Southeast (se)
+
+South (s)
+
+Southwest (sw)
+
+West (w)
+
+Northwest (nw)
+
+The user must specify the--direction, options include 'n', 's', 'e', 'w', 'ne', 'se', 'nw', 'sw'. The user may also optionally
+clip the output image distribution tails by a specified amount (e.g. 1%).
+
+See Also:SobelFilter,PrewittFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 22/10/2019
+
+
+
+FastAlmostGaussianFilter
+
+The tool is somewhat modified from Dr. Kovesi's original Matlab code in that it
+works with both greyscale and RGB images (decomposes to HSI and uses the intensity
+data) and it handles the case of rasters that contain NoData values. This adds
+complexity to the original 20 additions and 5 multiplications assertion of the
+original paper.
+
+Also note, for small values of sigma (< 1.8), you should probably just use the
+regular GaussianFilter tool.
+
+Reference:
+
+P. Kovesi 2010 Fast Almost-Gaussian Filtering, Digital Image Computing:
+Techniques and Applications (DICTA), 2010 International Conference on.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 19/05/2018
+
+Last Modified: 30/01/2020
+
+
+
+GaussianFilter
+
+This tool can be used to perform a Gaussian filter on a raster image. A Gaussian filter
+can be used to emphasize the longer-range variability in an image, effectively acting to
+smooth the image. This can be useful for reducing the noise in an image. The algorithm
+operates by convolving a kernel of weights with each grid cell and its neighbours in an
+image. The weights of the convolution kernel are determined by the 2-dimensional Gaussian
+(i.e. normal) curve, which gives stronger weighting to cells nearer the kernel centre. It
+is this characteristic that makes the Gaussian filter an attractive alternative for image
+smoothing and noise reduction than theMeanFilter. The size of the filter is determined
+by setting the standard deviation parameter (--sigma), which is in units of grid cells;
+the larger the standard deviation the larger the resulting filter kernel. The standard
+deviation can be any number in the range 0.5-20.
+
+GaussianFilterworks with both greyscale and red-green-blue (RGB) colour images. RGB images are
+decomposed into intensity-hue-saturation (IHS) and the filter is applied to the intensity
+channel. NoData values in the input image are ignored during processing.
+
+Like many low-pass filters, Gaussian filtering can significantly blur well-defined edges in
+the input image. TheEdgePreservingMeanFilterandBilateralFilteroffer more robust
+feature preservation during image smoothing.GaussianFilteris relatively slow compared to
+theFastAlmostGaussianFiltertool, which offers a fast-running approximatation to a
+Gaussian filter for larger kernel sizes.
+
+See Also:FastAlmostGaussianFilter,MeanFilter,MedianFilter,RgbToIhs
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+HighPassBilateralFilter
+
+This tool can be used to perform a high-pass bilateral filter. A high-pass filter is one which emphasizes short-scale
+variation within an image, usually by differencing the input image value from the result of a low-pass, smoothing filter.
+In this case, the low-pass filter is an edge-preserving bilateral filter (BilateralFilter). High-pass filters are
+often dominated by edges (transitions from high values to low values or vice versa) within an image. Because the
+bilateral filter is an edge-preserving filter, the high-pass bilateral filter output is not dominated by edges, instead
+emphasizing local-scale image texture patters. This filter is excellent for mapping image textures.
+
+The size of the filter is determined  by setting the standard deviation distance parameter (--sigma_dist); the
+larger the standard deviation the larger the resulting filter kernel. The standard deviation can be any number in
+the range 0.5-20 and is specified in the unit of pixels. The standard deviation intensity parameter (--sigma_int),
+specified in the same units as the image values, determines the intensity domain contribution to kernel weightings.
+If the input image is an RGB composite, the intensity value is filtered, and the intensity parameter should
+lie 0 > parameter < 1, with typical values ranging from 0.05 to 0.25. If the input image is not an RGB colour
+composite, appropriate values of this parameter will depend on the range of input values and will likely be
+considerably higher.
+
+References:
+
+Tomasi, C., & Manduchi, R. (1998, January). Bilateral filtering for gray and color images. In null (p. 839). IEEE.
+
+See Also:BilateralFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+HighPassFilter
+
+This tool performs a high-pass filter on a raster image. High-pass filters can be used to emphasize
+the short-range variability in an image. The algorithm operates essentially by subtracting the value at
+the grid cell at the centre of the window from the average value in the surrounding neighbourhood (i.e. window.)
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+See Also:HighPassMedianFilter,MeanFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+HighPassMedianFilter
+
+This tool performs a high-pass median filter on a raster image. High-pass filters can be used to emphasize
+the short-range variability in an image. The algorithm operates essentially by subtracting the value at
+the grid cell at the centre of the window from the median value in the surrounding neighbourhood (i.e. window.)
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+See Also:HighPassFilter,MedianFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 10/09/2018
+
+Last Modified: 22/10/2019
+
+
+
+KNearestMeanFilter
+
+This tool performs a k-nearest mean filter on a raster image. A mean filter can be used to emphasize the
+longer-range variability in an image, effectively acting to smooth or blur the image. This can be useful
+for reducing the noise in an image. The algorithm operates by calculating the average of a specified
+number (k) values in a moving window centred on each grid cell. Thekvalues used in the average are
+those cells in the window with the nearest intensity values to that of the centre cell. As such, this is
+a type of edge-preserving smoothing filter. TheBilateralFilterandEdgePreservingMeanFilterare
+examples of more sophisticated edge-preserving smoothing filters.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+NoData values in the input image are ignored during filtering.
+
+See Also:MeanFilter,BilateralFilter,EdgePreservingMeanFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+LaplacianFilter
+
+This tool can be used to perform a Laplacian filter on a raster image. A Laplacian filter can be used
+to emphasize the edges in an image. As such, this filter type is commonly used in edge-detection
+applications. The algorithm operates by convolving a kernel of weights with each grid cell and its
+neighbours in an image. Four 3x3 sized filters and one 5x5 filter are available for selection. The
+weights of the kernels are as follows:
+
+3x3(1)
+
+3x3(2)
+
+3x3(3)
+
+3x3(4)
+
+5x5(1)
+
+5x5(2)
+
+The user must specify the--variant, including '3x3(1)', '3x3(2)', '3x3(3)', '3x3(4)', '5x5(1)', and '5x5(2)'.
+The user may also optionally clip the output image distribution tails by a specified amount (e.g. 1%).
+
+See Also:PrewittFilter,SobelFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+LaplacianOfGaussianFilter
+
+The Laplacian-of-Gaussian (LoG) is a spatial filter used for edge enhancement and is closely related to the
+difference-of-Gaussians filter (DiffOfGaussianFilter). The formulation of the LoG filter algorithm is based
+on the equation provided in the Hypermedia Image Processing Reference (HIPR) 2. The LoG operator calculates
+the second spatial derivative of an image. In areas where image intensity is constant, the LoG response will
+be zero. Near areas of change in intensity the LoG will be positive on the darker side, and negative on the
+lighter side. This means that at a sharp edge, or boundary, between two regions of uniform but different
+intensities, the LoG response will be:
+
+zero at a long distance from the edge,positive just to one side of the edge,negative just to the other side of the edge,zero at some point in between, on the edge itself.
+
+zero at a long distance from the edge,
+
+positive just to one side of the edge,
+
+negative just to the other side of the edge,
+
+zero at some point in between, on the edge itself.
+
+The user may optionally choose to reflecting the data along image edges.NoDatavalues in the input image are
+similarly valued in the output. The output raster is of the float data type and continuous data scale.
+
+Reference:
+
+Fisher, R. 2004.Hypertext Image Processing Resources 2 (HIPR2). Available online:
+http://homepages.inf.ed.ac.uk/rbf/HIPR2/roberts.htm
+
+See Also:DiffOfGaussianFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+LeeSigmaFilter
+
+The Lee Sigma filter is a low-pass filter used to smooth the input image (--input). The user must
+specify the dimensions of the filter (--filterxand--filtery) as well as thesigma(--sigma) andM(-m) parameter.
+
+Reference:
+
+Lee, J. S. (1983). Digital image smoothing and the sigma filter. Computer vision, graphics, and image
+processing, 24(2), 255-269.
+
+See Also:MeanFilter,GaussianFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+LineDetectionFilter
+
+This tool can be used to perform one of four 3x3 line-detection filters on a raster image. These
+filters can be used to find one-cell-thick vertical, horizontal, or angled (135-degrees or
+45-degrees) lines in an image. Notice that line-finding is a similar application to edge-detection.
+Common edge-detection filters include the Sobel and Prewitt filters. The kernel weights for each of
+the four line-detection filters are as follows:
+
+'v' (Vertical)
+
+'h' (Horizontal)
+
+'45' (Northeast-Southwest)
+
+'135' (Northwest-Southeast)
+
+The user must specify the--variant, including 'v', 'h', '45', and '135', for vertical, horizontal,
+northeast-southwest, and northwest-southeast directions respectively. The user may also optionally clip
+the output image distribution tails by a specified amount (e.g. 1%).
+
+See Also:PrewittFilter,SobelFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 11/07/2017
+
+Last Modified: 30/01/2020
+
+
+
+MajorityFilter
+
+This tool performs a majority (or modal) filter on a raster image. A mode filter assigns each
+cell in the output grid the most commonly occurring value, i.e. mode, in a moving window centred
+on each grid cell. Mode filters should only be applied to input images of a categorical data
+scale. The input image should contain integer values but floating point data will be handled using a multiplier.
+Because it requires binning the values in the window, a relatively computationally intensive
+task,MajorityFilteris considerably less efficient than other smoothing filters. This may pose a problem
+for large images or large neighbourhoods. Like all WhiteboxTools' filters, however, this tool is
+parallelized, benefitting from multi-core processors, and the tool also takes advantage of the redundancy of
+the overlapping areas of filter windows along a row of data.
+
+Neighbourhood size, or filter size, is determined by the user-defined x and y dimensions. These dimensions
+should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+NoData values in the input image are ignored during filtering. When the neighbourhood around a grid cell extends
+beyond the edge of the grid, NoData values are assigned to these sites. In the event of multiple modes, i.e.
+neighbourhoods for which there is more than one class with tied and maximal frequency within the neighbourhood,
+the tool will report the first-discovered class value in the output raster. This is unlikely to be an issue
+for larger filter windows, but may be more problematic at smaller window sizes.
+
+See Also:MedianFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 30/01/2020
+
+
+
+MaximumFilter
+
+This tool assigns each cell in the output grid (--output) the maximum value in a moving window centred on each grid
+cell in the input raster (--input). A maximum filter is the equivalent of the mathematical morphologicaldilationoperator.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags.
+These dimensions should be odd, positive integer values, e.g. 3, 5, 7, 9... If the kernel filter size is the same in
+the x and y dimensions, the silent--filterflag may be used instead (command-line interface only).
+
+This tool takes advantage of the redundancy between overlapping, neighbouring filters to enhance computationally
+efficiency. Like most of WhiteboxTools' filters, it is also parallelized for further efficiency.
+
+See Also:MinimumFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+MeanFilter
+
+This tool performs a mean filter operation on a raster image. A mean filter, a type of low-pass filter, can be
+used to emphasize the longer-range variability in an image, effectively acting to smooth the image. This can be
+useful for reducing the noise in an image. This tool utilizes an integral image approach (Crow, 1984) to ensure highly
+efficient filtering that is invariant to filter size. The algorithm operates by calculating the average value
+in a moving window centred on each grid cell.  Neighbourhood size, or filter size, is specified in the x and y
+dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values,
+e.g. 3, 5, 7, 9... If the kernel filter size is the same in the x and y dimensions, the silent--filterflag
+may be used instead (command-line interface only).
+
+Although commonly applied in digital image processing, mean filters are
+generally considered to be quite harsh, with respect to their impact on the image, compared to other smoothing
+filters such as the edge-preserving smoothing filters including theBilateralFilter,MedianFilter,OlympicFilter,EdgePreservingMeanFilterand evenGaussianFilter.
+
+This tool works with both greyscale and red-green-blue (RGB) images. RGB images are
+decomposed into intensity-hue-saturation (IHS) and the filter is applied to the intensity
+channel. NoData values in the input image are ignored during filtering. NoData values are assigned to all sites beyond
+the raster.
+
+Reference:
+
+Crow, F. C. (1984, January). Summed-area tables for texture mapping. In ACM SIGGRAPH computer graphics (Vol. 18, No.
+3, pp. 207-212). ACM.
+
+See Also:BilateralFilter,EdgePreservingMeanFilter,GaussianFilter,MedianFilter,RgbToIhs
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 25/06/2017
+
+Last Modified: 22/10/2019
+
+
+
+MedianFilter
+
+This tool performs a median filter on a raster image. Median filters, a type of low-pass filter, can be used to emphasize
+the longer-range variability in an image, effectively acting to smooth the image. This can be useful for reducing the
+noise in an image. The algorithm operates by calculating the median value (middle value in a sorted list) in a moving
+window centred on each grid cell. Specifically, this tool uses the efficient running-median filtering algorithm of Huang
+et al. (1979). The median value is not influenced by anomolously high or low values in the distribution to the extent
+that the average is. As such, the median filter is far less sensitive to shot noise in an image than the mean filter.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags.
+These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+Reference:
+
+Huang, T., Yang, G.J.T.G.Y. and Tang, G., 1979. A fast two-dimensional median filtering algorithm. IEEE
+Transactions on Acoustics, Speech, and Signal Processing, 27(1), pp.13-18.
+
+See Also:BilateralFilter,EdgePreservingMeanFilter,GaussianFilter,MeanFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 15/07/2017
+
+Last Modified: 22/10/2019
+
+
+
+MinimumFilter
+
+This tool assigns each cell in the output grid (--output) the minimum value in a moving window centred on each grid
+cell in the input raster (--input). A maximum filter is the equivalent of the mathematical morphologicalerosionoperator.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags.
+These dimensions should be odd, positive integer values, e.g. 3, 5, 7, 9... If the kernel filter size is the same in
+the x and y dimensions, the silent--filterflag may be used instead (command-line interface only).
+
+This tool takes advantage of the redundancy between overlapping, neighbouring filters to enhance computationally
+efficiency. Like most of WhiteboxTools' filters, it is also parallelized for further efficiency.
+
+See Also:MaximumFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+OlympicFilter
+
+This filter is a modification of theMeanFilter, whereby the highest and lowest values in the kernel are
+dropped, and the remaining values are averaged to replace the central pixel. The result is a low-pass smoothing
+filter that is more robust than theMeanFilter, which is more strongly impacted by the presence of outlier
+values. It is named after a system of scoring Olympic events.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+See Also:MeanFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+PercentileFilter
+
+This tool calculates the percentile of the center cell in a moving filter window applied to an input image (`--input).
+This indicates the value below which a given percentage of the neighbouring values in within the filter fall. For example,
+the 35th percentile is the value below which 35% of the neighbouring values in the filter window may be found. As such,
+the percentile of a pixel value is indicative of the relative location of the site within the statistical distribution
+of values contained within a filter window. When applied to input digital elevation models, percentile is a measure of
+local topographic position, or elevation residual.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags.
+These dimensions should be odd, positive integer values, e.g. 3, 5, 7, 9... If the kernel filter size is the same in
+the x and y dimensions, the silent--filterflag may be used instead (command-line interface only).
+
+This tool takes advantage of the redundancy between overlapping, neighbouring filters to enhance computationally
+efficiency, using a method similar to Huang et al. (1979). This efficient method of calculating percentiles requires
+rounding of floating-point inputs, and therefore the user must specify the number of significant digits (--sig_digits)
+to be used during the processing. Like most of WhiteboxTools' filters, this tool is also parallelized for further efficiency.
+
+Reference:
+
+Huang, T., Yang, G.J.T.G.Y. and Tang, G., 1979. A fast two-dimensional median filtering algorithm. IEEE
+Transactions on Acoustics, Speech, and Signal Processing, 27(1), pp.13-18.
+
+See Also:MedianFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 03/05/2019
+
+
+
+PrewittFilter
+
+This tool performs a 3 × 3 Prewitt edge-detection filter on a raster image. The Prewitt filter
+is similar to theSobelFilter, in that it identifies areas of high slope in the input image through
+the calculation of slopes in the x and y directions. The Prewitt edge-detection filter, however, gives less
+weight to nearer cell values within the moving window, or kernel. For example, a Prewitt filter uses
+the following schemes to calculate x and y slopes:
+
+X-direction slope
+
+Y-direction slope
+
+Each grid cell in the output image is assigned the square-root of the squared sum of the x and y slopes.
+
+The user may optionally clip the output image distribution tails by a specified amount (e.g. 1%).
+
+See Also:SobelFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+RangeFilter
+
+This tool performs a range filter on an input image (--input). A range filter assigns to each cell in the output grid
+(--output) the range (maximum - minimum) of the values contained within a moving window centred on each grid cell.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+See Also:TotalFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+RobertsCrossFilter
+
+This tool performs Robert's Cross edge-detection filter on a raster image. TheRobertsCrossFilteris similar to theSobelFilterandPrewittFilter, in that it identifies areas of high slope in the input
+image through the calculation of slopes in the x and y directions. A Robert's Cross filter uses
+the following 2 × 2 schemes to calculate slope magnitude, |G|:
+
+|G| = |P1 - P4| + |P2- P3|
+
+Note, the filter is centered on pixel P1 and P2, P3, and P4 are the neighbouring pixels towards the east, south,
+and south-east respectively.
+
+The output image may be overwhelmed by a relatively small number of high-valued pixels, stretching the
+palette. The user may therefore optionally clip the output image distribution tails by a specified amount
+(--clip) for improved visualization.
+
+Reference:
+
+Fisher, R. 2004.Hypertext Image Processing Resources 2 (HIPR2). Available online:
+http://homepages.inf.ed.ac.uk/rbf/HIPR2/roberts.htm
+
+See Also:SobelFilter,PrewittFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+ScharrFilter
+
+This tool performs a Scharr edge-detection filter on a raster image. The Scharr filter is similar to theSobelFilterandPrewittFilter, in that it identifies areas of high slope in the input image through
+the calculation of slopes in the x and y directions. A 3 × 3 Scharr filter uses
+the following schemes to calculate x and y slopes:
+
+X-direction slope
+
+Y-direction slope
+
+Each grid cell in the output image is assigned the square-root of the squared sum of the x and y slopes.
+
+The output image may be overwhelmed by a relatively small number of high-valued pixels, stretching the
+palette. The user may therefore optionally clip the output image distribution tails by a specified amount
+(--clip) for improved visualization.
+
+See Also:SobelFilter,PrewittFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+SobelFilter
+
+This tool performs a 3 × 3 or 5 × 5 Sobel edge-detection filter on a raster image. The Sobel filter
+is similar to thePrewittFilter, in that it identifies areas of high slope in the input image through
+the calculation of slopes in the x and y directions. The Sobel edge-detection filter, however, gives more
+weight to nearer cell values within the moving window, or kernel. For example, a 3 × 3 Sobel filter uses
+the following schemes to calculate x and y slopes:
+
+X-direction slope
+
+Y-direction slope
+
+Each grid cell in the output image is assigned the square-root of the squared sum of the x and y slopes.
+
+The user must specify the--variant, including '3x3' and '5x5' variants. The user may also optionally
+clip the output image distribution tails by a specified amount (e.g. 1%).
+
+See Also:PrewittFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+StandardDeviationFilter
+
+This tool performs a standard deviation filter on an input image (--input). A standard deviation filter assigns to each cell in the output grid
+(--output) thestandard deviation, a measure of dispersion, of the values contained within a moving window centred on each grid cell.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+See Also:RangeFilter,TotalFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+TotalFilter
+
+This tool performs a total filter on an input image. A total filter assigns to each cell in the output grid
+the total (sum) of all values in a moving window centred on each grid cell.
+
+Neighbourhood size, or filter size, is specified in the x and y dimensions using the--filterxand--filteryflags. These dimensions should be odd, positive integer values (e.g. 3, 5, 7, 9, etc.).
+
+See Also:RangeFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 25/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+UnsharpMasking
+
+Unsharp masking is an image edge-sharpening technique commonly applied in digital image processing.
+Admittedly, the name 'unsharp' seems somewhat counter-intuitive given the purpose of the filter, which
+is to enchance the definition of edge features within the input image (--input). This name comes
+from the use of a blurred, or unsharpened, intermediate image (mask) in the process. The blurred image
+is combined with the positive (original) image, creating an image that exhibits enhanced feature definition.
+A caution is needed in that the output image, although clearer, may be a less accurate representation
+of the image's subject. The output may also contain more speckle than the input image.
+
+In addition to the input (--input) and output (--output) image files, the user must specify the
+values of three parameters: the standard deviation distance (--sigma), which is a measure of the
+filter size in pixels, the amount (--amount), a percentage value that controls the magnitude of
+each overshoot at edges, and lastly, the threshold (--threshold), which controls the minimal
+brightness change that will be sharpened. Pixels with values differ after the calculation of the filter
+by less than the threshold are unmodified in the output image.
+
+UnsharpMaskingworks with both greyscale and red-green-blue (RGB) colour images. RGB images are
+decomposed into intensity-hue-saturation (IHS) and the filter is applied to the intensity
+channel. Importantly, the intensity values range from 0-1, which is important when setting the
+threshold value for colour images. NoData values in the input image are ignored during processing.
+
+See Also:GaussianFilter,HighPassFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 02/05/2018
+
+Last Modified: 22/10/2019
+
+
+
+UserDefinedWeightsFilter
+
+NoData values in the input image are ignored during the convolution operation.
+This can lead to unexpected behavior at the edges of images (since the default behavior
+is to return NoData when addressing cells beyond the grid edge) and where the grid
+contains interior areas of NoData values. Normalization of kernel weights can be useful
+for handling the edge effects associated with interior areas of NoData values. When the
+normalization option is selected, the sum of the cell value-weight product is divided
+by the sum of the weights on a cell-by-cell basis. Therefore, if the kernel at a
+particular grid cell contains neighboring cells of NoData values, normalization
+effectively re-adjusts the weighting to account for the missing data values. Normalization
+also ensures that the output image will possess values within the range of the input
+image and allows the user to specify integer value weights in the kernel. However, note
+that this implies that the sum of weights should equal one. In some cases, alternative
+sums (e.g. zero) are more appropriate, and as such normalization should not be applied
+in these cases.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/04/2018
+
+Last Modified: 22/10/2019
+
+
+--- CODE BLOCK ---
+wbt.adaptive_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    threshold=2.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=AdaptiveFilter -v --wd="/path/to/data/" ^
+-i=DEM.tif -o=output.tif --filter=25 --threshold = 2.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.bilateral_filter(
+    i, 
+    output, 
+    sigma_dist=0.75, 
+    sigma_int=1.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=BilateralFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif ^
+--sigma_dist=2.5 --sigma_int=4.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.canny_edge_detection(
+    i, 
+    output, 
+    sigma=0.5, 
+    low=0.05, 
+    high=0.15, 
+    add_back=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=CannyEdgeDetection -i=input.tif ^
+-o=output.tif --sigma=2.0 --low=0.05 --high=0.2 --add_back 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.conservative_smoothing_filter(
+    i, 
+    output, 
+    filterx=3, 
+    filtery=3, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ConservativeSmoothingFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.corner_detection(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CornerDetection -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --sigma=2.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.diff_of_gaussian_filter(
+    i, 
+    output, 
+    sigma1=2.0, 
+    sigma2=4.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=DiffOfGaussianFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --sigma1=2.0 ^
+--sigma2=4.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.diversity_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=DiversityFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.edge_preserving_mean_filter(
+    i, 
+    output, 
+    threshold, 
+    filter=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=EdgePreservingMeanFilter -v ^
+--wd="/path/to/data/" --input=image.tif -o=output.tif ^
+--filter=5 --threshold=20 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.emboss_filter(
+    i, 
+    output, 
+    direction="n", 
+    clip=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=EmbossFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --direction='s' --clip=1.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.fast_almost_gaussian_filter(
+    i, 
+    output, 
+    sigma=1.8, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=FastAlmostGaussianFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --sigma=2.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.gaussian_filter(
+    i, 
+    output, 
+    sigma=0.75, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=GaussianFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --sigma=2.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.high_pass_bilateral_filter(
+    i, 
+    output, 
+    sigma_dist=0.75, 
+    sigma_int=1.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=HighPassBilateralFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif ^
+--sigma_dist=2.5 --sigma_int=4.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.high_pass_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=HighPassFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.high_pass_median_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    sig_digits=2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=HighPassMedianFilter -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.k_nearest_mean_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    k=5, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=KNearestMeanFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --filter=9 ^
+-k=5
+>>./whitebox_tools -r=KNearestMeanFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --filtery=7 ^
+--filtery=9 -k=5 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.laplacian_filter(
+    i, 
+    output, 
+    variant="3x3(1)", 
+    clip=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LaplacianFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif ^
+--variant='3x3(1)' --clip=1.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.laplacian_of_gaussian_filter(
+    i, 
+    output, 
+    sigma=0.75, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LaplacianOfGaussianFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --sigma=2.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.lee_sigma_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    sigma=10.0, 
+    m=5.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LeeSigmaFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --filter=9 --sigma=10.0 ^
+-m=5
+>>./whitebox_tools -r=LeeSigmaFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --filtery=7 ^
+--filtery=9 --sigma=10.0 -m=5 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.line_detection_filter(
+    i, 
+    output, 
+    variant="vertical", 
+    absvals=False, 
+    clip=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LineDetectionFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --variant=h ^
+--clip=1.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.majority_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MajorityFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.maximum_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MaximumFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.mean_filter(
+    i, 
+    output, 
+    filterx=3, 
+    filtery=3, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MeanFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --filterx=25 --filtery=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.median_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    sig_digits=2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MedianFilter -v --wd="/path/to/data/" ^
+-i=input.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.minimum_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MinimumFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.olympic_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=OlympicFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.percentile_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    sig_digits=2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PercentileFilter -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.prewitt_filter(
+    i, 
+    output, 
+    clip=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PrewittFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --clip=1.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.range_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RangeFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.roberts_cross_filter(
+    i, 
+    output, 
+    clip=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RobertsCrossFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --clip=1.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.scharr_filter(
+    i, 
+    output, 
+    clip=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ScharrFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --clip=1.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.sobel_filter(
+    i, 
+    output, 
+    variant="3x3", 
+    clip=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=SobelFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --variant=5x5 --clip=1.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.standard_deviation_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=StandardDeviationFilter -v ^
+--wd="/path/to/data/" -i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.total_filter(
+    i, 
+    output, 
+    filterx=11, 
+    filtery=11, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=TotalFilter -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --filter=25 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.unsharp_masking(
+    i, 
+    output, 
+    sigma=0.75, 
+    amount=100.0, 
+    threshold=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=UnsharpMasking -v --wd="/path/to/data/" ^
+-i=image.tif -o=output.tif --sigma=2.0 --amount=50.0 ^
+--threshold=10.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.user_defined_weights_filter(
+    i, 
+    weights, 
+    output, 
+    center="center", 
+    normalize=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=UserDefinedWeightsFilter -v ^
+--wd="/path/to/data/" -i=image.tif --weights=weights.txt ^
+-o=output.tif --center=center --normalize 
+
+------------------

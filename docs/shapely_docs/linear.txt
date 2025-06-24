@@ -1,0 +1,21 @@
+Linestring operations#
+
+line_interpolate_point(line, distance[, ...])
+
+Return a point interpolated at given distance on a line.
+
+line_locate_point(line, other[, normalized])
+
+Return the distance to the line origin of given point.
+
+line_merge(line[, directed])
+
+Return (Multi)LineStrings formed by combining the lines in a MultiLineString.
+
+shared_paths(a, b, **kwargs)
+
+Return the shared paths between a and b.
+
+shortest_line(a, b, **kwargs)
+
+Return the shortest line between two geometries.

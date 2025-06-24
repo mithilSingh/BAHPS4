@@ -1,0 +1,17 @@
+Plotting#
+
+plotting.patch_from_polygon(polygon, **kwargs)
+
+Get a Matplotlib patch from a (Multi)Polygon.
+
+plotting.plot_polygon(polygon[, ax, ...])
+
+Plot a (Multi)Polygon.
+
+plotting.plot_line(line[, ax, add_points, ...])
+
+Plot a (Multi)LineString/LinearRing.
+
+plotting.plot_points(geom[, ax, color, marker])
+
+Plot a Point/MultiPoint or the vertices of any other geometry type.

@@ -1,0 +1,49 @@
+Set operations#
+
+coverage_union(a, b, **kwargs)
+
+Merge multiple polygons into one.
+
+coverage_union_all(geometries[, axis])
+
+Return the union of multiple polygons of a geometry collection.
+
+difference(a, b[, grid_size])
+
+Return the part of geometry A that does not intersect with geometry B.
+
+disjoint_subset_union(a, b, **kwargs)
+
+Merge multiple polygons into one using algorithm optimised for subsets.
+
+disjoint_subset_union_all(geometries, *[, axis])
+
+Return the union of multiple polygons.
+
+intersection(a, b[, grid_size])
+
+Return the geometry that is shared between input geometries.
+
+intersection_all(geometries[, axis])
+
+Return the intersection of multiple geometries.
+
+symmetric_difference(a, b[, grid_size])
+
+Return the geometry with the portions of input geometries that do not intersect.
+
+symmetric_difference_all(geometries[, axis])
+
+Return the symmetric difference of multiple geometries.
+
+unary_union(geometries[, grid_size, axis])
+
+Return the union of multiple geometries.
+
+union(a, b[, grid_size])
+
+Merge geometries into one.
+
+union_all(geometries[, grid_size, axis])
+
+Return the union of multiple geometries.

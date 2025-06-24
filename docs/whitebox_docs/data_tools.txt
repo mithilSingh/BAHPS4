@@ -1,0 +1,1436 @@
+Data Tools
+
+AddPointCoordinatesToTableCleanVectorConvertNodataToZeroConvertRasterFormatCsvPointsToVectorExportTableToCsvFixDanglingArcsJoinTablesLinesToPolygonsMergeTableWithCsvMergeVectorsModifyNoDataValueMultiPartToSinglePartNewRasterFromBasePolygonsToLinesPrintGeoTiffTagsRasterToVectorLinesRasterToVectorPointsRasterToVectorPolygonsReinitializeAttributeTableRemovePolygonHolesRemoveRasterPolygonHolesSetNodataValueSinglePartToMultiPartVectorLinesToRasterVectorPointsToRasterVectorPolygonsToRaster
+
+AddPointCoordinatesToTable
+
+CleanVector
+
+ConvertNodataToZero
+
+ConvertRasterFormat
+
+CsvPointsToVector
+
+ExportTableToCsv
+
+FixDanglingArcs
+
+JoinTables
+
+LinesToPolygons
+
+MergeTableWithCsv
+
+MergeVectors
+
+ModifyNoDataValue
+
+MultiPartToSinglePart
+
+NewRasterFromBase
+
+PolygonsToLines
+
+PrintGeoTiffTags
+
+RasterToVectorLines
+
+RasterToVectorPoints
+
+RasterToVectorPolygons
+
+ReinitializeAttributeTable
+
+RemovePolygonHoles
+
+RemoveRasterPolygonHoles
+
+SetNodataValue
+
+SinglePartToMultiPart
+
+VectorLinesToRaster
+
+VectorPointsToRaster
+
+VectorPolygonsToRaster
+
+
+
+AddPointCoordinatesToTable
+
+This tool modifies the attribute table of a vector of POINT ShapeType by adding two fields,
+XCOORD and YCOORD, containing each point's X and Y coordinates respectively.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 25/09/2018
+
+Last Modified: 12/10/2018
+
+
+
+CleanVector
+
+This tool can be used to remove all features in Shapefiles that are of thenullShapeType. It also
+removes line features with fewer than two vertices and polygon features with fewer than three vertices.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 30/06/2019
+
+Last Modified: 27/05/2020
+
+
+
+ConvertNodataToZero
+
+This tool can be used to change the value within the grid cells of a raster file (--input) that contain
+NoData to zero. The most common reason for using this tool is to change the background region of a raster
+image such that it can be included in analysis since NoData values are usually ignored by by most tools.
+This change, however, will result in the background no longer displaying transparently in most GIS. This
+change can be reversed using theSetNoDataValuetool.
+
+See Also:SetNoDataValue,IsNoData
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 11/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+ConvertRasterFormat
+
+This tool converts raster data from one format to another. It determines input/output raster
+formats based on extensions, but due to file extension naming collisions, it would be good to
+add user hints. For example, the extension 'grd' could belong to a SurferAscii or a Surfer7Binary.
+This is more important for distinguishing output files since input files can be read and
+distiguishing features idenfitied from the file structure. At the moment, this tool does not
+support user hints however.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: July 6, 2017
+
+Last Modified: 12/10/2018
+
+
+
+CsvPointsToVector
+
+This tool can be used to import a series of points contained within a comma-separated values
+(*.csv) file (--input) into a vector shapefile of a POINT ShapeType. The input file must be an ASCII text
+file with a .csv extensions. The tool will automatically detect the field data type; for numeric
+fields, it will also determine the appropriate length and precision. The user must specify the
+x-coordinate (--xfield) and y-coordiante (--yfield) fields. All fields are imported as
+attributes in the output (--output) vector file. The tool assumes that the first line of the file is a header line from which field
+names are retrieved.
+
+See Also:MergeTableWithCsv,ExportTableToCsv
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Prof. John Lindsay
+
+Created: 07/08/2019
+
+Last Modified: 28/01/2020
+
+
+
+ExportTableToCsv
+
+This tool can be used to export a vector's attribute table to a comma separated values (CSV)
+file. CSV files stores tabular data (numbers and text) in plain-text form such that each row
+corresponds to a record and each column to a field. Fields are typically separated by commas
+within records. The user must specify the name of the vector (and associated attribute file),
+the name of the output CSV file, and whether or not to include the field names as a header
+column in the output CSV file.
+
+See Also:MergeTableWithCsv
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 24/04/2018
+
+Last Modified: 18/10/2019
+
+
+
+FixDanglingArcs
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool can be used to fix undershot and overshot arcs, two common topological errors,
+in an input vector lines file (--input). In addition to the input lines vector, the user must
+also specify the output vector (--output) and the snap distance (--snap). All dangling arcs
+that are within this threshold snap distance of another line feature will be connected to the
+neighbouring feature. If the input lines network is a vector stream network, users are advised
+to apply theRepairStreamVectorTopologytool instead.
+
+
+
+See Also:RepairStreamVectorTopology,CleanVector
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 03/08/2021
+
+Last Modified: 03/08/2021
+
+
+
+JoinTables
+
+This tool can be used to join (i.e. merge) a vector's attribute table with a second table. The
+user must specify the name of the vector file (and associated attribute file) as well as theprimary keywithin the table. Theprimary key(--pkeyflag) is the field
+within the table that is being appended to that serves as the identifier. Additionally, the user
+must specify the name of a second vector from which the data appended into the first table will be
+derived. Theforeign key(--fkeyflag), the identifying field within the
+second table that corresponds with the data contained within the primary key in the table, must be
+specified. Both the primary and foreign keys should either be strings (text) or integer values.Fields containing decimal values are not good candidates for keys.Lastly, the names of the field
+within the second file to include in the merge operation can also be input (--import_field). If the--import_fieldfield is not input, all fields in the attribute table of the second file, that are not
+the foreign key nor FID, will be imported to the first table.
+
+Merging works for one-to-one and many-to-one database relations. Aone-to-onerelations exists when
+each record in the attribute table corresponds to one record in the second table and each primary
+key is unique. Since each record in the attribute table is associated with a geospatial feature in
+the vector, an example of a one-to-one relation may be where the second file contains AREA and
+PERIMETER fields for each polygon feature in the vector. This is the most basic type of relation.
+A many-to-one relation would exist when each record in the first attribute table corresponds to one
+record in the second file and the primary key is NOT unique. Consider as an example a vector and
+attribute table associated with a world map of countries. Each country has one or more more polygon
+features in the shapefile, e.g. Canada has its mainland and many hundred large islands. You may want
+to append a table containing data about the population and area of each country. In this case, the
+COUNTRY columns in the attribute table and the second file serve as the primary and foreign keys
+respectively. While there may be many duplicate primary keys (all of those Canadian polygons) each
+will correspond to only one foreign key containing the population and area data. This is amany-to-onerelation. TheJoinTablestool does not support one-to-many nor many-to-many relations.
+
+See Also:MergeTableWithCsv,ReinitializeAttributeTable,ExportTableToCsv
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Prof. John Lindsay
+
+Created: 07/10/2018
+
+Last Modified: 22/11/2018
+
+
+
+LinesToPolygons
+
+This tool converts vector polylines into polygons. Note that this tool will close polygons
+that are open and will ensure that the first part of an input line is interpreted
+as the polygon hull and subsequent parts are considered holes. The tool does not
+examine input lines for line crossings (self intersections), which are topological
+errors.
+
+See Also:PolygonsToLines
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/09/2018
+
+Last Modified: 12/10/2018
+
+
+
+MergeTableWithCsv
+
+This tool can be used to merge a vector's attribute table with data contained within a comma
+separated values (CSV) text file. CSV files stores tabular data (numbers and text) in plain-text
+form such that each row is a record and each column a field. Fields are typically separated by
+commas although the tool will also support seimi-colon, tab, and space delimited files. The user
+must specify the name of the vector (and associated attribute file) as well as theprimary keywithin the table. Theprimary key(--pkeyflag) is the field within the
+table that is being appended to that serves as the unique identifier. Additionally, the user must
+specify the name of a CSV text file with either a *.csv or *.txt extension. The file must possess a
+header row, i.e. the first row must contain information about the names of the various fields. Theforeign key(--fkeyflag), that is the identifying field within the
+CSV file that corresponds with the data contained within theprimary keyin the table, must also
+be specified. Both the primary and foreign keys should either be strings (text) or integer values.Fields containing decimal values are not good candidates for keys.Lastly, the user may optionally
+specify the name of a field within the CSV file to import in the merge operation (--import_fieldflag).
+If this flag is not specified, all of the fields within the CSV, with the exception of the foreign
+key, will be appended to the attribute table.
+
+Merging works for one-to-one and many-to-one database relations. Aone-to-onerelations exists when
+each record in the attribute table corresponds to one record in the second table and each primary
+key is unique. Since each record in the attribute table is associated with a geospatial feature in
+the vector, an example of a one-to-one relation may be where the second file contains AREA and
+PERIMETER fields for each polygon feature in the vector. This is the most basic type of relation.
+A many-to-one relation would exist when each record in the first attribute table corresponds to one
+record in the second file and the primary key is NOT unique. Consider as an example a vector and
+attribute table associated with a world map of countries. Each country has one or more more polygon
+features in the shapefile, e.g. Canada has its mainland and many hundred large islands. You may want
+to append a table containing data about the population and area of each country. In this case, the
+COUNTRY columns in the attribute table and the second file serve as the primary and foreign keys
+respectively. While there may be many duplicate primary keys (all of those Canadian polygons) each
+will correspond to only one foreign key containing the population and area data. This is amany-to-onerelation. TheJoinTablestool does not support one-to-many nor many-to-many relations.
+
+See Also:JoinTables,ReinitializeAttributeTable,ExportTableToCsv
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Prof. John Lindsay
+
+Created: 11/10/2018
+
+Last Modified: 09/03/2020
+
+
+
+MergeVectors
+
+Combines two or more input vectors of the same ShapeType creating a single, new output
+vector. Importantly, the attribute table of the output vector will contain the ubiquitous
+file-specific FID, the parent file name, the parent FID, and the list of attribute fields
+that are shared among each of the input files. For a field to be considered common
+between tables, it must have the samenameandfield_type(i.e. data type and
+precision).
+
+Overlapping features will not be identified nor handled in the merging. If you have
+significant areas of overlap, it is advisable to use one of the vector overlay tools
+instead.
+
+The difference betweenMergeVectorsand theAppendtool is that merging takes two
+or more files and creates one new file containing the features of all inputs, andAppendplaces the features of a single vector into another existing (appended) vector.
+
+This tool only operates on vector files. Use theMosaictool to combine raster data.
+
+See Also:Append,Mosaic
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/10/2018
+
+Last Modified: 12/10/2018
+
+
+
+ModifyNoDataValue
+
+This tool can be used to modify the value of pixels containing the NoData value for an input raster image.
+This operation differs from theSetNodataValuetool, which sets the NoData value for an image in the
+image header without actually modifying pixel values. Also,SetNodataValuedoes not
+overwrite the input file, while theModifyNoDataValuetool does. This tool cannot modify the
+input image data type, which is important to note since it may cause an unexpected behaviour if the
+new NoData value is negative and the input image data type is an unsigned integer type.
+
+See Also:SetNodataValue,ConvertNodataToZero
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 08/09/2019
+
+Last Modified: 08/09/2019
+
+
+
+MultiPartToSinglePart
+
+This tool can be used to convert a vector file containing multi-part features into a vector
+containing only single-part features. Any multi-part polygons or lines within the input
+vector file will be split into separate features in the output file, each possessing their
+own entry in the associated attribute file. For polygon-type vectors, the user may optionally
+choose to exclude hole-parts from being separated from their containing polygons. That is,
+with the--exclude_holesflag, hole parts in the input vector will continue to belong to
+their enclosing polygon in the output vector. The tool will also convert MultiPoint Shapefiles
+into single Point vectors.
+
+See Also:SinglePartToMultiPart
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/09/2018
+
+Last Modified: 16/06/2020
+
+
+
+NewRasterFromBase
+
+This tool can be used to create a new raster with the same coordinates and dimensions
+(i.e. rows and columns) as an existing base image, or the same spatial extent as an input
+vector file. The user must specify the name of the
+base file (--base), the value that the new grid will be filled with (--valueflag;
+default of nodata), and the data type (--data_typeflag; options include 'double',
+'float', and 'integer'). If an input vector base file is used, then it is necessary to specify
+a value for the optional grid cell size (--cell_size) input parameter.
+
+See Also:RasterCellAssignment
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 11/07/2017
+
+Last Modified: 27/08/2021
+
+
+
+PolygonsToLines
+
+This tool converts vector polygons into polylines, simply by modifying the Shapefile geometry type.
+
+See Also:LinesToPolygons
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 04/09/2018
+
+Last Modified: 12/10/2018
+
+
+
+PrintGeoTiffTags
+
+This tool can be used to view the tags contained within a GeoTiff file. Viewing
+the tags of a GeoTiff file can be useful when trying to import the GeoTiff to
+different software environments. The user must specify the name of a GeoTiff file
+and the tag information will be output to the StdOut output stream (e.g. console).
+Note that tags that contain greater than 100 values will be truncated in the output.
+GeoKeys will also be interpreted as per the GeoTIFF specification.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: March 2, 2018
+
+Last Modified: March 2, 2018
+
+
+
+RasterToVectorLines
+
+This tool converts raster lines features into a vector of the POLYLINE ShapeType.
+Grid cells associated with line features will contain non-zero, non-NoData cell
+values. The algorithm requires three passes of the raster. The first pass counts
+the number of line neighbours of each line cell; the second pass traces line
+segments starting from line ends (i.e. line cells with only one neighbouring line
+cell); lastly, the final pass traces any remaining line segments, which are likely
+forming closed loops (and therefore do not have line ends).
+
+If the line raster contains streams, it is preferable to use theRasterStreamsToVectorinstead. This tool will use knowledge of flow directions to ensure connections
+between stream segments at confluence sites, whereasRasterToVectorLineswill not.
+
+See Also:RasterToVectorPolygons,RasterToVectorPoints,RasterStreamsToVector
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 09/10/2018
+
+Last Modified: 12/10/2018
+
+
+
+RasterToVectorPoints
+
+Converts a raster data set to a vector of the POINT shapetype. The user must specify
+the name of a raster file (--input) and the name of the output vector (--output). Points will correspond
+with grid cell centre points. All grid cells containing non-zero, non-NoData values
+will be considered a point. The vector's attribute table will contain a field called
+'VALUE' that will contain the cell value for each point feature.
+
+See Also:RasterToVectorPolygons,RasterToVectorLines
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 25/09/2018
+
+Last Modified: 12/10/2018
+
+
+
+RasterToVectorPolygons
+
+Converts a raster data set to a vector of the POLYGON geometry type. The user must specify
+the name of a raster file (--input) and the name of the output (--output) vector. All grid cells containing
+non-zero, non-NoData values will be considered part of a polygon feature. The vector's attribute table
+will contain a field called 'VALUE' that will contain the cell value for each polygon
+feature, in addition to the standard feature ID (FID) attribute.
+
+See Also:RasterToVectorPoints,RasterToVectorLines
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 18/02/2020
+
+Last Modified: 05/03/2020
+
+
+
+ReinitializeAttributeTable
+
+Reinitializes a vector's attribute table deleting all fields but the feature ID (FID).
+Caution: this tool overwrites the input file's attribute table.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 04/09/2018
+
+Last Modified: 12/10/2018
+
+
+
+RemovePolygonHoles
+
+This tool can be used to remove holes from the features within a vector
+polygon file. The user must specify the name of the input vector file,
+which must be of a polygon shapetype, and the name of the output file.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/09/2018
+
+Last Modified: 12/10/2018
+
+
+
+RemoveRasterPolygonHoles
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool can be used to remove holes in raster polygons. Holes are areas of background values (either zero or
+NoData), completely surrounded by foreground values (any value other than zero or NoData). Therefore, this tool can
+somewhat be considered to be the raster equivalent to the vector-basedRemovePolygonHolestool. Users may
+optionally remove holes less than a specified threshold size (--threshold), measured in grid cells. Hole size
+is determined using a clumping operation, similar to what is used by theClumptool. Users may also optionally
+specify whether or not to included 8-cell diagonal connectedness during the clumping operation (--use_diagonals).
+
+Some GIS professionalshave previously used aclosingoperation to lessen the extent
+of polygon holes in raster data. A closing is a mathematical morphology operation that involves expanding the raster
+polygons using a dialation filter (MaximumFilter), followed by a dialation filter (MinimumFilter) on the resulting
+image. While this common image processing technique can be helpful for reducing the prevalance of polygon holes,
+it can also have considerable impact on non-hole features within the image. TheRemoveRasterPolygonHolestool,
+by comparison, will only affect hole features and does not impact the boundaries of other polygons at all. The
+following image compares the removal of polygon holes (islands in a lake polygon) using a closing operation (middle) calculated using an 11x11
+convolution filter and the output of theRemoveRasterPolygonHolestool. Notice how the convolution operation
+impacts the edges of the polygon, particularly in convex regions, compared with theRemoveRasterPolygonHoles.
+
+
+
+Hereis a video that demonstrates how to apply this tool to a classified
+Sentinel-2 multi-spectral satellite imagery data set.
+
+See Also:Closing,RemovePolygonHoles,Clump,GeneralizeClassifiedRaster
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 29/10/2022
+
+Last Modified: 29/10/2022
+
+
+
+SetNodataValue
+
+This tool will re-assign a user-defined background value in an input raster image theNoDatavalue.
+More precisely, the NoData value will be changed to the specified background value and any existing
+grid cells containing the previous NoData value, if it had been defined, will be changed to this new
+value. Most WhiteboxTools tools recognize NoData grid cells and treat them specially. NoData grid cells
+are also often displayed transparently by GIS software. The user must specify the names of the input and
+output rasters and the background value. The default background value is zero, although any numeric
+value is possible.
+
+This tool differs from theModifyNoDataValuetool in that it simply updates the NoData value in the raster
+header, without modifying pixel values. TheModifyNoDataValuetool will update the value in the header,
+and then modify each existing NoData pixel to contain this new value. Also,SetNodataValuedoes not
+overwrite the input file, while theModifyNoDataValuetool does.
+
+This tool may result in a change in the data type of the output image compared with the input image, if
+the background value is set to a negative value and the input image data type is an unsigned integer. In
+some cases, this may result in a doubling of the storage size of the output image.
+
+See Also:ModifyNoDataValue,ConvertNodataToZero,IsNoData
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 10/09/2017
+
+Last Modified: 14/03/2023
+
+
+
+SinglePartToMultiPart
+
+This tool can be used to convert a vector file containing single-part features into a vector
+containing multi-part features. The user has the option to either group features based on an
+ID Field (--fieldflag), which is a categorical field within the vector's attribute table.
+The ID Field should either be of String (text) or Integer type. Fields containing decimal values
+are not good candidates for the ID Field.If no--fieldflag is specified, all features will
+be grouped together into one large multi-part vector.
+
+This tool works for vectors containing either point, line, or polygon features.
+Since vectors of a POINT ShapeType cannot represent multi-part features, the ShapeType of the
+output file will be modified to a MULTIPOINT ShapeType if the input file is of a POINT ShapeType.
+If the input vector is of a POLYGON ShapeType, the user can optionally set the algorithm to search
+for polygons that should be represented as hole parts. In the case of grouping based on an ID Field,
+hole parts are polygon features contained within larger polygons of the same ID Field value. Please
+note that searching for polygon holes may significantly increase processing time for larger polygon
+coverages.
+
+See Also:MultiPartToSinglePart
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/09/2018
+
+Last Modified: 12/10/2018
+
+
+
+VectorLinesToRaster
+
+This tool can be used to convert a vector lines or polygon file into a raster grid of lines. If a vector of one
+of the polygon ShapeTypes is selected, the resulting raster will outline the polygons without filling these
+features. Use theVectorPolygonToRastertool if you need to fill the polygon features.
+
+The user must specify the name of the input vector (--input) and the output raster file (--output). The Field
+Name (--field) is
+the field from the attributes table, from which the tool will retrieve the information to assign to
+grid cells in the output raster. Note that if this field contains numerical data with no decimals, the output raster
+data type will be INTEGER; if it contains decimals it will be of a FLOAT data type. The field must contain numerical
+data. If the user does not supply a Field Name parameter, each feature in the raster will be assigned the record
+number of the feature. The assignment operation determines how the situation of multiple points contained within the
+same grid cell is handled. The background value is the value that is assigned to grid cells in the output raster that
+do not correspond to the location of any points in the input vector. This value can be any numerical value (e.g. 0)
+or the string 'NoData', which is the default.
+
+If the user optionally specifies the--cell_sizeparameter then the coordinates will be determined by the input
+vector (i.e. the bounding box) and the specified Cell Size. This will also determine the number of rows and columns
+in the output raster. If the user instead specifies the optional base raster file parameter (--base), the output raster's
+coordinates (i.e. north, south, east, west) and row and column count will be the same as the base file. If the user
+does not specify either of these two optional parameters, the tool will determine the cell size automatically as the
+maximum of the north-south extent (determined from the shapefile's bounding box) or the east-west extent divided by 500.
+
+See Also:VectorPointsToRaster,VectorPolygonsToRaster
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 18/04/2018
+
+Last Modified: 22/10/2019
+
+
+
+VectorPointsToRaster
+
+This tool can be used to convert a vector points file into a raster grid. The user must
+specify the name of the input vector and the output raster file. The field name (--field)
+is the field from the attributes table from which the tool will retrieve the information to
+assign to grid cells in the output raster. The field must contain numerical data. If the user does not
+supply a field name parameter, each feature in the raster will be assigned the record number
+of the feature. The assignment operation determines how the situation of multiple points
+contained within the same grid cell is handled. The background value is zero by default
+but can be set toNoDataoptionally using the--nodatavalue.
+
+If the user optionally specifies the grid cell size parameter (--cell_size) then the coordinates
+will be determined by the input vector (i.e. the bounding box) and the specified cell size. This
+will also determine the number of rows and columns in the output raster. If the user instead
+specifies the optional base raster file parameter (--base), the output raster's coordinates (i.e.
+north, south, east, west) and row and column count will be the same as the base file.
+
+In the case that multiple points are contained within a single grid cell, the output can be
+assigned (--assign) the first, last (default), min, max, sum, mean, or number of the contained points.
+
+See Also:VectorPolygonsToRaster,VectorLinesToRaster
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 19/04/2018
+
+Last Modified: 19/04/2023
+
+
+
+VectorPolygonsToRaster
+
+Converts a vector containing polygons into a raster.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 17/04/2018
+
+Last Modified: 18/10/2019
+
+
+--- CODE BLOCK ---
+wbt.add_point_coordinates_to_table(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=AddPointCoordinatesToTable -v ^
+--wd="/path/to/data/" --input=points.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.clean_vector(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CleanVector -v --wd="/path/to/data/" ^
+-i=input.shp -o=output.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.convert_nodata_to_zero(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ConvertNodataToZero -v ^
+--wd="/path/to/data/" --input=in.tif -o=NewRaster.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.convert_raster_format(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ConvertRasterFormat -v ^
+--wd="/path/to/data/" --input=DEM.tif -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.csv_points_to_vector(
+    i, 
+    output, 
+    xfield=0, 
+    yfield=1, 
+    epsg=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CsvPointsToVector -v ^
+--wd="/path/to/data/" -i=points.csv -o=points.shp --xfield=0 ^
+--yfield=1 --epsg=4326 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.export_table_to_csv(
+    i, 
+    output, 
+    headers=True, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ExportTableToCsv -v ^
+--wd="/path/to/data/" -i=lines.shp -o=output.csv --headers 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.fix_dangling_arcs(
+    i, 
+    output, 
+    dist="", 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=FixDanglingArcs --input=streams.shp ^
+--output=streams_snapped.shp --dist=2.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.join_tables(
+    input1, 
+    pkey, 
+    input2, 
+    fkey, 
+    import_field=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=JoinTables -v --wd="/path/to/data/" ^
+--i1=properties.shp --pkey=TYPE --i2=land_class.shp ^
+--fkey=VALUE --import_field=NEW_VALUE 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.lines_to_polygons(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LinesToPolygons -v ^
+--wd="/path/to/data/" -i=input.shp -o=output.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.merge_table_with_csv(
+    i, 
+    pkey, 
+    csv, 
+    fkey, 
+    import_field=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MergeTableWithCsv -v ^
+--wd="/path/to/data/" -i=properties.shp --pkey=TYPE ^
+--csv=land_class.csv --fkey=VALUE ^
+--import_field=NEW_VALUE
+>>./whitebox_tools -r=MergeTableWithCsv ^
+-v --wd="/path/to/data/" -i=properties.shp --pkey=TYPE ^
+--csv=land_class.csv --fkey=VALUE 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.merge_vectors(
+    inputs, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MergeVectors -v --wd="/path/to/data/" ^
+-i='polys1.shp;polys2.shp;polys3.shp' -o=out_file.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.modify_no_data_value(
+    i, 
+    new_value="-32768.0", 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ModifyNoDataValue -v ^
+--wd="/path/to/data/" --input=in.tif --new_value= -999.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.multi_part_to_single_part(
+    i, 
+    output, 
+    exclude_holes=True, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=MultiPartToSinglePart -v ^
+--wd="/path/to/data/" -i=input.shp -o=output.shp ^
+--exclude_holes 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.new_raster_from_base(
+    base, 
+    output, 
+    value="nodata", 
+    data_type="float", 
+    cell_size=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=NewRasterFromBase -v ^
+--wd="/path/to/data/" --base=base.tif -o=NewRaster.tif ^
+--value=0.0 --data_type=integer
+>>./whitebox_tools ^
+-r=NewRasterFromBase -v --wd="/path/to/data/" --base=base.tif ^
+-o=NewRaster.tif --value=nodata 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.polygons_to_lines(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PolygonsToLines -v ^
+--wd="/path/to/data/" -i=input.shp -o=output.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.print_geo_tiff_tags(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PrintGeoTiffTags -v ^
+--wd="/path/to/data/" --input=DEM.tiff 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.raster_to_vector_lines(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RasterToVectorLines -v ^
+--wd="/path/to/data/" -i=lines.tif -o=lines.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.raster_to_vector_points(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RasterToVectorPoints -v ^
+--wd="/path/to/data/" --input=points.tif -o=out.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.raster_to_vector_polygons(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RasterToVectorPolygons -v ^
+--wd="/path/to/data/" --input=points.tif -o=out.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.reinitialize_attribute_table(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ReinitializeAttributeTable -v ^
+--wd="/path/to/data/" -i=input.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.remove_polygon_holes(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RemovePolygonHoles -v ^
+--wd="/path/to/data/" --input=polygons.shp ^
+--output=no_holes.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.remove_raster_polygon_holes(
+    i, 
+    output, 
+    threshold=3, 
+    use_diagonals=True, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=RemoveRasterPolygonHoles -i=input.tif ^
+-o=output.tif --threshold=25 --use_diagonals 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.set_nodata_value(
+    i, 
+    output, 
+    back_value=0.0, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=SetNodataValue -v --wd="/path/to/data/" ^
+-i=in.tif -o=newRaster.tif --back_value=1.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.single_part_to_multi_part(
+    i, 
+    output, 
+    field=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=SinglePartToMultiPart -v ^
+--wd="/path/to/data/" -i=input.shp -o=output.shp ^
+--field='COUNTRY' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.vector_lines_to_raster(
+    i, 
+    output, 
+    field="FID", 
+    nodata=True, 
+    cell_size=None, 
+    base=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=VectorLinesToRaster -v ^
+--wd="/path/to/data/" -i=lines.shp --field=ELEV -o=output.tif ^
+--nodata --cell_size=10.0
+        >>./whitebox_tools ^
+-r=VectorLinesToRaster -v --wd="/path/to/data/" -i=lines.shp ^
+--field=FID -o=output.tif --base=existing_raster.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.vector_points_to_raster(
+    i, 
+    output, 
+    field="FID", 
+    assign="last", 
+    nodata=True, 
+    cell_size=None, 
+    base=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=VectorPointsToRaster -v ^
+--wd="/path/to/data/" -i=points.shp --field=ELEV -o=output.tif ^
+--assign=min --nodata ^
+--cell_size=10.0
+        >>./whitebox_tools ^
+-r=VectorPointsToRaster -v --wd="/path/to/data/" -i=points.shp ^
+--field=FID -o=output.tif --assign=last ^
+--base=existing_raster.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.vector_polygons_to_raster(
+    i, 
+    output, 
+    field="FID", 
+    nodata=True, 
+    cell_size=None, 
+    base=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=VectorPolygonsToRaster -v ^
+--wd="/path/to/data/" -i=lakes.shp --field=ELEV -o=output.tif ^
+--nodata --cell_size=10.0
+        >>./whitebox_tools ^
+-r=VectorPolygonsToRaster -v --wd="/path/to/data/" ^
+-i=lakes.shp --field=ELEV -o=output.tif ^
+--base=existing_raster.tif 
+
+------------------

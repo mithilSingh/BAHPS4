@@ -1,0 +1,64 @@
+Setting UpWhiteboxTool
+
+WhiteboxToolsis a stand-alone executable command-line program with no actual installation. Download the appropriate file for your system from theWhiteboxTools homepageand decompress the folder. Pre-compiled binaries can be downloaded for MS Windows, MacOS, and Linux operating systems. Depending on your operating system, you may need to grant theWhiteboxToolsexecutable file execution privileges before running it.
+
+Information about how to install any of the WhiteboxToolsextension productscan be found onwww.whiteboxgeo.comor by watchingthis YouTube video.
+
+If you intend to use WhiteboxTools from thecommand prompt(i.e. a terminal application), you may wish to add the directory containing the WhiteboxTools executable file to your systemPATHvariable. Doing so will greatly simplify usage of the library from your terminal. Instructions for doing this depend on your operating system and can be found on the Internet.
+
+If you intend to use thePython programming interfaceforWhiteboxToolsyou will need to havePython 3installed. Please note that the Python interface will not work correctly with Python 2. If your system has Python 2 as the default Python version, it is possible to install Python 3 alongside your current version. You may need to use thepython3command in place of the usualpythonif this is the case.
+
+Building WhiteboxTools From Source Code
+
+Most users rely on the pre-compiled versions of WhiteboxTools and will never need to compile the software from its source code. There are two circumstances under which you may find that you need to build your own binary executable: 1) if you need a binary compiled for a platform other than the project-supported operating systems, and 2) if you require a bleeding-edge feature or bug-fix only available in the development branch. It is likely thatWhiteboxToolswill work on a wider variety of operating systems and architectures than those of the distributed pre-compiled binaries. If you do not find your operating system/architecture in the list of availableWhiteboxToolbinaries, then compilation from source code will be necessary. WhiteboxTools can be compiled from the source code with the following steps:
+
+Install the Rust compiler;Rustupis recommended for this purpose. Further instruction can be found at thislink.
+
+Install the Rust compiler;Rustupis recommended for this purpose. Further instruction can be found at thislink.
+
+The proper way to installRustupdepends on your operating system and instructions can be found on theRust install page. For Unix-type OSs (including linux and MacOS), the recommended install command is:
+
+curl https://sh.rustup.rs -sSf | sh
+
+After installingRustup, install the Rust compiler and tools (including theCargopackage manager and build tool):
+
+rustup install stable
+
+Note, you may need to install a linker in addition to the Rust compiler (e.g. MS Visual C++ 2015 Build Tools on MS Windows; XCode on MacOS).
+
+Download theWhiteboxToolssource code. To download the code, click the green Clone or download button on the GitHub repository site.Decompress the zipped download file.Open a terminal (command prompt) window and change the working directory to the whitebox_tools sub-folder, which is contained within the decompressed downloaded Whitebox GAT folder:
+
+Download theWhiteboxToolssource code. To download the code, click the green Clone or download button on the GitHub repository site.
+
+Download theWhiteboxToolssource code. To download the code, click the green Clone or download button on the GitHub repository site.
+
+Decompress the zipped download file.
+
+Decompress the zipped download file.
+
+Open a terminal (command prompt) window and change the working directory to the whitebox_tools sub-folder, which is contained within the decompressed downloaded Whitebox GAT folder:
+
+Open a terminal (command prompt) window and change the working directory to the whitebox_tools sub-folder, which is contained within the decompressed downloaded Whitebox GAT folder:
+
+Finally, use the rust package managerCargo, which will be installed alongside Rust, to compile the executable:
+
+Finally, use the rust package managerCargo, which will be installed alongside Rust, to compile the executable:
+
+Depending on your system, the compilation may take several minutes. When completed, the compiled binary executable file will be contained within thewhitebox_tools/target/release/ folder. Type./whitebox_tools --helpat the command prompt (after changing the directory to the containing folder) for information on how to run the executable from the terminal.
+
+The '>>' is shorthand used in this document to denote the command prompt and is not intended to be typed.
+
+Be sure to follow the instructions for installing Rust carefully. In particular, if you are installing on Microsoft Windows, you must have a linker installed prior to installing the Rust compiler (rustc). The Rust webpage recommends either theMS Visual C++ 2015 Build Toolsor the GNU equivalent and offers details for each installation approach.
+
+
+--- CODE BLOCK ---
+>> cd /path/to/folder/whitebox_tools/
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> cargo build --release
+
+------------------

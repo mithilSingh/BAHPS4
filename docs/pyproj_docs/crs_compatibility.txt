@@ -1,0 +1,365 @@
+CRS Compatibility Guide for Geospatial Python¶
+
+This is meant to be a guide to help you along the way of you usepyproj.crs.CRSwith other Python Geospatial libraries.
+
+Note
+
+WKT2 is the best format for storing your CRS according to thePROJ FAQ.
+
+osgeo/gdal¶
+
+https://github.com/osgeo/gdal
+
+Converting fromosgeo.osr.SpatialReferencetopyproj.crs.CRS¶
+
+Converting frompyproj.crs.CRStoosgeo.osr.SpatialReference¶
+
+Warning
+
+WKT2 is only supported in GDAL 3+
+
+rasterio¶
+
+https://github.com/mapbox/rasterio
+
+Converting fromrasterio.crs.CRStopyproj.crs.CRS¶
+
+If you haverasterio >= 1.0.14, then you can pass in therasterio.crs.CRSdirectly:
+
+Otherwise, you should use thewktproperty:
+
+Converting frompyproj.crs.CRStorasterio.crs.CRS¶
+
+Warning
+
+WKT2 is only supported in GDAL 3+
+
+If you have rasterio >= 1.0.26 and GDAL 3+, then you can pass in thepyproj.crs.CRSdirectly:
+
+If you want to be compatible across GDAL/rasterio versions, you can do:
+
+fiona¶
+
+https://github.com/Toblerity/Fiona
+
+Converting fromfionaCRS topyproj.crs.CRS¶
+
+Fiona currently stores the CRS as a PROJ string dictionary in thecrsattribute. As such, it is best to use thecrs_wktattribute.
+
+It is also useful to know that plans exist to add CRS class.
+Related GitHub issuehere.
+
+Example:
+
+Converting frompyproj.crs.CRSforfiona¶
+
+Warning
+
+WKT2 is only supported in GDAL 3+
+
+If you want to be compatible across GDAL versions, you can do:
+
+geopandas¶
+
+https://github.com/geopandas/geopandas
+
+Also see thegeopandas guide for upgrading to use pyproj CRS class
+
+Preparingpyproj.crs.CRSforgeopandas¶
+
+geopandastopyproj.crs.CRS¶
+
+pyproj.crs.CRS.from_user_input()can handle anything across thegeopandasversions. The only gotcha would be if it isNone.
+
+cartopy¶
+
+https://github.com/SciTools/cartopy
+
+Note
+
+These examples require cartopy 0.20+
+
+Preparingpyproj.crs.CRSforcartopy.crs.CRS¶
+
+Warning
+
+This only works for CRS created with WKT2,
+PROJ JSON, or a spatial reference ID (i.e. EPSG)
+with the area of use defined. Otherwise,
+the x_limits and y_limits will not work.
+
+Preparingcartopy.crs.CRSforpyproj.crs.CRS¶
+
+Note
+
+cartopy.crs.CRSinherits frompyproj.crs.CRS,
+so it should behave like apyproj.crs.CRS.
+
+pycrs¶
+
+https://github.com/karimbahgat/PyCRS
+
+Warning
+
+Currently does not support WKT2
+
+Preparingpyproj.crs.CRSforpycrs¶
+
+Preparingpycrsforpyproj.crs.CRS¶
+
+CRS Compatibility Guide for Geospatial Pythonosgeo/gdalConverting fromosgeo.osr.SpatialReferencetopyproj.crs.CRSConverting frompyproj.crs.CRStoosgeo.osr.SpatialReferencerasterioConverting fromrasterio.crs.CRStopyproj.crs.CRSConverting frompyproj.crs.CRStorasterio.crs.CRSfionaConverting fromfionaCRS topyproj.crs.CRSConverting frompyproj.crs.CRSforfionageopandasPreparingpyproj.crs.CRSforgeopandasgeopandastopyproj.crs.CRScartopyPreparingpyproj.crs.CRSforcartopy.crs.CRSPreparingcartopy.crs.CRSforpyproj.crs.CRSpycrsPreparingpyproj.crs.CRSforpycrsPreparingpycrsforpyproj.crs.CRS
+
+CRS Compatibility Guide for Geospatial Pythonosgeo/gdalConverting fromosgeo.osr.SpatialReferencetopyproj.crs.CRSConverting frompyproj.crs.CRStoosgeo.osr.SpatialReferencerasterioConverting fromrasterio.crs.CRStopyproj.crs.CRSConverting frompyproj.crs.CRStorasterio.crs.CRSfionaConverting fromfionaCRS topyproj.crs.CRSConverting frompyproj.crs.CRSforfionageopandasPreparingpyproj.crs.CRSforgeopandasgeopandastopyproj.crs.CRScartopyPreparingpyproj.crs.CRSforcartopy.crs.CRSPreparingcartopy.crs.CRSforpyproj.crs.CRSpycrsPreparingpyproj.crs.CRSforpycrsPreparingpycrsforpyproj.crs.CRS
+
+osgeo/gdalConverting fromosgeo.osr.SpatialReferencetopyproj.crs.CRSConverting frompyproj.crs.CRStoosgeo.osr.SpatialReferencerasterioConverting fromrasterio.crs.CRStopyproj.crs.CRSConverting frompyproj.crs.CRStorasterio.crs.CRSfionaConverting fromfionaCRS topyproj.crs.CRSConverting frompyproj.crs.CRSforfionageopandasPreparingpyproj.crs.CRSforgeopandasgeopandastopyproj.crs.CRScartopyPreparingpyproj.crs.CRSforcartopy.crs.CRSPreparingcartopy.crs.CRSforpyproj.crs.CRSpycrsPreparingpyproj.crs.CRSforpycrsPreparingpycrsforpyproj.crs.CRS
+
+osgeo/gdalConverting fromosgeo.osr.SpatialReferencetopyproj.crs.CRSConverting frompyproj.crs.CRStoosgeo.osr.SpatialReference
+
+Converting fromosgeo.osr.SpatialReferencetopyproj.crs.CRSConverting frompyproj.crs.CRStoosgeo.osr.SpatialReference
+
+Converting fromosgeo.osr.SpatialReferencetopyproj.crs.CRS
+
+Converting frompyproj.crs.CRStoosgeo.osr.SpatialReference
+
+rasterioConverting fromrasterio.crs.CRStopyproj.crs.CRSConverting frompyproj.crs.CRStorasterio.crs.CRS
+
+Converting fromrasterio.crs.CRStopyproj.crs.CRSConverting frompyproj.crs.CRStorasterio.crs.CRS
+
+Converting fromrasterio.crs.CRStopyproj.crs.CRS
+
+Converting frompyproj.crs.CRStorasterio.crs.CRS
+
+fionaConverting fromfionaCRS topyproj.crs.CRSConverting frompyproj.crs.CRSforfiona
+
+Converting fromfionaCRS topyproj.crs.CRSConverting frompyproj.crs.CRSforfiona
+
+Converting fromfionaCRS topyproj.crs.CRS
+
+Converting frompyproj.crs.CRSforfiona
+
+geopandasPreparingpyproj.crs.CRSforgeopandasgeopandastopyproj.crs.CRS
+
+Preparingpyproj.crs.CRSforgeopandasgeopandastopyproj.crs.CRS
+
+Preparingpyproj.crs.CRSforgeopandas
+
+geopandastopyproj.crs.CRS
+
+cartopyPreparingpyproj.crs.CRSforcartopy.crs.CRSPreparingcartopy.crs.CRSforpyproj.crs.CRS
+
+Preparingpyproj.crs.CRSforcartopy.crs.CRSPreparingcartopy.crs.CRSforpyproj.crs.CRS
+
+Preparingpyproj.crs.CRSforcartopy.crs.CRS
+
+Preparingcartopy.crs.CRSforpyproj.crs.CRS
+
+pycrsPreparingpyproj.crs.CRSforpycrsPreparingpycrsforpyproj.crs.CRS
+
+Preparingpyproj.crs.CRSforpycrsPreparingpycrsforpyproj.crs.CRS
+
+Preparingpyproj.crs.CRSforpycrs
+
+Preparingpycrsforpyproj.crs.CRS
+
+
+--- CODE BLOCK ---
+from osgeo.osr import SpatialReference
+from pyproj.crs import CRS
+
+osr_crs = SpatialReference()
+osr_crs.ImportFromEPSG(4326)
+if osgeo.version_info.major < 3:
+    proj_crs = CRS.from_wkt(osr_crs.ExportToWkt())
+else:
+    proj_crs = CRS.from_wkt(osr_crs.ExportToWkt(["FORMAT=WKT2_2018"]))
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import osgeo
+from osgeo.osr import SpatialReference
+from pyproj.crs import CRS
+from pyproj.enums import WktVersion
+
+proj_crs = CRS.from_epsg(4326)
+
+osr_crs = SpatialReference()
+if osgeo.version_info.major < 3:
+    osr_crs.ImportFromWkt(proj_crs.to_wkt(WktVersion.WKT1_GDAL))
+else:
+    osr_crs.ImportFromWkt(proj_crs.to_wkt())
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import rasterio
+import rasterio.crs
+from pyproj.crs import CRS
+
+with rasterio.Env(OSR_WKT_FORMAT="WKT2_2018"):
+    rio_crs = rasterio.crs.CRS.from_epsg(4326)
+    proj_crs = CRS.from_user_input(rio_crs)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import rasterio.crs
+from pyproj.crs import CRS
+
+with rasterio.Env(OSR_WKT_FORMAT="WKT2_2018"):
+    rio_crs = rasterio.crs.CRS.from_epsg(4326)
+    proj_crs = CRS.from_wkt(rio_crs.wkt)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import rasterio.crs
+from pyproj.crs import CRS
+
+proj_crs = CRS.from_epsg(4326)
+rio_crs = rasterio.crs.CRS.from_user_input(proj_crs)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from packaging import version
+
+import rasterio
+import rasterio.crs
+from pyproj.crs import CRS
+from pyproj.enums import WktVersion
+
+proj_crs = CRS.from_epsg(4326)
+if version.parse(rasterio.__gdal_version__) < version.parse("3.0.0")
+    rio_crs = rasterio.crs.CRS.from_wkt(proj_crs.to_wkt(WktVersion.WKT1_GDAL))
+else:
+    rio_crs = rasterio.crs.CRS.from_wkt(proj_crs.to_wkt())
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import fiona
+from pyproj.crs import CRS
+
+with fiona.Env(OSR_WKT_FORMAT="WKT2_2018"), fiona.open(...) as fds:
+    proj_crs = CRS.from_wkt(fds.crs_wkt)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from packaging import version
+
+import fiona
+from pyproj.crs import CRS
+
+proj_crs = CRS.from_epsg(4326)
+
+if version.parse(fiona.__gdal_version__) < version.parse("3.0.0"):
+    fio_crs = proj_crs.to_wkt(WktVersion.WKT1_GDAL)
+else:
+    # GDAL 3+ can use WKT2
+    fio_crs = dc_crs.to_wkt()
+
+# with fiona.open(..., "w", crs_wkt=fio_crs) as fds:
+#     ...
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import fiona
+import geopandas
+from pyproj.crs import CRS
+from pyproj.enums import WktVersion
+
+proj_crs = CRS.from_epsg(4326)
+
+if version.parse(geopandas.__version__) >= version.parse("0.7.0"):
+    # geopandas uses pyproj.crs.CRS
+    geo_crs = proj_crs
+elif version.parse(geopandas.__version__) >= version.parse("0.6.0"):
+    # this version of geopandas uses always_xy=True so WKT version is safe
+    if version.parse(fiona.__gdal_version__) < version.parse("3.0.0"):
+        geo_crs = proj_crs.to_wkt(WktVersion.WKT1_GDAL)
+    else:
+        # GDAL 3+ can use WKT2
+        geo_crs = dc_crs.to_wkt()
+else:
+    geo_crs = dc_crs.to_proj4()
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import geopandas
+from pyproj.crs import CRS
+
+gdf = geopandas.read_file(...)
+proj_crs = CRS.from_user_input(gdf.crs)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import cartopy.crs as ccrs
+from pyproj.crs import CRS
+
+# geographic
+proj_crs = CRS.from_epsg(4326)
+cart_crs = ccrs.CRS(proj_crs)
+
+# projected
+proj_crs = CRS.from_epsg(6933)
+cart_crs = ccrs.Projection(proj_crs)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from cartopy.crs import PlateCarree
+from pyproj.crs import CRS
+
+cart_crs = PlateCarree()
+proj_crs = CRS.from_user_input(cart_crs)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import pycrs
+from pyproj.crs import CRS
+
+proj_crs = CRS.from_epsg(4326)
+py_crs = pycrs.parse.from_ogc_wkt(proj_crs.to_wkt("WKT1_GDAL"))
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import pycrs
+from pyproj.crs import CRS
+
+py_crs = pycrs.parse.from_epsg_code(4326)
+proj_crs = CRS.from_wkt(py_crs.to_ogc_wkt())
+
+------------------

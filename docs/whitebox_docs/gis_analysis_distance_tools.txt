@@ -1,0 +1,351 @@
+GIS Analysis → Distance Tools
+
+BufferRasterCostAllocationCostDistanceCostPathwayEuclideanAllocationEuclideanDistance
+
+BufferRaster
+
+CostAllocation
+
+CostDistance
+
+CostPathway
+
+EuclideanAllocation
+
+EuclideanDistance
+
+
+
+BufferRaster
+
+This tool can be used to identify an area of interest within a specified distance of
+features of interest in a raster data set.
+
+The Euclidean distance (i.e. straight-line distance) is calculated between each grid
+cell and the nearest 'target cell' in the input image. Distance is calculated using the
+efficient method of Shih and Wu (2004). Target cells are all non-zero,
+non-NoData grid cells. Because NoData values in the input image are assigned the NoData
+value in the output image, the only valid background value in the input image is zero.
+
+The user must specify the input and output image names, the desired buffer size (--size), and,
+optionally, whether the distance units are measured in grid cells (i.e.--gridcellsflag).
+If the--gridcellsflag is not specified, the linear units of the raster's coordinate
+reference system will be used.
+
+Reference:
+
+Shih FY and Wu Y-T (2004), Fast Euclidean distance transformation in two scans using a 3 x 3
+neighborhood,Computer Vision and Image Understanding, 93: 195-205.
+
+See Also:EuclideanDistance
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 30/01/2020
+
+
+
+CostAllocation
+
+This tool can be used to identify the 'catchment area' of each source grid cell in a
+cost-distance analysis. The user must specify the names of the inputsourceandback-linkraster files. Source cells (i.e. starting points for the cost-distance or
+least-cost path analysis) are designated as all positive, non-zero valued grid cells
+in thesourceraster. Aback-linkraster file can be created using theCostDistancetool and is conceptually similar to the D8 flow-direction pointer raster grid in that
+it describes the connectivity between neighbouring cells on the accumulated cost surface.
+
+NoData values in the inputback-linkimage are assigned NoData values in the output
+image.
+
+See Also:CostDistance,CostPathway,EuclideanAllocation
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 04/072017
+
+Last Modified: 13/10/2018
+
+
+
+CostDistance
+
+This tool can be used to perform cost-distance or least-cost pathway analyses. Specifically,
+this tool can be used to calculate the accumulated cost of traveling from the 'source grid
+cell' to each other grid cell in a raster dataset. It is based on the costs associated with
+traveling through each cell along a pathway represented in a cost (or friction) surface. If
+there are multiple source grid cells, each cell in the resulting cost-accumulation surface
+will reflect the accumulated cost to the source cell that is connected by the minimum accumulated
+cost-path. The user must specify the names of the raster file containing the source cells
+(--source), the raster file containing the cost surface information (--cost), the output
+cost-accumulation surface raster (--out_accum), and the output back-link raster (--out_backlink).
+Source cells are designated as all positive, non-zero valued grid cells in the source raster.
+The cost (friction) raster can be created by combining the various cost factors associated with
+the specific problem (e.g. slope gradient, visibility, etc.) using a raster calculator or theWeightedOverlaytool.
+
+While the cost-accumulation surface raster can be helpful for visualizing
+the three-dimensional characteristics of the 'cost landscape', it is actually the back-link raster
+that is used as inputs to the other two cost-distance tools,CostAllocationandCostPathway, to
+determine the least-cost linkages among neighbouring grid cells on the cost surface. If the
+accumulated cost surface is analogous to a digital elevation model (DEM) then the back-link raster
+is equivalent to the D8 flow-direction pointer. In fact, it is created in a similar way and uses
+the same convention for designating 'flow directions' between neighbouring grid cells. The algorithm
+for the cost distance accumulation operation uses a type of priority-flood method similar to
+what is used for depression filling and flow accumulation operations.
+
+NoData values in the input cost surface image are ignored during processing and assigned NoData values
+in the outputs. The output cost accumulation raster is of the float data type and continuous data scale.
+
+See Also:CostAllocation,CostPathway,WeightedOverlay
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 04/07/2017
+
+Last Modified: 15/11/2018
+
+
+
+CostPathway
+
+This tool can be used to map the least-cost pathway connecting each destination grid cell
+in a cost-distance analysis to a source cell. The user must specify the names of the inputdestinationandback-linkraster files. Destination cells (i.e. end points for the
+least-cost path analysis) are designated as all positive, non-zero valued grid cells in thedestinationraster. Aback-linkraster file can be created using theCostDistancetool and is conceptually similar to the D8 flow-direction pointer raster grid in that it
+describes the connectivity between neighbouring cells on the accumulated cost surface. All
+background grid cells in the output image are assigned the NoData value.
+
+NoData values in the inputback-linkimage are assigned NoData values in the output image.
+
+See Also:CostDistance,CostAllocation
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 04/07/2017
+
+Last Modified: 18/10/2019
+
+
+
+EuclideanAllocation
+
+This tool assigns grid cells in the output image the value of the nearest target cell in
+the input image, measured by the Euclidean distance (i.e. straight-line distance). Thus,EuclideanAllocationessentially creates the Voronoi diagram for a set of target cells.
+Target cells are all non-zero, non-NoData grid cells in the input image. Distances are
+calculated using the same efficient algorithm (Shih and Wu, 2003) as theEuclideanDistancetool.
+
+Reference:
+
+Shih FY and Wu Y-T (2004), Fast Euclidean distance transformation in two scans using a 3 x 3
+neighborhood,Computer Vision and Image Understanding, 93: 195-205.
+
+See Also:EuclideanDistance,VoronoiDiagram,CostAllocation
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: June 22 2017
+
+Last Modified: 25/11/2018
+
+
+
+EuclideanDistance
+
+This tool will estimate the Euclidean distance (i.e. straight-line distance) between each
+grid cell and the nearest 'target cell' in the input image. Target cells are all non-zero,
+non-NoData grid cells. Distance in the output image is measured in the same units as the
+horizontal units of the input image.
+
+Algorithm Description:
+
+The algorithm is based on the highly efficient distance transform of Shih and Wu (2003).
+It makes four passes of the image; the first pass initializes the output image; the second
+and third passes calculate the minimum squared Euclidean distance by examining the 3 x 3
+neighbourhood surrounding each cell; the last pass takes the square root of cell values,
+transforming them into true Euclidean distances, and deals with NoData values that may be
+present. All NoData value grid cells in the input image will contain NoData values in the
+output image. As such, NoData is not a suitable background value for non-target cells.
+Background areas should be designated with zero values.
+
+Reference:
+
+Shih FY and Wu Y-T (2004), Fast Euclidean distance transformation in two scans using a 3 x 3
+neighborhood,Computer Vision and Image Understanding, 93: 195-205.
+
+See Also:EuclideanAllocation,CostDistance
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/06/2017
+
+Last Modified: 05/12/2019
+
+
+--- CODE BLOCK ---
+wbt.buffer_raster(
+    i, 
+    output, 
+    size, 
+    gridcells=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=BufferRaster -v --wd="/path/to/data/" ^
+-i=DEM.tif -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.cost_allocation(
+    source, 
+    backlink, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CostAllocation -v --wd="/path/to/data/" ^
+--source='source.tif' --backlink='backlink.tif' ^
+-o='output.tif' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.cost_distance(
+    source, 
+    cost, 
+    out_accum, 
+    out_backlink, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CostDistance -v --wd="/path/to/data/" ^
+--source=src.tif --cost=cost.tif --out_accum=accum.tif ^
+--out_backlink=backlink.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.cost_pathway(
+    destination, 
+    backlink, 
+    output, 
+    zero_background=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CostPathway -v --wd="/path/to/data/" ^
+--destination=dst.tif --backlink=backlink.tif ^
+--output=cost_path.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.euclidean_allocation(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=EuclideanAllocation -v ^
+--wd="/path/to/data/" -i=DEM.tif -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.euclidean_distance(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=EuclideanDistance -v ^
+--wd="/path/to/data/" -i=DEM.tif -o=output.tif 
+
+------------------

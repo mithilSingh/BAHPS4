@@ -1,0 +1,1805 @@
+Version 2.x#
+
+Version 2.1.1 (2025-05-19)#
+
+Bug fixes:
+
+Fix performance degradation calling shapely functions (caused by deprecation
+of certain positional arguments) (#2283).Fix crash caused byfrom_ragged_array()(#2291).Fix compilation error building with recent LLVM toolchain (#2293).
+
+Fix performance degradation calling shapely functions (caused by deprecation
+of certain positional arguments) (#2283).
+
+Fix performance degradation calling shapely functions (caused by deprecation
+of certain positional arguments) (#2283).
+
+Fix crash caused byfrom_ragged_array()(#2291).
+
+Fix crash caused byfrom_ragged_array()(#2291).
+
+Fix compilation error building with recent LLVM toolchain (#2293).
+
+Fix compilation error building with recent LLVM toolchain (#2293).
+
+Acknowledgments#
+
+Thanks to everyone who contributed to this release!
+People with a “+” by their names contributed a patch for the first time.
+
+A total of 5 people contributed patches to this release.  People with a
+“+” by their names contributed a patch for the first time.
+
+Joris Van den BosscheKamil Monicz +Kurt Schwehr +Mike Taves
+
+Joris Van den Bossche
+
+Joris Van den Bossche
+
+Kamil Monicz +
+
+Kamil Monicz +
+
+Kurt Schwehr +
+
+Kurt Schwehr +
+
+Mike Taves
+
+Mike Taves
+
+Version 2.1.0 (2025-04-03)#
+
+New features#
+
+Shapely geometries can now represent coordinates with M values (measure) in
+addition to X, Y, and Z (requires GEOS >= 3.12).
+
+The initial support includes:
+
+Creating geometries from WKT or WKB with M values will now preserve the M
+values.Exporting geometries to WKT and WKB will include the M values by default, if
+present (#1808).TheGeometryclass now has a.has_mattribute to check if the
+geometry has M values (#2008). The Point subclass has a.mattribute to
+access the M value (#2019). The.coordsattribute will include
+the M value, if present (#2238).Add aninclude_mkeyword into_ragged_arrayandget_coordinates(#2234, #2235).
+
+Creating geometries from WKT or WKB with M values will now preserve the M
+values.
+
+Creating geometries from WKT or WKB with M values will now preserve the M
+values.
+
+Exporting geometries to WKT and WKB will include the M values by default, if
+present (#1808).
+
+Exporting geometries to WKT and WKB will include the M values by default, if
+present (#1808).
+
+TheGeometryclass now has a.has_mattribute to check if the
+geometry has M values (#2008). The Point subclass has a.mattribute to
+access the M value (#2019). The.coordsattribute will include
+the M value, if present (#2238).
+
+TheGeometryclass now has a.has_mattribute to check if the
+geometry has M values (#2008). The Point subclass has a.mattribute to
+access the M value (#2019). The.coordsattribute will include
+the M value, if present (#2238).
+
+Add aninclude_mkeyword into_ragged_arrayandget_coordinates(#2234, #2235).
+
+Add aninclude_mkeyword into_ragged_arrayandget_coordinates(#2234, #2235).
+
+Several functions have been added to work with coverages (requires GEOS >=
+3.12), where a coverage is made up of a collection of valid (multi)polygons that
+do not overlap and are edge-matched (vertices along shared edges are identical).
+
+Thecoverage_is_valid()andcoverage_invalid_edges()functions
+help to validate an array of geometries as a topological coverage and
+inspect invalid edges. Thecoverage_simplify()function then allows
+topological simplification of the coverage (in contrast to the existingsimplify()function, which simplifies an array of geometries one by one,
+independently).
+
+(Sourcecode,png,hires.png,pdf)
+
+Several (new) functions from GEOS are now exposed in Shapely as top-level
+vectorized functions:
+
+minimum_clearance_line()(#2106)maximum_inscribed_circle()(polylabel) (#1307)orient_polygons()(#2147)constrained_delaunay_triangles()(#1685) (requires GEOS >= 3.10)equals_identical()(#1760)disjoint_subset_union()anddisjoint_subset_union_all()as an
+optimized version ofunion()andunion_all(), assuming inputs
+can be divided into subsets that do not intersect. (requires GEOS >= 3.12)coverage_simplify()to allow topological simplification of polygonal
+coverages (#1969) (requires GEOS >= 3.12)coverage_is_valid()andcoverage_invalid_edges()to validate an
+array of geometries as valid topological coverage (#2156) (requires
+GEOS >= 3.12)has_m()(#2008) (requires GEOS >= 3.12)get_m()(#2019) (requires GEOS >= 3.12)
+
+minimum_clearance_line()(#2106)
+
+minimum_clearance_line()(#2106)
+
+maximum_inscribed_circle()(polylabel) (#1307)
+
+maximum_inscribed_circle()(polylabel) (#1307)
+
+orient_polygons()(#2147)
+
+orient_polygons()(#2147)
+
+constrained_delaunay_triangles()(#1685) (requires GEOS >= 3.10)
+
+constrained_delaunay_triangles()(#1685) (requires GEOS >= 3.10)
+
+equals_identical()(#1760)
+
+equals_identical()(#1760)
+
+disjoint_subset_union()anddisjoint_subset_union_all()as an
+optimized version ofunion()andunion_all(), assuming inputs
+can be divided into subsets that do not intersect. (requires GEOS >= 3.12)
+
+disjoint_subset_union()anddisjoint_subset_union_all()as an
+optimized version ofunion()andunion_all(), assuming inputs
+can be divided into subsets that do not intersect. (requires GEOS >= 3.12)
+
+coverage_simplify()to allow topological simplification of polygonal
+coverages (#1969) (requires GEOS >= 3.12)
+
+coverage_simplify()to allow topological simplification of polygonal
+coverages (#1969) (requires GEOS >= 3.12)
+
+coverage_is_valid()andcoverage_invalid_edges()to validate an
+array of geometries as valid topological coverage (#2156) (requires
+GEOS >= 3.12)
+
+coverage_is_valid()andcoverage_invalid_edges()to validate an
+array of geometries as valid topological coverage (#2156) (requires
+GEOS >= 3.12)
+
+has_m()(#2008) (requires GEOS >= 3.12)
+
+has_m()(#2008) (requires GEOS >= 3.12)
+
+get_m()(#2019) (requires GEOS >= 3.12)
+
+get_m()(#2019) (requires GEOS >= 3.12)
+
+Add ahandle_nanparameter toshapely.points(),shapely.linestrings()andshapely.linearrings()to allow, skip, or
+error on nonfinite (NaN / Inf) coordinates. The default behaviour (allow) is
+backwards compatible (#1594, #1811).Add aninterleavedparameter toshapely.transform()allowing a
+transposed call signature in thetransformationfunction (#1849).Theinclude_zinshapely.transform()now also allowsNone, which
+lets it automatically detect the dimensionality of each input geometry
+(#1849).Add parametersmethodandkeep_collapsedtoshapely.make_valid()(#1941)Thevoronoi_polygonsnow accepts theorderedkeyword, optionally
+forcing the order of polygons within the GeometryCollection to follow the
+order of input coordinates. Requires at least GEOS 3.12. (#1968)Add optionon_invalid="fix"tofrom_wkbandfrom_wkt(#2094)Add anormalizekeyword toequals_exactto normalize the input
+geometries (#1231)HandleFeaturetype inshapely.geometry.shape(#1815)Add support to split polygons by multilinestrings (#2206)Theto_ragged_array()function will now use int32 offsets instead of
+int64, when possible, reducing memory usage and improving compatibility with
+the Arrow ecosystem (#2223).Support sliced offsets infrom_ragged_array()(#2255).
+
+Add ahandle_nanparameter toshapely.points(),shapely.linestrings()andshapely.linearrings()to allow, skip, or
+error on nonfinite (NaN / Inf) coordinates. The default behaviour (allow) is
+backwards compatible (#1594, #1811).
+
+Add ahandle_nanparameter toshapely.points(),shapely.linestrings()andshapely.linearrings()to allow, skip, or
+error on nonfinite (NaN / Inf) coordinates. The default behaviour (allow) is
+backwards compatible (#1594, #1811).
+
+Add aninterleavedparameter toshapely.transform()allowing a
+transposed call signature in thetransformationfunction (#1849).
+
+Add aninterleavedparameter toshapely.transform()allowing a
+transposed call signature in thetransformationfunction (#1849).
+
+Theinclude_zinshapely.transform()now also allowsNone, which
+lets it automatically detect the dimensionality of each input geometry
+(#1849).
+
+Theinclude_zinshapely.transform()now also allowsNone, which
+lets it automatically detect the dimensionality of each input geometry
+(#1849).
+
+Add parametersmethodandkeep_collapsedtoshapely.make_valid()(#1941)
+
+Add parametersmethodandkeep_collapsedtoshapely.make_valid()(#1941)
+
+Thevoronoi_polygonsnow accepts theorderedkeyword, optionally
+forcing the order of polygons within the GeometryCollection to follow the
+order of input coordinates. Requires at least GEOS 3.12. (#1968)
+
+Thevoronoi_polygonsnow accepts theorderedkeyword, optionally
+forcing the order of polygons within the GeometryCollection to follow the
+order of input coordinates. Requires at least GEOS 3.12. (#1968)
+
+Add optionon_invalid="fix"tofrom_wkbandfrom_wkt(#2094)
+
+Add optionon_invalid="fix"tofrom_wkbandfrom_wkt(#2094)
+
+Add anormalizekeyword toequals_exactto normalize the input
+geometries (#1231)
+
+Add anormalizekeyword toequals_exactto normalize the input
+geometries (#1231)
+
+HandleFeaturetype inshapely.geometry.shape(#1815)
+
+HandleFeaturetype inshapely.geometry.shape(#1815)
+
+Add support to split polygons by multilinestrings (#2206)
+
+Add support to split polygons by multilinestrings (#2206)
+
+Theto_ragged_array()function will now use int32 offsets instead of
+int64, when possible, reducing memory usage and improving compatibility with
+the Arrow ecosystem (#2223).
+
+Theto_ragged_array()function will now use int32 offsets instead of
+int64, when possible, reducing memory usage and improving compatibility with
+the Arrow ecosystem (#2223).
+
+Support sliced offsets infrom_ragged_array()(#2255).
+
+Support sliced offsets infrom_ragged_array()(#2255).
+
+Performance improvements:
+
+Single geometry input tocontains_xyandintersects_xynow gets
+prepared automatically, providing a considerable speedup (#2146).Improvedfrom_ragged_arrayperformance (#2142, #2225).ImprovedMultiPoint(..)constructor from a numpy array of coordinates
+(#1961).
+
+Single geometry input tocontains_xyandintersects_xynow gets
+prepared automatically, providing a considerable speedup (#2146).
+
+Single geometry input tocontains_xyandintersects_xynow gets
+prepared automatically, providing a considerable speedup (#2146).
+
+Improvedfrom_ragged_arrayperformance (#2142, #2225).
+
+Improvedfrom_ragged_arrayperformance (#2142, #2225).
+
+ImprovedMultiPoint(..)constructor from a numpy array of coordinates
+(#1961).
+
+ImprovedMultiPoint(..)constructor from a numpy array of coordinates
+(#1961).
+
+API changes#
+
+Breaking change:
+
+Equality of geometries (geom1==geom2) now considers NaN coordinate
+values in the same location to be equal (#1775). It is recommended however to
+ensure geometries don’t have NaN values in the first place, for which you can
+now use thehandle_nanparameter in construction functions.
+
+Equality of geometries (geom1==geom2) now considers NaN coordinate
+values in the same location to be equal (#1775). It is recommended however to
+ensure geometries don’t have NaN values in the first place, for which you can
+now use thehandle_nanparameter in construction functions.
+
+Equality of geometries (geom1==geom2) now considers NaN coordinate
+values in the same location to be equal (#1775). It is recommended however to
+ensure geometries don’t have NaN values in the first place, for which you can
+now use thehandle_nanparameter in construction functions.
+
+Breaking changes in GEOS 3.12:
+
+oriented_envelope/minimum_rotated_rectanglechanged its
+implementation in GEOS 3.12. Be aware that results will change when updating
+GEOS. Coincidentally the implementation is similar to the shapely 1.x
+approach. (#1885)get_coordinate_dimension/has_znow considers geometries three
+dimensional if they have a NaN z coordinate. (#1885)voronoi_polygonschanged its output from a LINESTRING to a
+MULTILINESTRING in caseonly_edges=True. (#1885)The WKT representation of a MULTIPOINT changed from for example
+“MULTIPOINT (0 0, 1 1)” to “MULTIPOINT ((0 0), (1 1))”. (#1885)
+
+oriented_envelope/minimum_rotated_rectanglechanged its
+implementation in GEOS 3.12. Be aware that results will change when updating
+GEOS. Coincidentally the implementation is similar to the shapely 1.x
+approach. (#1885)
+
+oriented_envelope/minimum_rotated_rectanglechanged its
+implementation in GEOS 3.12. Be aware that results will change when updating
+GEOS. Coincidentally the implementation is similar to the shapely 1.x
+approach. (#1885)
+
+get_coordinate_dimension/has_znow considers geometries three
+dimensional if they have a NaN z coordinate. (#1885)
+
+get_coordinate_dimension/has_znow considers geometries three
+dimensional if they have a NaN z coordinate. (#1885)
+
+voronoi_polygonschanged its output from a LINESTRING to a
+MULTILINESTRING in caseonly_edges=True. (#1885)
+
+voronoi_polygonschanged its output from a LINESTRING to a
+MULTILINESTRING in caseonly_edges=True. (#1885)
+
+The WKT representation of a MULTIPOINT changed from for example
+“MULTIPOINT (0 0, 1 1)” to “MULTIPOINT ((0 0), (1 1))”. (#1885)
+
+The WKT representation of a MULTIPOINT changed from for example
+“MULTIPOINT (0 0, 1 1)” to “MULTIPOINT ((0 0), (1 1))”. (#1885)
+
+Deprecations:
+
+Theshapely.geosmodule is deprecated. All GEOS-version related
+attributes are available directly from the top-levelshapelynamespace
+as well (already since shapely 2.0) (#2145).Theshapely.vectorizedmodule is deprecated. The two functions
+(containsandtouches) can be replaced by the top-level vectorized
+functionscontains_xyandintersects_xy(#1630).Various parameters will be required to be passed as a keyword argument in the
+future, and specifying it as a positional argument is deprecated and raises a
+warning (for example, thegrid_sizekeyword in set operations, boolean
+flags such as thenormalizedorinclude_zkeywords, theindiceskeyword in geometry constructor functions, etc) (#2237)Theresolutionkeyword inGeometry.buffer()is deprecated, usequad_segsinstead (alraedy available since shapely 2.0) (#2243)Thesymmetric_difference_allfunction behaves incorrectly and will be
+removed in a future version. Seeshapely/shapely#2027for more details.
+
+Theshapely.geosmodule is deprecated. All GEOS-version related
+attributes are available directly from the top-levelshapelynamespace
+as well (already since shapely 2.0) (#2145).
+
+Theshapely.geosmodule is deprecated. All GEOS-version related
+attributes are available directly from the top-levelshapelynamespace
+as well (already since shapely 2.0) (#2145).
+
+Theshapely.vectorizedmodule is deprecated. The two functions
+(containsandtouches) can be replaced by the top-level vectorized
+functionscontains_xyandintersects_xy(#1630).
+
+Theshapely.vectorizedmodule is deprecated. The two functions
+(containsandtouches) can be replaced by the top-level vectorized
+functionscontains_xyandintersects_xy(#1630).
+
+Various parameters will be required to be passed as a keyword argument in the
+future, and specifying it as a positional argument is deprecated and raises a
+warning (for example, thegrid_sizekeyword in set operations, boolean
+flags such as thenormalizedorinclude_zkeywords, theindiceskeyword in geometry constructor functions, etc) (#2237)
+
+Various parameters will be required to be passed as a keyword argument in the
+future, and specifying it as a positional argument is deprecated and raises a
+warning (for example, thegrid_sizekeyword in set operations, boolean
+flags such as thenormalizedorinclude_zkeywords, theindiceskeyword in geometry constructor functions, etc) (#2237)
+
+Theresolutionkeyword inGeometry.buffer()is deprecated, usequad_segsinstead (alraedy available since shapely 2.0) (#2243)
+
+Theresolutionkeyword inGeometry.buffer()is deprecated, usequad_segsinstead (alraedy available since shapely 2.0) (#2243)
+
+Thesymmetric_difference_allfunction behaves incorrectly and will be
+removed in a future version. Seeshapely/shapely#2027for more details.
+
+Thesymmetric_difference_allfunction behaves incorrectly and will be
+removed in a future version. Seeshapely/shapely#2027for more details.
+
+Removals from previous deprecations:
+
+Thealmost_equalsmethod on the Geometry class. Useequals_exact()instead (#2244)Theshapely.ops.cascaded_union()function has been removed. Useunary_union()instead (#2246).
+
+Thealmost_equalsmethod on the Geometry class. Useequals_exact()instead (#2244)
+
+Thealmost_equalsmethod on the Geometry class. Useequals_exact()instead (#2244)
+
+Theshapely.ops.cascaded_union()function has been removed. Useunary_union()instead (#2246).
+
+Theshapely.ops.cascaded_union()function has been removed. Useunary_union()instead (#2246).
+
+Bug fixes#
+
+Prevent crash when serializing a number > 1e100 to WKT with GEOS < 3.13.
+(#1907)Ensureplot_polygondoes not color the interiors of polygons (#1933).Fixes GeoJSON serialization of empty points (#2118)Fixes__geo_interface__handling of empty points (#2120)FixesGeometryCollection()constructor accepting an array of geometries
+(#2017).Fixes theMultiPolygon()constructor from a numpy array of Polygons
+(#1880).Raise proper error message when trying to construct a MultiPolygon from a
+sequence of MultiPolygons (#1786).Fixesshapely.ops.orient()for empty polygons (#2214).Fixesto_geojson()with empty points (#2118).
+
+Prevent crash when serializing a number > 1e100 to WKT with GEOS < 3.13.
+(#1907)
+
+Prevent crash when serializing a number > 1e100 to WKT with GEOS < 3.13.
+(#1907)
+
+Ensureplot_polygondoes not color the interiors of polygons (#1933).
+
+Ensureplot_polygondoes not color the interiors of polygons (#1933).
+
+Fixes GeoJSON serialization of empty points (#2118)
+
+Fixes GeoJSON serialization of empty points (#2118)
+
+Fixes__geo_interface__handling of empty points (#2120)
+
+Fixes__geo_interface__handling of empty points (#2120)
+
+FixesGeometryCollection()constructor accepting an array of geometries
+(#2017).
+
+FixesGeometryCollection()constructor accepting an array of geometries
+(#2017).
+
+Fixes theMultiPolygon()constructor from a numpy array of Polygons
+(#1880).
+
+Fixes theMultiPolygon()constructor from a numpy array of Polygons
+(#1880).
+
+Raise proper error message when trying to construct a MultiPolygon from a
+sequence of MultiPolygons (#1786).
+
+Raise proper error message when trying to construct a MultiPolygon from a
+sequence of MultiPolygons (#1786).
+
+Fixesshapely.ops.orient()for empty polygons (#2214).
+
+Fixesshapely.ops.orient()for empty polygons (#2214).
+
+Fixesto_geojson()with empty points (#2118).
+
+Fixesto_geojson()with empty points (#2118).
+
+Packaging#
+
+Shapely 2.1.0 requires GEOS >= 3.9, NumPy >= 1.21, and Python >= 3.10 (#1802,
+#1885, #2124)Binary wheels are now built for musllinux (Alpine) x86_64 platforms (#1996).Upgraded the GEOS version in the binary wheel distributions to 3.13.1.Initial support for free-threaded Python builds, with the extension module
+declaring free-threaded support and wheels for Python 3.13t being built
+(#2138).
+
+Shapely 2.1.0 requires GEOS >= 3.9, NumPy >= 1.21, and Python >= 3.10 (#1802,
+#1885, #2124)
+
+Shapely 2.1.0 requires GEOS >= 3.9, NumPy >= 1.21, and Python >= 3.10 (#1802,
+#1885, #2124)
+
+Binary wheels are now built for musllinux (Alpine) x86_64 platforms (#1996).
+
+Binary wheels are now built for musllinux (Alpine) x86_64 platforms (#1996).
+
+Upgraded the GEOS version in the binary wheel distributions to 3.13.1.
+
+Upgraded the GEOS version in the binary wheel distributions to 3.13.1.
+
+Initial support for free-threaded Python builds, with the extension module
+declaring free-threaded support and wheels for Python 3.13t being built
+(#2138).
+
+Initial support for free-threaded Python builds, with the extension module
+declaring free-threaded support and wheels for Python 3.13t being built
+(#2138).
+
+Acknowledgments#
+
+Thanks to everyone who contributed to this release!
+People with a “+” by their names contributed a patch for the first time.
+
+Adam J. StewartAli Hamdan +Andrea Giudiceandrea +Antoni Gołoś +Ben BeasleyBill Mill +Brendan WardCasper van der WelDavid Hoese +Erik Pettersson +Frédéric JunodGabriel Homsi +Gareth Simons +Greg Lucas +Hood Chatham +Ian Williamson +Idan Miara +Joris Van den BosscheJuriaanSioux +Kyle BarronLuke Lashley +Lyle Cheatham +Marek Czaplicki +Martin FleischmannMathew Topper +Mathias Hauser +Michał Górny +Mike TavesNicolas Hammje +Oreille +Paul Jurczak +Pieter Roggemans +Raja GangopadhyaSean GilliesSebastian Castro +Tetsuo Koyama +Tom Augspurger +Wentao Li +nobkd +quassy +tfardet +void-rooster +
+
+Adam J. Stewart
+
+Adam J. Stewart
+
+Ali Hamdan +
+
+Ali Hamdan +
+
+Andrea Giudiceandrea +
+
+Andrea Giudiceandrea +
+
+Antoni Gołoś +
+
+Antoni Gołoś +
+
+Ben Beasley
+
+Ben Beasley
+
+Bill Mill +
+
+Bill Mill +
+
+Brendan Ward
+
+Brendan Ward
+
+Casper van der Wel
+
+Casper van der Wel
+
+David Hoese +
+
+David Hoese +
+
+Erik Pettersson +
+
+Erik Pettersson +
+
+Frédéric Junod
+
+Frédéric Junod
+
+Gabriel Homsi +
+
+Gabriel Homsi +
+
+Gareth Simons +
+
+Gareth Simons +
+
+Greg Lucas +
+
+Greg Lucas +
+
+Hood Chatham +
+
+Hood Chatham +
+
+Ian Williamson +
+
+Ian Williamson +
+
+Idan Miara +
+
+Idan Miara +
+
+Joris Van den Bossche
+
+Joris Van den Bossche
+
+JuriaanSioux +
+
+JuriaanSioux +
+
+Kyle Barron
+
+Kyle Barron
+
+Luke Lashley +
+
+Luke Lashley +
+
+Lyle Cheatham +
+
+Lyle Cheatham +
+
+Marek Czaplicki +
+
+Marek Czaplicki +
+
+Martin Fleischmann
+
+Martin Fleischmann
+
+Mathew Topper +
+
+Mathew Topper +
+
+Mathias Hauser +
+
+Mathias Hauser +
+
+Michał Górny +
+
+Michał Górny +
+
+Mike Taves
+
+Mike Taves
+
+Nicolas Hammje +
+
+Nicolas Hammje +
+
+Oreille +
+
+Oreille +
+
+Paul Jurczak +
+
+Paul Jurczak +
+
+Pieter Roggemans +
+
+Pieter Roggemans +
+
+Raja Gangopadhya
+
+Raja Gangopadhya
+
+Sean Gillies
+
+Sean Gillies
+
+Sebastian Castro +
+
+Sebastian Castro +
+
+Tetsuo Koyama +
+
+Tetsuo Koyama +
+
+Tom Augspurger +
+
+Tom Augspurger +
+
+Wentao Li +
+
+Wentao Li +
+
+nobkd +
+
+nobkd +
+
+quassy +
+
+quassy +
+
+tfardet +
+
+tfardet +
+
+void-rooster +
+
+void-rooster +
+
+Version 2.0.7 (2025-01-30)#
+
+Bug fixes:
+
+Fix compilation error on certain Linux platforms, such as Alpine (#1945).Fixes crash when reading nonlinear geometry types (CircularString,
+CompoundCurve, MultiCurve, CurvePolygon, MultiSurface) from WKB/WKT with
+GEOS >= 3.13; these types are not yet supported in Shapely and now raise aNotImplementedError(#2160)Fix theprojectmethod to return a Python float (#2093).
+
+Fix compilation error on certain Linux platforms, such as Alpine (#1945).
+
+Fix compilation error on certain Linux platforms, such as Alpine (#1945).
+
+Fixes crash when reading nonlinear geometry types (CircularString,
+CompoundCurve, MultiCurve, CurvePolygon, MultiSurface) from WKB/WKT with
+GEOS >= 3.13; these types are not yet supported in Shapely and now raise aNotImplementedError(#2160)
+
+Fixes crash when reading nonlinear geometry types (CircularString,
+CompoundCurve, MultiCurve, CurvePolygon, MultiSurface) from WKB/WKT with
+GEOS >= 3.13; these types are not yet supported in Shapely and now raise aNotImplementedError(#2160)
+
+Fix theprojectmethod to return a Python float (#2093).
+
+Fix theprojectmethod to return a Python float (#2093).
+
+Version 2.0.6 (2024-08-19)#
+
+Bug fixes:
+
+Fix compatibility with NumPy 2.1.0 (#2099).
+
+Fix compatibility with NumPy 2.1.0 (#2099).
+
+Fix compatibility with NumPy 2.1.0 (#2099).
+
+Wheels are available for Python 3.13 (and still include GEOS 3.11.4).
+
+Version 2.0.5 (2024-07-13)#
+
+Bug fixes:
+
+Fix Point x/y/z attributes to return Python floats (#2074).Fix affinity for Apple silicon with NumPy 2.0 by reverting matmul, and
+use direct matrix multiplication instead (#2085).
+
+Fix Point x/y/z attributes to return Python floats (#2074).
+
+Fix Point x/y/z attributes to return Python floats (#2074).
+
+Fix affinity for Apple silicon with NumPy 2.0 by reverting matmul, and
+use direct matrix multiplication instead (#2085).
+
+Fix affinity for Apple silicon with NumPy 2.0 by reverting matmul, and
+use direct matrix multiplication instead (#2085).
+
+Packaging related:
+
+Binary wheels on PyPI include GEOS 3.11.4 from 2024-06-05 (#2086).universal2 wheels are removed for macOS since both x86_64 and arm64 wheels
+are provided (#1990).Replace pkg_resources, prepend numpy include dirs (#2071).
+
+Binary wheels on PyPI include GEOS 3.11.4 from 2024-06-05 (#2086).
+
+Binary wheels on PyPI include GEOS 3.11.4 from 2024-06-05 (#2086).
+
+universal2 wheels are removed for macOS since both x86_64 and arm64 wheels
+are provided (#1990).
+
+universal2 wheels are removed for macOS since both x86_64 and arm64 wheels
+are provided (#1990).
+
+Replace pkg_resources, prepend numpy include dirs (#2071).
+
+Replace pkg_resources, prepend numpy include dirs (#2071).
+
+Version 2.0.4 (2024-04-16)#
+
+Bug fixes:
+
+Fix bug into_wktwith multiple empty Z geometries (#2012).Fix bug into_ragged_arrayfor an array of Points with missing values
+(#2034).
+
+Fix bug into_wktwith multiple empty Z geometries (#2012).
+
+Fix bug into_wktwith multiple empty Z geometries (#2012).
+
+Fix bug into_ragged_arrayfor an array of Points with missing values
+(#2034).
+
+Fix bug into_ragged_arrayfor an array of Points with missing values
+(#2034).
+
+Wheels for Python versions >= 3.9 will be compatible with the upcoming
+NumPy 2.0 release (as well as with supported NumPy 1.x versions).
+
+Version 2.0.3 (2024-02-16)#
+
+Bug fixes:
+
+Fix regression in theoriented_envelopeufunc to accept array-like input
+in case of GEOS<3.12 (#1929).
+
+Fix regression in theoriented_envelopeufunc to accept array-like input
+in case of GEOS<3.12 (#1929).
+
+Fix regression in theoriented_envelopeufunc to accept array-like input
+in case of GEOS<3.12 (#1929).
+
+Packaging related:
+
+The binary wheels are not yet compatible with a future NumPy 2.0 release,
+therefore anumpy<2upper pin was added to the requirements (#1972).Upgraded the GEOS version in the binary wheel distributions to 3.11.3.
+
+The binary wheels are not yet compatible with a future NumPy 2.0 release,
+therefore anumpy<2upper pin was added to the requirements (#1972).
+
+The binary wheels are not yet compatible with a future NumPy 2.0 release,
+therefore anumpy<2upper pin was added to the requirements (#1972).
+
+Upgraded the GEOS version in the binary wheel distributions to 3.11.3.
+
+Upgraded the GEOS version in the binary wheel distributions to 3.11.3.
+
+Version 2.0.2 (2023-10-12)#
+
+Bug fixes:
+
+Fix regression in the (in)equality comparison (geom1==geom2) using__eq__to not ignore the z-coordinates (#1732).FixMultiPolygon()constructor to accept polygons without holes (#1850).Fixminimum_rotated_rectangle()(oriented_envelope()) to always
+return the minimum area solution (instead of minimum width). In practice, it
+will use the GEOS implementation only for GEOS 3.12+, and for older GEOS
+versions fall back to the implementation that was included in Shapely < 2
+(#1670).Fixfrom_ragged_array()to work with read-only array input (#1744).Fix the handling of z coordinatesshapely.ops.substring()(#1699).
+
+Fix regression in the (in)equality comparison (geom1==geom2) using__eq__to not ignore the z-coordinates (#1732).
+
+Fix regression in the (in)equality comparison (geom1==geom2) using__eq__to not ignore the z-coordinates (#1732).
+
+FixMultiPolygon()constructor to accept polygons without holes (#1850).
+
+FixMultiPolygon()constructor to accept polygons without holes (#1850).
+
+Fixminimum_rotated_rectangle()(oriented_envelope()) to always
+return the minimum area solution (instead of minimum width). In practice, it
+will use the GEOS implementation only for GEOS 3.12+, and for older GEOS
+versions fall back to the implementation that was included in Shapely < 2
+(#1670).
+
+Fixminimum_rotated_rectangle()(oriented_envelope()) to always
+return the minimum area solution (instead of minimum width). In practice, it
+will use the GEOS implementation only for GEOS 3.12+, and for older GEOS
+versions fall back to the implementation that was included in Shapely < 2
+(#1670).
+
+Fixfrom_ragged_array()to work with read-only array input (#1744).
+
+Fixfrom_ragged_array()to work with read-only array input (#1744).
+
+Fix the handling of z coordinatesshapely.ops.substring()(#1699).
+
+Fix the handling of z coordinatesshapely.ops.substring()(#1699).
+
+Wheels are available for Python 3.12 (and still include GEOS 3.11.2). Building
+from source is now compatible with Cython 3.
+
+Acknowledgments#
+
+Thanks to everyone who contributed to this release!
+People with a “+” by their names contributed a patch for the first time.
+
+Casper van der WelGareth Simons +Idan MiaraJoris Van den BosscheKyle BarronMarek Czaplicki +Mike Taves
+
+Casper van der Wel
+
+Casper van der Wel
+
+Gareth Simons +
+
+Gareth Simons +
+
+Idan Miara
+
+Idan Miara
+
+Joris Van den Bossche
+
+Joris Van den Bossche
+
+Kyle Barron
+
+Kyle Barron
+
+Marek Czaplicki +
+
+Marek Czaplicki +
+
+Mike Taves
+
+Mike Taves
+
+Version 2.0.1 (2023-01-30)#
+
+Bug fixes:
+
+Fix regression in thePolygon()constructor taking a sequence of Points
+(#1662).Fix regression in the geometry constructors when passingdecimal.Decimalcoordinate values (#1707).FixSTRtree()to not make the passed geometry array immutable as
+side-effect of the constructor (#1714).Fix thedirectedkeyword inshapely.ops.linemerge()(#1695).
+
+Fix regression in thePolygon()constructor taking a sequence of Points
+(#1662).
+
+Fix regression in thePolygon()constructor taking a sequence of Points
+(#1662).
+
+Fix regression in the geometry constructors when passingdecimal.Decimalcoordinate values (#1707).
+
+Fix regression in the geometry constructors when passingdecimal.Decimalcoordinate values (#1707).
+
+FixSTRtree()to not make the passed geometry array immutable as
+side-effect of the constructor (#1714).
+
+FixSTRtree()to not make the passed geometry array immutable as
+side-effect of the constructor (#1714).
+
+Fix thedirectedkeyword inshapely.ops.linemerge()(#1695).
+
+Fix thedirectedkeyword inshapely.ops.linemerge()(#1695).
+
+Improvements:
+
+Expose the function to get a matplotlib Patch object from a (Multi)Polygon
+(without already plotting it) publicly asshapely.plotting.patch_from_polygon()(#1704).
+
+Expose the function to get a matplotlib Patch object from a (Multi)Polygon
+(without already plotting it) publicly asshapely.plotting.patch_from_polygon()(#1704).
+
+Expose the function to get a matplotlib Patch object from a (Multi)Polygon
+(without already plotting it) publicly asshapely.plotting.patch_from_polygon()(#1704).
+
+Acknowledgments#
+
+Thanks to everyone who contributed to this release!
+People with a “+” by their names contributed a patch for the first time.
+
+Brendan WardErik Pettersson +Hood Chatham +Idan Miara +Joris Van den BosscheMartin FleischmannMichał Górny +Sebastian Castro +
+
+Brendan Ward
+
+Brendan Ward
+
+Erik Pettersson +
+
+Erik Pettersson +
+
+Hood Chatham +
+
+Hood Chatham +
+
+Idan Miara +
+
+Idan Miara +
+
+Joris Van den Bossche
+
+Joris Van den Bossche
+
+Martin Fleischmann
+
+Martin Fleischmann
+
+Michał Górny +
+
+Michał Górny +
+
+Sebastian Castro +
+
+Sebastian Castro +
+
+Version 2.0.0 (2022-12-12)#
+
+Shapely 2.0 version is a major release featuring a complete refactor of the
+internals and new vectorized (element-wise) array operations, providing
+considerable performance improvements (based on the developments in thePyGEOSpackage), along with several
+breaking API changes and many feature improvements.
+
+For more background, seeRFC 1: Roadmap for Shapely 2.0.
+
+Refactor of the internals#
+
+Shapely wraps the GEOS C++ library for use in Python. Before 2.0, Shapely
+usedctypesto link to GEOS at runtime, but doing so resulted in extra
+overhead and installation challenges. With 2.0, the internals of Shapely have
+been refactored to expose GEOS functionality through a Python C extension
+module that is compiled in advance.
+
+The pointer to the actual GEOS Geometry object is stored in a lightweightPython extension type.
+A singleGeometryPython extension type is defined in C wrapping aGEOSGeometrypointer. This extension type is further subclassed in Python
+to provide the geometry type-specific classes from Shapely (Point,
+LineString, Polygon, etc).
+The GEOS pointer is accessible from C as a static attribute of the Python
+object (an attribute of the C struct that makes up a Python object), which
+enables using vectorized functions within C and thus avoiding Python overhead
+while looping over an array of geometries (see next section).
+
+Vectorized (element-wise) geometry operations#
+
+Before the 2.0 release, Shapely only provided an interface for scalar
+(individual) geometry objects. Users had to loop over individual geometries
+within an array of geometries and call scalar methods or properties, which is
+both more verbose to use and has a large performance overhead.
+
+Shapely 2.0 exposes GEOS operations as vectorized functions that operate
+on arrays of geometries using a familiar NumPy interface. Those functions are
+implemented asNumPy universal functions(or ufunc for short). A universal function is a function that operates on
+n-dimensional arrays in an element-by-element fashion and supports array
+broadcasting. All loops over geometries are implemented in C, which results
+in substantial performance improvements when performing operations using many
+geometries. This also allows operations to be less verbose.
+
+NumPy is now a required dependency.
+
+An example of this functionality using a small array of points and a single
+polygon:
+
+Before Shapely 2.0, aforloop was required to operate over an array of
+geometries:
+
+In Shapely 2.0, we can now compute whether the points are contained in the
+polygon directly with one function call:
+
+This results in a considerable speedup, especially for larger arrays of
+geometries, as well as a nicer user interface that avoids the need to writeforloops. Depending on the operation, this can give a performance
+increase with factors of 4x to 100x. In general, the greatest speedups are
+for lightweight GEOS operations, such ascontains, which would previously
+have been dominated by the high overhead offorloops in Python. Seehttps://caspervdw.github.io/Introducing-Pygeos/for more detailed examples.
+
+The new vectorized functions are available in the top-levelshapelynamespace. All the familiar geospatial methods and attributes from the
+geometry classes now have an equivalent as top-level function (with some
+small name deviations, such as the.wktattribute being available as ato_wkt()function). Some methods from submodules (for example, several
+functions from theshapely.opssubmodule such aspolygonize()) are
+also made available in a vectorized version as top-level function.
+
+A full list of functions can be found in the API docs (see the pages listed
+under “API REFERENCE” in the left sidebar).
+
+Vectorized constructor functionsOptionally output to a user-specified array (outkeyword argument) when
+constructing geometries fromindices.Enable bulk construction of geometries with different number of coordinates
+by optionally taking index arrays in all creation functions.
+
+Vectorized constructor functions
+
+Vectorized constructor functions
+
+Optionally output to a user-specified array (outkeyword argument) when
+constructing geometries fromindices.
+
+Optionally output to a user-specified array (outkeyword argument) when
+constructing geometries fromindices.
+
+Enable bulk construction of geometries with different number of coordinates
+by optionally taking index arrays in all creation functions.
+
+Enable bulk construction of geometries with different number of coordinates
+by optionally taking index arrays in all creation functions.
+
+Shapely 2.0 API changes (deprecated in 1.8)#
+
+The Shapely 1.8 release included several deprecation warnings about API
+changes that would happen in Shapely 2.0 and that can be fixed in your code
+(making it compatible with both <=1.8 and >=2.0). SeeMigrating to Shapely 1.8 / 2.0for
+more details on how to update your code.
+
+It is highly recommended to first upgrade to Shapely 1.8 and resolve all
+deprecation warnings before upgrading to Shapely 2.0.
+
+Summary of changes:
+
+Geometries are now immutable and hashable.Multi-part geometries such as MultiPolygon no longer behave as “sequences”.
+This means that they no longer have a length, are not iterable, and are not
+indexable anymore. Use the.geomsattribute instead to access
+individual parts of a multi-part geometry.Geometry objects no longer directly implement the numpy array interface to
+expose their coordinates. To convert to an array of coordinates, use the.coordsattribute instead (np.asarray(geom.coords)).The following attributes and methods on the Geometry classes were
+previously deprecated and are now removed from Shapely 2.0:array_interface()andctypesasShape(), and the adapters classes to create geometry-like proxy
+objects (useshape()instead).empty()method
+
+Geometries are now immutable and hashable.
+
+Geometries are now immutable and hashable.
+
+Multi-part geometries such as MultiPolygon no longer behave as “sequences”.
+This means that they no longer have a length, are not iterable, and are not
+indexable anymore. Use the.geomsattribute instead to access
+individual parts of a multi-part geometry.
+
+Multi-part geometries such as MultiPolygon no longer behave as “sequences”.
+This means that they no longer have a length, are not iterable, and are not
+indexable anymore. Use the.geomsattribute instead to access
+individual parts of a multi-part geometry.
+
+Geometry objects no longer directly implement the numpy array interface to
+expose their coordinates. To convert to an array of coordinates, use the.coordsattribute instead (np.asarray(geom.coords)).
+
+Geometry objects no longer directly implement the numpy array interface to
+expose their coordinates. To convert to an array of coordinates, use the.coordsattribute instead (np.asarray(geom.coords)).
+
+The following attributes and methods on the Geometry classes were
+previously deprecated and are now removed from Shapely 2.0:array_interface()andctypesasShape(), and the adapters classes to create geometry-like proxy
+objects (useshape()instead).empty()method
+
+The following attributes and methods on the Geometry classes were
+previously deprecated and are now removed from Shapely 2.0:
+
+array_interface()andctypesasShape(), and the adapters classes to create geometry-like proxy
+objects (useshape()instead).empty()method
+
+array_interface()andctypes
+
+array_interface()andctypes
+
+asShape(), and the adapters classes to create geometry-like proxy
+objects (useshape()instead).
+
+asShape(), and the adapters classes to create geometry-like proxy
+objects (useshape()instead).
+
+empty()method
+
+empty()method
+
+Some new deprecations have been introduced in Shapely 2.0:
+
+Directly calling the base classBaseGeometry()constructor or theEmptyGeometry()constructor is deprecated and will raise an error in
+the future. To create an empty geometry, use one of the subclasses instead,
+for exampleGeometryCollection()(#1022).Theshapely.speedupsmodule (theenableanddisablefunctions)
+is deprecated and will be removed in the future. The module no longer has
+any affect in Shapely >=2.0.
+
+Directly calling the base classBaseGeometry()constructor or theEmptyGeometry()constructor is deprecated and will raise an error in
+the future. To create an empty geometry, use one of the subclasses instead,
+for exampleGeometryCollection()(#1022).
+
+Directly calling the base classBaseGeometry()constructor or theEmptyGeometry()constructor is deprecated and will raise an error in
+the future. To create an empty geometry, use one of the subclasses instead,
+for exampleGeometryCollection()(#1022).
+
+Theshapely.speedupsmodule (theenableanddisablefunctions)
+is deprecated and will be removed in the future. The module no longer has
+any affect in Shapely >=2.0.
+
+Theshapely.speedupsmodule (theenableanddisablefunctions)
+is deprecated and will be removed in the future. The module no longer has
+any affect in Shapely >=2.0.
+
+Breaking API changes#
+
+Some additional backwards incompatible API changes were included in Shapely
+2.0 that were not deprecated in Shapely 1.8:
+
+Consistent creation of empty geometries (for examplePolygon()now
+actually creates an empty Polygon instead of an empty geometry collection).The.boundsattribute of an empty geometry now returns a tuple of NaNs
+instead of an empty tuple (#1023).Thepreserve_topologykeyword ofsimplify()now defaults toTrue(#1392).AGeometryCollectionthat consists of all empty sub-geometries now
+returns those empty geometries from its.geomsattribute instead of
+returning an empty list (#1420).ThePoint(..)constructor no longer accepts a sequence of coordinates
+consisting of more than one coordinate pair (previously, subsequent
+coordinates were ignored) (#1600).The unusedshape_factory()method andHeterogeneousGeometrySequenceclass are removed (#1421).The undocumented__geom__attribute has been removed. If necessary
+(although not recommended for use beyond experimentation), use the_geomattribute to access the raw GEOS pointer (#1417).Theloggingfunctionality has been removed. All error messages from
+GEOS are now raised as Python exceptions (#998).Several custom exception classes defined inshapely.errorsthat are no
+longer used internally have been removed. Errors from GEOS are now raised
+asGEOSException(#1306).
+
+Consistent creation of empty geometries (for examplePolygon()now
+actually creates an empty Polygon instead of an empty geometry collection).
+
+Consistent creation of empty geometries (for examplePolygon()now
+actually creates an empty Polygon instead of an empty geometry collection).
+
+The.boundsattribute of an empty geometry now returns a tuple of NaNs
+instead of an empty tuple (#1023).
+
+The.boundsattribute of an empty geometry now returns a tuple of NaNs
+instead of an empty tuple (#1023).
+
+Thepreserve_topologykeyword ofsimplify()now defaults toTrue(#1392).
+
+Thepreserve_topologykeyword ofsimplify()now defaults toTrue(#1392).
+
+AGeometryCollectionthat consists of all empty sub-geometries now
+returns those empty geometries from its.geomsattribute instead of
+returning an empty list (#1420).
+
+AGeometryCollectionthat consists of all empty sub-geometries now
+returns those empty geometries from its.geomsattribute instead of
+returning an empty list (#1420).
+
+ThePoint(..)constructor no longer accepts a sequence of coordinates
+consisting of more than one coordinate pair (previously, subsequent
+coordinates were ignored) (#1600).
+
+ThePoint(..)constructor no longer accepts a sequence of coordinates
+consisting of more than one coordinate pair (previously, subsequent
+coordinates were ignored) (#1600).
+
+The unusedshape_factory()method andHeterogeneousGeometrySequenceclass are removed (#1421).
+
+The unusedshape_factory()method andHeterogeneousGeometrySequenceclass are removed (#1421).
+
+The undocumented__geom__attribute has been removed. If necessary
+(although not recommended for use beyond experimentation), use the_geomattribute to access the raw GEOS pointer (#1417).
+
+The undocumented__geom__attribute has been removed. If necessary
+(although not recommended for use beyond experimentation), use the_geomattribute to access the raw GEOS pointer (#1417).
+
+Theloggingfunctionality has been removed. All error messages from
+GEOS are now raised as Python exceptions (#998).
+
+Theloggingfunctionality has been removed. All error messages from
+GEOS are now raised as Python exceptions (#998).
+
+Several custom exception classes defined inshapely.errorsthat are no
+longer used internally have been removed. Errors from GEOS are now raised
+asGEOSException(#1306).
+
+Several custom exception classes defined inshapely.errorsthat are no
+longer used internally have been removed. Errors from GEOS are now raised
+asGEOSException(#1306).
+
+TheSTRtreeinterface has been substantially changed. See the sectionbelowfor more details.
+
+Additionally, starting with GEOS 3.11 (which is included in the binary wheels
+on PyPI), the behaviour of theparallel_offset(offset_curve) method
+changed regarding the orientation of the resulting line. With GEOS < 3.11,
+the line retains the same direction for a left offset (positive distance) or
+has opposite direction for a right offset (negative distance), and this
+behaviour was documented as such in previous Shapely versions. Starting with
+GEOS 3.11, the function tries to preserve the orientation of the original
+line.
+
+New features#
+
+Following the new vectorized functions in the top-levelshapelynamespace, the Geometry subclasses (Point,LineString,Polygon,
+etc) are now available in the top-level namespace as well. Thus it is no
+longer needed to import those from theshapely.geometrysubmodule.
+
+The following:
+
+can be replaced with:
+
+or:
+
+Note: for backwards compatibility (and being able to write code that works
+for both <=1.8 and >2.0), those classes still remain accessible from theshapely.geometrysubmodule as well.
+
+The repr (__repr__) of Geometry objects has been simplified and improved
+to include a descriptive Well-Known-Text (WKT) formatting. Instead of showing
+the class name and id:
+
+we now get:
+
+For large geometries with many coordinates, the output gets truncated to 80
+characters.
+
+GEOS 3.9.0 overhauled the overlay operations (union, intersection,
+(symmetric) difference).  A complete rewrite, dubbed “OverlayNG”, provides a
+more robust implementation (no more TopologyExceptions even on valid input),
+the ability to specify the output precision model, and significant
+performance optimizations. When installing Shapely with GEOS >= 3.9 (which is
+the case for PyPI wheels and conda-forge packages), you automatically get
+these improvements (also for previous versions of Shapely) when using
+the overlay operations.
+
+Shapely 2.0 also includes the ability to specify the precision model
+directly:
+
+Theset_precision()function can be used to conform a geometry to a
+certain grid size (may round and reduce coordinates), and this will then
+also be used by subsequent overlay methods. Aget_precision()function is also available to inspect the precision model of geometries.Thegrid_sizekeyword in the overlay methods can also be used to
+specify the precision model of the output geometry (without first
+conforming the input geometries).
+
+Theset_precision()function can be used to conform a geometry to a
+certain grid size (may round and reduce coordinates), and this will then
+also be used by subsequent overlay methods. Aget_precision()function is also available to inspect the precision model of geometries.
+
+Theset_precision()function can be used to conform a geometry to a
+certain grid size (may round and reduce coordinates), and this will then
+also be used by subsequent overlay methods. Aget_precision()function is also available to inspect the precision model of geometries.
+
+Thegrid_sizekeyword in the overlay methods can also be used to
+specify the precision model of the output geometry (without first
+conforming the input geometries).
+
+Thegrid_sizekeyword in the overlay methods can also be used to
+specify the precision model of the output geometry (without first
+conforming the input geometries).
+
+Shapely itself is not multithreaded, but its functions generally allow for
+multithreading by releasing the Global Interpreter Lock (GIL) during
+execution. Normally in Python, the GIL prevents multiple threads from
+computing at the same time. Shapely functions internally release this
+constraint so that the heavy lifting done by GEOS can be done in parallel,
+from a single Python process.
+
+The biggest change in theSTRtreeinterface is that all operations
+now return indices of the input tree or query geometries, instead of the
+geometries itself. These indices can be used to index into anything
+associated with the input geometries, including the input geometries
+themselves, or custom items stored in another object of the same length and
+order as the geometries.
+
+In addition, Shapely 2.0 includes several improvements toSTRtree:
+
+Directly include predicate evaluation inSTRtree.query()by
+specifying thepredicatekeyword. If a predicate is provided, tree
+geometries with bounding boxes that overlap the bounding boxes of the input
+geometries are further filtered to those that meet the predicate (using
+prepared geometries under the hood for efficiency).Query multiple input geometries (spatial join style) withSTRtree.query()by passing an array of geometries. In this case, the
+return value is a 2D array with shape (2, n) where the subarrays correspond
+to the indices of the input geometries and indices of the tree geometries
+associated with each.A newSTRtree.query_nearest()method was added, returning the index
+of the nearest geometries in the tree for each input geometry. Compared toSTRtree.nearest(), which only returns the index of a single nearest
+geometry for each input geometry, this new methods allows for:returning all equidistant nearest geometries,excluding nearest geometries that are equal to the input,specifying anmax_distanceto limit the search radius, potentially
+increasing the performance,optionally returning the distance.FixedSTRtreecreation to allow querying the tree in a multi-threaded
+context.
+
+Directly include predicate evaluation inSTRtree.query()by
+specifying thepredicatekeyword. If a predicate is provided, tree
+geometries with bounding boxes that overlap the bounding boxes of the input
+geometries are further filtered to those that meet the predicate (using
+prepared geometries under the hood for efficiency).
+
+Directly include predicate evaluation inSTRtree.query()by
+specifying thepredicatekeyword. If a predicate is provided, tree
+geometries with bounding boxes that overlap the bounding boxes of the input
+geometries are further filtered to those that meet the predicate (using
+prepared geometries under the hood for efficiency).
+
+Query multiple input geometries (spatial join style) withSTRtree.query()by passing an array of geometries. In this case, the
+return value is a 2D array with shape (2, n) where the subarrays correspond
+to the indices of the input geometries and indices of the tree geometries
+associated with each.
+
+Query multiple input geometries (spatial join style) withSTRtree.query()by passing an array of geometries. In this case, the
+return value is a 2D array with shape (2, n) where the subarrays correspond
+to the indices of the input geometries and indices of the tree geometries
+associated with each.
+
+A newSTRtree.query_nearest()method was added, returning the index
+of the nearest geometries in the tree for each input geometry. Compared toSTRtree.nearest(), which only returns the index of a single nearest
+geometry for each input geometry, this new methods allows for:returning all equidistant nearest geometries,excluding nearest geometries that are equal to the input,specifying anmax_distanceto limit the search radius, potentially
+increasing the performance,optionally returning the distance.
+
+A newSTRtree.query_nearest()method was added, returning the index
+of the nearest geometries in the tree for each input geometry. Compared toSTRtree.nearest(), which only returns the index of a single nearest
+geometry for each input geometry, this new methods allows for:
+
+returning all equidistant nearest geometries,excluding nearest geometries that are equal to the input,specifying anmax_distanceto limit the search radius, potentially
+increasing the performance,optionally returning the distance.
+
+returning all equidistant nearest geometries,
+
+returning all equidistant nearest geometries,
+
+excluding nearest geometries that are equal to the input,
+
+excluding nearest geometries that are equal to the input,
+
+specifying anmax_distanceto limit the search radius, potentially
+increasing the performance,
+
+specifying anmax_distanceto limit the search radius, potentially
+increasing the performance,
+
+optionally returning the distance.
+
+optionally returning the distance.
+
+FixedSTRtreecreation to allow querying the tree in a multi-threaded
+context.
+
+FixedSTRtreecreation to allow querying the tree in a multi-threaded
+context.
+
+Several (new) functions from GEOS are now exposed in Shapely:
+
+hausdorff_distance()andfrechet_distance()contains_properly()extract_unique_points()reverse()node()contains_xy()andintersects_xy()build_area()(GEOS >= 3.8)minimum_bounding_circle()andminimum_bounding_radius()(GEOS >= 3.8)coverage_union()andcoverage_union_all()(GEOS >= 3.8)segmentize()(GEOS >= 3.10)dwithin()(GEOS >= 3.10)remove_repeated_points()(GEOS >= 3.11)line_merge()addeddirectedparameter (GEOS > 3.11)concave_hull()(GEOS >= 3.11)
+
+hausdorff_distance()andfrechet_distance()
+
+hausdorff_distance()andfrechet_distance()
+
+contains_properly()
+
+contains_properly()
+
+extract_unique_points()
+
+extract_unique_points()
+
+reverse()
+
+reverse()
+
+node()
+
+node()
+
+contains_xy()andintersects_xy()
+
+contains_xy()andintersects_xy()
+
+build_area()(GEOS >= 3.8)
+
+build_area()(GEOS >= 3.8)
+
+minimum_bounding_circle()andminimum_bounding_radius()(GEOS >= 3.8)
+
+minimum_bounding_circle()andminimum_bounding_radius()(GEOS >= 3.8)
+
+coverage_union()andcoverage_union_all()(GEOS >= 3.8)
+
+coverage_union()andcoverage_union_all()(GEOS >= 3.8)
+
+segmentize()(GEOS >= 3.10)
+
+segmentize()(GEOS >= 3.10)
+
+dwithin()(GEOS >= 3.10)
+
+dwithin()(GEOS >= 3.10)
+
+remove_repeated_points()(GEOS >= 3.11)
+
+remove_repeated_points()(GEOS >= 3.11)
+
+line_merge()addeddirectedparameter (GEOS > 3.11)
+
+line_merge()addeddirectedparameter (GEOS > 3.11)
+
+concave_hull()(GEOS >= 3.11)
+
+concave_hull()(GEOS >= 3.11)
+
+In addition some aliases for existing methods have been added to provide a
+method name consistent with GEOS or PostGIS:
+
+line_interpolate_point()(interpolate)line_locate_point()(project)offset_curve()(parallel_offset)point_on_surface()(representative_point)oriented_envelope()(minimum_rotated_rectangle)delaunay_triangles()(ops.triangulate)voronoi_polygons()(ops.voronoi_diagram)shortest_line()(ops.nearest_points)is_valid_reason()(validation.explain_validity)
+
+line_interpolate_point()(interpolate)
+
+line_interpolate_point()(interpolate)
+
+line_locate_point()(project)
+
+line_locate_point()(project)
+
+offset_curve()(parallel_offset)
+
+offset_curve()(parallel_offset)
+
+point_on_surface()(representative_point)
+
+point_on_surface()(representative_point)
+
+oriented_envelope()(minimum_rotated_rectangle)
+
+oriented_envelope()(minimum_rotated_rectangle)
+
+delaunay_triangles()(ops.triangulate)
+
+delaunay_triangles()(ops.triangulate)
+
+voronoi_polygons()(ops.voronoi_diagram)
+
+voronoi_polygons()(ops.voronoi_diagram)
+
+shortest_line()(ops.nearest_points)
+
+shortest_line()(ops.nearest_points)
+
+is_valid_reason()(validation.explain_validity)
+
+is_valid_reason()(validation.explain_validity)
+
+A set of GEOS getter functions are now also exposed to inspect geometries:
+
+get_dimensions()get_coordinate_dimension()get_srid()get_num_points()get_num_interior_rings()get_num_geometries()get_num_coordinates()get_precision()
+
+get_dimensions()
+
+get_dimensions()
+
+get_coordinate_dimension()
+
+get_coordinate_dimension()
+
+get_srid()
+
+get_srid()
+
+get_num_points()
+
+get_num_points()
+
+get_num_interior_rings()
+
+get_num_interior_rings()
+
+get_num_geometries()
+
+get_num_geometries()
+
+get_num_coordinates()
+
+get_num_coordinates()
+
+get_precision()
+
+get_precision()
+
+Several functions are added to extract parts:
+
+get_geometry()to get a geometry from a GeometryCollection or
+Multi-part geometry.get_exterior_ring()andget_interior_ring()to get one of the
+rings of a Polygon.get_point()to get a point (vertex) of a linestring or linearring.get_x(),get_y()andget_z()to get the x/y/z
+coordinate of a Point.
+
+get_geometry()to get a geometry from a GeometryCollection or
+Multi-part geometry.
+
+get_geometry()to get a geometry from a GeometryCollection or
+Multi-part geometry.
+
+get_exterior_ring()andget_interior_ring()to get one of the
+rings of a Polygon.
+
+get_exterior_ring()andget_interior_ring()to get one of the
+rings of a Polygon.
+
+get_point()to get a point (vertex) of a linestring or linearring.
+
+get_point()to get a point (vertex) of a linestring or linearring.
+
+get_x(),get_y()andget_z()to get the x/y/z
+coordinate of a Point.
+
+get_x(),get_y()andget_z()to get the x/y/z
+coordinate of a Point.
+
+Methods to extract all parts or coordinates at once have been added:
+
+Theget_parts()function can be used to get individual parts of an
+array of multi-part geometries.Theget_rings()function, similar asget_partsbut specifically
+to extract the rings of Polygon geometries.Theget_coordinates()function to get all coordinates from a
+geometry or array of geometries as an array of floats.
+
+Theget_parts()function can be used to get individual parts of an
+array of multi-part geometries.
+
+Theget_parts()function can be used to get individual parts of an
+array of multi-part geometries.
+
+Theget_rings()function, similar asget_partsbut specifically
+to extract the rings of Polygon geometries.
+
+Theget_rings()function, similar asget_partsbut specifically
+to extract the rings of Polygon geometries.
+
+Theget_coordinates()function to get all coordinates from a
+geometry or array of geometries as an array of floats.
+
+Theget_coordinates()function to get all coordinates from a
+geometry or array of geometries as an array of floats.
+
+Each of those three functions has an optionalreturn_indexkeyword, which
+allows to also return the indexes of the original geometries in the source
+array.
+
+Prepared geometries are now no longer separate objects, but geometry objects
+themselves can be prepared (this makes theshapely.preparedmodule
+superfluous).
+
+Theprepare()function generates a GEOS prepared geometry which is
+stored on the Geometry object itself. All binary predicates (exceptequals) will make use of this if the input geometry has already been
+prepared. Helper functionsdestroy_prepared()andis_prepared()are also available.
+
+Added GeoJSON input/output capabilitiesfrom_geojson()andto_geojson()for GEOS >= 3.10.Added conversion to/from ragged array representation using a contiguous array
+of coordinates and offset arrays:to_ragged_array()andfrom_ragged_array().
+
+Added GeoJSON input/output capabilitiesfrom_geojson()andto_geojson()for GEOS >= 3.10.
+
+Added GeoJSON input/output capabilitiesfrom_geojson()andto_geojson()for GEOS >= 3.10.
+
+Added conversion to/from ragged array representation using a contiguous array
+of coordinates and offset arrays:to_ragged_array()andfrom_ragged_array().
+
+Added conversion to/from ragged array representation using a contiguous array
+of coordinates and offset arrays:to_ragged_array()andfrom_ragged_array().
+
+Addedforce_2d()andforce_3d()to change the
+dimensionality of the coordinates in a geometry.Addition of atotal_bounds()function to return the outer bounds of an
+array of geometries.Addedempty()to create a geometry array pre-filled with None
+or with empty geometries.Performance improvement in constructing LineStrings or LinearRings from
+numpy arrays for GEOS >= 3.10.Updated thebox()ufunc to use internal C
+function for creating polygon (about 2x faster) and addedccwparameter
+to create polygon in counterclockwise (default) or clockwise direction.Start of a benchmarking suite using ASV.Addedshapely.testing.assert_geometries_equal.
+
+Addedforce_2d()andforce_3d()to change the
+dimensionality of the coordinates in a geometry.
+
+Addedforce_2d()andforce_3d()to change the
+dimensionality of the coordinates in a geometry.
+
+Addition of atotal_bounds()function to return the outer bounds of an
+array of geometries.
+
+Addition of atotal_bounds()function to return the outer bounds of an
+array of geometries.
+
+Addedempty()to create a geometry array pre-filled with None
+or with empty geometries.
+
+Addedempty()to create a geometry array pre-filled with None
+or with empty geometries.
+
+Performance improvement in constructing LineStrings or LinearRings from
+numpy arrays for GEOS >= 3.10.
+
+Performance improvement in constructing LineStrings or LinearRings from
+numpy arrays for GEOS >= 3.10.
+
+Updated thebox()ufunc to use internal C
+function for creating polygon (about 2x faster) and addedccwparameter
+to create polygon in counterclockwise (default) or clockwise direction.
+
+Updated thebox()ufunc to use internal C
+function for creating polygon (about 2x faster) and addedccwparameter
+to create polygon in counterclockwise (default) or clockwise direction.
+
+Start of a benchmarking suite using ASV.
+
+Start of a benchmarking suite using ASV.
+
+Addedshapely.testing.assert_geometries_equal.
+
+Addedshapely.testing.assert_geometries_equal.
+
+Fixed several corner cases in WKT and WKB serialization for varying GEOS
+versions, including:Fixed the WKT serialization of single part 3D empty geometries to
+correctly include “Z” (for GEOS >= 3.9.0).Handle empty points in WKB serialization by conversion toPOINT(nan,nan)consistently for all GEOS versions (GEOS started
+doing this for >= 3.9.0).
+
+Fixed several corner cases in WKT and WKB serialization for varying GEOS
+versions, including:Fixed the WKT serialization of single part 3D empty geometries to
+correctly include “Z” (for GEOS >= 3.9.0).Handle empty points in WKB serialization by conversion toPOINT(nan,nan)consistently for all GEOS versions (GEOS started
+doing this for >= 3.9.0).
+
+Fixed several corner cases in WKT and WKB serialization for varying GEOS
+versions, including:
+
+Fixed the WKT serialization of single part 3D empty geometries to
+correctly include “Z” (for GEOS >= 3.9.0).Handle empty points in WKB serialization by conversion toPOINT(nan,nan)consistently for all GEOS versions (GEOS started
+doing this for >= 3.9.0).
+
+Fixed the WKT serialization of single part 3D empty geometries to
+correctly include “Z” (for GEOS >= 3.9.0).
+
+Fixed the WKT serialization of single part 3D empty geometries to
+correctly include “Z” (for GEOS >= 3.9.0).
+
+Handle empty points in WKB serialization by conversion toPOINT(nan,nan)consistently for all GEOS versions (GEOS started
+doing this for >= 3.9.0).
+
+Handle empty points in WKB serialization by conversion toPOINT(nan,nan)consistently for all GEOS versions (GEOS started
+doing this for >= 3.9.0).
+
+Acknowledgments#
+
+Thanks to everyone who contributed to this release!
+People with a “+” by their names contributed a patch for the first time.
+
+Adam J. Stewart +Alan D. Snow +Ariel KadouriBas CouwenbergBen BeasleyBrendan Ward +Casper van der Wel +Ewout ter Hoeven +Geir Arne Hjelle +James GaboardiJames Myatt +Joris Van den BosscheKeith Jenkins +Kian Meng Ang +Krishna Chaitanya +Kyle BarronMartin Fleischmann +Martin Lackner +Mike TavesPhil Chiu +Tanguy Ophoff +Tom ClancySean GilliesGiorgos Papadokostakis +Mattijn van Hoek +enrico ferreguti +gpapadok +mattijn +odidev +
+
+Adam J. Stewart +
+
+Adam J. Stewart +
+
+Alan D. Snow +
+
+Alan D. Snow +
+
+Ariel Kadouri
+
+Ariel Kadouri
+
+Bas Couwenberg
+
+Bas Couwenberg
+
+Ben Beasley
+
+Ben Beasley
+
+Brendan Ward +
+
+Brendan Ward +
+
+Casper van der Wel +
+
+Casper van der Wel +
+
+Ewout ter Hoeven +
+
+Ewout ter Hoeven +
+
+Geir Arne Hjelle +
+
+Geir Arne Hjelle +
+
+James Gaboardi
+
+James Gaboardi
+
+James Myatt +
+
+James Myatt +
+
+Joris Van den Bossche
+
+Joris Van den Bossche
+
+Keith Jenkins +
+
+Keith Jenkins +
+
+Kian Meng Ang +
+
+Kian Meng Ang +
+
+Krishna Chaitanya +
+
+Krishna Chaitanya +
+
+Kyle Barron
+
+Kyle Barron
+
+Martin Fleischmann +
+
+Martin Fleischmann +
+
+Martin Lackner +
+
+Martin Lackner +
+
+Mike Taves
+
+Mike Taves
+
+Phil Chiu +
+
+Phil Chiu +
+
+Tanguy Ophoff +
+
+Tanguy Ophoff +
+
+Tom Clancy
+
+Tom Clancy
+
+Sean Gillies
+
+Sean Gillies
+
+Giorgos Papadokostakis +
+
+Giorgos Papadokostakis +
+
+Mattijn van Hoek +
+
+Mattijn van Hoek +
+
+enrico ferreguti +
+
+enrico ferreguti +
+
+gpapadok +
+
+gpapadok +
+
+mattijn +
+
+mattijn +
+
+odidev +
+
+odidev +
+
+
+--- CODE BLOCK ---
+>>> import shapely
+>>> point_m = shapely.from_wkt("POINT M (5.2 52.1 15.3)")
+>>> point_m
+<POINT M (5.2 52.1 15.3)>
+>>> point_m.has_m
+True
+>>> point_m.m
+15.3
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> import shapely
+>>> from shapely import Point, box
+>>> import numpy as np
+>>> geoms = np.array([Point(0, 0), Point(1, 1), Point(2, 2)])
+>>> polygon = box(0, 0, 2, 2)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> [polygon.contains(point) for point in geoms]
+[False,  True, False]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> shapely.contains(polygon, geoms)
+array([False,  True, False])
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from shapely.geometry import Point
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from shapely import Point
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import shapely
+shapely.Point(...)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0)
+<shapely.geometry.point.Point at 0x7f0b711f1310>
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> Point(0, 0)
+<POINT (0 0)>
+
+------------------

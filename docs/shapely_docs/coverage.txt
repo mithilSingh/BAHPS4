@@ -1,0 +1,21 @@
+Coverage operations#
+
+coverage_invalid_edges(geometry[, gap_width])
+
+Verify if a coverage is valid and return invalid edges.
+
+coverage_is_valid(geometry[, gap_width])
+
+Verify if a coverage is valid.
+
+coverage_simplify(geometry, tolerance, *[, ...])
+
+Return a simplified version of an input geometry using coverage simplification.
+
+coverage_union(a, b, **kwargs)
+
+Merge multiple polygons into one.
+
+coverage_union_all(geometries[, axis])
+
+Return the union of multiple polygons of a geometry collection.

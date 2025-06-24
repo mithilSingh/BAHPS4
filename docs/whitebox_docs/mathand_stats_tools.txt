@@ -1,0 +1,4750 @@
+Math and Stats Tools
+
+AbsoluteValueAddAndAnovaArcCosArcSinArcTanArcoshArsinhArtanhAtan2AttributeCorrelationAttributeCorrelationNeighbourhoodAnalysisAttributeHistogramAttributeScattergramCeilConditionalEvaluationConditionedLatinHypercubeCosCoshCrispnessIndexCrossTabulationCumulativeDistributionDecrementDivideEqualToExpExp2FloorGreaterThanImageAutocorrelationImageCorrelationImageCorrelationNeighbourhoodAnalysisImageRegressionInPlaceAddInPlaceDivideInPlaceMultiplyInPlaceSubtractIncrementIntegerDivisionInversePrincipalComponentAnalysisIsNoDataKappaIndexKsTestForNormalityLessThanListUniqueValuesListUniqueValuesRasterLnLog10Log2MaxMinModuloMultiplyNegateNotNotEqualToOrPairedSampleTTestPhiCoefficientPowerPrincipalComponentAnalysisQuantilesRandomFieldRandomSampleRasterCalculatorRasterHistogramRasterSummaryStatsReciprocalRescaleValueRangeRootMeanSquareErrorRoundSinSinhSquareSquareRootSubtractTanTanhToDegreesToRadiansTrendSurfaceTrendSurfaceVectorPointsTruncateTurningBandsSimulationTwoSampleKsTestWilcoxonSignedRankTestXorZScoresZonalStatistics
+
+AbsoluteValue
+
+Add
+
+And
+
+Anova
+
+ArcCos
+
+ArcSin
+
+ArcTan
+
+Arcosh
+
+Arsinh
+
+Artanh
+
+Atan2
+
+AttributeCorrelation
+
+AttributeCorrelationNeighbourhoodAnalysis
+
+AttributeHistogram
+
+AttributeScattergram
+
+Ceil
+
+ConditionalEvaluation
+
+ConditionedLatinHypercube
+
+Cos
+
+Cosh
+
+CrispnessIndex
+
+CrossTabulation
+
+CumulativeDistribution
+
+Decrement
+
+Divide
+
+EqualTo
+
+Exp
+
+Exp2
+
+Floor
+
+GreaterThan
+
+ImageAutocorrelation
+
+ImageCorrelation
+
+ImageCorrelationNeighbourhoodAnalysis
+
+ImageRegression
+
+InPlaceAdd
+
+InPlaceDivide
+
+InPlaceMultiply
+
+InPlaceSubtract
+
+Increment
+
+IntegerDivision
+
+InversePrincipalComponentAnalysis
+
+IsNoData
+
+KappaIndex
+
+KsTestForNormality
+
+LessThan
+
+ListUniqueValues
+
+ListUniqueValuesRaster
+
+Ln
+
+Log10
+
+Log2
+
+Max
+
+Min
+
+Modulo
+
+Multiply
+
+Negate
+
+Not
+
+NotEqualTo
+
+Or
+
+PairedSampleTTest
+
+PhiCoefficient
+
+Power
+
+PrincipalComponentAnalysis
+
+Quantiles
+
+RandomField
+
+RandomSample
+
+RasterCalculator
+
+RasterHistogram
+
+RasterSummaryStats
+
+Reciprocal
+
+RescaleValueRange
+
+RootMeanSquareError
+
+Round
+
+Sin
+
+Sinh
+
+Square
+
+SquareRoot
+
+Subtract
+
+Tan
+
+Tanh
+
+ToDegrees
+
+ToRadians
+
+TrendSurface
+
+TrendSurfaceVectorPoints
+
+Truncate
+
+TurningBandsSimulation
+
+TwoSampleKsTest
+
+WilcoxonSignedRankTest
+
+Xor
+
+ZScores
+
+ZonalStatistics
+
+
+
+AbsoluteValue
+
+This tool creates a new raster (--output) in which each grid cell is equal to theabsolute valueof the corresponding grid cell in an input
+raster (--input). The absolute value is a number that is equal in magnitude but is always positive.
+
+See Also:Negate
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: July 5, 2017
+
+Last Modified: 12/10/2018
+
+
+
+Add
+
+This tool creates a new raster in which each grid cell is equal to the addition of the corresponding grid
+cells in two input rasters or one input raster and a constant value. If two images are input, both
+images must possess the same number of rows and columns and spatial extent, as the analysis will be
+carried out on a cell-by-cell basis. If a grid cell contains aNoDatavalue in either of the input
+images, the cell will be excluded from the analysis.
+
+See Also:Subtract,Multiply,Divide,InPlaceAdd
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 24/01/2019
+
+
+
+And
+
+This tool is a BooleanANDoperator, i.e. it works onTrueorFalse(1 and 0) values. Grid cells for which
+the first and second input rasters (--input1;--input2) haveTruevalues are assigned
+1 in the output raster, otherwise grid cells are assigned a value of 0. All non-zero values in the input
+rasters are considered to beTrue, while all zero-valued grid cells are considered to beFalse. Grid
+cells containingNoDatavalues in either of the input rasters will be assigned aNoDatavalue in
+the output raster (--output).
+
+See Also:Not,Or,Xor
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+Anova
+
+This tool performs anAnalysis of variance(ANOVA)
+test on the distribution of values in a raster (--input) among a group of features (--features). The
+ANOVA report is written to an output HTML report (--output).
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 23/09/2017
+
+Last Modified: 12/10/2018
+
+
+
+ArcCos
+
+This tool creates a new raster (--output) in which each grid cell is equal to the inverse cosine of the
+corresponding grid cell in an input raster (--input). The output raster will contain angular data measured in
+radian, in the range [0, π] orNoDataif the number is outside the range [-1, 1]. If desired, you can convert
+radians to degrees using theToDegreestool. Grid cells withNoDatavalues in the input raster
+will be assignedNoDatavalues in the output raster.
+
+See Also:ArcSin,ArcTan,ToDegrees
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+ArcSin
+
+This tool creates a new raster (--output) in which each grid cell is equal to the inverse sine of the
+corresponding grid cell in an input raster (--input). The output raster will contain angular data measured in
+radian, in the range [-π/2, π/2]  orNoDataif the number is outside the range [-1, 1]. If desired,
+you can convert radians to degrees using theToDegreestool. Grid cells withNoDatavalues in the input
+raster will be assignedNoDatavalues in the output raster.
+
+See Also:ArcCos,ArcTan,ToDegrees
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+ArcTan
+
+This tool creates a new raster (--output) in which each grid cell is equal to the inverse tangent of the
+corresponding grid cell in an input raster (--input). The output raster will contain angular data measured in
+radian, in the range [-π/2, π/2]  orNoDataif the number is outside the range [-1, 1]. If desired,
+you can convert radians to degrees using theToDegreestool. Grid cells withNoDatavalues in the input
+raster will be assignedNoDatavalues in the output raster.
+
+See Also:ArcCos,ArcTan,Atan2,ToDegrees
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+Arcosh
+
+This tool creates a new raster (--output) in which each grid cell is equal to theinverse hyperbolic cosine(arcosh) of the
+corresponding grid cell in an input raster (--input). The output raster will contain angular data measured in
+radian, in the range [0, π] orNoDataif the number is outside the range [-1, 1]. If desired, you can convert
+radians to degrees using theToDegreestool. Grid cells withNoDatavalues in the input raster
+will be assignedNoDatavalues in the output raster.
+
+See Also:Arsinh,Artanh,ToDegrees
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/10/2019
+
+Last Modified: 26/10/2019
+
+
+
+Arsinh
+
+This tool creates a new raster (--output) in which each grid cell is equal to theinverse hyperbolic sine(arsinh) of the
+corresponding grid cell in an input raster (--input). The output raster will contain angular data measured in
+radian, in the range [-π/2, π/2]  orNoDataif the number is outside the range [-1, 1]. If desired,
+you can convert radians to degrees using theToDegreestool. Grid cells withNoDatavalues in the input
+raster will be assignedNoDatavalues in the output raster.
+
+See Also:Arcosh,Artanh,ToDegrees
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/10/2019
+
+Last Modified: 26/10/2019
+
+
+
+Artanh
+
+This tool creates a new raster (--output) in which each grid cell is equal to theinverse hyperbolic tangent(artanh) of the
+corresponding grid cell in an input raster (--input). The output raster will contain angular data measured in
+radian, in the range [-π/2, π/2]  orNoDataif the number is outside the range [-1, 1]. If desired,
+you can convert radians to degrees using theToDegreestool. Grid cells withNoDatavalues in the input
+raster will be assignedNoDatavalues in the output raster.
+
+See Also:Arcosh,Arsinh,ToDegrees
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/10/2019
+
+Last Modified: 26/10/2019
+
+
+
+Atan2
+
+This tool creates a new raster (--output) in which each grid cell is equal to the four quadrant arctangent of
+any(--input_y) andx(--input_x) inputs, measured in radians. Inputs may be either rasters or constant values.
+The output raster will contain angular data measured in radian, in the range:
+
+x= 0,y= 0: 0x>= 0: arctan(y/x) -> [-π/2, π/2]y>= 0: arctan(y/x) + π -> (π/2, π]y< 0: arctan(y/x) - π -> (-π, -π/2)
+
+If desired, you can convert radians to degrees using theToDegreestool. Grid cells withNoDatavalues in
+the input raster will be assignedNoDatavalues in the output raster.
+
+See Also:ArcCos,ArcTan,Atan2,ToDegrees
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+AttributeCorrelation
+
+This tool can be used to estimate the Pearson product-moment correlation coefficient (r) for each pair among a
+group of attributes associated with the database file of a shapefile. Ther-value is a measure of the linear
+association in the variation of the attributes. The coefficient ranges from -1, indicated a perfect negative
+linear association, to 1, indicated a perfect positive linear association. Anr-value of 0 indicates no correlation
+between the test variables.
+
+Notice that this index is a measure of the linear association; two variables may be strongly related by a non-linear
+association (e.g. a power function curve) which will lead to an apparent weak association based on the Pearson
+coefficient. In fact, non-linear associations are very common among spatial variables, e.g. terrain indices such as
+slope and contributing area. In such cases, it is advisable that the input images are transformed prior to the
+estimation of the Pearson coefficient, or that an alternative, non-parametric statistic be used, e.g. the Spearman
+rank correlation coefficient.
+
+The user must specify the name of the input vector Shapefile (--input). Correlations will be calculated for each
+pair of numerical attributes contained within the input file's attribute table and presented in a correlation matrix
+HMTL output (--output).
+
+See Also:ImageCorrelation,AttributeScattergram,AttributeHistogram
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 29/04/2018
+
+Last Modified: 12/10/2018
+
+
+
+AttributeCorrelationNeighbourhoodAnalysis
+
+This tool can be used to perform nieghbourhood-based (i.e. using roving search windows applied to each
+grid cell) correlation analysis on two continuous attributes (--field1and--field2) of an input vector
+(--input). The tool outputs correlation value and a significance (p-value) fields (CORRELandPVALUE) to
+the input vector's attribute table. Additionally,the user must specify the size of the search window (--filter)
+and the correlation statistic (--stat). Options for the correlation statistic includepearson,kendall, andspearman. Notice that Pearson'sris the
+most computationally efficient of the three correlation metrics but is unsuitable when the input distributions are
+non-linearly associated, in which case, either Spearman's Rho or Kendall's tau-b correlations are more suited.
+Both Spearman and Kendall correlations evaluate monotonic associations without assuming linearity in the relation.
+Kendall's tau-b is by far the most computationally expensive of the three statistics and may not be suitable to
+larger sized search windows.
+
+See Also:AttributeCorrelation,ImageCorrelationNeighbourhoodAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Simon Gudim and Dr. John Lindsay
+
+Created: 19/12/2019
+
+Last Modified: 10/01/2020
+
+
+
+AttributeHistogram
+
+This tool can be used to create a histogram, which is a graph displaying the frequency
+distribution of data, for the values contained in a field of an input vector's attribute
+table. The user must specify the name of an input vector (--input) and the name of one
+of the fields (--field) contained in the associated attribute table. The tool output
+(--output) is an HTML formatted histogram analysis report. If the specified field
+is non-numerical, the tool will produce a bar-chart of class frequency, similar to the
+tabular output of theListUniqueValuestool.
+
+See Also:ListUniqueValues,RasterHistogram
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 12/04/2018
+
+Last Modified: 12/10/2018
+
+
+
+AttributeScattergram
+
+This tool can be used to create ascattergramfor
+two numerical fields (--fieldxand--fieldy) contained within an input vector's attribute
+table (--input). The user must specify the name of an input shapefile and the name of two of
+the fields contained it the associated attribute table. The tool output (--output) is an
+HTML formatted report containing a graphical scattergram plot.
+
+See Also:AttributeHistogram,AttributeCorrelation
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 12/04/2018
+
+Last Modified: 18/10/2019
+
+
+
+Ceil
+
+This tool performs a ceiling (ceil) operation on the values in an input raster (--input) to the nearest integer value.
+Theceilfunction calculates the smallest integer greater than or equal to the input value (e.g. ceil(0.5) = 1, ceil(-4.5) = -5).
+The output raster (--output) will be of an I32 data type.
+
+See Also:Round,Floor,Truncate
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 26/10/2019
+
+
+
+ConditionalEvaluation
+
+The ConditionalEvaluation tool can be used to perform an if-then-else style conditional evaluation
+on a raster image on a cell-to-cell basis. The user specifies the names of an input raster image (--input)
+and an output raster (--output), along with a conditional statement (--statement). The grid cell values
+in the output image will be determined by the TRUE and FALSE values and conditional statement. The conditional
+statement is a logical expression that must evaluate to either a Boolean, i.e. TRUE or FALSE. Then depending on
+how this statement evaluates for each grid cell, the TRUE or FALSE values will be assigned to the corresponding
+grid cells of the output raster. The TRUE or FALSE values may take the form of either a constant numerical value
+or a raster image (which may be the same image as the input). These are specified by the--trueand--falseparameters, which can be either a file name pointing to existing rasters, or numerical values.
+
+The conditional statement is a single-line logical condition. In addition to the common comparison and logical
+operators, i.e. < > <= >= == (EQUAL TO) != (NOT EQUAL TO) || (OR) && (AND), conditional statements may contain a
+number of valid mathematical functions. For example:
+
+Notice that the constants Pi and e must be specified as functions, pi() and e(). A number of
+global variables are also available to build conditional statements. These include the following:
+
+Special Variable Names For Use In Conditional Statements:
+
+The special variable names are case-sensitive. Each of the special variable names can also be used as valid
+TRUE or FALSE constant values.
+
+The following are examples of valid conditional statements:
+
+Any grid cell in the input raster containing the NoData value will be assigned NoData in the output raster,
+unless a NoData grid cell value allows the conditional statement to evaluate to True (i.e. the conditional
+statement includes the NoData value), in which case the True value will be assigned to the output.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 21/07/2021
+
+Last Modified: 21/07/2021
+
+
+
+ConditionedLatinHypercube
+
+This tool creates a new shapefile output (--output) sample sites that sastisfy a latin hypercube based
+on a set of input rasters wth the same projections (--inputs), and is therefore a multidimensional stratified random
+sampling scheme. A random subset of samples (--samples, n << N) is chosen from the population and iteratively resampled
+(--max_iter) to minimize an objective function. An annealing schedule and a random resample probability
+(--rs_prob) are used to control how likely a interation is to randomly resample, or resample the worst
+strata, where higher values favour a more random sample, and lower values favour a more stratified sample.
+
+The annealing process controls the probability that samples will be discarded each iteration.
+The temperature is decreased over several iterations, decreasing the probability of discarding
+the new sample. The properties of the annealing process can be manipulated through the
+parameters--tempfor initial temperature--temp_decayfor the tempature decay rate,
+and-cycleto determine the number of iterations before re-applying the decay rate.
+
+This implementation is loosely based on Minasny and McBratney (2006). An additional optional
+parameter--averagehas been added to normalize the continuous objective function and bring
+it closer to the range of values for the catagorical and correlation objective functions. This
+prevents continuous inputs from dominating the objective function and makes the objective function
+cutoff threshold (--threshold) more predictable. However, as a result, the algorithm will emphasize
+the catagorical and correlation objective relative to the standard weighting.
+
+data objective function has been used to average the number of strata so that it does not dominate the
+objective function, and makes a objective function cutoff value more predictable (--o_thresh).
+Another departure from the orignal is that a lower objective function forces the sample to be retained
+instead of rejected. This was originally based on a random number and the annealed changed in objective function.
+
+Reference:
+
+Minsasny, B., and McBratney, A. B. (2006). A conditioned Latin hypercube method for sampling in the
+presence of ancillary information. Computers and Geosciences, 32, 1378-1388.
+
+See Also:random_sample
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Daniel Newman
+
+Created: 17/08/2021
+
+Last Modified: 31/05/2022
+
+
+
+Cos
+
+This tool creates a new raster (--output) in which each grid cell is equal to the cosine (cos) of the corresponding
+grid cell in an input raster (--input). The input raster image should contain angular data measured in radians.
+You may convert a raster containing degrees to radians using theToRadianstool. Grid cells withNoDatavalues
+in the input raster will be assignedNoDatavalues in the output raster.
+
+See Also:Sin,Tan,ArcCos,ToRadians
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+Cosh
+
+This tool creates a new raster (--output) in which each grid cell is equal to thehyperbolic cosine(cosh) of the corresponding
+grid cell in an input raster (--input). The input raster image should contain angular data measured in radians.
+You may convert a raster containing degrees to radians using theToRadianstool. Grid cells withNoDatavalues
+in the input raster will be assignedNoDatavalues in the output raster.
+
+See Also:Sinh,Tanh,ToRadians
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+CrispnessIndex
+
+The Crispness Index (C) provides a means of quantifying the crispness, or fuzziness, of a membership
+probability (MP) image. MP images describe the probability of each grid cell belonging to some feature
+or class. MP images contain values ranging from 0 to 1.
+
+The index, as described by Lindsay (2006), is the ratio between the sum of the squared differences (from
+the image mean) in the MP image divided by the sum of the squared differences for the Boolean case in which
+the total probability, summed for the image, is arranged crisply.
+
+Cis closely related to a family of relative variation coefficients that measure variation in an MP
+image relative to the maximum possible variation (i.e. when the total probability is arranged such that grid
+cells contain only 1s or 0s). Notice that 0 <C< 1 and a lowC-value indicates a nearly uniform spatial
+distribution of any probability value, andC= 1 indicates a crisp spatial probability distribution,
+containing only 1's and 0's.
+
+Cis calculated as follows:
+
+C = SS_mp ∕ SS_B = [∑(pij − p-bar)^2] ∕ [ ∑pij(1 − p-bar)^2 + p2(RC − ∑pij)]
+
+Note that there is an error in the original published equation. Specifically, the denominator
+read:
+
+∑pij(1 - p_bar)^2 + p_bar^2 (RC - ∑pij)
+
+instead of the original:
+
+∑pij(1 - p_bar^2) - p_bar^2 (RC - ∑pij)
+
+References:
+
+Lindsay, J. B. (2006). Sensitivity of channel mapping techniques to uncertainty in digital elevation data.
+International Journal of Geographical Information Science, 20(6), 669-692.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 15/08/2017
+
+Last Modified: 12/10/2018
+
+
+
+CrossTabulation
+
+This tool can be used to perform a cross-tabulation on two input raster images (--i1and--i2) containing
+categorical data, i.e. classes. It will output acontingency tablein HTML format (--output). A contingency table, also known as a cross tabulation or crosstab, is a type of table
+that displays the multivariate frequency distribution of the variables. These tables provide a basic picture of the
+interrelation between two categorical variables and can help find interactions between them.CrossTabulationcan provide useful information about the nature of land-use/land-cover (LULC) changes between two dates of classified
+multi-spectral satellite imagery. For example, the extent of urban expansion could be described using the information
+about the extent of pixels in an 'urban' class in Date 2 that were previously assigned to other classes (e.g.
+agricultural LULC categories) in the Date 1 imagery.
+
+Both input images must share the same grid, as the analysis requires a comparison of a pair of images on a cell-by-cell
+basis. If a grid cell contains aNoDatavalue in either of the input images, the cell will be excluded from the
+analysis.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 18/12/2017
+
+Last Modified: 12/10/2018
+
+
+
+CumulativeDistribution
+
+This tool converts the values in an input image (--input) into
+acumulative distribution function.
+Therefore, the output raster (--output) will contain the cumulative probability value (0-1) of
+of values equal to or less than the value in the corresponding grid cell in the input image. NoData
+values in the input image are not considered during the transformation and remain NoData values in
+the output image.
+
+See Also:ZScores
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 22/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+Decrement
+
+This tool can be used to decrease the values of each grid cell in an input raster (--input)
+by 1.0. Note that this tool will modify the input raster. If you would rather create a new
+raster file, leaving the input unmodified, use theSubtracttool instead.
+
+See Also:InPlaceSubtract,Subtract,Increment
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 11/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+Divide
+
+This tool creates a new raster in which each grid cell is equal to the division of the corresponding grid
+cells in two input rasters or one input raster and a constant value. If two images are input, both
+images must possess the same number of rows and columns and spatial extent, as the analysis will be
+carried out on a cell-by-cell basis. If a grid cell contains aNoDatavalue in either of the input
+images, the cell will be excluded from the analysis.
+
+See Also:Multiply,Add,Subtract,InPlaceDivide
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 24/01/2019
+
+
+
+EqualTo
+
+This tool assigns grid cells for which both (--input1and--input2) input rasters (or one raster and
+a constant value) have equal values a new value of 1 (True) in the output raster (--output). All
+non-equivalent grid cells are assigned a value of zero (False). Grid cells containingNoDatavalues
+in either of the inputs will be assigned aNoDatavalue in the output raster.
+
+See Also:NotEqualTo,GreaterThan,LessThan
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+Exp
+
+This tool creates a new raster (--output) in which each grid cell is calculated aseto the power of the value of the
+corresponding grid cell in the input raster (--input). Moderate to large values in the input
+raster will result in very large values in the output raster and this may cause errors when you
+try to display the data. Grid cells withNoDatavalues in the input raster will be assignedNoDatavalues in the output raster.
+
+See Also:Exp2,Power,Ln
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+Exp2
+
+This tool creates a new raster (--output) in which each grid cell is calculated as
+2 to the power of the value of the corresponding grid cell in the input raster (--input).
+Moderate to large values in the input raster will result in very large values in the output
+raster and this may cause errors when you try to display the data. Grid cells withNoDatavalues in the input raster will be assignedNoDatavalues in the output raster.
+
+See Also:Exp,Power,Log2
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+Floor
+
+This tool performs a floor operation on the values in an input raster (--input) to the nearest integer value.
+Thefloorfunction calculates the largest integer less than or equal to the input value (e.g. floor(0.5) = 0, floor(-4.5) = -4).
+The output raster (--output) will be of an I32 data type.
+
+See Also:Ceil,Round,Truncate
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 26/10/2019
+
+
+
+GreaterThan
+
+This tool assigns grid cells for which the first input raster or constant value (--input1) is greater than
+the second input raster or constant value (--input2) a new value of 1 (True) in the output raster (--output).
+All grid cells with lesser values are assigned a value of zero (False) in the output. Grid cells containingNoDatavalues in either of the inputs will be assigned aNoDatavalue in the output raster.
+
+Use the--incl_equalsflag to perform a greater-than-equal-to (>=) operation instead of the default greater-than (>)
+operator.
+
+See Also:LessThan,EqualTo,NotEqualTo
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/07/2017
+
+Last Modified: 18/10/2019
+
+
+
+ImageAutocorrelation
+
+Spatial autocorrelation describes the extent to which a variable is either dispersed or clustered through space.
+In the case of a raster image, spatial autocorrelation refers to the similarity in the values of nearby grid
+cells. This tool measures the spatial autocorrelation of a raster image using the global Moran'sIstatistic.
+Moran'sIvaries from -1 to 1, whereI= -1 indicates a dispersed, checkerboard type pattern andI= 1 indicates
+a clustered (smooth) surface.I= 0 occurs for a random distribution of values.ImageAutocorrelationcomputes
+Moran'sIfor the first lag only, meaning that it only takes into account the variability among the immediate
+neighbors of each grid cell.
+
+The user must specify the names of one or more input raster images. In addition, the user must specify the
+contiguity type (--contiguity; Rook's, King's, or Bishop's), which describes which neighboring grid cells are examined for
+the analysis. The following figure describes the available cases:
+
+Rook's contiguity
+
+Kings's contiguity
+
+Bishops's contiguity
+
+The tool outputs an HTML report (--output) which, for each input image (--input), reports the Moran'sIvalue and the variance, z-score, and p-value (significance) under normal and randomization sampling assumptions.
+
+Use theImageCorrelationtool instead when there is need to determine the correlation among multiple raster
+inputs.
+
+**NoData **values in the input image are ignored during the analysis.
+
+See Also:ImageCorrelation,ImageCorrelationNeighbourhoodAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 16/12/2017
+
+Last Modified: 12/10/2018
+
+
+
+ImageCorrelation
+
+This tool can be used to estimate the Pearson product-moment correlation coefficient (r) between two or
+more input images (--inputs). Ther-value is a measure of the linear association in the variation of
+the input variables (images, in this case). The coefficient ranges from -1.0, indicated a perfect negative
+linear association, to 1.0, indicated a perfect positive linear association. Anr-value of 0.0 indicates
+no correlation between the test variables.
+
+Note that this index is a measure of the linear association; two variables may be strongly related by a
+non-linear association (e.g. a power function curve) which will lead to an apparent weak association based
+on the Pearson coefficient. In fact, non-linear associations are very common among spatial variables,
+e.g. terrain indices such as slope and contributing area. In such cases, it is advisable that the input
+images are transformed prior to the estimation of the Pearson coefficient, or that an alternative,
+non-parametric statistic be used, e.g. the Spearman rank correlation coefficient.
+
+The user must specify the names of two or more input images (--inputs). All input images must share the
+same grid, as the coefficient requires a comparison of a pair of images on a grid-cell-by-grid-cell basis.
+If more than two image names are selected, the correlation coefficient will be calculated for each pair of
+images and reported in the HTML output report (--output) as a correlation matrix. Caution must be
+exercised when attempted to estimate the significance of a correlation coefficient derived from image data.
+The very highN-value (essentially the number of pixels in the image pair) means that even small correlation
+coefficients can be found to be statistically significant, despite being practically insignificant.
+
+NoDatavalues in either of the two input images are ignored during the calculation of the correlation
+between images.
+
+See Also:ImageCorrelationNeighbourhoodAnalysis,ImageRegression,ImageAutocorrelation
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 03/09/2017
+
+Last Modified: 12/10/2018
+
+
+
+ImageCorrelationNeighbourhoodAnalysis
+
+This tool can be used to perform nieghbourhood-based (i.e. using roving search windows applied to each
+grid cell) correlation analysis on two input rasters (--input1and--input2). The tool outputs a
+correlation value raster (--output1) and a significance (p-value) raster (--output2). Additionally,
+the user must specify the size of the search window (--filter) and the correlation statistic (--stat).
+Options for the correlation statistic includepearson,kendall, andspearman. Notice that Pearson'sris the
+most computationally efficient of the three correlation metrics but is unsuitable when the input distributions are
+non-linearly associated, in which case, either Spearman's Rho or Kendall's tau-b correlations are more suited.
+Both Spearman and Kendall correlations evaluate monotonic associations without assuming linearity in the relation.
+Kendall's tau-b is by far the most computationally expensive of the three statistics and may not be suitable to
+larger sized search windows.
+
+See Also:ImageCorrelation,ImageRegression
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Simon Gudim and Dr. John Lindsay
+
+Created: 06/12/2019
+
+Last Modified: 06/12/2019
+
+
+
+ImageRegression
+
+This tool performs a bivariate linear regression analysis on two input raster images. The first image
+(--i1) is considered to be the independent variable while the second image (--i2) is considered to
+be the dependent variable in the analysis. Both input images must share the same grid, as the coefficient
+requires a comparison of a pair of images on a grid-cell-by-grid-cell basis. The tool will output an HTML
+report (--output) summarizing the regression model, an Analysis of Variance (ANOVA), and the
+significance of the regression coefficients. The regression residuals can optionally be output as a new
+raster image (--out_residuals) and the user can also optionally specify to standardize the residuals
+(--standardize).
+
+Note that the analysis performs a linear regression; two variables may be strongly related by a non-linear
+association (e.g. a power function curve) which will lead to an apparently weak fitting regression model.
+In fact, non-linear relations are very common among spatial variables, e.g. terrain indices such as slope
+and contributing area. In such cases, it is advisable that the input images are transformed prior to the
+analysis.
+
+NoDatavalues in either of the two input images are ignored during the calculation of the correlation
+between images.
+
+See Also:ImageCorrelation,ImageCorrelationNeighbourhoodAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/09/2017
+
+Last Modified: 18/10/2019
+
+
+
+InPlaceAdd
+
+This tool performs an in-place addition, or increment operation (i.e.input1 += input2). The
+user must specify the names of two input images (--input1and--input2) and the tool will
+add the values ofinput2to theinput1raster on a pixel-by-pixel basis. Therefore, theinput1raster is modified by this tool. Note thatinput2may either be an existing raster
+file or a constant value. Ifinput2is a raster, it must have the same dimensions (rows and
+columns) asinput1.
+
+The difference between this tool and theAddtool is thatAdddoes not modify either of its
+two operands, and instead creates a new output raster to save the resultant value into.
+
+Ifinput2 = 1, use theIncrementtool instead.
+
+See Also:Add,InPlaceSubtract,InPlaceDivide,InPlaceMultiply,Increment
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 18/03/2018
+
+Last Modified: 12/10/2018
+
+
+
+InPlaceDivide
+
+This tool performs an in-place division operation (i.e.input1 /= input2). The
+user must specify the names of two input images (--input1and--input2) and the tool will
+divide theinput1raster by theinput2values on a pixel-by-pixel basis. Therefore, theinput1raster is modified by this tool. Note thatinput2may either be an existing raster
+file or a non-zero constant value. Ifinput2is a raster, it must have the same dimensions (rows and
+columns) asinput1. Zero-valued pixels ininput2will be assigned the NoData value ininput1after this operation.
+
+The difference between this tool and theDividetool is thatDividedoes not modify either of its
+two operands, and instead creates a new output raster to save the resultant value into.
+
+See Also:Divide,InPlaceAdd,InPlaceMultiply,InPlaceSubtract
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 18/03/2018
+
+Last Modified: 12/10/2018
+
+
+
+InPlaceMultiply
+
+This tool performs an in-place multiplication operation (i.e.input1 *= input2). The
+user must specify the names of two input images (--input1and--input2) and the tool will
+multiply theinput1raster by theinput2values on a pixel-by-pixel basis. Therefore, theinput1raster is modified by this tool. Note thatinput2may either be an existing raster
+file or a constant value. Ifinput2is a raster, it must have the same dimensions (rows and
+columns) asinput1.
+
+The difference between this tool and theMultiplytool is thatMultiplydoes not modify either of its
+two operands, and instead creates a new output raster to save the resultant value into.
+
+See Also:Multiply,InPlaceAdd,InPlaceDivide,InPlaceSubtract
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 18/03/2018
+
+Last Modified: 12/10/2018
+
+
+
+InPlaceSubtract
+
+This tool performs an in-place subtraction, or decrement operation (i.e.input1 -= input2). The
+user must specify the names of two input images (--input1and--input2) and the tool will
+subtact the values ofinput2from theinput1raster on a pixel-by-pixel basis. Therefore, theinput1raster is modified by this tool. Note thatinput2may either be an existing raster
+file or a constant value. Ifinput2is a raster, it must have the same dimensions (rows and
+columns) asinput1.
+
+The difference between this tool and theSubtracttool is thatSubtractdoes not modify either of its
+two operands, and instead creates a new output raster to save the resultant value into.
+
+Ifinput2 = 1, use theDecrementtool instead.
+
+See Also:Subtract,InPlaceAdd,InPlaceDivide,InPlaceMultiply,Decrement
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 18/03/2018
+
+Last Modified: 12/10/2018
+
+
+
+Increment
+
+This tool can be used to increase the values of each grid cell in an input raster (--input)
+by 1.0. Note that this tool will modify the input raster. If you would rather create a new
+raster file, leaving the input unmodified, use theAddtool instead.
+
+See Also:InPlaceAdd,Add,Decrement
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 11/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+IntegerDivision
+
+This tool creates a new raster (--output) in which each grid cell is equal to theinteger divisionof the corresponding
+grid cells in two input rasters or constant values (--input1and--input2). The calculation differs
+from regular division in that the result is always an integer value (rounded by truncation). If the
+second raster / constant is zero the corresponding grid cell in the output raster will be assigned
+theNoDatavalue. Grid cells containingNoDatavalues in either of the inputs will be assigned
+aNoDatavalue in the output raster.
+
+See Also:Divide
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 12/10/2018
+
+
+
+InversePrincipalComponentAnalysis
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool takes a two or more component images (--inputs), and theprincipal component analysis(PCA)
+report derived using thePrincipalComponentAnalysistool, and performs the inverse PCA transform to
+derive the original series of input images. This inverse transform is frequently performed to reduce
+noise within a multi-spectral image data set. With a typical PCA transform, high-frequency noise will
+commonly map onto the higher component images. By excluding one or more higher-valued component
+images from the input component list, the inverse transform can produce a set of images in the
+original coordinate system that exclude the information contained within component images excluded
+from the input list. Note that the number of output images will also equal the number of original
+images input to thePrincipalComponentAnalysistool. The output images will be named automatically
+with a "inv_PCA_image" suffix.
+
+See Also:PrincipalComponentAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 14/03/2021
+
+Last Modified: 14/03/2021
+
+
+
+IsNoData
+
+This tool can be used to identify areas of NoData values within an input image.The user must specify the name
+of the input and output (--inputand--output) raster images. Grid cells containing the NoData value in
+the input image will be assigned a value of 1.0 in the output image. All non-NoData valued grid cells will
+be assigned 0.0 in the output image.
+
+See Also:SetNodataValue,ConvertNodataToZero
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 01/06/2020
+
+
+
+KappaIndex
+
+This tool calculates theKappa index of agreement(KIA), or
+Cohen's Kappa, for two categorical input raster images (--input1and--input2). The KIA is a measure of inter-rater
+reliability (i.e. classification accuracy) and is widely applied in many fields, notably remote sensing. For example,
+The KIA is often used as a means of assessing the accuracy of an image classification analysis. The KIA
+can be interpreted as the percentage improvement that the underlying classification has over and above a random
+classifier (i.e. random assignment to categories). The user must specify the output HTML file (--output). The input
+images must be of a categorical data type, i.e. contain classes. As a measure of classification accuracy, the
+KIA is more robust than theoverall percent agreementbecause it takes into account the agreement occurring by
+chance. A KIA of 0 would indicate that the classifier is no better than random class assignment. In addition to the
+KIA, this tool will also output theproducer's and user's accuracy,
+the overall accuracy, and the error matrix.
+
+See Also:CrossTabulation
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 24/09/2017
+
+Last Modified: 12/10/2018
+
+
+
+KsTestForNormality
+
+This tool will perform a Kolmogorov-Smirnov (K-S) test for normality to evaluate
+whether the frequency distribution of values within a raster image are drawn from a
+Gaussian (normal) distribution. The user must specify the name of the raster image. The
+test can be performed optionally on the entire image or on a random sub-sample of pixel
+values of a user-specified size. In evaluating the significance of the test, it is
+important to keep in mind that given a sufficiently large sample, extremely small and
+non-notable differences can be found to be statistically significant. Furthermore
+statistical significance says nothing about the practical significance of a difference.
+
+See Also:TwoSampleKsTest
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 02/01/2018
+
+Last Modified: 12/10/2018
+
+
+
+LessThan
+
+This tool assigns grid cells for which the first input raster or constant value (--input1) is less than
+the second input raster or constant value (--input2) a new value of 1 (True) in the output raster (--output).
+All grid cells with greater values are assigned a value of zero (False) in the output. Grid cells containingNoDatavalues in either of the inputs will be assigned aNoDatavalue in the output raster.
+
+Use the--incl_equalsflag to perform a less-than-equal-to (<=) operation instead of the default less-than (<)
+operator.
+
+See Also:LessThan,EqualTo,NotEqualTo
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/07/2017
+
+Last Modified: 18/10/2019
+
+
+
+ListUniqueValues
+
+This tool can be used to list each of the unique values contained within a categorical field
+of an input vector file's attribute table. The tool outputs an HTML formatted report (--output)
+containing a table of the unique values and their frequency of occurrence within the data. The user must
+specify the name of an input shapefile (--input) and the name of one of the fields (--field)
+contained in the associated attribute table. The specified fieldshould not contained floating-point
+numerical data, since the number of categories will likely equal the number of records, which may be
+quite large. The tool effectively provides tabular output that is similar to the graphical output
+provided by theAttributeHistogramtool, which, however, can be applied to continuous data.
+
+See Also:AttributeHistogram
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 12/04/2018
+
+Last Modified: 13/10/2018
+
+
+
+ListUniqueValuesRaster
+
+This tool can be used to list each of the unique values contained within a categorical raster (input). The tool
+outputs an HTML formatted report (--output)
+containing a table of the unique values and their frequency of occurrence within the data. The user must
+specify the name of an input raster (--input). The specified rastershould not contained categorical data.
+The tool provides tabular output.
+
+See Also:ListUniqueValues
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 12/04/2018
+
+Last Modified: 18/10/2023
+
+
+
+Ln
+
+This tool creates a new raster (--output) in which each grid cell is calculated as the base-elogarithm
+of the value of the corresponding grid cell in the input raster (--input), i.e. thenatural logarithm. Eurler's numbereis a constant approximately equal to 2.718282.
+Negative values in the input raster will be assigned theNoDatavalue in the output raster.NoDatavalues
+in the input image will be assigned theNoDatavalue in the output image.
+
+See Also:Log2,Log10,Exp
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Log10
+
+This tool creates a new raster (--output) in which each grid cell is calculated as the base-10logarithmof the value of the corresponding grid cell in the input
+raster (--input). Negative values in the input raster will be assigned theNoDatavalue in the output
+raster.NoDatavalues in the input image will be assigned theNoDatavalue in the output image.
+
+See Also:Ln,Log2
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Log2
+
+This tool creates a new raster (--output) in which each grid cell is calculated as the base-2logarithmof the value of the corresponding grid cell in the input
+raster (--input). Negative values in the input raster will be assigned theNoDatavalue in the output
+raster.NoDatavalues in the input image will be assigned theNoDatavalue in the output image.
+
+See Also:Ln,Log10,Exp2
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Max
+
+This tool performs aMaxoperation on either two input rasters or a raster and a constant value
+(--input1and--input2). The operation is performed on a cell-by-cell basis, where by the output
+raster (--output) will be assigned the maximum value of each of the input values.NoDatavalues
+in the input image will be assignedNoDatavalues in the output raster.
+
+See Also:Min
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Min
+
+This tool performs aMinoperation on either two input rasters or a raster and a constant value
+(--input1and--input2). The operation is performed on a cell-by-cell basis, where by the output
+raster (--output) will be assigned the minimum value of each of the input values.NoDatavalues
+in the input image will be assignedNoDatavalues in the output raster.
+
+See Also:Max
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Modulo
+
+This tool creates a new raster (--output) in which each grid cell is equal to the remainder of the division
+of the corresponding grid cells in two input rasters or one input raster and a constant value (--input1and--input2), i.e. it performs amodulo operationon two numbers.
+For example, the expression 14Mod4 equals 2. If either of the two input numbers is a floating-point value,
+the floating-point remainder of the division is returned. Because of the imprecision of floating-point storage,
+the Modulo tool can return an unexpected result when at least one of the operands is floating-point. If the
+second raster / constant is zero the corresponding grid cell in the output raster will be assigned theNoDatavalue.NoDatavalues in either of the input images will be assigned aNoDatavalue in the output image.
+Notice that theIntegerDivisiontool returns the integer quotient of a division. For example, the expression
+14intdiv4 evaluates to 3.
+
+See Also:IntegerDivision
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Multiply
+
+This tool creates a new raster in which each grid cell is equal to the multiplication (product) of the corresponding grid
+cells in two input rasters or one input raster and a constant value. If two images are input, both
+images must possess the same number of rows and columns and spatial extent, as the analysis will be
+carried out on a cell-by-cell basis. If a grid cell contains aNoDatavalue in either of the input
+images, the cell will be excluded from the analysis.
+
+See Also:Divide,Add,Subtract,InPlaceMulitply
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 24/01/2019
+
+
+
+Negate
+
+This tool creates a new raster in which each grid cell is equal to negative one times the corresponding
+grid cell in the input raster. This effectively changes the sign of values. This tool also handles Boolean
+data (0, 1) by reversing values (i.e. 0->1 and 1->0).
+
+See Also:AbsoluteValue
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Not
+
+This tool is a BooleanNOToperator, i.e. it works onTrueorFalse(1 and 0) values. Grid cells for which
+the first input raster (--input1) has aTruevalue and the second raster (--input2) has aFalsevalue are assigned
+0 in the output raster, otherwise grid cells are assigned a value of 0. All non-zero values in the input
+rasters are considered to beTrue, while all zero-valued grid cells are considered to beFalse. Grid
+cells containingNoDatavalues in either of the input rasters will be assigned aNoDatavalue in
+the output raster (--output). Notice that theNotoperator is asymmetrical, and the order of inputs matters.
+
+See Also:And,Or,Xor
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 02/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+NotEqualTo
+
+This tool assigns grid cells for which both (--input1and--input2) input rasters (or one raster and
+a constant value) have unequal values a new value of 1 (True) in the output raster (--output). All
+equivalent grid cells are assigned a value of zero (False). Grid cells containingNoDatavalues
+in either of the inputs will be assigned aNoDatavalue in the output raster.
+
+See Also:EqualTo,GreaterThan,LessThan
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Or
+
+This tool is a BooleanORoperator, i.e. it works onTrueorFalse(1 and 0) values. Grid cells for which
+the either the first or second input rasters (--input1;--input2) have aTruevalue are assigned
+1 in the output raster, otherwise grid cells are assigned a value of 0. All non-zero values in the input
+rasters are considered to beTrue, while all zero-valued grid cells are considered to beFalse. Grid
+cells containingNoDatavalues in either of the input rasters will be assigned aNoDatavalue in
+the output raster (--output).
+
+See Also:And,Not,Xor
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 02/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+PairedSampleTTest
+
+This tool will perform a paired-samplet-test to evaluate whether a significant
+statistical difference exists between the two rasters. The null hypothesis is that
+the difference between the paired population means is equal to zero. The paired-samplest-test
+makes an assumption that the differences between related samples follows a Gaussian distribution.
+The tool will output a cumulative probability distribution, with a fitted Gaussian, to help
+users evaluate whether this assumption is violated by the data. If this is the case, theWilcoxonSignedRankTestshould be used instead.
+
+The user must
+specify the name of the two input raster images (--input1and--input2) and the output report
+HTML file (--output). The test can be performed optionally on the entire image or on a random
+sub-sample of pixel values of a user-specified size (--num_samples). In evaluating the significance
+of the test, it is important to keep in mind that given a sufficiently large sample, extremely small and
+non-notable differences can be found to be statistically significant. Furthermore
+statistical significance says nothing about the practical significance of a difference.
+
+See Also:TwoSampleKsTest,WilcoxonSignedRankTest
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 24/10/2019
+
+Last Modified: 25/10/2019
+
+
+
+PhiCoefficient
+
+Note this tool is part of aWhiteboxTools extension product. Please visitWhitebox Geospatial Inc.for information about purchasing a license
+activation key (https://www.whiteboxgeo.com/extension-pricing/).
+
+This tool performs a binary classification accuracy assessment, using thePhi coefficient.
+The Phi coefficient is a measure of association for two binary variables. Introduced by Karl Pearson, this measure is
+similar to the Pearson correlation coefficient in its interpretation and is related to the chi-squared statistic
+for a 2×2 contingency table. The user must specify the names of two input images (--input1and--input2), containing
+categorical data.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code is unavailable due to proprietary license.
+
+Author: Whitebox Geospatial Inc. (c)
+
+Created: 21/04/2021
+
+Last Modified: 21/04/2021
+
+
+
+Power
+
+This tool creates a new raster (--output) in which each grid cell is calculated as
+a value (--input1) raised to the power of another value (--input2). Both inputs can either be
+rasters or constant values. Moderate to exponent large values will result in very large output values
+and this may cause errors when you display the data. Grid cells withNoDatavalues in either of the input
+rasters will be assignedNoDatavalues in the output raster.
+
+See Also:Exp,Exp2
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+PrincipalComponentAnalysis
+
+Principal component analysis (PCA) is a common data reduction technique that is used to reduce the dimensionality of
+multi-dimensional space. In the field of remote sensing, PCA is often used to reduce the number of bands of
+multi-spectral, or hyper-spectral, imagery. Image correlation analysis often reveals a substantial level of correlation
+among bands of multi-spectral imagery. This correlation represents data redundancy, i.e. fewer images than the number
+of bands are required to represent the same information, where the information is related to variation within the imagery.
+PCA transforms the original data set ofnbands inton'component' images, where each component image is uncorrelated
+with all other components. The technique works by transforming the axes of the multi-spectral space such that it coincides
+with the directions of greatest correlation. Each of these new axes are orthogonal to one another, i.e. they are at right
+angles. PCA is therefore a type of coordinate system transformation. The PCA component images are arranged such that the
+greatest amount of variance (or information) within the original data set, is contained within the first component and the
+amount of variance decreases with each component. It is often the case that the majority of the information contained in a
+multi-spectral data set can be represented by the first three or four PCA components. The higher-order components are often
+associated with noise in the original data set.
+
+The user must specify the names of the multiple input images (--inputs). Additionally, the user must specify whether to
+perform a standardized PCA (--standardized) and the number of output components (--num_comp) to generate (all components
+will be output unless otherwise specified). A standardized PCA is performed using the correlation matrix rather than the
+variance-covariance matrix. This is appropriate when the variances in the input images differ substantially, such as would be
+the case if they contained values that were recorded in different units (e.g. feet and meters) or on different scales (e.g.
+8-bit vs. 16 bit).
+
+Several outputs will be generated when the tool has completed. The PCA report will be embedded within an output (--output)
+HTML file, which should be automatically displayed after the tool has completed. This report contains useful data summarizing
+the results of the PCA, including the explained variances of each factor, the Eigenvalues and Eigenvectors associated with
+factors, the factor loadings, and a scree plot. The first table that is in the PCA report lists the amount of explained
+variance (in non-cumulative and cumulative form), the Eigenvalue, and the Eigenvector for each component. Each of the PCA
+components refer to the newly created, transformed images that are created by running the tool. The amount of explained
+variance associated with each component can be thought of as a measure of how much information content within the original
+multi-spectral data set that a component has. The higher this value is, the more important the component is. This same
+information is presented in graphical form in thescree plot, found at the bottom of the PCA report. The Eigenvalue is
+another measure of the information content of a component and the eigenvector describes the mathematical transformation
+(rotation coordinates) that correspond to a particular component image.
+
+Factor loadings are also output in a table within the PCA text report (second table). These loading values describe the
+correlation (i.e.rvalues) between each of the PCA components (columns) and the original images (rows). These values
+show you how the information contained in an image is spread among the components. An analysis of factor loadings can be
+reveal useful information about the data set. For example, it can help to identify groups of similar images.
+
+PCA is used to reduce the number of band images necessary for classification (i.e. as a data reduction technique), for
+noise reduction, and for change detection applications. When used as a change detection technique, the major PCA components
+tend to be associated with stable elements of the data set while variance due to land-cover change tend to manifest in the
+high-order, 'change components'. When used as a noise reduction technique, an inverse PCA is generally performed, leaving
+out one or more of the high-order PCA components, which account for noise variance.
+
+Note: the current implementation reads every raster into memory at one time. This is because of the calculation of the
+co-variances. As such, if the entire image stack cannot fit in memory, the tool will likely experience an out-of-memory error.
+This tool should be run using the--wdflag to specify the working directory into which the component images will be
+written.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 15/03/2018
+
+Last Modified: 18/10/2019
+
+
+
+Quantiles
+
+This tool transforms values in an input raster (--input) into quantiles. In statistics, quantiles are cut
+points dividing the range of a probability distribution into continuous intervals with equal probabilities, or
+dividing the observations in a sample in a same way. There is one fewer quantile than the number of groups
+created. Thus quartiles are the three cut points that will divide a dataset into four equal-sized groups. Common
+quantiles have special names: for instance quartile (4-quantile), quintiles (5-quantiles), decile (10-quantile),
+percentile (100-quantile).
+
+The user must specify the desired number of quantiles, q (--num_quantiles), in the output raster (--output).
+The output raster will contain q equal-sized groups with values 1 to q, indicating which quantile group each grid cell
+belongs to.
+
+See Also:HistogramEqualization
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+RandomField
+
+This tool can be used to a raster image filled with random values drawn from a standard normal distribution.
+The values range from approximately -4.0 to 4.0, with a mean of 0 and a standard deviation of 1.0. The
+dimensions and georeferencing of the output random field (--output) are based on an existing, user-specified
+raster grid (--base). Note that the output field will not possess any spatial autocorrelation. If spatially
+autocorrelated random fields are desired, theTurningBandsSimulationtool is more appropriate, or alternatively,
+theFastAlmostGaussianFiltertool may be used to force spatial autocorrelation onto the distribution of theRandomFieldtool.
+
+See Also:TurningBandsSimulation,FastAlmostGaussianFilter
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 11/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+RandomSample
+
+This tool can be used to create a random sample of grid cells. The user specifies
+the base raster file, which is used to determine the grid dimensions and georeference
+information for the output raster, and the number of sample random samples (n). The
+output grid will contain n non-zero grid cells, randomly distributed throughout the
+raster grid, and a background value of zero. This tool is useful when performing
+statistical analyses on raster images when you wish to obtain a random sample of data.
+
+Only valid, non-nodata, cells in the base raster will be sampled.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: January 2, 2018
+
+Last Modified: 13/10/2018
+
+
+
+RasterCalculator
+
+The RasterCalculator tool can be used to perform a complex mathematical operations on one or more input
+raster images on a cell-to-cell basis. The user specifies the name of the output raster (--output)
+and a mathematical expression, or statement (--statement). Rasters are treated like variables (that
+change value with each grid cell) and are specified within the statement with the file name contained
+within either double or single quotation marks (e.g. "DEM.tif" > 500.0). Raster variables may or may not include the file directory.
+If unspecified, a raster is assumed to exist within the working directory. Similarly, if the file extension
+is unspecified, it is assumed to be '.tif'. **Note, all input rasters must share the same number of rows
+and columns and spatial extent. Use theResampletool if this is not the case to convert the one raster's
+grid resolution to the others.
+
+The mathematical expression supports all of the standard algebraic unary and binary operators (+ - * / ^ %),
+as well as comparisons (< <= == != >= >) and logical operators (&& ||) with short-circuit support. The
+order of operations, from highest to lowest is as follows.
+
+Listed in order of precedence:
+
+|
+
+Several common mathematical functions are also available for use in the input statement. For example:
+
+Notice that the constants pi and e must be specified as functions,pi()ande(). A number of global variables
+are also available to build conditional statements. These include the following:
+
+Special Variable Names For Use In Conditional Statements:
+
+The special variable names are case-sensitive. If there are more than one raster inputs used in the statement,
+the functional forms of thenodata,null,minvalue, andmaxvaluevariables should be used, e.g.nodata("InputRaster"), otherwise the value is assumed to specify the attribute of the first raster in the
+statement. The following are examples of valid statements:
+
+Any grid cell in the input rasters containing the NoData value will be assigned NoData in the output raster,
+unless a NoData grid cell value allows the statement to evaluate to True (i.e. the mathematical expression
+includes thenodatavalue).
+
+See Also:ConditionalEvaluation
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 21/07/2021
+
+Last Modified: 21/07/2021
+
+
+
+RasterHistogram
+
+This tool produces a histogram (i.e. a frequency distribution graph) for the values contained within
+an input raster file (--input). The histogram will be embedded within an output (--output)
+HTML file, which should be automatically displayed after the tool has completed.
+
+See Also:AttributeHistogram
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 19/12/2017
+
+Last Modified: 24/01/2019
+
+
+
+RasterSummaryStats
+
+This tool outputs distribution summary statistics for input raster images (--input).
+The distribution statistics include the raster minimum, maximum, range, total, mean,
+variance, and standard deviation. These summary statistics are output to the systemstdout.
+
+The following is an example of the summary report:
+
+********************************** Welcome to RasterSummaryStats **********************************Reading data...
+
+Number of non-nodata grid cells: 32083559Number of nodata grid cells: 3916441Image minimum: 390.266357421875Image maximum: 426.0322570800781Image range: 35.765899658203125Image total: 13030334843.332886Image average: 406.13745012929786Image variance: 31.370027239143383Image standard deviation: 5.600895217654351
+
+See Also:RasterHistogram,ZonalStatistics
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Reciprocal
+
+This tool creates a new raster (--output) in which each grid cell is equal to one divided by the grid cell
+values in the input raster image (--input).NoDatavalues in the input image will be assignedNoDatavalues in the output image.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+RescaleValueRange
+
+Performs a min-max contrast stretch on an input greytone image.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: September 10, 2017
+
+Last Modified: 30/01/2020
+
+
+
+RootMeanSquareError
+
+This tool calculates the root-mean-square-error (RMSE) or root-mean-square-difference (RMSD) from two
+input rasters. If the two input rasters possess the same number of rows and columns, the RMSE is
+calucated on a cell-by-cell basis, otherwise bilinear resampling is used. In addition to RMSE,
+the tool also reports other common accuracy statistics including the mean verical error, the
+95% confidence limit (RMSE x 1.96), and the 90% linear error (LE90), which is the 90% percentile of
+the residuals between two raster surfaces. The LE90 is the most robust of the reported accuracy
+statistics when the residuals are non-Gaussian. The LE90 requires sorting the residual values, which
+can be a relatively slow operation for larger rasters.
+
+See Also:PairedSampleTTest,WilcoxonSignedRankTest
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: September 18, 2017
+
+Last Modified: 13/10/2018
+
+
+
+Round
+
+This tool rounds the values in an input raster (--input) to the nearest integer value. Half-way cases
+are rounded away from zero (e.g. round(0.5) = 1, round(-4.5) = -5). The output raster (--output) will be of an I32 data type.
+
+See Also:Ceil,Floor,Truncate
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 26/10/2019
+
+
+
+Sin
+
+This tool creates a new raster (--output) in which each grid cell is equal to the sine (sin) of the corresponding
+grid cell in an input raster (--input). The input raster image should contain angular data measured in radians.
+You may convert a raster containing degrees to radians using theToRadianstool. Grid cells withNoDatavalues
+in the input raster will be assignedNoDatavalues in the output raster.
+
+See Also:Cos,Tan,ArcSin,ToRadians
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Sinh
+
+This tool creates a new raster (--output) in which each grid cell is equal to thehyperbolic sine(sinh) of the corresponding
+grid cell in an input raster (--input). The input raster image should contain angular data measured in radians.
+You may convert a raster containing degrees to radians using theToRadianstool. Grid cells withNoDatavalues
+in the input raster will be assignedNoDatavalues in the output raster.
+
+See Also:Cosh,Tanh,ToRadians
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Square
+
+This tool creates a new raster (--output) in which each grid cell is equal to the square of the
+value of the corresponding grid cell in the input raster (--input), i.e. the input raster is raised to
+the power of two.NoDatavalues in the input image will be assignedNoDatavalues in the output image.
+
+See Also:SquareRoot
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+SquareRoot
+
+This tool creates a new raster (--output) in which each grid cell is equal to thesquare rootof the value of the corresponding grid cell in the
+input raster (--input).NoDatavalues in the input image will be assignedNoDatavalues in the
+output image.
+
+See Also:Square
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 26/10/2019
+
+
+
+Subtract
+
+This tool creates a new raster in which each grid cell is equal to the subtraction (difference) of the corresponding grid
+cells in two input rasters or one input raster and a constant value. If two images are input, both
+images must possess the same number of rows and columns and spatial extent, as the analysis will be
+carried out on a cell-by-cell basis. If a grid cell contains aNoDatavalue in either of the input
+images, the cell will be excluded from the analysis.
+
+See Also:Add,Divide,Multiply,InPlaceSubtract
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 24/01/2019
+
+
+
+Tan
+
+This tool creates a new raster (--output) in which each grid cell is equal to the tangent (tan) of the corresponding
+grid cell in an input raster (--input). The input raster image should contain angular data measured in radians.
+You may convert a raster containing degrees to radians using theToRadianstool. Grid cells withNoDatavalues
+in the input raster will be assignedNoDatavalues in the output raster.
+
+See Also:Cos,Sin,ArcTan,ToRadians
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 05/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+Tanh
+
+This tool creates a new raster (--output) in which each grid cell is equal to thehyperbolic tangent(tanh) of the corresponding
+grid cell in an input raster (--input). The input raster image should contain angular data measured in radians.
+You may convert a raster containing degrees to radians using theToRadianstool. Grid cells withNoDatavalues
+in the input raster will be assignedNoDatavalues in the output raster.
+
+See Also:Cosh,Sinh,ToRadians
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+ToDegrees
+
+This tool converts theradiansvalues contained within an
+input raster (--input) to degrees in the output raster (--output).
+One degree is approximately 0.017453293 (π / 180) radians. Conversion between degrees and radians
+is common when working with trigonometric functions.
+
+See Also:ToRadians
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+ToRadians
+
+This tool converts the degree values contained within an input raster (--input) toradiansin the output raster (--output).
+One radian is just under 57.3 (180 / π) degrees. Conversion between degrees and radians
+is common when working with trigonometric functions.
+
+See Also:ToDegrees
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+TrendSurface
+
+This tool can be used to interpolate a trend surface from a raster image. The
+technique uses a polynomial, least-squares regression analysis. The user must
+specify the name of the input raster file. In addition, the user must specify
+the polynomial order (1 to 10) for the analysis. A first-order polynomial is a
+planar surface with no curvature. As the polynomial order is increased, greater
+flexibility is allowed in the fitted surface. Although polynomial orders as high
+as 10 are accepted, numerical instability in the analysis often creates artifacts
+in trend surfaces of orders greater than 5. The operation will display a text
+report on completion, in addition to the output raster image. The report will
+list each of the coefficient values and the r-square value. Note that the entire
+raster image must be able to fit into computer memory, limiting the use of this
+tool to relatively small rasters. The Trend Surface (Vector Points) tool can be
+used instead if the input data is vector points contained in a shapefile.
+
+Numerical stability is enhanced by transforming the x, y, z data by their minimum
+values before performing the regression analysis. These transform parameters
+are also reported in the output report.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 30/04/2018
+
+Last Modified: 13/10/2018
+
+
+
+TrendSurfaceVectorPoints
+
+This tool can be used to interpolate a trend surface from a vector points file. The
+technique uses a polynomial, least-squares regression analysis. The user must specify
+the name of the input shapefile, which must be of a 'Points' base ShapeType and select
+the attribute in the shapefile's associated attribute table for which to base the trend
+surface analysis. The attribute must be numerical. In addition, the user must specify
+the polynomial order (1 to 10) for the analysis. A first-order polynomial is a planar
+surface with no curvature. As the polynomial order is increased, greater flexibility is
+allowed in the fitted surface. Although polynomial orders as high as 10 are accepted,
+numerical instability in the analysis often creates artifacts in trend surfaces of orders
+greater than 5. The operation will display a text report on completion, in addition to
+the output raster image. The report will list each of the coefficient values and the
+r-square value. The Trend Surface tool can be used instead if the input data is a raster
+image.
+
+Numerical stability is enhanced by transforming the x, y, z data by their minimum
+values before performing the regression analysis. These transform parameters
+are also reported in the output report.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/05/2018
+
+Last Modified: 13/10/2018
+
+
+
+Truncate
+
+This tool truncates the values in an input raster (--input); truncation limits the number of digits right of the decimal point. For
+example, trunc(3.2) = 3 and trunc(5.8) = 5 The output raster (--output) will be of an I32 data type.
+
+See Also:Round,Ceil,Floor
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 06/07/2017
+
+Last Modified: 30/01/2020
+
+
+
+TurningBandsSimulation
+
+This tool can be used to create a random field using the turning bands algorithm. The user must specify
+the name of a base raster image (--base) from which the output raster will derive its geographical
+information, dimensions (rows and columns), and other information. In addition, the range (--range), in
+x-y units, must be specified. The range determines the correlation length of the resulting field. For a
+good description of how the algorithm works, see Carr (2002). The turning bands method creates a number
+of 1-D simulations (called bands) and fuses these together to create a 2-D error field. There is no
+natural stopping condition in this process, so the user must specify the number of bands to create
+(--iterations). The default value of 1000 iterations is reasonable. The fewer iterations used, the
+more prevalent the 1-D simulations will be in the output error image, effectively creating artifacts.
+Run time increases with the number of iterations.
+
+Turning bands simulation is a commonly applied technique in Monte Carlo style simulations of uncertainty.
+As such, it is frequently run many times during a simulation (often 1000s of times). When this is the
+case, algorithm performance and efficiency are key considerations. One alternative method to efficiently
+generate spatially autocorrelated random fields is to apply theFastAlmostGaussianFiltertool to the
+output of theRandomFieldtool. This can be used to generate a random field with the desired spatial
+characteristics and frequency distribution. This is the alternative approach used by theStochasticDepressionAnalysistool.
+
+Reference:
+
+Carr, J. R. (2002). Data visualization in the geosciences. Upper Saddle River, NJ: Prentice Hall. pp. 267.
+
+See Also:RandomField,FastAlmostGaussianFilter,StochasticDepressionAnalysis
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 14/07/2017
+
+Last Modified: 30/01/2020
+
+
+
+TwoSampleKsTest
+
+This tool will perform a two-sample Kolmogorov-Smirnov (K-S) test to evaluate whether a significant
+statistical difference exists between the frequency distributions of two rasters. The null hypothesis
+is that both samples come from a population with the same distribution. Note that this test evaluates
+the two input rasters for differences in their overall distribution shape, with no assumption of normality.
+If there is need to compare the per-pixel differences between two input rasters, a paired-samples test
+such as thePairedSampleTTestor the non-parametricWilcoxonSignedRankTestshould be used instead.
+
+The user must
+specify the name of the two input raster images (--input1and--input2) and the output report
+HTML file (--output). The test can be performed optionally on the entire image or on a random
+sub-sample of pixel values of a user-specified size (--num_samples). In evaluating the significance
+of the test, it is important to keep in mind that given a sufficiently large sample, extremely small and
+non-notable differences can be found to be statistically significant. Furthermore
+statistical significance says nothing about the practical significance of a difference.
+
+See Also:KSTestForNormality,PairedSampleTTest,WilcoxonSignedRankTest
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 21/10/2019
+
+Last Modified: 24/10/2019
+
+
+
+WilcoxonSignedRankTest
+
+This tool will perform a Wilcoxon signed-rank test to evaluate whether a significant
+statistical difference exists between the two rasters. The Wilcoxon signed-rank test is often used as a
+non-parametric equivalent to the paired-samples Student's t-test, and is used when the distribution of
+sample difference values between the paired inputs is non-Gaussian. The null hypothesis of this test is that
+difference between the sample pairs follow a symmetric distribution around zero. i.e. that the median difference
+between pairs of observations is zero.
+
+The user must specify the name of the two input raster images (--input1and--input2) and the output report
+HTML file (--output). The test can be performed optionally on the entire image or on a random
+sub-sample of pixel values of a user-specified size (--num_samples). In evaluating the significance
+of the test, it is important to keep in mind that given a sufficiently large sample, extremely small and
+non-notable differences can be found to be statistically significant. Furthermore
+statistical significance says nothing about the practical significance of a difference. Note that cells
+with a difference of zero are excluded from the ranking and tied difference values are assigned their average
+rank values.
+
+See Also:PairedSampleTTest,TwoSampleKsTest
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 25/10/2019
+
+Last Modified: 25/10/2019
+
+
+
+Xor
+
+This tool is a BooleanXORoperator, i.e. it works onTrueorFalse(1 and 0) values. Grid cells for which
+either the first or second input rasters (--input1;--input2) have aTruevalue but not both are assigned
+1 in the output raster, otherwise grid cells are assigned a value of 0. All non-zero values in the input
+rasters are considered to beTrue, while all zero-valued grid cells are considered to beFalse. Grid
+cells containingNoDatavalues in either of the input rasters will be assigned aNoDatavalue in
+the output raster (--output). Notice that theNotoperator is asymmetrical, and the order of inputs matters.
+
+See Also:Or,And,Not
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 02/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+ZScores
+
+This tool will transform the values in an input raster image (--input) intoz-scores. Z-scores are also called standard scores,
+normal scores, or z-values. A z-score is a dimensionless quantity that is calculated by subtracting
+the mean from an individual raw value and then dividing the difference by the standard deviation.
+This conversion process is calledstandardizingornormalizingand the result is sometimes referred
+to as a standardized variable. The mean and standard deviation are estimated using all values in the
+input image except for NoData values. The input image should not have a Boolean or categorical data
+scale, i.e. it should be on a continuous scale.
+
+See Also:CumulativeDistribution
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+ZonalStatistics
+
+This tool can be used to extract common descriptive statistics associated with the distribution
+of some underlying data raster based on feature units defined by a feature definition raster.
+For example, this tool can be used to measure the maximum or average slope gradient (data image)
+for each of a group of watersheds (feature definitions). Although the data raster can contain any
+type of data, the feature definition raster must be categorical, i.e. it must define area entities
+using integer values.
+
+The--statparameter can take the values, 'mean', 'median', 'minimum', 'maximum', 'range',
+'standard deviation', or 'total'.
+
+If an output image name is specified, the tool will assign the descriptive statistic value to
+each of the spatial entities defined in the feature definition raster. If text output is selected,
+an HTML table will be output, which can then be readily copied into a spreadsheet program for
+further analysis. This is a very powerful and useful tool for creating numerical summary data from
+spatial data which can then be interrogated using statistical analyses. At least one output type
+(image or text) must be specified for the tool to operate.
+
+NoData values in either of the two input images are ignored during the calculation of the
+descriptive statistic.
+
+See Also:RasterSummaryStats
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: Dec. 15, 2017
+
+Last Modified: 17/07/2019
+
+
+--- CODE BLOCK ---
+wbt.absolute_value(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=AbsoluteValue -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.add(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Add -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.And(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=And -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.anova(
+    i, 
+    features, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Anova -v --wd="/path/to/data/" ^
+-i=data.tif --features=classes.tif -o=anova.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.arc_cos(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ArcCos -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.arc_sin(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ArcSin -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.arc_tan(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ArcTan -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.arcosh(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Arcosh -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.arsinh(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Arsinh -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.artanh(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Artanh -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.atan2(
+    input_y, 
+    input_x, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Atan2 -v --wd="/path/to/data/" ^
+--input_y='in1.tif' --input_x='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.attribute_correlation(
+    i, 
+    output=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=AttributeCorrelation -v ^
+--wd="/path/to/data/" -i=file.shp -o=outfile.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.attribute_correlation_neighbourhood_analysis(
+    i, 
+    field1, 
+    field2, 
+    radius=None, 
+    min_points=None, 
+    stat="pearson", 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=AttributeCorrelationNeighbourhoodAnalysis ^
+-v --wd="/path/to/data/" -i=input.shp --field1=DEPEND ^
+--field2=INDEPEND --radius=4.0 --min_points=3 ^
+--stat="spearman" 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.attribute_histogram(
+    i, 
+    field, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=AttributeHistogram -v ^
+--wd="/path/to/data/" -i=lakes.shp --field=HEIGHT ^
+-o=outfile.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.attribute_scattergram(
+    i, 
+    fieldx, 
+    fieldy, 
+    output, 
+    trendline=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=AttributeScattergram -v ^
+--wd="/path/to/data/" -i=lakes.shp --fieldx=HEIGHT ^
+--fieldy=area -o=outfile.html --trendline 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.ceil(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Ceil -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+* log(base=10, val) -- Logarithm with optional 'base' as first argument.
+If not provided, 'base' defaults to '10'.
+Example: log(100) + log(e(), 100)
+
+* e()  -- Euler's number (2.718281828459045)
+* pi() -- π (3.141592653589793)
+
+* int(val)
+* ceil(val)
+* floor(val)
+* round(modulus=1, val) -- Round with optional 'modulus' as first argument.
+Example: round(1.23456) == 1 && round(0.001, 1.23456) == 1.235
+
+* abs(val)
+* sign(val)
+
+* min(val, ...) -- Example: min(1, -2, 3, -4) == -4
+* max(val, ...) -- Example: max(1, -2, 3, -4) == 3
+
+* sin(radians)    * asin(val)
+* cos(radians)    * acos(val)
+* tan(radians)    * atan(val)
+* sinh(val)       * asinh(val)
+* cosh(val)       * acosh(val)
+* tanh(val)       * atanh(val)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+value != 300.0
+
+row > (rows / 2)
+
+value >= (minvalue + 35.0)
+
+(value >= 25.0) && (value <= 75.0)
+
+tan(value * pi() / 180.0) > 1.0
+
+value == nodata
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.conditional_evaluation(
+    i, 
+    output, 
+    statement="", 
+    true=None, 
+    false=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+-./whitebox_tools -r=ConditionalEvaluation -i=DEM.tif ^
+--statement='value > 2500.0' --true=2500.0 --false=DEM.tif ^
+--output=onlyLowPlaces.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.conditioned_latin_hypercube(
+    inputs, 
+    output, 
+    samples=500, 
+    iterations=25000, 
+    seed=None, 
+    prob=0.5, 
+    threshold=None, 
+    temp=1.0, 
+    temp_decay=0.05, 
+    cycle=10, 
+    average=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+-./whitebox_tools run -i=Raster1.tif;Raster2.tif ^
+--output=sites.shp --samples=500 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.cos(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Cos -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.cosh(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Cosh -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.crispness_index(
+    i, 
+    output=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CrispnessIndex -v --wd="/path/to/data/" ^
+-i=input.tif
+>>./whitebox_tools -r=CrispnessIndex -v ^
+--wd="/path/to/data/" -o=crispness.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.cross_tabulation(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CrossTabulation -v ^
+--wd="/path/to/data/" --i1="file1.tif" --i2="file2.tif" ^
+-o=outfile.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.cumulative_distribution(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CumulativeDistribution -v ^
+--wd="/path/to/data/" -i=DEM.tif -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.decrement(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Decrement -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.divide(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Divide -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.equal_to(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=EqualTo -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.exp(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Exp -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.exp2(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Exp2 -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.floor(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Floor -v --wd="/path/to/data/" ^
+-i='input.tif' -o='output.tif' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.greater_than(
+    input1, 
+    input2, 
+    output, 
+    incl_equals=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=GreaterThan -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif ^
+--incl_equals 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.image_autocorrelation(
+    inputs, 
+    output, 
+    contiguity="Rook", 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ImageAutocorrelation -v ^
+--wd="/path/to/data/" -i="file1.tif, file2.tif, file3.tif" ^
+-o=outfile.html --contiguity=Bishops 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.image_correlation(
+    inputs, 
+    output=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ImageCorrelation -v ^
+--wd="/path/to/data/" -i="file1.tif, file2.tif, file3.tif" ^
+-o=outfile.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.image_correlation_neighbourhood_analysis(
+    input1, 
+    input2, 
+    output1, 
+    output2, 
+    filter=11, 
+    stat="pearson", 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ImageCorrelationNeighbourhoodAnalysis -v ^
+--wd="/path/to/data/" --i1=file1.tif --i2=file2.tif ^
+--o1=corr.tif --o2=sig.tif --stat="spearman" 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.image_regression(
+    input1, 
+    input2, 
+    output, 
+    out_residuals=None, 
+    standardize=False, 
+    scattergram=False, 
+    num_samples=1000, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ImageRegression -v ^
+--wd="/path/to/data/" --i1='file1.tif' --i2='file2.tif' ^
+-o='outfile.html' --out_residuals='residuals.tif' ^
+--standardize 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.in_place_add(
+    input1, 
+    input2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=InPlaceAdd -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif'"
+>>./whitebox_tools ^
+-r=InPlaceAdd -v --wd="/path/to/data/" --input1='in1.tif' ^
+--input2=10.5' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.in_place_divide(
+    input1, 
+    input2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=InPlaceDivide -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif'"
+>>./whitebox_tools ^
+-r=InPlaceDivide -v --wd="/path/to/data/" --input1='in1.tif' ^
+--input2=10.5' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.in_place_multiply(
+    input1, 
+    input2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=InPlaceMultiply -v ^
+--wd="/path/to/data/" --input1='in1.tif' ^
+--input2='in2.tif'"
+>>./whitebox_tools -r=InPlaceMultiply -v ^
+--wd="/path/to/data/" --input1='in1.tif' --input2=10.5' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.in_place_subtract(
+    input1, 
+    input2, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=InPlaceSubtract -v ^
+--wd="/path/to/data/" --input1='in1.tif' ^
+--input2='in2.tif'"
+>>./whitebox_tools -r=InPlaceSubtract -v ^
+--wd="/path/to/data/" --input1='in1.tif' --input2=10.5' 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.increment(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Increment -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.integer_division(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=IntegerDivision -v ^
+--wd="/path/to/data/" --input1='in1.tif' --input2='in2.tif' ^
+-o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.inverse_principal_component_analysis(
+    inputs, 
+    report, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=InversePrincipalComponentAnalysis ^
+--inputs="PCA_comp1.tif; PCA_comp2.tif; PCA_comp3.tif" ^
+--report=PCA_report.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.is_no_data(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=IsNoData -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.kappa_index(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=KappaIndex -v --wd="/path/to/data/" ^
+--i1=class.tif --i2=reference.tif -o=kia.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.ks_test_for_normality(
+    i, 
+    output, 
+    num_samples=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=KsTestForNormality -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.html ^
+--num_samples=1000
+>>./whitebox_tools -r=KsTestForNormality -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.less_than(
+    input1, 
+    input2, 
+    output, 
+    incl_equals=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LessThan -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif ^
+--incl_equals 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.list_unique_values(
+    i, 
+    field, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ListUniqueValues -v ^
+--wd="/path/to/data/" -i=lakes.shp --field=HEIGHT ^
+-o=outfile.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.list_unique_values_raster(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ListUniqueValuesRaster -v ^
+--wd="/path/to/data/" -i=lakes.shp --field=HEIGHT ^
+-o=outfile.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.ln(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Ln -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.log10(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Log10 -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.log2(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Log2 -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.max(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Max -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.min(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Min -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.modulo(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Modulo -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.multiply(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Multiply -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.negate(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Negate -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.Not(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Not -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.not_equal_to(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=NotEqualTo -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.Or(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Or -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.paired_sample_t_test(
+    input1, 
+    input2, 
+    output, 
+    num_samples=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PairedSampleTTest -v ^
+--wd="/path/to/data/" --input1=input1.tif -input2=input2.tif ^
+-o=output.html --num_samples=1000 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.phi_coefficient(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>> ./whitebox_tools -r=PhiCoefficient --input1=image1.tif ^
+--input2=image2.tif' -o=PhiReport.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.power(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Power -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.principal_component_analysis(
+    inputs, 
+    output, 
+    num_comp=None, 
+    standardized=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PrincipalComponentAnalysis -v ^
+--wd='/path/to/data/' -i='image1.tif;image2.tif;image3.tif' ^
+--output=report.html --num_comp=3 --standardized 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.quantiles(
+    i, 
+    output, 
+    num_quantiles=5, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Quantiles -v --wd="/path/to/data/" ^
+-i=DEM.tif -o=output.tif --num_quantiles=5 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.random_field(
+    base, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RandomField -v --wd="/path/to/data/" ^
+--base=in.tif -o=out.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.random_sample(
+    base, 
+    output, 
+    num_samples=1000, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RandomSample -v --wd="/path/to/data/" ^
+--base=in.tif -o=out.tif --num_samples=1000 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+* log(base=10, val) -- Logarithm with optional 'base' as first argument.
+If not provided, 'base' defaults to '10'.
+Example: log(100) + log(e(), 100)
+
+* e()  -- Euler's number (2.718281828459045)
+* pi() -- π (3.141592653589793)
+
+* int(val)
+* ceil(val)
+* floor(val)
+* round(modulus=1, val) -- Round with optional 'modulus' as first argument.
+Example: round(1.23456) == 1 && round(0.001, 1.23456) == 1.235
+
+* abs(val)
+* sign(val)
+
+* min(val, ...) -- Example: min(1, -2, 3, -4) == -4
+* max(val, ...) -- Example: max(1, -2, 3, -4) == 3
+
+* sin(radians)    * asin(val)
+* cos(radians)    * acos(val)
+* tan(radians)    * atan(val)
+* sinh(val)       * asinh(val)
+* cosh(val)       * acosh(val)
+* tanh(val)       * atanh(val)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+"raster" != 300.0
+
+"raster" >= (minvalue + 35.0)
+
+("raster1" >= 25.0) && ("raster2" <= 75.0) -- Evaluates to 1 where both conditions are true.
+
+tan("raster" * pi() / 180.0) > 1.0
+
+"raster" == nodata
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.raster_calculator(
+    output, 
+    statement="", 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+-./whitebox_tools -r=ConditionalEvaluation -i=DEM.tif ^
+--statement='value > 2500.0' --true=2500.0 --false=DEM.tif ^
+--output=onlyLowPlaces.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.raster_histogram(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RasterHistogram -v ^
+--wd="/path/to/data/" -i="file1.tif" -o=outfile.html 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.raster_summary_stats(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RasterSummaryStats -v ^
+--wd="/path/to/data/" -i=DEM.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.reciprocal(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Reciprocal -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.rescale_value_range(
+    i, 
+    output, 
+    out_min_val, 
+    out_max_val, 
+    clip_min=None, 
+    clip_max=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RescaleValueRange -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif ^
+--out_min_val=0.0 --out_max_val=1.0
+>>./whitebox_tools ^
+-r=RescaleValueRange -v --wd="/path/to/data/" -i=input.tif ^
+-o=output.tif --out_min_val=0.0 --out_max_val=1.0 ^
+--clip_min=45.0 --clip_max=200.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.root_mean_square_error(
+    i, 
+    base, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RootMeanSquareError -v ^
+--wd="/path/to/data/" -i=DEM.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.round(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Round -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.sin(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Sin -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.sinh(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Sinh -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.square(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Square -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.square_root(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=SquareRoot -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.subtract(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Subtract -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.tan(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Tan -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.tanh(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Tanh -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.to_degrees(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ToDegrees -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.to_radians(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ToRadians -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.trend_surface(
+    i, 
+    output, 
+    order=1, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=TrendSurface -v --wd="/path/to/data/" ^
+-i='input.tif' -o='output.tif' --order=2 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.trend_surface_vector_points(
+    i, 
+    field, 
+    output, 
+    cell_size, 
+    order=1, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=TrendSurfaceVectorPoints -v ^
+--wd="/path/to/data/" -i='input.shp' --field=ELEV ^
+-o='output.tif' --order=2 --cell_size=10.0 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.truncate(
+    i, 
+    output, 
+    num_decimals=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Truncate -v --wd="/path/to/data/" ^
+-i='input.tif' -o=output.tif --num_decimals=2 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.turning_bands_simulation(
+    base, 
+    output, 
+    range, 
+    iterations=1000, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=TurningBandsSimulation -v ^
+--wd="/path/to/data/" --base=in.tif -o=out.tif --range=850.0 ^
+--iterations=2500 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.two_sample_ks_test(
+    input1, 
+    input2, 
+    output, 
+    num_samples=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=TwoSampleKsTest -v ^
+--wd="/path/to/data/" --input1=input1.tif -input2=input2.tif ^
+-o=output.html --num_samples=1000 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.wilcoxon_signed_rank_test(
+    input1, 
+    input2, 
+    output, 
+    num_samples=None, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=WilcoxonSignedRankTest -v ^
+--wd="/path/to/data/" --input1=input1.tif -input2=input2.tif ^
+-o=output.html --num_samples=1000 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.xor(
+    input1, 
+    input2, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=Xor -v --wd="/path/to/data/" ^
+--input1='in1.tif' --input2='in2.tif' -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.z_scores(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ZScores -v --wd="/path/to/data/" ^
+-i=DEM.tif -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.zonal_statistics(
+    i, 
+    features, 
+    output=None, 
+    stat="mean", 
+    out_table=None, 
+    zero_is_background=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ZonalStatistics -v ^
+--wd="/path/to/data/" -i='input.tif' --features='groups.tif' ^
+-o='output.tif' --stat='minimum'
+>>./whitebox_tools ^
+-r=ZonalStatistics -v --wd="/path/to/data/" -i='input.tif' ^
+--features='groups.tif' --out_table='output.html' 
+
+------------------

@@ -1,0 +1,409 @@
+Switching from GDAL’s Python bindings
+
+This document is written specifically for users of GDAL’s Python bindings
+(osgeo.gdal) who have read about Rasterio’sphilosophyand
+want to know what switching entails.  The good news is that switching may not
+be complicated. This document explains the key similarities and differences
+between these two Python packages and highlights the features of Rasterio that
+can help in switching.
+
+Mutual Incompatibilities
+
+Rasterio and GDAL’s bindings can contend for global GDAL objects. Unless you
+have deep knowledge about both packages, choose exactly one ofimportosgeo.gdalorimportrasterio.
+
+GDAL’s bindings (gdalfor the rest of this document) and Rasterio are not
+entirely compatible and should not, without a great deal of care, be imported
+and used in a single Python program. The reason is that the dynamic library
+they each load (these are C extension modules, remember),libgdal.soon
+Linux,gdal.dllon Windows, has a number of global objects and the two
+modules take different approaches to managing these objects.
+
+Static linking of the GDAL library forgdalandrasteriocan avoid
+this contention, but in practice you will almost never see distributions of
+these modules that statically link the GDAL library.
+
+Beyond the issues above, the modules have different styles –gdalreads and
+writes like C whilerasteriois more Pythonic – and don’t complement each
+other well.
+
+The GDAL Environment
+
+GDAL library functions are executed in a context of format drivers, error
+handlers, and format-specific configuration options that this document will
+call the “GDAL Environment.” Rasterio has an abstraction for the GDAL
+environment,gdaldoes not.
+
+Withgdal, this context is initialized upon import of the module. This
+makes sense becausegdalobjects are thin wrappers around functions and
+classes in the GDAL dynamic library that generally require registration of
+drivers and error handlers.  Thegdalmodule doesn’t have an abstraction
+for the environment, but it can be modified using functions likegdal.SetErrorHandler()andgdal.UseExceptions().
+
+Rasterio has modules that don’t require complete initialization and
+configuration of GDAL (rasterio.dtypes,rasterio.profiles, andrasterio.windows, for example) and in the interest of reducing overhead
+doesn’t register format drivers and error handlers until they are needed. The
+functions that do need fully initialized GDAL environments will ensure that
+they exist.rasterio.open()is the foremost of this category of functions.
+Consider the example code below.
+
+Importingrasteriodoes not initialize the GDAL environment. Callingrasterio.open()does. This is different fromgdalwhereimportosgeo.gdal, notosgeo.gdal.Open(), initializes the GDAL environment.
+
+Rasterio has an abstraction for the GDAL environment,rasterio.Env, that
+can be invoked explicitly for more control over the configuration of GDAL as
+shown below.
+
+As mentioned previously,gdalhas no such abstraction for the GDAL
+environment. The nearest approximation would be something like the code
+below.
+
+Rasterio achieves this with a single Python statement.
+
+Please note that to the Env class,GDAL_CACHEMAXis strictly an integer number of bytes. GDAL’s shorthand notation is not supported.
+
+Format Drivers
+
+gdalprovides objects for each of the GDAL format drivers. With Rasterio,
+format drivers are represented by strings and are used only as arguments to
+functions likerasterio.open().
+
+Rasterio uses the same format driver names as GDAL does.
+
+Dataset Identifiers
+
+Rasterio uses URIs to identify datasets, with schemes for different protocols.
+The GDAL bindings have their own special syntax.
+
+Unix-style filenames such as/var/data/example.tifidentify dataset files
+for both Rasterio andgdal. Rasterio also accepts ‘file’ scheme URIs
+likefile:///var/data/example.tif.
+
+Rasterio identifies datasets within ZIP or tar archives using Apache VFS style
+identifiers likezip:///var/data/example.zip!example.tifortar:///var/data/example.tar!example.tif.
+
+Datasets served via HTTPS are identified using ‘https’ URIs likehttps://landsat-pds.s3.amazonaws.com/L8/139/045/LC81390452014295LGN00/LC81390452014295LGN00_B1.TIF.
+
+Datasets on AWS S3 are identified using ‘s3’ scheme identifiers likes3://landsat-pds/L8/139/045/LC81390452014295LGN00/LC81390452014295LGN00_B1.TIF.
+
+Withgdal, the equivalent identifiers are respectively/vsizip//var/data/example.zip/example.tif,/vsitar//var/data/example.tar/example.tif,/vsicurl/landsat-pds.s3.amazonaws.com/L8/139/045/LC81390452014295LGN00/LC81390452014295LGN00_B1.TIF,
+and/vsis3/landsat-pds/L8/139/045/LC81390452014295LGN00/LC81390452014295LGN00_B1.TIF.
+
+To help developers switch, Rasterio will accept these identifiers and other
+format-specific connection strings, too, and dispatch them to the proper format
+drivers and protocols.
+
+Dataset Objects
+
+Rasterio andgdaleach have dataset objects. Not the same classes, of
+course, but not radically different ones. In each case, you generally get
+dataset objects through an “opener” function:rasterio.open()orgdal.Open().
+
+So that Python developers can spend less time reading docs, the dataset object
+returned byrasterio.open()is modeled on Python’s file object. It even has
+theclose()method thatgdallacks so that you can actively close
+dataset connections.
+
+Bands
+
+gdalandRasterioboth have band objects.
+But unlike gdal’s band, Rasterio’s band is just a tuple of the dataset,
+band index and some other band properties.
+Thus Rasterio never has objects with dangling dataset pointers.
+With Rasterio, bands are represented by a numerical
+index, starting from 1 (as GDAL does), and are used as arguments to dataset
+methods. To read the first band of a dataset as anumpy.ndarray, do this.
+
+A band object can be used to represent a single band (or a sequence of bands):
+
+Other attributes of GDAL band objects generally surface in Rasterio as tuples
+returned by dataset attributes, with one value per band, in order.
+
+Developers that want read-only band objects for their applications can create
+them by zipping these tuples together.
+
+Namedtuples are like lightweight classes.
+
+Geotransforms
+
+TheDatasetReader.transformattribute is comparable to theGeoTransformattribute of a GDAL dataset, but Rasterio’s has more power.
+It’s not just an array of affine transformation matrix elements, it’s an
+instance of anAffineclass and has many handy methods. For example, the
+spatial coordinates of the upper left corner of any raster element is the
+product of theDatasetReader.transformmatrix and the(column,row)index
+of the element.
+
+The affine transformation matrix can be inverted as well.
+
+To help developers switch,Affineinstances can be created from or
+converted to the sequences used bygdal.
+
+Coordinate Reference Systems
+
+TheDatasetReader.crsattribute is an instance of Rasterio’sCRS()class and works well withpyproj.
+
+Tags
+
+GDAL metadata items are called “tags” in Rasterio. The tag set for a given GDAL
+metadata namespace is represented as a dict.
+
+The semantics of the tags in GDAL’s default andIMAGE_STRUCTUREnamespaces
+are described inhttps://gdal.org/user/raster_data_model.html. Rasterio uses
+several namespaces of its own:rio_creation_kwdsandrio_overviews,
+each with their own semantics.
+
+Offsets and Windows
+
+Rasterio adds an abstraction for subsets or windows of a raster array that
+GDAL does not have. A window is a pair of tuples, the first of the pair being
+the raster row indexes at which the window starts and stops, the second being
+the column indexes at which the window starts and stops. Row before column,
+as withndarrayslices. Instances ofWindoware created by passing the
+four subset parameters used withgdalto the class constructor.
+
+Valid Data Masks
+
+Rasterio provides an array for every dataset representing its valid data mask
+using the same indicators as GDAL:0for invalid data and255for valid
+data.
+
+Arrays for dataset bands can also be had as anumpy.ma.MaskedArray.
+
+Where the masked array’smaskisTrue, the data is invalid and has been
+masked “out” in the opposite sense of GDAL’s mask.
+
+Errors and Exceptions
+
+Rasterio always raises Python exceptions when an error occurs and never returns
+an error code orNoneto indicate an error.gdaltakes the opposite
+approach, although developers can turn on exceptions by callinggdal.UseExceptions().
+
+
+--- CODE BLOCK ---
+import rasterio
+# The GDAL environment has no registered format drivers or error
+# handlers at this point.
+
+with rasterio.open('example.tif') as src:
+    # Format drivers and error handlers are registered just before
+    # open() executes.
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import rasterio
+# The GDAL environment has no registered format drivers or error
+# handlers at this point.
+
+with rasterio.Env(CPL_DEBUG=True, GDAL_CACHEMAX=128000000):
+    # This ensures that all drivers are registered in the global
+    # context. Within this block *only* GDAL's debugging messages
+    # are turned on and the raster block cache size is set to 128 MB.
+
+    with rasterio.open('example.tif') as src:
+        # Perform GDAL operations in this context.
+        # ...
+        # Done.
+
+# At this point, configuration options are set back to their
+# previous (possibly unset) values. The raster block cache size
+# is returned to its default (5% of available RAM) and debugging
+# messages are disabled.
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from osgeo import gdal
+
+# Define a new configuration, save the previous configuration,
+# and then apply the new one.
+new_config = {
+    'CPL_DEBUG': 'ON', 'GDAL_CACHEMAX': '512'}
+prev_config = {
+    key: gdal.GetConfigOption(key) for key in new_config.keys()}
+for key, val in new_config.items():
+    gdal.SetConfigOption(key, val)
+
+# Perform GDAL operations in this context.
+# ...
+# Done.
+
+# Restore previous configuration.
+for key, val in prev_config.items():
+    gdal.SetConfigOption(key, val)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+with rasterio.Env(CPL_DEBUG=True, GDAL_CACHEMAX=512000000):
+    # ...
+
+------------------
+
+
+
+--- CODE BLOCK ---
+dst = rasterio.open('new.tif', 'w', format='GTiff', **kwargs)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+with rasterio.open('example.tif') as src:
+    band1 = src.read(1)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+with rasterio.open('example.tif') as src:
+    bnd = rasterio.band(src, 1)
+    print(bnd.dtype)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> src = rasterio.open('example.tif')
+>>> src.indexes
+(1, 2, 3)
+>>> src.dtypes
+('uint8', 'uint8', 'uint8')
+>>> src.descriptions
+('Red band', 'Green band', 'Blue band')
+>>> src.units
+('DN', 'DN', 'DN')
+
+------------------
+
+
+
+--- CODE BLOCK ---
+from collections import namedtuple
+
+Band = namedtuple('Band', ['idx', 'dtype', 'description', 'units'])
+
+src = rasterio.open('example.tif')
+bands = [Band(vals) for vals in zip(
+    src.indexes, src.dtypes, src.descriptions, src.units)]
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> for band in bands:
+...     print(band.idx)
+...
+1
+2
+3
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> src = rasterio.open('example.tif')
+>>> src.transform * (0, 0)
+(101985.0, 2826915.0)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> ~src.transform * (101985.0, 2826915.0)
+(0.0, 0.0)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from rasterio.transform import Affine
+>>> Affine.from_gdal(101985.0, 300.0379266750948, 0.0,
+...                  2826915.0, 0.0, -300.041782729805).to_gdal()
+...
+(101985.0, 300.0379266750948, 0.0, 2826915.0, 0.0, -300.041782729805)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> from pyproj import Transformer
+>>> src = rasterio.open('example.tif')
+>>> transformer = Transformer.from_crs(src.crs, "EPSG:3857", always_xy=True)
+>>> transformer.transfform(101985.0, 2826915.0)
+(-8789636.707871985, 2938035.238323653)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> src.tags()
+{'AREA_OR_POINT': 'Area'}
+>>> src.tags(ns='IMAGE_STRUCTURE')
+{'INTERLEAVE': 'PIXEL'}
+
+------------------
+
+
+
+--- CODE BLOCK ---
+src = rasterio.open('example.tif')
+
+xoff, yoff = 0, 0
+xsize, ysize = 10, 10
+subset = src.read(1, window=Window(xoff, yoff, xsize, ysize))
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> src = rasterio.open('example.tif')
+>>> src.dataset_mask()
+array([[0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0],
+       ...,
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0]], dtype-uint8)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>> src.read(1, masked=True)
+masked_array(data =
+ [[-- -- -- ..., -- -- --]
+  [-- -- -- ..., -- -- --]
+  [-- -- -- ..., -- -- --]
+  ...,
+  [-- -- -- ..., -- -- --]
+  [-- -- -- ..., -- -- --]
+  [-- -- -- ..., -- -- --]],
+             mask =
+ [[ True  True  True ...,  True  True  True]
+  [ True  True  True ...,  True  True  True]
+  [ True  True  True ...,  True  True  True]
+  ...,
+  [ True  True  True ...,  True  True  True]
+  [ True  True  True ...,  True  True  True]
+  [ True  True  True ...,  True  True  True]],
+        fill_value = 0)
+
+------------------

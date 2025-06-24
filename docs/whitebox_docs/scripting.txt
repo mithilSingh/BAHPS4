@@ -1,0 +1,7 @@
+Interfacing With Python
+
+Important note: all of the following material assumes the user system is configured with Python 3. The code snippets below are not guaranteed to work with older versions of the language.
+
+By combining theWhiteboxToolslibrary with a high-level scripting language, such as Python, users are capable of creating powerful stand-alone geospatial applications and workflow automation scripts. In fact,WhiteboxToolsfunctionality can be called from many different programming languages. However, given the prevalent use of the Python language in the geospatial fields, the library is distributed with several resources specifically aimed at Python scripting. This section focuses on how Python programming can be used to interact with theWhiteboxToolslibrary.
+
+If you use the Python package manager PIP, you may installWhiteboxToolsat the command prompt withpip install whitebox. ThePIP packageis maintained by Prof. Qiusheng Wu. There is also anAnaconda package, which can be installed withconda install -c conda-forge whitebox_tools, although it is unclear if this package is regularly updated to reflect the latest versions ofWhiteboxTools.

@@ -1,0 +1,240 @@
+Merging data#
+
+There are two ways to combine datasets in GeoPandas – attribute joins and spatial joins.
+
+In an attribute join, aGeoSeriesorGeoDataFrameis
+combined with a regularpandas.Seriesorpandas.DataFramebased on a
+common variable. This is analogous to normal merging or joining inpandas.
+
+In a spatial join, observations from twoGeoSeriesorGeoDataFrameare combined based on their spatial relationship to one another.
+
+In the following examples, these datasets are used:
+
+Appending#
+
+AppendingGeoDataFrameandGeoSeriesuses pandasconcat()function.
+Keep in mind, that appended geometry columns needs to have the same CRS.
+
+Attribute joins#
+
+Attribute joins are accomplished using themerge()method. In general, it is recommended
+to use themerge()method called from the spatial dataset. With that said, the stand-alonepandas.merge()function will work if theGeoDataFrameis in theleftargument;
+if aDataFrameis in theleftargument and aGeoDataFrameis in therightposition, the result will no longer be aGeoDataFrame.
+
+For example, consider the following merge that adds full names to aGeoDataFramethat initially has only area ID for each geometry by merging it with aDataFrame.
+
+Spatial joins#
+
+In a spatial join, two geometry objects are merged based on their spatial relationship to one another.
+
+GeoPandas provides two spatial-join functions:
+
+GeoDataFrame.sjoin(): joins based on binary predicates (intersects, contains, etc.)GeoDataFrame.sjoin_nearest(): joins based on proximity, with the ability to set a maximum search radius.
+
+GeoDataFrame.sjoin(): joins based on binary predicates (intersects, contains, etc.)
+
+GeoDataFrame.sjoin(): joins based on binary predicates (intersects, contains, etc.)
+
+GeoDataFrame.sjoin_nearest(): joins based on proximity, with the ability to set a maximum search radius.
+
+GeoDataFrame.sjoin_nearest(): joins based on proximity, with the ability to set a maximum search radius.
+
+Note
+
+For historical reasons, both methods are also available as top-level functionssjoin()andsjoin_nearest().
+It is recommended to use methods as the functions may be deprecated in the future.
+
+Binary predicate joins#
+
+Binary predicate joins are available viaGeoDataFrame.sjoin().
+
+GeoDataFrame.sjoin()has two core arguments:howandpredicate.
+
+predicate
+
+Thepredicateargument specifies how GeoPandas decides whether or not to join the attributes of one
+object to another, based on their geometric relationship.
+
+The values forpredicatecorrespond to the names of geometric binary predicates and depend on the spatial
+index implementation.
+
+The default spatial index in GeoPandas currently supports the following values forpredicatewhich are
+defined in theShapely documentation:
+
+intersectscontainswithintouchescrossesoverlaps
+
+intersects
+
+intersects
+
+contains
+
+contains
+
+within
+
+within
+
+touches
+
+touches
+
+crosses
+
+crosses
+
+overlaps
+
+overlaps
+
+how
+
+Thehowargument specifies the type of join that will occur and which geometry is retained in the resultantGeoDataFrame. It accepts the following options:
+
+left: use the index from the first (orleft_df)GeoDataFramethat you provide
+toGeoDataFrame.sjoin(); retain only theleft_dfgeometry columnright: use index from second (orright_df); retain only theright_dfgeometry columninner: use intersection of index values from bothGeoDataFrame; retain only theleft_dfgeometry column
+
+left: use the index from the first (orleft_df)GeoDataFramethat you provide
+toGeoDataFrame.sjoin(); retain only theleft_dfgeometry column
+
+left: use the index from the first (orleft_df)GeoDataFramethat you provide
+toGeoDataFrame.sjoin(); retain only theleft_dfgeometry column
+
+right: use index from second (orright_df); retain only theright_dfgeometry column
+
+right: use index from second (orright_df); retain only theright_dfgeometry column
+
+inner: use intersection of index values from bothGeoDataFrame; retain only theleft_dfgeometry column
+
+inner: use intersection of index values from bothGeoDataFrame; retain only theleft_dfgeometry column
+
+Note more complicated spatial relationships can be studied by combining geometric operations with spatial join.
+To find all polygons within a given distance of a point, for example, one can first use thebuffer()method to expand each
+point into a circle of appropriate radius, then intersect those buffered circles with the polygons in question.
+
+Nearest joins#
+
+Proximity-based joins can be done viaGeoDataFrame.sjoin_nearest().
+
+GeoDataFrame.sjoin_nearest()shares thehowargument withGeoDataFrame.sjoin(), and
+includes two additional arguments:max_distanceanddistance_col.
+
+max_distance
+
+Themax_distanceargument specifies a maximum search radius for matching geometries. This can have a considerable performance impact in some cases.
+If you can, it is highly recommended that you use this parameter.
+
+distance_col
+
+If set, the resultant GeoDataFrame will include a column with this name containing the computed distances between an input geometry and the nearest geometry.
+
+
+--- CODE BLOCK ---
+In [1]: import geodatasets
+
+In [2]: chicago = geopandas.read_file(geodatasets.get_path("geoda.chicago_commpop"))
+
+In [3]: groceries = geopandas.read_file(geodatasets.get_path("geoda.groceries"))
+
+# For attribute join
+In [4]: chicago_shapes = chicago[['geometry', 'NID']]
+
+In [5]: chicago_names = chicago[['community', 'NID']]
+
+# For spatial join
+In [6]: chicago = chicago[['geometry', 'community']].to_crs(groceries.crs)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+# Appending GeoSeries
+In [7]: joined = pd.concat([chicago.geometry, groceries.geometry])
+
+# Appending GeoDataFrames
+In [8]: douglas = chicago[chicago.community == 'DOUGLAS']
+
+In [9]: oakland = chicago[chicago.community == 'OAKLAND']
+
+In [10]: douglas_oakland = pd.concat([douglas, oakland])
+
+------------------
+
+
+
+--- CODE BLOCK ---
+# `chicago_shapes` is GeoDataFrame with community shapes and area IDs
+In [11]: chicago_shapes.head()
+Out[11]: 
+                                            geometry  NID
+0  MULTIPOLYGON (((-87.609140876 41.844692503, -8...   35
+1  MULTIPOLYGON (((-87.592152839 41.816929346, -8...   36
+2  MULTIPOLYGON (((-87.628798237 41.801893034, -8...   37
+3  MULTIPOLYGON (((-87.606708126 41.816813771, -8...   38
+4  MULTIPOLYGON (((-87.592152839 41.816929346, -8...   39
+
+# `chicago_names` is DataFrame with community names and area ID
+In [12]: chicago_names.head()
+Out[12]: 
+         community  NID
+0          DOUGLAS   35
+1          OAKLAND   36
+2      FULLER PARK   37
+3  GRAND BOULEVARD   38
+4          KENWOOD   39
+
+# Merge with `merge` method on shared variable (area ID):
+In [13]: chicago_shapes = chicago_shapes.merge(chicago_names, on='NID')
+
+In [14]: chicago_shapes.head()
+Out[14]: 
+                                            geometry  NID        community
+0  MULTIPOLYGON (((-87.609140876 41.844692503, -8...   35          DOUGLAS
+1  MULTIPOLYGON (((-87.592152839 41.816929346, -8...   36          OAKLAND
+2  MULTIPOLYGON (((-87.628798237 41.801893034, -8...   37      FULLER PARK
+3  MULTIPOLYGON (((-87.606708126 41.816813771, -8...   38  GRAND BOULEVARD
+4  MULTIPOLYGON (((-87.592152839 41.816929346, -8...   39          KENWOOD
+
+------------------
+
+
+
+--- CODE BLOCK ---
+# One GeoDataFrame of communities, one of grocery stores.
+# Want to merge to get each grocery's community.
+In [15]: chicago.head()
+Out[15]: 
+                                            geometry        community
+0  MULTIPOLYGON (((1181573.249800048 1886828.0393...          DOUGLAS
+1  MULTIPOLYGON (((1186289.355600054 1876750.7332...          OAKLAND
+2  MULTIPOLYGON (((1176344.998000037 1871187.5456...      FULLER PARK
+3  MULTIPOLYGON (((1182322.042900046 1876674.7304...  GRAND BOULEVARD
+4  MULTIPOLYGON (((1186289.355600054 1876750.7332...          KENWOOD
+
+In [16]: groceries.head()
+Out[16]: 
+   OBJECTID  ...                                           geometry
+0        16  ...  MULTIPOINT ((1168268.671671558 1933554.3504257...
+1        18  ...  MULTIPOINT ((1162302.617919334 1832900.2240279...
+2        22  ...  MULTIPOINT ((1173317.042329894 1895425.4259547...
+3        23  ...  MULTIPOINT ((1168996.475130927 1898801.4056401...
+4        27  ...  MULTIPOINT ((1176991.988724414 1847262.4228848...
+
+[5 rows x 8 columns]
+
+# Execute spatial join
+In [17]: groceries_with_community = groceries.sjoin(chicago, how="inner", predicate='intersects')
+
+In [18]: groceries_with_community.head()
+Out[18]: 
+   OBJECTID     Ycoord  ...  index_right       community
+0        16  41.973266  ...           30          UPTOWN
+1        18  41.696367  ...           73     MORGAN PARK
+2        22  41.868634  ...           28  NEAR WEST SIDE
+3        23  41.877590  ...           28  NEAR WEST SIDE
+4        27  41.737696  ...           39         CHATHAM
+
+[5 rows x 10 columns]
+
+------------------

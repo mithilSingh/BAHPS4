@@ -1,0 +1,34 @@
+Supported Data Formats
+
+Raster formats
+
+TheWhiteboxToolslibrary can currently support reading/writing raster data in several common formats.
+
+Throughout this manual code examples that manipulate raster files all use the GeoTIFF format (.tif) but any of the supported file extensions can be used in its place.
+
+The library is primarily tested using Whitebox raster and GeoTIFF data sets and if you encounter issues when reading/writing data in other formats, you should report theissue.
+
+WhiteboxTools is able to read GeoTIFFs compressed using the PackBits, DEFLATE, and LZW methods. Compressed GeoTIFFs, created using the DEFLATE algorithm, can also be output from any tool that generates raster output files by using the--compress_rasterscommand line flag. If using the Python WhiteboxTools API, you can set the flag by using theset_compress_rastersmethod (e.g.wbt.set_compress_rasters(True)). The default isFalse. GeoTIFF output file compression can be set in theWhiteboxTools RunnerMulti-band GeoTIFFs are not currently supported.
+
+Please note that there are no plans to incorporate third-party libraries, likeGDAL, in the project given the design goal of keeping a pure (or as close as possible) Rust codebase without third-party dependencies. This design greatly simplifies installation of the library but significantly complicates the development by necessitating hand-rolled encoders/decoders for various raster data formats. For more complicated file formats, particularly the ubiquitous GeoTIFF format, it will take time to develop a mature and bug-free encoder/decoder and it is likely that we will only ever be able to support a sub-set of the possible GeoTIFF raster types. It is helpful if users who encounter raster-format related issuesreport their problemscomplete with descriptions of the error (What tool was being used? What type of data were input? How far along was the execution before the error was thrown? What was the error message?) and if possible submit a copy of the problematic file.
+
+Vector Formats
+
+At present, there is limited support inWhiteboxToolsfor working with vector geospatial data formats. The only supported vector format is the ESRIShapefile. Shapefiles geometries (.shp) and attributes (.dbf) can be read and written. There are plans to support a wider variety of vector file formats in the future.
+
+While the Shapefile format is extremely common, it does have certain limitations for vector representation. For example, owing to their 32-bit indexing, Shapefiles are limited in the number of geometries that can be stored in these files. Furthermore, Shapefiles are incapable of storing geometries of more than one type (point, lines, polygons) within the same file. As such, the vector-related tools inWhiteboxToolsalso carry these same limitations imposed by the Shapefile format.
+
+Point Cloud (LiDAR) Formats
+
+LiDAR data can be read/written in the commonLASand compressedLAZ(as of v1.6.0) data formats. WhiteboxTools also supports the losslessly compressed open-sourcezLidardata format.WhiteboxToolscan also read and write LAS files that have been compressed (zipped with a .zip extension) using the common DEFLATE algorithm. Note that only LAS file should be contained within a zipped archive file. The following is an example of running a LiDAR tool using zipped input/output files:
+
+Note that the double extensions (.las.zip) in the above command are not necessary and are only used for convenience of keeping track of LiDAR data sets (i.e. .zip extensions work too). The extra work of decoding/encoding compressed files does add additional processing time, although the Rust compression library that is used is highly efficient and usually only adds a few seconds to tool run times. Zipping LAS files frequently results 40-60% smaller binary files, making the additional processing time worthwhile for larger LAS file data sets with massive storage requirements.
+
+Note: The Esri LiDAR format is not currently supported inWhiteboxTools. The ESRI format is proprietary and closed-source, making it impossible to write an encoder/decoder for this file format.
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LidarTophatTransform -v --wd="/path/to/data/"
+-i="input.las.zip" -o="output.las.zip" --radius=10.0
+
+------------------

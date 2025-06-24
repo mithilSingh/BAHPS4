@@ -1,0 +1,23 @@
+WhiteboxTools Extensions
+
+Whitebox Geospatial Inc. currently offers oneextension forWhiteboxTools, known as theWhitebox Toolset Extension. This product contains plugins that extend the functionality of the open-core of WhiteboxTools. The list of the plugin tools and there descriptions is foundhere. While managed separately from the open-core, the extension easily integrate into your current WhiteboxTools environment. Please contact support@whiteboxgeo.com for further details, or visitwww.whiteboxgeo.comfor current pricing information.
+
+If you are using the WhiteboxTools Python API, you may install any of the Whitebox Extensions with the following script:
+
+After running the above script, Python will prompt you, from the command line terminal application, which extension you would like to install. Options include 'gte' (General Toolset Extension), 'lidar' (LiDAR and Remote Sensing Extension), 'dem' (DEM and Spatial Analysis Extension), and 'agri' (Agriculture Extension). Once you specify the extension you would like installed, the application will download and install the appropriate plugin tools (this requires an Internet connect), and then prompt the user whether they would like to activate a license key. This is a necessary step before you can use the newly installed plugin tools.
+
+
+
+If you are using theWhiteboxTools Runner, you may instead press the 'Install Whitebox Extension' button at the bottom of the Settings panel.
+
+
+
+
+--- CODE BLOCK ---
+from WBT.whitebox_tools import WhiteboxTools
+
+wbt = WhiteboxTools()
+
+wbt.install_wbt_extension()
+
+------------------

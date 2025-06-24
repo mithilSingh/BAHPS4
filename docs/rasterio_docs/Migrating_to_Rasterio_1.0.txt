@@ -1,0 +1,344 @@
+Migrating to Rasterio 1.0
+
+affine.Affine() vs. GDAL-style geotransforms
+
+One of the biggest API changes on the road to Rasterio 1.0 is the full
+deprecation of GDAL-style geotransforms in favor of theaffinelibrary.  For reference, anaffine.Affine()looks like:
+
+and a GDAL geotransform looks like:
+
+Fundamentally these two constructs provide the same information, but theAffine()object is more useful.
+
+Here’s a history of this feature:
+
+Originally, functions with atransformargument expected a GDAL
+geotransform.The introduction of theaffinelibrary involved creating a temporaryaffineargument forrasterio.open()and asrc.affineproperty.  Users could pass anAffine()toaffineortransform, but a GDAL geotransform passed
+totransformwould issue a deprecation warning.src.transformremained a GDAL geotransform, but issued a warning.  Users
+were pointed tosrc.affineduring the transition phase.Since the above changes, several functions have been added to Rasterio that
+accept atransformargument.  Rather than add anaffineargument to
+each, thetransformargument could be either anAffine()object or a
+GDAL geotransform, the latter issuing the same deprecation warning.
+
+Originally, functions with atransformargument expected a GDAL
+geotransform.
+
+Originally, functions with atransformargument expected a GDAL
+geotransform.
+
+The introduction of theaffinelibrary involved creating a temporaryaffineargument forrasterio.open()and asrc.affineproperty.  Users could pass anAffine()toaffineortransform, but a GDAL geotransform passed
+totransformwould issue a deprecation warning.
+
+The introduction of theaffinelibrary involved creating a temporaryaffineargument forrasterio.open()and asrc.affineproperty.  Users could pass anAffine()toaffineortransform, but a GDAL geotransform passed
+totransformwould issue a deprecation warning.
+
+src.transformremained a GDAL geotransform, but issued a warning.  Users
+were pointed tosrc.affineduring the transition phase.
+
+src.transformremained a GDAL geotransform, but issued a warning.  Users
+were pointed tosrc.affineduring the transition phase.
+
+Since the above changes, several functions have been added to Rasterio that
+accept atransformargument.  Rather than add anaffineargument to
+each, thetransformargument could be either anAffine()object or a
+GDAL geotransform, the latter issuing the same deprecation warning.
+
+Since the above changes, several functions have been added to Rasterio that
+accept atransformargument.  Rather than add anaffineargument to
+each, thetransformargument could be either anAffine()object or a
+GDAL geotransform, the latter issuing the same deprecation warning.
+
+The original plan was to remove theaffineargument + property, and assume
+that the object passed totransformis anAffine().
+However, afterfurther discussionit was determined that
+sinceAffine()and GDAL geotransforms are both 6 element tuples users may
+experience unexplained errors and outputs, so an exception is raised instead to
+better highlight the error.
+
+Before 1.0b1:
+
+rasterio.open()will still acceptaffineandtransform, but the
+former now issues a deprecation warning and the latter raises an exception if
+it does not receive anAffine().Ifrasterio.open()receives bothaffineandtransforma warning
+is issued andtransformis used.src.affineremains but issues a deprecation warning.src.transformreturns anAffine().All other Rasterio functions with atransformargument now raise an
+exception if they receive a GDAL geotransform.
+
+rasterio.open()will still acceptaffineandtransform, but the
+former now issues a deprecation warning and the latter raises an exception if
+it does not receive anAffine().
+
+rasterio.open()will still acceptaffineandtransform, but the
+former now issues a deprecation warning and the latter raises an exception if
+it does not receive anAffine().
+
+Ifrasterio.open()receives bothaffineandtransforma warning
+is issued andtransformis used.
+
+Ifrasterio.open()receives bothaffineandtransforma warning
+is issued andtransformis used.
+
+src.affineremains but issues a deprecation warning.
+
+src.affineremains but issues a deprecation warning.
+
+src.transformreturns anAffine().
+
+src.transformreturns anAffine().
+
+All other Rasterio functions with atransformargument now raise an
+exception if they receive a GDAL geotransform.
+
+All other Rasterio functions with atransformargument now raise an
+exception if they receive a GDAL geotransform.
+
+Tickets
+
+#86- Announcing the
+plan to switch from GDAL geotransforms toAffine().#763- Implementation of the
+migration and some further discussion.Beginning in 1.0b1:Inrasterio.open“affine” will no longer be an alias for the
+transform keyword argument.Dataset objects will no longer have an affine property.The transform keyword argument and property is always an instance of theAffineclass.
+
+#86- Announcing the
+plan to switch from GDAL geotransforms toAffine().
+
+#86- Announcing the
+plan to switch from GDAL geotransforms toAffine().
+
+#763- Implementation of the
+migration and some further discussion.Beginning in 1.0b1:
+
+#763- Implementation of the
+migration and some further discussion.
+
+Beginning in 1.0b1:
+
+Inrasterio.open“affine” will no longer be an alias for the
+transform keyword argument.
+
+Inrasterio.open“affine” will no longer be an alias for the
+transform keyword argument.
+
+Dataset objects will no longer have an affine property.
+
+Dataset objects will no longer have an affine property.
+
+The transform keyword argument and property is always an instance of theAffineclass.
+
+The transform keyword argument and property is always an instance of theAffineclass.
+
+Methods related to reading band data and dataset masks have changed in 1.0.
+
+Beginning with version 1.0b1, there is no longer aread_maskmethod, onlyread_masks. Datasets may be opened in read-write “w+” mode when their
+formats allow and a warning will be raised when band data or masks are read
+from datasets opened in “w” mode.
+
+Beginning with 1.0.0, the “w” mode will become write-only and reading data or
+masks from datasets opened in “w” will be prohibited.
+
+Deprecated:rasterio.drivers()
+
+Previously users could register GDAL’s drivers and open a datasource with:
+
+but Rasterio 1.0 contains more interactions with GDAL’s environment, sorasterio.drivers()has been replaced with:
+
+Tickets
+
+#665- Deprecation ofrasterio.drivers()and introduction ofrasterio.Env().
+
+#665- Deprecation ofrasterio.drivers()and introduction ofrasterio.Env().
+
+#665- Deprecation ofrasterio.drivers()and introduction ofrasterio.Env().
+
+Theread_band()method has been replaced byread(), which allows for
+faster I/O and reading multiple bands into a singlenumpy.ndarray.
+
+For example:
+
+is now:
+
+Tickets
+
+# 83- Introduction ofsrc.read().#96,#284- Deprecation ofsrc.read_band().
+
+# 83- Introduction ofsrc.read().
+
+# 83- Introduction ofsrc.read().
+
+#96,#284- Deprecation ofsrc.read_band().
+
+#96,#284- Deprecation ofsrc.read_band().
+
+Thesrc.read_mask()method produced a single mask for the entire datasource,
+but could not handle producing a single mask per band, so it was deprecated in
+favor ofsrc.read_masks(), although it has no direct replacement.
+
+Tickets
+
+#284- Deprecation ofsrc.read_mask().
+
+#284- Deprecation ofsrc.read_mask().
+
+#284- Deprecation ofsrc.read_mask().
+
+Moved: Functions for working with dataset windows
+
+Several functions in the top levelrasterionamespace for working with
+dataset windows have been moved torasterio.windows.*:
+
+rasterio.get_data_window()rasterio.window_union()rasterio.window_intersection()rasterio.windows_intersect()
+
+rasterio.get_data_window()
+
+rasterio.get_data_window()
+
+rasterio.window_union()
+
+rasterio.window_union()
+
+rasterio.window_intersection()
+
+rasterio.window_intersection()
+
+rasterio.windows_intersect()
+
+rasterio.windows_intersect()
+
+Tickets
+
+#609- Introduction ofrasterio.windows.
+
+#609- Introduction ofrasterio.windows.
+
+#609- Introduction ofrasterio.windows.
+
+Moved:rasterio.tool
+
+This module has been removed completely and its contents have been moved to
+several different locations:
+
+Tickets
+
+#609- Deprecation ofrasterio.tool.
+
+#609- Deprecation ofrasterio.tool.
+
+#609- Deprecation ofrasterio.tool.
+
+Moved:rasterio.tools
+
+This module has been removed completely and its contents have been moved to
+several different locations:
+
+Tickets
+
+#609- Deprecation ofrasterio.tools.
+
+#609- Deprecation ofrasterio.tools.
+
+#609- Deprecation ofrasterio.tools.
+
+Removed:rasterio.warp.RESAMPLING
+
+This enum has been replaced byrasterio.warp.Resampling.
+
+Removed: dataset’sul()method
+
+This method has been replaced by thexy()method.
+
+Signature Changes
+
+For bothrasterio.features.sieve()andrasterio.features.rasterize()theoutputargument has been replaced without.  Previously the use ofoutputissued a deprecation warning.
+
+Deprecation of dataset property set_* and get_* methods
+
+Methods get_crs, set_crs, set_nodatavals, set_descriptions, set_units, and
+set_gcps are deprecated and will be removed in version 1.0. They have been
+replaced by fully settable dataset propertiescrs,nodatavals,descriptions,units, andgcps.
+
+In the cases of units and descriptions, set_band_unit and set_band_description
+methods remain to support the rio-edit-info command.
+
+Creation Options
+
+Rasterio no longer saves dataset creation options to the metadata of created
+datasets and will ignore such metadata starting in version 1.0. Users may opt
+in to this by setting RIO_IGNORE_CREATION_KWDS=TRUE in their environments.
+
+
+--- CODE BLOCK ---
+affine.Affine(a, b, c,
+              d, e, f)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+(c, a, b, f, d, e)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import rasterio
+
+with rasterio.drivers():
+
+    with rasterio.open('tests/data/RGB.byte.tif') as src:
+        pass
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import rasterio
+import rasterio.env
+
+with rasterio.Env():
+
+    with rasterio.open('tests/data/RGB.byte.tif') as src:
+        pass
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import numpy as np
+import rasterio
+
+with rasterio.open('tests/data/RGB.byte.tif') as src:
+    data = np.array(map(src.read_band, (1, 2, 3)))
+    band1 = src.read_band(1)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import rasterio
+
+with rasterio.open('tests/data/RGB.byte.tif') as src:
+    data = src.read((1, 2, 3))
+    band1 = src.read(1)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+rasterio.tool.show()      -> rasterio.plot.show()
+rasterio.tool.show_hist() -> rasterio.plot.show_hist()
+rasterio.tool.stats()     -> rasterio.rio.insp.stats()
+rasterio.tool.main()      -> rasterio.rio.insp.main()
+
+------------------
+
+
+
+--- CODE BLOCK ---
+rasterio.tools.mask.mask()   -> rasterio.mask.mask()
+rasterio.tools.merge.merge() -> rasterio.merge.merge()
+
+------------------

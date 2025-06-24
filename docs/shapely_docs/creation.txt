@@ -1,0 +1,49 @@
+Geometry creation#
+
+box(xmin, ymin, xmax, ymax[, ccw])
+
+Create box polygons.
+
+destroy_prepared(geometry, **kwargs)
+
+Destroy the prepared part of a geometry, freeing up memory.
+
+empty(shape[, geom_type, order])
+
+Create a geometry array prefilled with None or with empty geometries.
+
+geometrycollections(geometries[, indices, out])
+
+Create geometrycollections from arrays of geometries.
+
+linearrings(coords[, y, z, indices, ...])
+
+Create an array of linearrings.
+
+linestrings(coords[, y, z, indices, ...])
+
+Create an array of linestrings.
+
+multilinestrings(geometries[, indices, out])
+
+Create multilinestrings from arrays of linestrings.
+
+multipoints(geometries[, indices, out])
+
+Create multipoints from arrays of points.
+
+multipolygons(geometries[, indices, out])
+
+Create multipolygons from arrays of polygons.
+
+points(coords[, y, z, indices, handle_nan, out])
+
+Create an array of points.
+
+polygons(geometries[, holes, indices, out])
+
+Create an array of polygons.
+
+prepare(geometry, **kwargs)
+
+Prepare a geometry, improving performance of other operations.

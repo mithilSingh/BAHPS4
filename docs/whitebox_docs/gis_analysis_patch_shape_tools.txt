@@ -1,0 +1,784 @@
+GIS Analysis → Patch Shape Tools
+
+BoundaryShapeComplexityCompactnessRatioDeviationFromRegionalDirectionEdgeProportionElongationRatioFindPatchOrClassEdgeCellsHoleProportionLinearityIndexNarrownessIndexPatchOrientationPerimeterAreaRatioRadiusOfGyrationRelatedCircumscribingCircleShapeComplexityIndexShapeComplexityIndexRaster
+
+BoundaryShapeComplexity
+
+CompactnessRatio
+
+DeviationFromRegionalDirection
+
+EdgeProportion
+
+ElongationRatio
+
+FindPatchOrClassEdgeCells
+
+HoleProportion
+
+LinearityIndex
+
+NarrownessIndex
+
+PatchOrientation
+
+PerimeterAreaRatio
+
+RadiusOfGyration
+
+RelatedCircumscribingCircle
+
+ShapeComplexityIndex
+
+ShapeComplexityIndexRaster
+
+
+
+BoundaryShapeComplexity
+
+This tools calculates a type of shape complexity index for raster objects, focused on the complexity of the
+boundary of polygons. The index uses theLineThinningtool to estimate a skeletonized network for each
+input raster polygon. The Boundary Shape Complexity (BSC) index is then calculated as the percentage of the
+skeletonized network belonging to exterior links. Polygons with more complex boundaries will possess
+more branching skeletonized networks, with each spur in the boundary possessing a short exterior branch. The
+two longest exterior links in the network are considered to be part of the main network.  Therefore,
+polygons of complex shaped boundaries will have a higher percentage of their skeleton networks consisting
+of exterior links. It is expected that simple convex hulls should have relatively low BSC index values.
+
+Objects in the input raster (--input) are designated by their unique identifiers. Identifier values should be
+positive, non-zero whole numbers.
+
+See Also:ShapeComplexityIndexRaster,LineThinning
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 17/02/2019
+
+Last Modified: 17/02/2019
+
+
+
+CompactnessRatio
+
+The compactness ratio is an indicator of polygon shape complexity. The compactness
+ratio is defined as the polygon area divided by its perimeter. Unlike some other
+shape parameters (e.g.ShapeComplexityIndex), compactness ratio does not standardize
+to a simple Euclidean shape. Although widely used for landscape analysis, compactness
+ratio, like its inverse, thePerimeterAreaRatio, exhibits the undesirable property
+of polygon size dependence (Mcgarigal et al. 2002). That is, holding shape constant,
+an increase in polygon size will cause a change in the compactness ratio.
+
+The output data will be contained in the input vector's attribute table as a new field
+(COMPACT).
+
+See Also:PerimeterAreaRatio,ShapeComplexityIndex,RelatedCircumscribingCircle
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/09/2018
+
+Last Modified: 13/10/2018
+
+
+
+DeviationFromRegionalDirection
+
+This tool calculates the degree to which each polygon in an input shapefile (--input) deviates from the average,
+or regional, direction. The input file will have a new attribute inserted in the attribute table,DEV_DIR, which
+will contain the calculated values. The deviation values are in degrees. The orientation of each polygon is determined
+based on the long-axis of the minimum bounding box fitted to the polygon. The regional direction is based on the
+mean direciton of the polygons, weighted by long-axis length (longer polygons contribute more weight) and elongation,
+i.e., a function of the long and short axis lengths (greater elongation contributes more weight). Polygons with
+elongation values lower than the elongation threshold value (--elong_threshold), which has values between 0 and 1,
+will be excluded from the calculation of the regional direction.
+
+See Also:PatchOrientation,ElongationRatio
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 24/05/2023
+
+Last Modified: 24/05/2023
+
+
+
+EdgeProportion
+
+This tool will measure the edge proportion, i.e. the proportion of grid cells in a patch that are located along the
+patch's boundary, for an input raster image (--input). Edge proportion is an indicator of polygon shape complexity
+and elongation. The user must specify the name of the output raster file (--output), which will be raster layer
+containing the input features assigned the edge proportion. The user may also optionally choose to output text data
+for easy input to a spreadsheet or database.
+
+Objects in the input raster are designated by their unique identifiers. Identifier values must
+be positive, non-zero whole numbers.
+
+See Also:ShapeComplexityIndexRaster,LinearityIndex,ElongationRatio
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 13/07/2017
+
+Last Modified: 18/10/2019
+
+
+
+ElongationRatio
+
+This tool can be used to calculate the elongation ratio for vector polygons. The
+elongation ratio values calculated for each vector polygon feature will be placed
+in the accompanying database file (.dbf) as an elongation field (ELONGATION).
+
+The elongation ratio (E) is:
+
+E = 1 - S / L
+
+WhereSis the short-axis length, andLis the long-axis length. Axes
+lengths are determined by estimating the minimum bounding box.
+
+The elongation ratio provides similar information as the Linearity Index. The
+ratio is not an adequate measure of overall polygon narrowness, because a highly
+sinuous but narrow polygon will have a low linearity (elongation) owing to the
+compact nature of these polygon.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 25/09/2018
+
+Last Modified: 13/10/2018
+
+
+
+FindPatchOrClassEdgeCells
+
+This tool will identify all grid cells situated along the edges of patches or class features within an
+input raster (--input). Edge cells in the output raster (--output) will have the patch identifier value
+assigned in the corresponding grid cell. All non-edge cells will be assigned zero in the output raster.
+Patches (or classes) are designated by positive, non-zero values in the input image. Zero-valued
+and NoData-valued grid cells are interpreted as background cells by the tool.
+
+See Also:EdgeProportion
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 14/07/2017
+
+Last Modified: 13/10/2018
+
+
+
+HoleProportion
+
+This calculates the proportion of the total area of a polygon's holes (i.e. islands)
+relative to the area of the polygon's hull. It can be a useful measure of shape
+complexity, or how discontinuous a patch is. The user must specify the name of the
+input vector file and the output data will be contained within the input vector's
+database file as a new field (HOLE_PROP).
+
+See Also:ShapeComplexityIndex,ElongationRatio,PerimeterAreaRatio
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/09/2018
+
+Last Modified: 26/09/2018
+
+
+
+LinearityIndex
+
+This tool calculates the linearity index of polygon features based on a regression analysis.
+The index is simply the coefficient of determination (r-squared) calculated from a regression
+analysis of the x and y coordinates of the exterior hull nodes of a vector polygon. Linearity
+index is a measure of how well a polygon can be described by a straight line. It is a related
+index to theElongationRatio, but is more efficient to calculate as it does not require
+finding the minimum bounding box. The Pearson correlation coefficient between linearity index
+and the elongation ratio for a large data set of lake polygons in northern Canada was found
+to be 0.656, suggesting a moderate level of association between the two measures of polygon
+linearity. Note that this index is not useful for identifying narrow yet sinuous polygons, such
+as meandering rivers.
+
+The only required input is the name of the file. The linearity values calculated for each vector
+polygon feature will be placed in the accompanying attribute table as a new field (LINEARITY).
+
+See Also:ElongationRatio,PatchOrientation
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 01/10/2018
+
+Last Modified: 13/10/2018
+
+
+
+NarrownessIndex
+
+This tools calculates a type of shape narrowness index (NI) for raster objects. The index is equal to:
+
+NI=A/ (πMD2)
+
+whereAis the patch area andMDis the maximum distance-to-edge of the patch. Circular-shaped patches
+will have a narrowness index near 1.0, while more narrow patch shapes will have higher index values. The
+index may be conceptualized as the ratio of the patch area to the area of the largest contained circle,
+although in practice the circle defined by the radius of the maximum distance-to-edge will often fall
+outside the patch boundaries.
+
+Objects in the input raster (--input) are designated by their unique identifiers. Identifier values must
+be positive, non-zero whole numbers. It is quite common for identifiers to be set using theClumptool
+applied to some kind of thresholded raster.
+
+See Also:LinearityIndex,ElongationRatio,Clump
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 17/02/2019
+
+Last Modified: 17/02/2019
+
+
+
+PatchOrientation
+
+This tool calculates the orientation of polygon features based on the slope of a reduced major
+axis (RMA) regression line. The regression analysis use the vertices of the exterior hull nodes
+of a vector polygon. The only required input is the name of the vector polygon file. The
+orientation values, measured in degrees from north, will be placed in the accompanying attribute
+table as a new field (ORIENT). The value of the orientation measure for any polygon will
+depend on how elongated the feature is.
+
+Note that the output values are polygon orientations and not true directions. While directions
+may take values ranging from 0-360, orientation is expressed as an angle between 0 and 180 degrees
+clockwise from north. Lastly, the orientation measure may become unstable when polygons are
+oriented nearly vertical or horizontal.
+
+See Also:LinearityIndex,ElongationRatio
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 16/10/2018
+
+Last Modified: 16/10/2018
+
+
+
+PerimeterAreaRatio
+
+The perimeter-area ratio is an indicator of polygon shape complexity. Unlike some
+other shape parameters (e.g. shape complexity index), perimeter-area ratio does not
+standardize to a simple Euclidean shape. Although widely used for landscape analysis,
+perimeter-area ratio exhibits the undesirable property of polygon size dependence
+(Mcgarigal et al. 2002). That is, holding shape constant, an increase in polygon
+size will cause a decrease in the perimeter-area ratio. The perimeter-area ratio is
+the inverse of the compactness ratio.
+
+The output data will be displayed as a new field (P_A_RATIO) in the input vector's
+database file.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 26/09/2018
+
+Last Modified: 03/03/2020
+
+
+
+RadiusOfGyration
+
+This can be used to calculate the radius of gyration (RoG) for the polygon
+features within a raster image. RoG measures how far across the landscape a polygon
+extends its reach on average, given by the mean distance between cells in a patch
+(Mcgarigal et al. 2002). The radius of gyration can be considered a measure of the
+average distance an organism can move within a patch before encountering the patch
+boundary from a random starting point (Mcgarigal et al. 2002). The input raster grid
+should contain polygons with unique identifiers greater than zero. The user must also
+specify the name of the output raster file (where the radius of gyration will be
+assigned to each feature in the input file) and the specified option of outputting text
+data.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 31/12/2017
+
+Last Modified: 18/10/2019
+
+
+
+RelatedCircumscribingCircle
+
+This tool can be used to calculate the related circumscribing circle (Mcgarigal et al. 2002)
+for vector polygon features. The related circumscribing circle values calculated for each
+vector polygon feature will be placed in the accompanying attribute table as a new field
+(RC_CIRCLE).
+
+Related circumscribing circle (RCC) is defined as:
+
+RCC = 1 - A / Ac
+
+WhereAis the polygon's area andActhe area of the smallest circumscribing circle.
+
+Theoretically,RelatedCircumscribingCircleranges from 0 to 1, where a value of 0 indicates
+a circular polygon and a value of 1 indicates a highly elongated shape. The circumscribing
+circle provides a measure of polygon elongation. Unlike theElongationRatio, however, it
+does not provide a measure of polygon direction in addition to overall elongation. Like theElongationRatioandLinearityIndex,RelatedCircumscribingCircleis not an adequate
+measure of overall polygon narrowness, because a highly sinuous but narrow patch will have
+a low related circumscribing circle index owing to the compact nature of these polygon.
+
+Note: Holes are excluded from the area calculation of polygons.
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 27/09/2018
+
+Last Modified: 13/10/2018
+
+
+
+ShapeComplexityIndex
+
+This tool provides a measure of overall polygon shape complexity, or irregularity,
+for vector polygons. Several shape indices have been created to compare a polygon's
+shape to simple Euclidean shapes (e.g. circles, squares, etc.). One of the problems
+with this approach is that it inherently convolves the characteristics of polygon
+complexity and elongation. The Shape Complexity Index (SCI) was developed as a
+parameter for assessing the complexity of a polygon that is independent of its
+elongation.
+
+SCI relates a polygon's shape to that of an encompassing convex hull. It is
+defined as:
+
+SCI = 1 - A / Ah
+
+WhereAis the polygon's area andAhis the area of the convex hull containing
+the polygon. Convex polygons, i.e. those that do not contain concavities or holes,
+have a value of 0. As the shape of the polygon becomes more complex, the SCI
+approaches 1. Note that polygon shape complexity also increases with the greater
+number of holes (i.e. islands), since holes have the effect of reducing the lake
+area.
+
+The SCI values calculated for each vector polygon feature will be placed in the
+accompanying database file (.dbf) as a complexity field (COMPLEXITY).
+
+See Also:ShapeComplexityIndexRaster
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 25/09/2018
+
+Last Modified: 13/10/2018
+
+
+
+ShapeComplexityIndexRaster
+
+This tools calculates a type of shape complexity index for raster objects. The index is equal to the average
+number of intersections of the group of vertical and horizontal transects passing through an object. Simple
+objects will have a shape complexity index of 1.0 and more complex shapes, including those containing numerous
+holes or are winding in shape, will have higher index values. Objects in the input raster (--input) are
+designated by their unique identifiers. Identifier values should be positive, non-zero whole numbers.
+
+See Also:ShapeComplexityIndex,BoundaryShapeComplexity
+
+Parameters:
+
+Python function:
+
+Command-line Interface:
+
+Source code on GitHub
+
+Author: Dr. John Lindsay
+
+Created: 16/02/2019
+
+Last Modified: 16/02/2019
+
+
+--- CODE BLOCK ---
+wbt.boundary_shape_complexity(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=BoundaryShapeComplexity -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif --zero_back 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.compactness_ratio(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=CompactnessRatio -v ^
+--wd="/path/to/data/" --input=polygons.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.deviation_from_regional_direction(
+    i, 
+    elong_threshold=0.75, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=DeviationFromRegionalDirection -v ^
+--wd="/path/to/data/" --input=polygons.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.edge_proportion(
+    i, 
+    output, 
+    output_text=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=EdgeProportion -v --wd="/path/to/data/" ^
+-i=input.tif -o=output.tif --output_text 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.elongation_ratio(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ElongationRatio -v ^
+--wd="/path/to/data/" --input=polygons.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.find_patch_or_class_edge_cells(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=FindPatchOrClassEdgeCells -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.hole_proportion(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=HoleProportion -v --wd="/path/to/data/" ^
+--input=polygons.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.linearity_index(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=LinearityIndex -v --wd="/path/to/data/" ^
+--input=polygons.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.narrowness_index(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=NarrownessIndex -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif --zero_back 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.patch_orientation(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PatchOrientation -v ^
+--wd="/path/to/data/" --input=polygons.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.perimeter_area_ratio(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=PerimeterAreaRatio -v ^
+--wd="/path/to/data/" --input=polygons.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.radius_of_gyration(
+    i, 
+    output, 
+    text_output=False, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RadiusOfGyration -v ^
+--wd="/path/to/data/" -i=polygons.tif -o=output.tif ^
+--text_output 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.related_circumscribing_circle(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=RelatedCircumscribingCircle -v ^
+--wd="/path/to/data/" --input=polygons.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.shape_complexity_index(
+    i, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ShapeComplexityIndex -v ^
+--wd="/path/to/data/" --input=polygons.shp 
+
+------------------
+
+
+
+--- CODE BLOCK ---
+wbt.shape_complexity_index_raster(
+    i, 
+    output, 
+    callback=default_callback
+)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+>>./whitebox_tools -r=ShapeComplexityIndexRaster -v ^
+--wd="/path/to/data/" -i=input.tif -o=output.tif --zero_back 
+
+------------------

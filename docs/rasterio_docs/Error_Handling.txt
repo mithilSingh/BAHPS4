@@ -1,0 +1,72 @@
+Error Handling
+
+Todo
+
+error enums, context managers, converting GDAL errors to python exceptions
+
+Debugging internal GDAL functions
+
+To get more debugging information from the internal GDAL/PROJ code:
+
+Enable theCPL_DEBUGconfig option.NoteIf setting thePROJ_DEBUGenvironment variable
+inside a Python script, make sure that it is set before
+importing rasterio.importosos.environ["PROJ_DEBUG"]="2"importrasteriowithrasterio.Env(CPL_DEBUG=True):...Activate logging inrasteriowith the develDEBUG:More information available here:https://docs.python.org/3/howto/logging.htmlHere are examples to get started.Example - Add handler to therasteriologger:importloggingconsole_handler=logging.StreamHandler()formatter=logging.Formatter("%(levelname)s:%(message)s")console_handler.setFormatter(formatter)logger=logging.getLogger("rasterio")logger.addHandler(console_handler)logger.setLevel(logging.DEBUG)Example - Activate default logging config:importlogginglogging.basicConfig(format="%(levelname)s:%(message)s",level=logging.DEBUG)
+
+Enable theCPL_DEBUGconfig option.NoteIf setting thePROJ_DEBUGenvironment variable
+inside a Python script, make sure that it is set before
+importing rasterio.importosos.environ["PROJ_DEBUG"]="2"importrasteriowithrasterio.Env(CPL_DEBUG=True):...
+
+Enable theCPL_DEBUGconfig option.
+
+Note
+
+If setting thePROJ_DEBUGenvironment variable
+inside a Python script, make sure that it is set before
+importing rasterio.
+
+Activate logging inrasteriowith the develDEBUG:More information available here:https://docs.python.org/3/howto/logging.htmlHere are examples to get started.Example - Add handler to therasteriologger:importloggingconsole_handler=logging.StreamHandler()formatter=logging.Formatter("%(levelname)s:%(message)s")console_handler.setFormatter(formatter)logger=logging.getLogger("rasterio")logger.addHandler(console_handler)logger.setLevel(logging.DEBUG)Example - Activate default logging config:importlogginglogging.basicConfig(format="%(levelname)s:%(message)s",level=logging.DEBUG)
+
+Activate logging inrasteriowith the develDEBUG:
+
+More information available here:https://docs.python.org/3/howto/logging.html
+
+Here are examples to get started.
+
+Example - Add handler to therasteriologger:
+
+Example - Activate default logging config:
+
+
+--- CODE BLOCK ---
+import os
+os.environ["PROJ_DEBUG"] = "2"
+
+import rasterio
+
+with rasterio.Env(CPL_DEBUG=True):
+    ...
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import logging
+
+console_handler = logging.StreamHandler()
+formatter = logging.Formatter("%(levelname)s:%(message)s")
+console_handler.setFormatter(formatter)
+logger = logging.getLogger("rasterio")
+logger.addHandler(console_handler)
+logger.setLevel(logging.DEBUG)
+
+------------------
+
+
+
+--- CODE BLOCK ---
+import logging
+
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.DEBUG)
+
+------------------
